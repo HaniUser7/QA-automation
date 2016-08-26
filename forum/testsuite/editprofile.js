@@ -13,7 +13,7 @@ var screenShotsDir = config.screenShotsLocation + 'editProfile/';
 editProfile.featureTest = function(casper, test) {
 
 	// Methos For Verifying Alert Message
-	/*casper.on('remote.alert', function(message) {
+	casper.on('remote.alert', function(message) {
 		this.echo('alert message: ' + message, 'INFO');
 		var expectedErrorMsg = 'Please provide a signature.';
 		test.assertEquals(message, expectedErrorMsg);
@@ -150,7 +150,7 @@ editProfile.featureTest = function(casper, test) {
 			});
 			
 		});
-	});*/
+	});
 };
 
 /**************************Back-end  Field Validation********************************/
