@@ -16,14 +16,17 @@ generalPermission.featureTest = function(casper, test, x) {
 
 	//Open Fornt-End URL
 	casper.start(config.url, function() {
-		this.capture(screenShotsDir+ 'forum.png');
 		this.echo('Title of the page : ' +this.getTitle(), 'INFO');
 	});
 	
 	//Logout From App
-	/*casper.then(function() {
+	casper.then(function() {
 		forumRegister.redirectToLogout(casper, test, function() {
-			casper.capture(screenShotsDir+ 'logout.png');
+			casper.waitForSelector('a[href^="/register/register"]', function success() {
+				this.click('a[href^="/register/register"]');
+			}, function fail() {
+
+			});
 		});
 			
 	});
@@ -31,8 +34,8 @@ generalPermission.featureTest = function(casper, test, x) {
 	//Registering A User 
 	casper.then(function() {
 		try {
-			test.assertExists('a[href^="/register/register"]');
-			this.click('a[href^="/register/register"]');
+			test.assertExists();
+			
 			casper.then(function() {
 				this.capture(screenShotsDir+ '1_registerFrom.png');
 				this.echo('registration from opened successfully', 'INFO');
@@ -102,7 +105,7 @@ generalPermission.featureTest = function(casper, test, x) {
 			casper.capture(screenShotsDir+ '2_backEndChangePermission.png');
 			casper.echo('Opened Change Permission Page Successfully', 'INFO');
 		});
-	});*/
+	});
 
 	casper.on('waitForSuccess', function() {
 		casper.then(function() {
@@ -120,7 +123,7 @@ generalPermission.featureTest = function(casper, test, x) {
 		});
 	});
 
-	/*casper.then(function() {
+	casper.then(function() {
 		try {
 			test.assertExists('#view_messageboard');
 			utils.enableorDisableCheckbox('view_messageboard', false, casper, function() {
@@ -173,7 +176,7 @@ generalPermission.featureTest = function(casper, test, x) {
 		}catch(e) {
 			test.assertDoesntExist('div.text-center.bmessage.alert-info.text-danger');
 		}
-	});*/
+	});
 
 	
 

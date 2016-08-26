@@ -145,8 +145,8 @@ forumLogin.loginToApp = function(username, password, driver,callback) {
 //method for logout from application
 forumLogin.logoutFromApp = function(driver, callback) {
 	try {
-		driver.test.assertExists('button.dropdown-toggle span.caret');
-		driver.click('button.dropdown-toggle span.caret');
+		driver.test.assertExists('a.default-user');
+		driver.click('a.default-user');
 		try {
 			driver.test.assertExists('#logout');
 			driver.click('#logout');
@@ -154,7 +154,7 @@ forumLogin.logoutFromApp = function(driver, callback) {
 			driver.test.assertDoesntExist('#logout');
 		}
 	}catch(e) {
-		driver.test.assertDoesntExist('button.dropdown-toggle span.caret');
+		driver.test.assertDoesntExist('a.default-user');
 	}
 	return callback();
 };
