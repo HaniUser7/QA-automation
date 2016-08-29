@@ -1243,15 +1243,16 @@ editProfile.makeRegisteredUser = function(driver, test, callback) {
 				this.sendKeys('#autosuggest', 'hs1234', {keepFocus: true});
 				this.click('#autosuggest');
 				this.page.sendEvent("keypress", this.page.event.key.Enter);
-				driver.then(function() {
-					try {
+				driver.waitForSelector('form[name="ugfrm"]', function success() {
+					this.fillSelectors('form[name="ugfrm"]', {
+						'input[type="checkbox"]' :  '20237477'
+					}, true);
+					driver.wait(3000, function() {
 						this.capture(screenShotsDir + 'demo.png');
-						this.fillSelectors('form[name="ugfrm"]', {
-							'select[name="usergroupid"]' :  '20237477'
-						}, true);
-					}catch(e) {
-						test.assertDoesntExist('form[name="ugfrm"]');
-					}
+						return callback();
+					})
+				}, function fail() {
+
 				});
 			}, function fail() {
 
@@ -1262,7 +1263,6 @@ editProfile.makeRegisteredUser = function(driver, test, callback) {
 	}catch(e) {
 		test.assertDoesntExist('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 	}
-	return callback();
 };
 
 //Method For Disabling "Edit Own Profile" Permission For Registered User
