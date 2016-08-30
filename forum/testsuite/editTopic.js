@@ -278,6 +278,17 @@ editTopic.editTopicFeature = function(casper,test, x, callback) {
 				casper.echo('---------------------------------------------------------------------------');
 			};
 
+			//Logout From App
+			casper.then(function() {
+			forumLogin.logoutFromApp(casper, function() {
+					casper.echo('Successfully logout from application', 'INFO');
+				});
+				//Getting Screenshot After Clicking On 'Logout' Link
+				casper.then(function() {
+					this.capture(screenShotsDir+ 'logout.png');
+				});
+			});
+
 	return callback();
 };
 

@@ -78,6 +78,16 @@ postAReply.postAReplyFeature = function(casper, test, x, callback) {
 			casper.echo('---------------------------------------------------------------------------');
 		});
 		
+		//Login To App
+		casper.then(function() {
+			forumLogin.loginToApp(json['newTopic'].username, json['newTopic'].password, casper, function() {
+				casper.echo('User has been successfuly login to application with register user', 'INFO');
+			});
+			//Getting Screenshot After Clicking On 'Log In' Link 
+			casper.then(function() {
+				this.capture(screenShotsDir+ 'login.png');
+			});
+		});
 		// post reply on own Topics when permission false	
 		casper.then(function(){
 			this.click('form[name="posts"] h4 a');
@@ -666,6 +676,18 @@ postAReply.postAReplyFeature = function(casper, test, x, callback) {
 		casper.echo('---------------------------------------------------------------------------');
 	});
 	};
+
+	//Logout From App
+	casper.then(function() {
+		forumLogin.logoutFromApp(casper, function() {
+			casper.echo('Successfully logout from application', 'INFO');
+		});
+	});
+
+	//Getting Screenshot After Clicking On 'Logout' Link
+	casper.then(function() {
+		this.capture(screenShotsDir+ 'logout.png');
+	});	
 	return callback();
 };
 

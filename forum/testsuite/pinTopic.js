@@ -11,11 +11,6 @@ var screenShotsDir = config.screenShotsLocation + 'pinTopic/';
 
 pinTopic.pinUnPinFeature = function(casper, test, x, callback) {
 	
-	//Open Forum URL And Get Title 
-	casper.thenOpen(config.url, function() {
-		this.emit('title');
-	});
-
 	//Login to app
 	casper.then(function(){
 		forumLogin.loginToApp(json['newTopic'].adminUname, json['newTopic'].adminPass, casper, function() {
@@ -1133,7 +1128,16 @@ pinTopic.pinUnPinFeature = function(casper, test, x, callback) {
 		casper.echo('---------------------------------------------------------------------------');
 	});
 
-	
+	//Logout From App
+	casper.then(function() {
+		forumLogin.logoutFromApp(casper, function() {
+			casper.echo('Successfully logout from application', 'INFO');
+		});
+		//Getting Screenshot After Clicking On 'Logout' Link
+		casper.then(function() {
+			this.capture(screenShotsDir+ 'logout.png');
+		});
+	});
 
 	return callback();
 };

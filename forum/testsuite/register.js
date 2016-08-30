@@ -499,7 +499,7 @@ forumRegister.loginToForumBackEnd = function(driver, test, callback) {
 		this.capture(screenShotsDir + 'login_submit.png');
 	});
 	}
-	return callback();
+	return callback(null);
 };
 
 

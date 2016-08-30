@@ -16,11 +16,10 @@ moveTopic.moveTopicFeature = function(casper, test, x, callback) {
 	//start from forum url
 	casper.thenOpen(config.url, function() {
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		//this.emit('title');
 	});
 		
-	//Login To App (rm)
-	/*casper.then(function() {
+	//Login To App
+	casper.then(function() {
 		forumLogin.loginToApp(json['newTopic'].adminUname, json['newTopic'].adminPass, casper, function() {
 			casper.echo('Admin has been successfuly login to application', 'INFO');
 		});
@@ -28,7 +27,7 @@ moveTopic.moveTopicFeature = function(casper, test, x, callback) {
 		casper.then(function() {
 			this.capture(screenShotsDir+ 'login.png');
 		});
-	});*/
+	});
 
 	/*****(1)Verify move topic from the topic listing page under category *****/
 	casper.then(function() {
@@ -508,11 +507,11 @@ moveTopic.moveTopicFeature = function(casper, test, x, callback) {
 	});
 		
 	//login to backend url (rm)
-	/*(casper.then(function() {
+	casper.then(function() {
 		forumRegister.loginToForumBackEnd(casper, test, function() {
 			casper.echo('User has been successfuly login to backend', 'INFO');
 		});
-	});*/
+	});
 
 	//go to user permission
 	casper.then(function() {

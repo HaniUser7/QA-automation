@@ -133,6 +133,12 @@ deleteTopic.deleteTopicFeature = function(casper, test, x, callback) {
 		this.capture(screenShotsDir+'forumUrl.png');
 	});		
 
+	//Login To App
+	casper.then(function() {
+		forumLogin.loginToApp(json['newTopic'].username1, json['newTopic'].password1, casper, function() {
+			casper.echo('User has been successfuly login to application with register user', 'INFO');
+		});
+	});
 	//Delete others Topic
 	casper.then(function() {
 		test.assertDoesntExist('div.panel-body input.entry-checkbox');

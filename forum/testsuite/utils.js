@@ -3,7 +3,7 @@ var utils = module.exports = {};
 // method for click on user's edit profile
 utils.clickOnElement = function(driver, element, callback) {
 	driver.click(element);
-	return callback();
+	return callback(null);
 };
 
 
@@ -23,21 +23,21 @@ utils.enableorDisableCheckbox = function(element, status, driver, callback){
 			}
 		}
 
-	return callback();
-
+	return callback(null);
 };
 
 /*function to go to user group permission for any user type in backend by sending parameter for xpath as x and user type as "Registered Users" and also need to initialize for xpath in mainTest.js file inside the particular feature*/
 utils.gotoEditUserGroupPermissionpage = function(x,userType, driver, callback) {
 	driver.waitForSelector('a[data-tooltip-elm="ddUsers"]', function(){
 		this.click('a[data-tooltip-elm="ddUsers"]');
-			
-	});
-	driver.waitForSelector('a[href="/tool/members/mb/usergroup"]', function(){
-		this.click('a[href="/tool/members/mb/usergroup"]');
-			
-	});
+		//driver.waitForSelector('a[href="/tool/members/mb/usergroup"]', function(){
+			this.click('a[href="/tool/members/mb/usergroup"]');
+		
+		//});
 
+			
+	});
+	
 	driver.waitForSelector(x('//td[text()="'+userType+'"]/following::td[2]/a'), function(){
 		this.click(x('//td[text()="'+userType+'"]/following::td[2]/a'));
 		casper.echo("***inner text*** : "+this.fetchText(x('//td[text()="'+userType+'"]/following::td[2]/a')));
@@ -46,7 +46,7 @@ utils.gotoEditUserGroupPermissionpage = function(x,userType, driver, callback) {
 			casper.echo("** Sublinks ** : "+this.fetchText(x('//td[text()="'+userType+'"]/parent::tr/td[3]/div/a[1]')));	
 		});
 	});
-	return callback();
+	return callback(null);
 };
 
 
