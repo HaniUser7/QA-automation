@@ -19,23 +19,25 @@ inContextLogin.featureTest = function(casper, test) {
 		this.echo('Incontext Login From Start New Topic Register Link', 'INFO');
 		
 		//Clicking On Start New Topic Button
-		test.assertExists('div#topics a[href="/post/printadd"]');
-		this.click('div#topics a[href="/post/printadd"]');
-		
-		//Filling Valid Data On login Form
-		loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error Occurred In Callback", "ERROR");
-			} else {
-				casper.echo('Processing to Login on forum.....', 'INFO');
-				redirectToLogout(casper, test, function(err) {
-					if (err) {
-						casper.echo("Error Occurred In Callback", "ERROR");
-					} else {
-						casper.echo("User logged-out successfully", "INFO");
-					}
-				});
-			}
+		this.waitForSelector('div#topics a[href="/post/printadd"]', function success() {
+			this.click('div#topics a[href="/post/printadd"]');
+			//Filling Valid Data On login Form
+			loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error Occurred In Callback", "ERROR");
+				} else {
+					casper.echo('Processing to Login on forum.....', 'INFO');
+					redirectToLogout(casper, test, function(err) {
+						if (err) {
+							casper.echo("Error Occurred In Callback", "ERROR");
+						} else {
+							casper.echo("User logged-out successfully", "INFO");
+						}
+					});
+				}
+			});
+		}, function fail() {
+			casper.echo("Error Occurred", "ERROR");
 		});
 	});
 	
@@ -45,48 +47,52 @@ inContextLogin.featureTest = function(casper, test) {
 		casper.echo('Incontext Login While Like This Topic From List Of Topics', 'INFO');
 		
 		//Clicking On 'Like' This Post Icon
-		test.assertExists('i.glyphicon.glyphicon-like-alt');
-		this.click('i.glyphicon.glyphicon-like-alt');
+		casper.waitForSelector('i.glyphicon.glyphicon-like-alt', function success() {
+			//test.assertExists('i.glyphicon.glyphicon-like-alt');
+			this.click('i.glyphicon.glyphicon-like-alt');
 		
-		//Filling Valid Data On Login Form
-		forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error Occurred In Callback", "ERROR");
-			} else {
-				casper.echo('Processing to Login on forum.....', 'INFO');
-				redirectToLogout(casper, test, function(err) {
-					if (err) {
-						casper.echo("Error Occurred In Callback", "ERROR");
-					} else {
-						/***********Incontext Login While Like Post From Topic Page************/
-						casper.echo('Incontext Login While Like Post From Topic Page', 'INFO');
+			//Filling Valid Data On Login Form
+			forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error Occurred In Callback", "ERROR");
+				} else {
+					casper.echo('Processing to Login on forum.....', 'INFO');
+					redirectToLogout(casper, test, function(err) {
+						if (err) {
+							casper.echo("Error Occurred In Callback", "ERROR");
+						} else {
+							/***********Incontext Login While Like Post From Topic Page************/
+							casper.echo('Incontext Login While Like Post From Topic Page', 'INFO');
 			
-						//Clicking On Any Topic Present In The List
-						test.assertExists('form[name="posts"] a.topic-title');
-						casper.click('form[name="posts"] a.topic-title');
+							//Clicking On Any Topic Present In The List
+							test.assertExists('form[name="posts"] a.topic-title');
+							casper.click('form[name="posts"] a.topic-title');
 			
-						//Clicking On 'Like' This Post Icon
-						test.assertExists('i.glyphicon.glyphicon-like-alt');
-						casper.click('i.glyphicon.glyphicon-like-alt');
+							//Clicking On 'Like' This Post Icon
+							test.assertExists('i.glyphicon.glyphicon-like-alt');
+							casper.click('i.glyphicon.glyphicon-like-alt');
 			
-						//Filling Valid Data On Login Form
-						forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
-							if (err) {
-								casper.echo("Error Occurred In Callback", "ERROR");
-							} else {
-								casper.echo('Processing to Login on forum.....', 'INFO');
-								redirectToLogout(casper, test, function(err) {
-									if (err) {
-										casper.echo("Error Occurred In Callback", "ERROR");
-									} else {
-										casper.echo("User logged-out successfully", "INFO");
-									}
-								});
-							}
-						});
-					}
-				});
-			}
+							//Filling Valid Data On Login Form
+							forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
+								if (err) {
+									casper.echo("Error Occurred In Callback", "ERROR");
+								} else {
+									casper.echo('Processing to Login on forum.....', 'INFO');
+									redirectToLogout(casper, test, function(err) {
+										if (err) {
+											casper.echo("Error Occurred In Callback", "ERROR");
+										} else {
+											casper.echo("User logged-out successfully", "INFO");
+										}
+									});
+								}
+							});
+						}
+					});
+				}
+			});
+		}, function fail() {
+			casper.echo("Error Occurred", "ERROR");
 		});
 	});
 	
@@ -95,29 +101,34 @@ inContextLogin.featureTest = function(casper, test) {
 		casper.echo('Incontext Login While Dislike Post From Topic Page', 'INFO');
 		
 		//Clicking On Any Topic Present In The List
-		test.assertExists('form[name="posts"] a.topic-title');
-		this.click('form[name="posts"] a.topic-title');
+		casper.waitForSelector('form[name="posts"] a.topic-title', function success() {
+			//test.assertExists('form[name="posts"] a.topic-title');
+			this.click('form[name="posts"] a.topic-title');
 		
-		//Clicking On 'Dislike' This Post Icon
-		casper.waitForSelector('a.dislike_post.text-muted', function success() {
-			this.click('a.dislike_post.text-muted');
-			//Filling Valid Data On Login Form
-			forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
-				if (err) {
-					casper.echo("Error Occurred In Callback", "ERROR");
-				} else {
-					casper.echo('Processing to Login on forum.....', 'INFO');
-					redirectToLogout(casper, test, function(err) {
-						if (err) {
-							casper.echo("Error Occurred In Callback", "ERROR");
-						} else {
-							casper.echo("User logged-out successfully", "INFO");
-						}
-					});
-				}
+			//Clicking On 'Dislike' This Post Icon
+			casper.waitForSelector('a.dislike_post.text-muted', function success() {
+				test.assertExists('a.dislike_post.text-muted');
+				this.click('a.dislike_post.text-muted');
+				//Filling Valid Data On Login Form
+				forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error Occurred In Callback", "ERROR");
+					} else {
+						casper.echo('Processing to Login on forum.....', 'INFO');
+						redirectToLogout(casper, test, function(err) {
+							if (err) {
+								casper.echo("Error Occurred In Callback", "ERROR");
+							} else {
+								casper.echo("User logged-out successfully", "INFO");
+							}
+						});
+					}
+				});
+			}, function fail() {
+				casper.echo("Error Occurred", "ERROR");
 			});
 		}, function fail() {
-			casper.echo("Error Occurred", "ERROR");
+			casper.echo("There are currently no topics to display.", "INFO");
 		});
 	});
 	
@@ -126,14 +137,55 @@ inContextLogin.featureTest = function(casper, test) {
 		casper.echo('Incontext Login From Quote On Post From Post List', 'INFO');
 		
 		//Clicking On Any Topic Present In The List
-		test.assertExists('form[name="posts"] a.topic-title');
-		this.click('form[name="posts"] a.topic-title');
+		//test.assertExists('form[name="posts"] a.topic-title');
+		casper.waitForSelector('form[name="posts"] a.topic-title', function success() {
+			this.click('form[name="posts"] a.topic-title');
 		
-		//Clicking On 'Quote Link' Present In Post List
-		casper.waitForSelector('a.text-muted.quote', function success() {
-			this.click('a.text-muted.quote');
+			//Clicking On 'Quote Link' Present In Post List
+			casper.waitForSelector('a.text-muted.quote', function success() {
+				this.click('a.text-muted.quote');
 
-			//Filling Valid Data On Login Form
+				//Filling Valid Data On Login Form
+				forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error Occurred In Callback", "ERROR");
+					} else {
+						casper.echo('Processing to Login on forum.....', 'INFO');
+						redirectToLogout(casper, test, function(err) {
+							if (err) {
+								casper.echo("Error Occurred In Callback", "ERROR");
+							} else {
+								casper.echo("User logged-out successfully", "INFO");
+							}
+						});
+					}
+				});
+			}, function fail() {
+				casper.echo("Error Occurred", "ERROR");
+			});
+		}, function fail() {
+			casper.echo("There are currently no topics to display.", "INFO");
+		});
+	});
+	
+	/***********Incontext Login From Vote On Post From Post List************/
+	casper.thenOpen(config.url, function() {
+		casper.echo('Incontext Login From Vote On Post From Post List', 'INFO');
+		
+		//Clicking On Any Topic Present In The List
+		casper.waitForSelector('form[name="posts"] a.topic-title', function success() {
+			this.click('form[name="posts"] a.topic-title');
+			//Clicking On 'create an account and log in' Link Present In Post List
+			try {
+				test.assertExists('a#guest_user_vote');
+				this.click('a#guest_user_vote');
+				this.echo('You have clicked on create an account and log-in link...', 'INFO');
+			} catch(e) {
+				test.assertDoesntExist('a#guest_user_vote');
+				this.echo('You did not find create an account and log-in link...', 'INFO');
+			}
+			
+			//Filling Valid Data On Login
 			forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
 				if (err) {
 					casper.echo("Error Occurred In Callback", "ERROR");
@@ -149,42 +201,7 @@ inContextLogin.featureTest = function(casper, test) {
 				}
 			});
 		}, function fail() {
-			casper.echo("Error Occurred", "ERROR");
-		});
-	});
-	
-	/***********Incontext Login From Vote On Post From Post List************/
-	casper.thenOpen(config.url, function() {
-		casper.echo('Incontext Login From Vote On Post From Post List', 'INFO');
-		
-		//Clicking On Any Topic Present In The List
-		test.assertExists('form[name="posts"] a.topic-title');
-		this.click('form[name="posts"] a.topic-title');
-		
-		//Clicking On 'create an account and log in' Link Present In Post List
-		try {
-			test.assertExists('a#guest_user_vote');
-			this.click('a#guest_user_vote');
-			this.echo('You have clicked on create an account and log-in link...', 'INFO');
-		} catch(e) {
-			test.assertDoesntExist('a#guest_user_vote');
-			this.echo('You did not find create an account and log-in link...', 'INFO');
-		}
-		
-		//Filling Valid Data On Login
-		forumLogin.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error Occurred In Callback", "ERROR");
-			} else {
-				casper.echo('Processing to Login on forum.....', 'INFO');
-				redirectToLogout(casper, test, function(err) {
-					if (err) {
-						casper.echo("Error Occurred In Callback", "ERROR");
-					} else {
-						casper.echo("User logged-out successfully", "INFO");
-					}
-				});
-			}
+			casper.echo("There are currently no topics to display.", "INFO");
 		});
 	});
 	
