@@ -2751,8 +2751,6 @@ field_permission.directToLogout = function(casper,callback) {
 
 //Delete Field To Forum Front End
 field_permission.deleteField = function(casper, callback) {
-	
-	    
 		   //Open Back-End URL And Get Title
 	     field_permission.OpenBackEndURL(casper,function(err) { 
 		    if(!err){
@@ -2826,7 +2824,7 @@ field_permission.verifyDataToRegistrationForm = function(casper, fieldtype ,call
 				 if(!err){
 				
 				
-        //Method For Filling Data In Login Form(Front end)		
+//Method For Filling Data In Login Form(Front end)		
 		field_permission.fillDataToLoginFront(casper,loginData.ValidUser, function() {		
 	        casper.waitForSelector('div.panel.panel-default', function sucess() {
 			    this.test.assertExists('button#searchContent');

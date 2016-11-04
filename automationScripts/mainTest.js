@@ -1,8 +1,8 @@
 var config = require("../config/config.json");
 
 casper.options.viewportSize = config.app.viewportSize;
-//casper.options.verbose = config.app.verbose;
-//casper.options.logLevel = config.app.logLevel;
+casper.options.verbose = config.app.verbose;
+casper.options.logLevel = config.app.logLevel;
 casper.options.waitTimeout = config.app.waitTimeout;
 
 var feature = casper.cli.get('feature');
@@ -243,6 +243,18 @@ switch (feature) {
         case "verifyCategoryPermissions":
     	casper.test.begin('VERIFY CATEGORY PERMISSIONS TEST', function(test) {
 		var verifyCategoryPermissions = require("./testsuite/verifyCategoryPermissions.js");
+		verifyCategoryPermissions.featureTest(casper, test);
+		casper.run(function(){
+			test.done();
+			test.assert(true);
+		});
+	});
+        break;
+		
+		
+		  case "rough":
+    	casper.test.begin('VERIFY CATEGORY PERMISSIONS TEST', function(test) {
+		var verifyCategoryPermissions = require("./testsuite/rough.js");
 		verifyCategoryPermissions.featureTest(casper, test);
 		casper.run(function(){
 			test.done();
