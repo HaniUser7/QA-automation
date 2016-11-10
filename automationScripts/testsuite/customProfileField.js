@@ -4,18 +4,23 @@ var forumRegister = require('./register.js');
 var registerData=require('../testdata/registerData.json');
 var loginData=require('../testdata/loginData.json')
 var field_permission = module.exports = {};
-   
+      field_permission.errors = [];
     
 	field_permission.field_permissionfeatureTest=function(casper, test){
 		
-		//*********************************************************************	
-      casper.on("page.error", function(msg, trace) {
+	 casper.on("page.error", function(msg, trace) {
 	    	 this.echo("Error:    " + msg, "ERROR");
 		     this.echo("file:     " + trace[0].file, "WARNING");
 	     	 this.echo("line:     " + trace[0].line, "WARNING");
 		     this.echo("function: " + trace[0]["function"], "WARNING");
-		errors.push(msg);
+		field_permission.errors.push(msg);
 	    });
+		
+		  // Methos For Verifying Alert Message
+	casper.on('remote.alert', function(message) {
+		this.echo(' message: ' + message, 'INFO');
+	});
+	  
 	  
 	  /*
      ***************************************************************************************************************************************************
