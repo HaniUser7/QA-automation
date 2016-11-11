@@ -6,9 +6,15 @@ var generalPermission = require('./generalPermission.js');
 var verifyModeratorPermission = module.exports = {};
 var AddPoll=0;
 
+<<<<<<< HEAD
 verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, x, callback) {
 
 		casper.thenOpen(config.url, function(){
+=======
+verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, test, x, callback) {
+
+		/*casper.thenOpen(config.url, function(){
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 			this.echo('**************************Registering User***************************', 'INFO');
 			this.echo('title of the page : '+this.getTitle());
 			casper.waitForSelector('a[href="/register/register"]', function sucess(){
@@ -34,12 +40,20 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		
 		casper.thenOpen(config.url,function() {
 			forumRegister.redirectToLogout(casper, test, function() {});
+<<<<<<< HEAD
 		});
+=======
+		});*/
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 
 		casper.thenOpen(config.backEndUrl,function() {
 			casper.echo('Login To Backend URL and enable start topic checkbox', 'INFO');
 			casper.echo('title of the page : ' +this.getTitle(), 'INFO');
+<<<<<<< HEAD
 			forumRegister.loginToForumBackEnd(casper, casper.test, function(err) {
+=======
+			forumRegister.loginToForumBackEnd(casper, test, function(err) {
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 				if(!err) {
 					casper.echo('User has been successfuly login to backend', 'INFO');
 					//go to user permission
@@ -81,12 +95,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		//Changing the General Category Permission to view category.
 		casper.thenOpen(config.backEndUrl,function() {
 			casper.waitForSelector('div#my_account_forum_menu', function success() {
+<<<<<<< HEAD
 				generalPermission.viewChangePermission(casper, casper.test, function(err,grpId) {
 					if(!err){	
 						casper.then(function(){
 							casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 							casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 							casper.test.assertExists('div.tooltipMenu.text a[href="/tool/members/mb/forums"]');
+=======
+				generalPermission.viewChangePermission(casper, test, function(err,grpId) {
+					if(!err){	
+						casper.then(function(){
+							test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+							casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+							test.assertExists('div.tooltipMenu.text a[href="/tool/members/mb/forums"]');
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 							casper.click('div.tooltipMenu.text a[href="/tool/members/mb/forums"]');
 								casper.waitForSelector('div.select', function success() {
 									casper.mouse.move('div#sortable ul.ui-sortable li:nth-child(1) div.select');
@@ -94,6 +117,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 										casper.click('div#sortable ul.ui-sortable li:nth-child(1) div.select a.manageAction');
 										casper.click('div#sortable ul.ui-sortable li:nth-child(1) div.select a.change_perm');
 										casper.waitForSelector('form[name="frmFormPermissionsDialog"]', function success() {
+<<<<<<< HEAD
 											casper.then(function(){
 												utils.enableorDisableCheckbox('view_forum_'+grpId, true, casper, function() {
 													casper.echo('checkbox is checked for view category for general category', 'INFO');
@@ -104,6 +128,16 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 											});
 											
 											casper.wait(10000,function(){});
+=======
+
+											utils.enableorDisableCheckbox('view_forum_'+grpId, true, casper, function() {
+												casper.capture('12333.png');
+												casper.echo('checkbox is checked for view category for general category', 'INFO');
+												casper.click('div.select');
+
+											});
+											casper.then(function() {});
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 											}, function fail() {
 												casper.echo('change permission dialogue not opened for general category', 'ERROR');
 										});
@@ -124,7 +158,45 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		});
 
 		
+<<<<<<< HEAD
 		casper.thenOpen(config.backEndUrl,function() {
+=======
+		//Login To Backend URL and disable Approve New Posts
+		/*casper.thenOpen(config.backEndUrl,function() {
+			casper.echo('Login To Backend URL and disable Approve New Posts', 'INFO');
+			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+			casper.echo('---------------------------------------------------------------------------');		
+			//setting page -> security page
+			casper.waitForSelector('a[data-tooltip-elm="ddSettings"]', function success() {
+				test.assertExists('a[data-tooltip-elm="ddSettings"]');
+				this.click('a[data-tooltip-elm="ddSettings"]');
+				this.waitForSelector('a[href="/tool/members/mb/settings?tab=Security"]', function success() {
+					test.assertExists('a[href="/tool/members/mb/settings?tab=Security"]');
+					this.click('a[href="/tool/members/mb/settings?tab=Security"]');
+				}, function fail(err) {
+					casper.echo(err);
+				});
+				this.waitForSelector('#post_approval', function success() {
+					test.assertExists('#post_approval');
+					this.click('#post_approval');
+					this.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
+					test.assertExists('button[type="submit"]');
+					this.click('button[type="submit"]');
+					this.wait(1000);
+				}, function fail() {
+					casper.echo(err);
+				});
+			}, function fail(err) {
+				casper.echo(err);
+			});
+		});*/
+
+		
+		
+		
+		
+		/*casper.thenOpen(config.backEndUrl,function() {
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 			casper.echo('*******************************Case-8********************************', 'INFO');
 			casper.echo('******************************Enable Edit Post********************************', 'INFO');
 			casper.echo('Verify by edit post from category(cat1)', 'INFO');
@@ -588,9 +660,15 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 				}); 
 			}
 		});
+<<<<<<< HEAD
 	});
 
 	casper.thenOpen(config.backEndUrl,function() {
+=======
+	});*/
+
+	/*casper.thenOpen(config.backEndUrl,function() {
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 		casper.echo('*******************************Case-22******************************************', 'INFO');
 		casper.echo('*******************************Disable Move Post********************************', 'INFO');
 		casper.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
@@ -932,10 +1010,17 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.test.assertExist('a[href^="/poll/polladd?id="]');
 						casper.click('a[href^="/poll/polladd?id="]');
 						casper.waitForSelector('form#formEditPoll',function success(){
+<<<<<<< HEAD
 							casper.sendKeys('#poll_question',  json['AddPoll'].pollQues, {reset:true});
 							casper.sendKeys('input[name="public"]',json['AddPoll'].publicCheckbox);
 							casper.sendKeys('#poll_option_1 div input',json['AddPoll'].option1, {reset:true});
 							casper.sendKeys('#poll_option_2 div input', json['AddPoll'].option2, {reset:true});
+=======
+							casper.sendKeys('#poll_question', 'Are you happy', {reset:true});
+							casper.sendKeys('input[name="public"]',false);
+							casper.sendKeys('#poll_option_1 div input','Yes', {reset:true});
+							casper.sendKeys('#poll_option_2 div input', 'No', {reset:true});
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 							casper.click('#save_poll');
 							casper.waitForSelector('input[name="pollvotesave"]',function success(){
 								casper.capture('1a.png');
@@ -1242,7 +1327,10 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_delete',false,2,function(err,href){
 			if(!err){
+<<<<<<< HEAD
 				casper.echo('a[href="'+href+'"]');
+=======
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
 					casper.waitForSelector('div#posts-list',function sucess(){   	
@@ -1265,7 +1353,11 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 	});
 
 	casper.thenOpen(config.backEndUrl,function() {
+<<<<<<< HEAD
 		casper.echo('Login To Backend URL and Enable Approve New Posts', 'INFO');
+=======
+		casper.echo('Login To Backend URL and disable Approve New Posts', 'INFO');
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 		casper.echo('---------------------------------------------------------------------------');		
 		//setting page -> security page
@@ -1435,6 +1527,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 			
 		});
 		
+<<<<<<< HEAD
 	});	
 
 	casper.thenOpen(config.backEndUrl, function(){
@@ -1470,6 +1563,9 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 				casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
 		});	
 	});
+=======
+	});	*/
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 
 }
 
@@ -1483,17 +1579,27 @@ var ModeratorPermission=function(driver,checkbox_name,trueorfalse,category_no,ca
 						StartTopic(driver,function(err,href){
 							if(!err){
 								ahref=href;
+<<<<<<< HEAD
 								casper.echo('href1='+ahref,'INFO');
+=======
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 								if(AddPoll==1){	
 									driver.then(function(){
 										driver.click('i.glyphicon.glyphicon-chevron-down'); 		
 										driver.test.assertExist('a[href^="/poll/polladd?id="]');
 										driver.click('a[href^="/poll/polladd?id="]');
 										driver.waitForSelector('form#formEditPoll',function success(){
+<<<<<<< HEAD
 											driver.sendKeys('#poll_question', json['AddPoll'].pollQues, {reset:true});
 											driver.sendKeys('input[name="public"]',json['AddPoll'].publicCheckbox);
 											driver.sendKeys('#poll_option_1 div input',json['AddPoll'].option1, {reset:true});
 											driver.sendKeys('#poll_option_2 div input', json['AddPoll'].option2, {reset:true});
+=======
+											driver.sendKeys('#poll_question', 'Are you happy', {reset:true});
+											driver.sendKeys('input[name="public"]',false);
+											driver.sendKeys('#poll_option_1 div input','Yes', {reset:true});
+											driver.sendKeys('#poll_option_2 div input', 'No', {reset:true});
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 											driver.click('#save_poll');
 											driver.waitForSelector('input[name="pollvotesave"]',function success(){
 												driver.capture('1a.png');
@@ -1560,7 +1666,11 @@ var ComposePost=function(driver,category_no,callback){
 					driver.click('span.topic-content a');
 					driver.waitForSelector('form[name="PostTopic"]',function success(){
 						driver.fill('form[name="PostTopic"]',{
+<<<<<<< HEAD
 								'message': json['ReplyTopic'].content
+=======
+								'message': 'this is my first post of this topic in this category'
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 						},false);
 						driver.waitForSelector('#reply_submit',function success(){
 							driver.test.assertExists('#reply_submit');
@@ -1751,15 +1861,24 @@ var StartTopic = function(driver,callback){
 	var href;
 	driver.click('a[href^="/post/printadd"]');
 	driver.waitForSelector('#message_ifr',function success(){								
+<<<<<<< HEAD
 		driver.sendKeys('input[name="subject"]', json['StartTopic'].subject, {reset:true});								
 		driver.withFrame('message_ifr', function() {
 			driver.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 			driver.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 			driver.sendKeys('#tinymce',json['StartTopic'].content);
+=======
+		driver.sendKeys('input[name="subject"]', 'hello', {reset:true});								
+		driver.withFrame('message_ifr', function() {
+			driver.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+			driver.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+			driver.sendKeys('#tinymce','this is my first topic in this category');
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 		});
 		driver.waitForSelector('#post_submit',function success() {												
 			driver.test.assertExists('#post_submit');
 			driver.click('#post_submit');
+<<<<<<< HEAD
 			driver.then(function(){
 				driver.waitForSelector('a#sub_post_reply',function success(){ 
 					href = driver.evaluate(function() {
@@ -1775,6 +1894,21 @@ var StartTopic = function(driver,callback){
 					},function fail(){
 						driver.echo('Unable to Retrieve URL','ERROR');
 				});
+=======
+			driver.waitForSelector('a#sub_post_reply',function success(){ 
+				href = driver.evaluate(function() {
+						var ahref;				  
+						var str= window.location.href;
+						var n = str.indexOf('.com');
+						ahref=str.substring(n+('.com').length);
+						n =ahref.indexOf('#');
+						ahref=ahref.substring(0,n);	
+						return ahref;
+				});
+				return callback(null,href);
+				},function fail(){
+					driver.echo('Unable to Retrieve URL','ERROR');
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 			});
 			},function fail(){
 				driver.echo('Unable to submit form','ERROR');
@@ -1816,6 +1950,7 @@ var checkbox_checked= function(href,callback){
 	});
 }
 
+<<<<<<< HEAD
 //Method to Delete User
 var DeleteUser=function(driver,data,callback){
 	driver.then(function(){
@@ -1841,4 +1976,6 @@ var DeleteUser=function(driver,data,callback){
 	});
 }
 
+=======
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 

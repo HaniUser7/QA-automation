@@ -9,7 +9,11 @@ var verifyModeratorPermission = require('./verifyModeratorPermission.js');
 
 var mod_permission = module.exports = {};
 
+<<<<<<< HEAD
 mod_permission.mod_permissionfeatureTest=function(casper,x){
+=======
+mod_permission.mod_permissionfeatureTest=function(casper,test,x){
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 
 		casper.on('remote.alert', function(message) {
 		casper.echo('alert message: ' + message, 'INFO');
@@ -18,13 +22,18 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 		casper.start();
 
 
+<<<<<<< HEAD
 		casper.then(function() {
+=======
+		/*casper.then(function() {
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 			editProfile.removeShortAnswerFields(casper, casper.test, function(err) {
 			if(!err)
 				casper.echo('User Field Removed Successfully......','INFO');
 			});
 		});
 
+<<<<<<< HEAD
 		//Login To Backend URL and disable Approve New Posts
 		casper.thenOpen(config.backEndUrl,function() {
 			casper.echo('Login To Backend URL and disable Approve New Posts and Disable Approve new post', 'INFO');
@@ -58,6 +67,8 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 				casper.echo(err);
 			});
 		});
+=======
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 
 		casper.thenOpen(config.url, function(){
 			this.echo('**************************Registering User***************************', 'INFO');
@@ -317,21 +328,35 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					
 		});	
 
+<<<<<<< HEAD
 		
 		
 		//Logout from front end
 		casper.thenOpen(config.url,function() {
 			forumRegister.redirectToLogout(casper, test, function() {});
 		});
+=======
+		//Logout from front end
+		casper.thenOpen(config.url,function() {
+			forumRegister.redirectToLogout(casper, test, function() {});
+		});*/
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 	
 		//Verify Moderator Permission
 		casper.then(function() {
 			casper.echo('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 			casper.echo('Verifying Moderator Permission', 'INFO');
+<<<<<<< HEAD
 			verifyModeratorPermission.verifyModeratorPermissionfeatureTest(casper, x, function(){
 				casper.echo('Verifying Moderator Permission Feature', 'INFO');
 			});
 		});
+=======
+			verifyModeratorPermission.verifyModeratorPermissionfeatureTest(casper,test, x, function(){
+				casper.echo('Verifying Moderator Permission Feature', 'INFO');
+			});
+		});	
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 
 };
 
@@ -346,6 +371,7 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 }; 
 //Method  to Open Category Page.
 var ClickOnCategoryLinks=function(driver, callback){
+<<<<<<< HEAD
 	driver.then(function(){
 		driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 		driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
@@ -356,6 +382,14 @@ var ClickOnCategoryLinks=function(driver, callback){
 	driver.then(function() {
 		return callback(null);
 	});
+=======
+	driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+	driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+	driver.test.assertExists('div#ddContent a[href="/tool/members/mb/forums"]');
+	driver.click('div#ddContent a[href="/tool/members/mb/forums"]');
+	driver.echo('---------------------------------------------------------------------------','INFO');
+	return callback(null);
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 };
 
 //Method  to Retrieve First Category ID.
@@ -393,6 +427,7 @@ var AddNewModerator=function(driver,data,category_no,callback){
 }
 //Method to Remove last Moderator from first category  .
 var RemoveModerator=function(driver,callback){
+<<<<<<< HEAD
 	driver.then(function(){
 		ClickOnCategoryLinks(driver,function(err){
 			if(!err){
@@ -429,6 +464,40 @@ var RemoveModerator=function(driver,callback){
 	driver.then(function() {
 		return callback(null);
 	});
+=======
+	ClickOnCategoryLinks(driver,function(err){
+		if(!err){
+			driver.echo('Category Page Found..........................','INFO');						
+			driver.waitForSelector('div#tab_wrapper',function sucess(){
+				driver.test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
+				driver.mouse.move('div#sortable ul.ui-sortable li:nth-child(1) div.select');
+				var firstLiId = casper.evaluate(function() {
+							document.querySelector("a.moderateAction").style.display = 'block';
+							var id = document.querySelector('div#sortable ul.ui-sortable li:nth-child(1)').getAttribute('id');
+							return id;
+				});
+				driver.test.assertExists('a.moderateAction[data-forumid="'+firstLiId+'"]');
+				driver.click('a.moderateAction[data-forumid="'+firstLiId+'"]');
+				driver.test.assertExists('div#forumModerator'+firstLiId + ' a:last-child');
+				driver.click('div#forumModerator'+firstLiId + ' a:last-child');
+				driver.waitForSelector('a#remove_moderator',function success(){
+					driver.test.assertExists('a#remove_moderator');
+					driver.click('a#remove_moderator');
+					driver.then(function(){
+						 if(this.exists('a#remove_mod_all')){
+						 	driver.click('a#remove_mod_all');
+						 }														
+					});
+					},function fail(){
+						driver.echo('Form Doesnt open to Remove moderator from this Category','ERROR');
+				});
+				},function fail(){
+					driver.echo('Problem in Opening Categories','ERROR');
+			});
+		}
+	});
+	return callback(null);
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 }
 //Method to return tittle of user ac to user id passed to it. 
 var user_title= function(driver,user_id,callback){
@@ -446,9 +515,14 @@ var user_title= function(driver,user_id,callback){
 				driver.echo('Problem in opening frontend ','ERROR');
 		});
 	});
+<<<<<<< HEAD
 	driver.then(function() {
 		return callback(null,title);
 	});
 }
 
+=======
+	return callback(null,title);
+}
+>>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
 		
