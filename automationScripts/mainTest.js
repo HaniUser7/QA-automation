@@ -372,6 +372,16 @@ case "deletetopic":
 		});
 	});
         break;
+	case "mod_permission" :
+		 casper.test.begin('Verify moderator permission functionlity ', function(test) {
+		 var mod_permission = require("./testsuite/moderatorPermission.js");
+		 var x = require('casper').selectXPath;
+		 mod_permission.mod_permissionfeatureTest(casper, x);
+		 casper.run(function(){
+			test.done();
+		});
+	});
+        break;
 	
     default:
 	casper.echo("Please select any feature from options given below. For ex: casperjs main.js <option>.\n"); 
