@@ -1,9 +1,8 @@
 {
 	
-<<<<<<< HEAD
-	"user1" : {
+    "user1" : {
     		"uname" : "xyz",
-		"uemail" : "xyz@gmail.cm",
+		"uemail" : "xyz@gmail.com",
 		"upass" : "xyz",
 		"fullName" : "xyz",
 		"imID" : "18",
@@ -15,7 +14,7 @@
 	
 	 "user2" : {
 	    	"uname" : "abc",
-		"uemail" : "abc@gmail.cm",
+		"uemail" : "abc@gmail.com",
 		"upass" : "abc",
 		"fullName" : "abc",
 		"imID" : "19",
@@ -31,40 +30,13 @@
 	},
 	
 	"ReplyTopic" : {
-			"content" : "First post of this topic"
+		"content" : "First post of this topic"
 	},
 
 	"AddPoll" : {
-			"pollQues" : "Are U Happy",
-			"publicCheckbox" : true,
-			"option1" : "YES",
-			"option2" : "NO"
+		"pollQues" : "Are U Happy",
+		"publicCheckbox" : true,
+		"option1" : "YES",
+		"option2" : "NO"
 	}	
-
-=======
-    "user1" : {
-    	"uname" : "xyz",
-        "uemail" : "xyz@gmail.cm",
-        "upass" : "xyz",
-        "fullName" : "xyz",
-        "imID" : "18",
-        "birthday" : "04/12/1991",
-        "usignature" : "This is my signature",
-        "namePrivate" : true,
-        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
-    },
-	
- "user2" : {
-    	"uname" : "abc",
-        "uemail" : "abc@gmail.cm",
-        "upass" : "abc",
-        "fullName" : "abc",
-        "imID" : "19",
-        "birthday" : "06/12/1991",
-        "usignature" : "This is my signature",
-        "namePrivate" : true,
-        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
-    }
->>>>>>> f1d4d24c0f595dafede98b0088be17bcd846af5a
-	
 }
