@@ -463,7 +463,9 @@ forumRegister.loginToForumBackEnd = function(driver, test, callback) {
 		this.capture(screenShotsDir + 'login_submit.png');
 	});
 	}
-	return callback(null);
+	driver.then(function(){
+		return callback(null);
+	});
 };
 
 
@@ -534,10 +536,10 @@ forumRegister.registerToApp = function(data, driver, callback) {
 		driver.test.assertDoesntExist('form[name="PostTopic"] input[name="rules_checkbox"]');
 	}
 	
-	var actionValue = driver.evaluate(function() {   
+	/*var actionValue = driver.evaluate(function() {   
 		document.querySelector('form[name="PostTopic"]').setAttribute('action', '/register/create_account?apikey=4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q&type=json');
 		return document.querySelector('form[name="PostTopic"]').getAttribute('action');     
-	});
+	});*/
 	
 	driver.test.assertExists('form[name="PostTopic"] button');
 	driver.click('form[name="PostTopic"] button');

@@ -1,3 +1,4 @@
+'use strict';
 var utils = require('./utils.js');
 var json = require('../testdata/moderator.json');
 var forumLogin = require('./forum_login.js');
@@ -8,6 +9,7 @@ var AddPoll=0;
 
 verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, x, callback) {
 
+		//Open Forum Frontend URL And Register User.
 		casper.thenOpen(config.url, function(){
 			this.echo('**************************Registering User***************************', 'INFO');
 			this.echo('title of the page : '+this.getTitle());
@@ -32,13 +34,16 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 			});
 		});
 		
+		//Open Forum frontend URL And logout from frontend.
 		casper.thenOpen(config.url,function() {
 			forumRegister.redirectToLogout(casper, casper.test, function() {});
 		});
 
+
+		//Open forum backend url and enable start topic and view category.
 		casper.thenOpen(config.backEndUrl,function() {
-			casper.echo('Login To Backend URL and enable start topic checkbox and view category checkbox', 'INFO');
-			casper.echo('title of the page : ' +this.getTitle(), 'INFO');
+			this.echo('Login To Backend URL and enable start topic checkbox and view category checkbox', 'INFO');
+			this.echo('title of the page : ' +this.getTitle(), 'INFO');
 			forumRegister.loginToForumBackEnd(casper, casper.test, function(err) {
 				if(!err) {
 					casper.echo('User has been successfuly login to backend', 'INFO');
@@ -47,27 +52,23 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						if (!err) {
 							casper.echo('Successfully navigated to Edit User group Permission page', 'INFO');
 							//click on checkbox
-							casper.waitForSelector('#post_threads', function success() {
-								utils.enableorDisableCheckbox('post_threads', true, casper, function(err) {
+							casper.waitForSelector('form#frmFullUsergroupPerms', function success() {
+								casper.fill('form#frmFullUsergroupPerms',{
+									'post_threads': true,
+									'view_forum': true,
+									'delete_threads':true,
+									'other_post_replies':true,
+									'post_replies':true
+								}, false);
+								//click on save button
+								utils.clickOnElement(casper, '.btn-blue', function(err) {
 									if(!err) {
-										casper.echo("Starts Topic checkbox has been enabled", 'INFO');
-										utils.enableorDisableCheckbox('view_forum', true, casper, function(err) {
-											if(!err){
-												casper.echo("View Category checkbox has been enabled", 'INFO');
-												//click on save button
-												utils.clickOnElement(casper, '.btn-blue', function(err) {
-													if(!err) {
-														casper.echo('Saving Changes', 'INFO');
-														casper.waitForSelector('p[align="center"] font.heading', function success() {
-															casper.echo('Permission Setting Changed', 'INFO');;
-														}, function fail(err){
-															casper.echo(err);						
-														});
-													}
-												});
-											}
+										casper.echo('Saving Changes', 'INFO');
+										casper.waitForSelector('p[align="center"] font.heading', function success() {
+											casper.echo('Permission Setting Changed', 'INFO');;
+											}, function fail(err){
+												casper.echo('Permission Setting not changed','ERROR');						
 										});
-										
 									}
 								});
 								}, function fail(err) {
@@ -78,8 +79,10 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 				}
 			});
 		});
+
 		//Changing the General Category Permission to view category.
 		casper.thenOpen(config.backEndUrl,function() {
+			this.echo('title of the page : ' +this.getTitle(), 'INFO');
 			casper.waitForSelector('div#my_account_forum_menu', function success() {
 				generalPermission.viewChangePermission(casper,casper.test, function(err,grpId) {
 					if(!err){	
@@ -96,12 +99,11 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 										casper.waitForSelector('form[name="frmFormPermissionsDialog"]', function success() {
 
 											utils.enableorDisableCheckbox('view_forum_'+grpId, true, casper, function() {
-												casper.capture('12333.png');
 												casper.echo('checkbox is checked for view category for general category', 'INFO');
-												casper.click('div.select');
-
 											});
-											casper.then(function() {});
+											casper.then(function(){
+												casper.click('div[aria-describedby="change_perm_dialog"]  button[title="Close"] span.ui-button-text');
+											});
 											}, function fail() {
 												casper.echo('change permission dialogue not opened for general category', 'ERROR');
 										});
@@ -117,14 +119,16 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 					}				
 				});
 				},function fail(){
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});
 		});
 
-		
+		//Enable the edit post moderator permission from backend of general category and verify from frontend after login as moderator post is editable for the general category.
 		casper.thenOpen(config.backEndUrl,function() {
-			casper.echo('*******************************Case-8********************************', 'INFO');
-			casper.echo('******************************Enable Edit Post********************************', 'INFO');
-			casper.echo('Verify by edit post from category(cat1)', 'INFO'); casper.capture('122.png');
+			this.echo('*******************************Case-8********************************', 'INFO');
+			this.echo('******************************Enable Edit Post********************************', 'INFO');
+			this.echo('Verify by edit post from category(cat1)', 'INFO');
+			this.echo('title of the page : ' +this.getTitle(), 'INFO');
 			 ModeratorPermission(casper,'p_edit_post',true,1,function(err,href){
 				if(!err){
 					casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -142,19 +146,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								});
 							});
 							},function fail(){
-								casper.echo('Unable to Click on Dropdown','ERROR');
+								casper.echo('Dropdown menu doesnot appears','ERROR');
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');	
+							casper.echo('Topic that we have started previously does not exist','ERROR');	
 					}); 
 				}
 			});
 		});
 
+			//Enable the edit post moderator permission from backend of general category and verify from frontend after login as moderator post is not editable for the other category.
 		casper.thenOpen(config.backEndUrl,function() {
-			casper.echo('*******************************Case-9********************************', 'INFO');
-			casper.echo('*******************************Enable Edit Post********************************', 'INFO');
-			casper.echo('Verify by edit post from other category', 'INFO');
+			this.echo('*******************************Case-9********************************', 'INFO');
+			this.echo('*******************************Enable Edit Post********************************', 'INFO');
+			this.echo('Verify by edit post from other category', 'INFO');
+			this.echo('title of the page : ' +this.getTitle(), 'INFO');
 			 ModeratorPermission(casper,'p_edit_post',true,2,function(err,href){
 				if(!err){
 					casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -171,19 +177,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 
 							});
 							},function fail(){
-								casper.echo('Unable to Click on Dropdown','ERROR');
+								casper.echo('Dropdown menu doesnot appears','ERROR');
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');	
+							casper.echo('Topic that we have started previously does not exist','ERROR');		
 					}); 
 				}
 			});
 		});
 
+	//Disable the edit post moderator permission from backend of general category  and verify from frontend after login as moderator post is not editable for the general category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-10********************************', 'INFO');
-		casper.echo('*******************************Disable Edit Post********************************', 'INFO');
-		casper.echo('Verify by edit post from category(cat1)', 'INFO');
+		this.echo('*******************************Case-10********************************', 'INFO');
+		this.echo('*******************************Disable Edit Post********************************', 'INFO');
+		this.echo('Verify by edit post from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_edit_post',false,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -199,18 +207,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							}
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');
+							casper.echo('Dropdown menu doesnot appears','ERROR');
 					});
 					},function fail(){
-						casper.echo('Unable to Click on Dropdown','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');		
 				}); 
 			}
 		});
 	});
+
+	//Disable the edit post moderator permission from backend of general category  and verify from frontend after login as moderator post is not editable for the other category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-11********************************', 'INFO');
-		casper.echo('*******************************Disable Edit Post********************************', 'INFO');
-		casper.echo('Verify by edit post from other category', 'INFO');
+		this.echo('*******************************Case-11********************************', 'INFO');
+		this.echo('*******************************Disable Edit Post********************************', 'INFO');
+		this.echo('Verify by edit post from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_edit_post',false,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -226,19 +237,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							}
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');
+							casper.echo('Dropdown menu doesnot appears','ERROR');
 					});
 					},function fail(){
-						casper.echo('Unable to Click on Dropdown','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 	
+	//Enable the delete post moderator permission from backend of general category  and verify from frontend after login as moderator post can be deleted of general category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-12********************************', 'INFO');
-		casper.echo('*******************************Enable Delete Post********************************', 'INFO');
+		this.echo('*******************************Case-12********************************', 'INFO');
+		this.echo('*******************************Enable Delete Post********************************', 'INFO');
 		casper.echo('Verify by delete post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_delete_post',true,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -249,10 +262,8 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.click('a[id^="delete_first_post"]');
 						casper.echo('Message:Post is Deleted Successfully','INFO');
 						casper.wait(7000,function(){
-								casper.capture('111118.png');
 								forumLogin.logoutFromApp(casper, function(){
 										casper.waitForSelector('a#td_tab_login',function success(){
-											casper.capture('wxyz.png');
 											casper.echo('Successfully logout from application', 'INFO');
 											casper.echo('*******************************Case-12********************************', 'INFO');
 											casper.echo('*******************************Successfully Verified********************************', 'INFO');
@@ -262,19 +273,22 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								});
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');
+							casper.echo('Dropdown menu doesnot appears','ERROR');
 					});
 					},function fail(){
-						casper.echo('Unable to Click on Dropdown','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+
+	//Enable the delete post moderator permission from backend of general category  and verify from frontend after login as moderator post cannot deleted of other category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-13********************************', 'INFO');
-		casper.echo('*******************************Enable Delete Post********************************', 'INFO');
-		casper.echo('Verify by delete post/topic from other category', 'INFO');
+		this.echo('*******************************Case-13********************************', 'INFO');
+		this.echo('*******************************Enable Delete Post********************************', 'INFO');
+		this.echo('Verify by delete post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_delete_post',true,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -290,28 +304,26 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							}
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');
+							casper.echo('Dropdown menu doesnot appears','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
-	casper.thenOpen(config.url,function() {
-		this.capture('109.png');
-	});
-
+	
+	//Enable the delete post moderator permission from backend of general category  and verify from frontend after login as moderator post can be deleted from floating menu of general category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-14********************************', 'INFO');
-		casper.echo('*******************************Enable Delete Post********************************', 'INFO');
-		casper.echo('verify with delete post from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('*******************************Case-14********************************', 'INFO');
+		this.echo('*******************************Enable Delete Post********************************', 'INFO');
+		this.echo('verify with delete post from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_delete_post',true,1,function(err,href){
 			if(!err){
-				checkbox_checked(href,function(){
+				CheckboxChecked(href,function(){
 					if(!err){
 						casper.waitForSelector('div#topics-menu.hover-menu.open', function success() {
-							casper.capture('999.png');
 							casper.test.assertExists('i.glyphicon.glyphicon-trash');
 							casper.click('i.glyphicon.glyphicon-trash');
 							casper.echo('Message:Post is Deleted Successfully','INFO');
@@ -327,7 +339,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								});
 							});
 							},function fail(){
-								casper.echo('Check doesnot check Successfully','ERROR');
+								casper.echo('Floating menu doesnot appears in 5 second','ERROR');
 						});
 					}
 
@@ -336,10 +348,12 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		});
 	});
 	
+	//Disable the delete post moderator permission from backend of general category  and verify from frontend after login as moderator post cannot deleted of general category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-15********************************', 'INFO');
-		casper.echo('*******************************Disable Delete Post********************************', 'INFO');
-		casper.echo('Verify by delete post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-15********************************', 'INFO');
+		this.echo('*******************************Disable Delete Post********************************', 'INFO');
+		this.echo('Verify by delete post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_delete_post',false,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -358,19 +372,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');
+							casper.echo('Dropdown menu doesnot appears','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');
 				}); 
 			}
 		});
 	});
 
+	//Disable the delete post moderator permission from backend of general category  and verify from frontend after login as moderator post cannot deleted of other category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-16********************************', 'INFO');
-		casper.echo('*******************************Disable Delete Post********************************', 'INFO');
-		casper.echo('Verify by delete post/topic from other category', 'INFO');
+		this.echo('*******************************Case-16********************************', 'INFO');
+		this.echo('*******************************Disable Delete Post********************************', 'INFO');
+		this.echo('Verify by delete post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_delete_post',false,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -386,19 +402,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							}
 						});
 						},function fail(){
-							casper.echo('Unable to Click on Dropdown','ERROR');
+							casper.echo('Dropdown menu doesnot appears','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the move post moderator permission from backend of general category  and verify from frontend after login as moderator post of general category can be moved to other category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-17********************************', 'INFO');
-		casper.echo('*******************************Enable Move Topic/Post*****************', 'INFO');
-		casper.echo('Verify by move post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-17********************************', 'INFO');
+		this.echo('*******************************Enable Move Topic/Post*****************', 'INFO');
+		this.echo('Verify by move post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_move_post',true,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -433,22 +451,25 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								});
 							});
 							},function fail(){
-								casper.echo('Unable to open form to move topic','ERROR');
+								casper.echo('form doesnot open form to move topic','ERROR');
 						});
 						},function fail(){
-							casper.echo('Shield Icon Doesnt Exists','ERROR');
+							casper.echo('Shield Icon Doesnt appears in 5 seconds','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');
 				}); 
 			}
 		});
 	});
 
+
+	//Enable the move post moderator permission from backend of general category  and verify from frontend after login as moderator post of other category cannot be moved to other category as shield icon is not  visible.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-18********************************', 'INFO');
-		casper.echo('*******************************Enable Move Post********************************', 'INFO');
-		casper.echo('Verify by move post/topic from other category', 'INFO');
+		this.echo('*******************************Case-18********************************', 'INFO');
+		this.echo('*******************************Enable Move Post********************************', 'INFO');
+		this.echo('Verify by move post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_move_post',true,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -463,25 +484,26 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							}
 						});
 						},function fail(){
-							this.echo('Unable to open post of this topic','ERROR');
+							casper.echo('Unable to open post of this topic','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');
 				}); 
 			}
 		});
 	});
 
+	//Enable the move post moderator permission from backend of general category  and verify from frontend after login as moderator post of general category can be moved to other category using floating menu move icon.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-19****************************************************************', 'INFO');
-		casper.echo('*******************************Enable Move Post********************************', 'INFO');
-		casper.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('*******************************Case-19****************************************************************', 'INFO');
+		this.echo('*******************************Enable Move Post********************************', 'INFO');
+		this.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_move_post',true,1,function(err,href){
 			if(!err){
-				checkbox_checked(href,function(){
+				CheckboxChecked(href,function(){
 					if(!err){
 						casper.waitForSelector('div#topics-menu.hover-menu.open', function success() {
-							casper.capture('999.png');
 							casper.test.assertExists('i.glyphicon.glyphicon-right-arrow');
 							casper.click('i.glyphicon.glyphicon-right-arrow');
 							casper.waitForSelector('form[name=admindd]',function success(){											
@@ -509,22 +531,24 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 										});
 									});
 								});
+								},function fail(){
+									casper.echo('Unable to open form to Move post');
+							});
 							},function fail(){
-								casper.echo('Unable to open form to Move post');
+								casper.echo('Floating menu doesnot appears in 5 seconds','ERROR');
 						});
-						},function fail(){
-							casper.echo('Check doesnot check Successfully','ERROR');
-					});
-				}
-			});
-		}	
+					}
+				});
+			}	
 		});
 	});
 
+	//Enable the move post moderator permission from backend of general category and verify from frontend after login as moderator post of general category is not movable to the other category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-20******************************************', 'INFO');
-		casper.echo('*******************************Disable Move Post********************************', 'INFO');
-		casper.echo('Verify by move post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-20******************************************', 'INFO');
+		this.echo('*******************************Disable Move Post********************************', 'INFO');
+		this.echo('Verify by move post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_move_post',false,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -547,16 +571,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon is not Visible','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});	
 
+	//Disable move post moderator permission from backend of general category and verify from frontend after login as moderator post of other general category is not movable to the other category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-21******************************************', 'INFO');
-		casper.echo('*******************************Disable Move Post********************************', 'INFO');
-		casper.echo('Verify by move post/topic from other category', 'INFO');
+		this.echo('*******************************Case-21******************************************', 'INFO');
+		this.echo('*******************************Disable Move Post********************************', 'INFO');
+		this.echo('Verify by move post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_move_post',false,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -579,19 +605,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Post of this topic Doesnt Open Successfully','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
-
+	
+	//Disable the move post moderator permission from backend of general category and verify from frontend after login as moderator post of general category cannot be moved to other category as floating menu is not visible.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-22******************************************', 'INFO');
-		casper.echo('*******************************Disable Move Post********************************', 'INFO');
-		casper.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('*******************************Case-22******************************************', 'INFO');
+		this.echo('*******************************Disable Move Post********************************', 'INFO');
+		this.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_move_post',false,1,function(err,href){
 			if(!err){
-				checkbox_checked(href,function(){
+				CheckboxChecked(href,function(){
 					if(!err){
 						casper.waitForSelector('div#topics-menu.hover-menu.open', function success() {
 							casper.test.assertDoesntExist('a#move');
@@ -600,10 +628,10 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								if(!err){
 									casper.echo('*******************************Case-22********************************', 'INFO');
 									casper.echo('*******************************Successfully Verified******************', 'INFO');
-									}									
+								}									
 							});
 							},function fail(){
-								casper.echo('Checkbox doesnot check Successfully','ERROR');
+								casper.echo('Floating menu doesnot appears in 5 seconds','ERROR');
 						});
 					}
 				});
@@ -611,10 +639,13 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		});
 	});
 
+
+	//Enable the lock topic moderator permission from backend of general category and verify from frontend after login as moderator topic of general category is locked.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-23********************************', 'INFO');
-		casper.echo('*******************************Enable Lock Topic/Post*****************', 'INFO');
-		casper.echo('Verify by lock post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-23********************************', 'INFO');
+		this.echo('*******************************Enable Lock Topic/Post*****************', 'INFO');
+		this.echo('Verify by lock post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_lock_threads',true,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -638,16 +669,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the lock topic moderator permission from backend of general category and verify from frontend after login as moderator topic of other category cannot be locked as sheild icon is not visible.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-24********************************', 'INFO');
-		casper.echo('*******************************Enable Lock Topic/Post*****************', 'INFO');
-		casper.echo('Verify by lock post/topic from other category', 'INFO');
+		this.echo('*******************************Case-24********************************', 'INFO');
+		this.echo('*******************************Enable Lock Topic/Post*****************', 'INFO');
+		this.echo('Verify by lock post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_lock_threads',true,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -665,16 +698,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							this.echo('Unable to open post of this topic','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Disable the lock topic moderator permission from backend of general category and verify from frontend after login as moderator topic of general category can not be locked as there is no option for lock topic.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-25********************************', 'INFO');
-		casper.echo('*******************************Disable Lock Topic/Post*****************', 'INFO');
-		casper.echo('Verify by lock post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-25********************************', 'INFO');
+		this.echo('*******************************Disable Lock Topic/Post*****************', 'INFO');
+		this.echo('Verify by lock post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_lock_threads',false,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -693,16 +728,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Disable the lock topic moderator permission from backend of general category and verify from frontend after login as moderator topic of other category can not be locked as shield icon is not visible.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-26********************************', 'INFO');
-		casper.echo('*******************************Disable Lock Topic/Post*****************', 'INFO');
-		casper.echo('Verify by lock post/topic from other category', 'INFO');
+		this.echo('*******************************Case-26********************************', 'INFO');
+		this.echo('*******************************Disable Lock Topic/Post*****************', 'INFO');
+		this.echo('Verify by lock post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_lock_threads',true,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -720,16 +757,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							this.echo('Unable to open post of this topic','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the pin topic moderator permission from backend of general category and verify from frontend after login as moderator topic of general category can be pinned.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-27********************************', 'INFO');
-		casper.echo('*******************************Enable Pin Topic/Post*****************', 'INFO');
-		casper.echo('Verify by pin post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-27********************************', 'INFO');
+		this.echo('*******************************Enable Pin Topic/Post*****************', 'INFO');
+		this.echo('Verify by pin post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_pin_threads',true,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -753,16 +792,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the pin topic moderator permission from backend of general category and verify from frontend after login as moderator topic of other category can be pinned as shield icon is not.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-28********************************', 'INFO');
-		casper.echo('*******************************Enable pin Topic/Post*****************', 'INFO');
-		casper.echo('Verify by pin post/topic from other category', 'INFO');
+		this.echo('*******************************Case-28********************************', 'INFO');
+		this.echo('*******************************Enable pin Topic/Post*****************', 'INFO');
+		this.echo('Verify by pin post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_pin_threads',true,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -780,19 +821,21 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							this.echo('Unable to open post of this topic','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the pin topic moderator permission from backend of general category and verify from frontend after login as moderator topic of general category can be pinned using the floating menu.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-29******************************************', 'INFO');
-		casper.echo('*******************************Enable pin topic********************************', 'INFO');
-		casper.echo('verify with pin post/topic from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('*******************************Case-29******************************************', 'INFO');
+		this.echo('*******************************Enable pin topic********************************', 'INFO');
+		this.echo('verify with pin post/topic from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_pin_threads',true,1,function(err,href){
 			if(!err){
-				checkbox_checked(href,function(){
+				CheckboxChecked(href,function(){
 					if(!err){
 						casper.waitForSelector('div#topics-menu.hover-menu.open', function success() {
 							casper.test.assertExists('i.icon.glyphicon-pushpin');
@@ -801,7 +844,6 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.click('a#pin');
 							casper.wait(5000,function(){
 								casper.click('i.icon.icon-menu');
-								casper.capture('11111.png');
 								casper.click('li#latest_topics_show');
 								casper.waitForSelector('a[href="'+href+'"]',function success(){
 									casper.click('a[href="'+href+'"]');
@@ -819,7 +861,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 											casper.echo('Shield Icon Doesnt Exists','ERROR');
 									});
 									},function fail(){
-										casper.echo('Href of topic doesnot found','ERROR');	
+										casper.echo('Topic that we have started previously does not exist','ERROR');	
 								}); 
 							});
 							
@@ -832,10 +874,12 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		});
 	});
 
+	//Disable the pin topic moderator permission from backend of general category and verify from frontend after login as moderator topic of general category cannot be pinned.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-30********************************', 'INFO');
-		casper.echo('*******************************Disable Pin Topic/Post*****************', 'INFO');
-		casper.echo('Verify by pin post/topic from category(cat1)', 'INFO');
+		this.echo('*******************************Case-30********************************', 'INFO');
+		this.echo('*******************************Disable Pin Topic/Post*****************', 'INFO');
+		this.echo('Verify by pin post/topic from category(cat1)', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_pin_threads',false,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -854,16 +898,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
-	
+
+	//Disable the pin topic moderator permission from backend of general category and verify from frontend after login as moderator topic of other category cannot be pinned as shield icon is not visible.	
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-31********************************', 'INFO');
-		casper.echo('*******************************Disable pin Topic/Post*****************', 'INFO');
-		casper.echo('Verify by pin post/topic from other category', 'INFO');
+		this.echo('*******************************Case-31********************************', 'INFO');
+		this.echo('*******************************Disable pin Topic/Post*****************', 'INFO');
+		this.echo('Verify by pin post/topic from other category', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_pin_threads',false,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -881,19 +927,22 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							this.echo('Unable to open post of this topic','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	
+	//Disable the pin topic moderator permission from backend of general category and verify from frontend after login as moderator topic of general category cannot be pinned as floating icon is not visible.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-32******************************************', 'INFO');
-		casper.echo('*******************************Disable pin topic********************************', 'INFO');
-		casper.echo('verify with pin post/topic from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('*******************************Case-32******************************************', 'INFO');
+		this.echo('*******************************Disable pin topic********************************', 'INFO');
+		this.echo('verify with pin post/topic from cat1 by select one/all post/topic by check box', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_pin_threads',false,1,function(err,href){
 			if(!err){
-				checkbox_checked(href,function(){
+				CheckboxChecked(href,function(){
 					if(!err){
 						casper.waitForSelector('div#topics-menu.hover-menu.open', function success() {
 							casper.test.assertDoesntExist('i.icon.glyphicon-pushpin','INFO');
@@ -914,10 +963,12 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 	});
 
 
+	//Enable the add poll topic moderator permission from backend of general category and verify from frontend after login as moderator poll can be added in topic in a topic of general category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-33********************************', 'INFO');
-		casper.echo('*******************************Enable Add poll Topic/Post*****************', 'INFO');
-		casper.echo('verify create a poll on a topic of cat1 from the Shield icon','INFO'); 
+		this.echo('*******************************Case-33********************************', 'INFO');
+		this.echo('*******************************Enable Add poll Topic/Post*****************', 'INFO');
+		this.echo('verify create a poll on a topic of cat1 from the Shield icon','INFO'); 
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_poll_add',true,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -933,7 +984,6 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.sendKeys('#poll_option_2 div input', json['AddPoll'].option2, {reset:true});
 							casper.click('#save_poll');
 							casper.waitForSelector('input[name="pollvotesave"]',function success(){
-								casper.capture('1a.png');
 								casper.echo('Message:Poll Added Successfully','INFO');
 								DeleteTopic(casper,href,function(err){
 									if(!err){
@@ -949,16 +999,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the add poll topic moderator permission from backend of general category and verify from frontend after login as moderator  poll can not be added in topic of other category .
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-34********************************', 'INFO');
-		casper.echo('*******************************Enable Add poll Topic/Post*****************', 'INFO');
-		casper.echo('verify create a poll on a topic of other category from the Shield icon', 'INFO');
+		this.echo('*******************************Case-34********************************', 'INFO');
+		this.echo('*******************************Enable Add poll Topic/Post*****************', 'INFO');
+		this.echo('verify create a poll on a topic of other category from the Shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_poll_add',true,2,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -976,16 +1028,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							this.echo('Unable to open post of this topic','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Disable the add poll topic moderator permission from backend of general category and verify from frontend after login as moderator  poll can not be added in topic of general category .
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-35********************************', 'INFO');
-		casper.echo('*******************************Disable Add poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by add poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('*******************************Case-35********************************', 'INFO');
+		this.echo('*******************************Disable Add poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by add poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		 ModeratorPermission(casper,'p_poll_add',false,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
@@ -1004,16 +1058,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the edit poll topic moderator permission from backend of general category and verify from frontend after login as moderator general category poll can be edited.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-36********************************', 'INFO');
-		casper.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by edit poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('*******************************Case-36********************************', 'INFO');
+		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by edit poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_edit',true,1,function(err,href){
 			if(!err){
@@ -1033,16 +1089,19 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	
+	//Enable the edit poll topic moderator permission from backend of general category and verify from frontend after login as moderator other category poll can not be edited as there is no poll dropdown.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-37********************************', 'INFO');
-		casper.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
+		this.echo('*******************************Case-37********************************', 'INFO');
+		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_edit',true,2,function(err,href){
 			if(!err){
@@ -1062,17 +1121,19 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 
 	});
 
+	//Disable the edit poll topic moderator permission from backend of general category and verify from frontend after login as moderator general category poll can not be edited as there is no poll option in poll dropdown.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-38********************************', 'INFO');
-		casper.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by edit poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('*******************************Case-38********************************', 'INFO');
+		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by edit poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_edit',false,1,function(err,href){
 			if(!err){
@@ -1092,16 +1153,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Disable the edit poll topic moderator permission from backend of general category and verify from frontend after login as moderator other category poll can not be edited as there is no poll dropdown.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-39********************************', 'INFO');
-		casper.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
+		this.echo('*******************************Case-39********************************', 'INFO');
+		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_edit',false,2,function(err,href){
 			if(!err){
@@ -1120,17 +1183,19 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
 
+	//Enable the Delete poll topic moderator permission from backend of general category and verify from frontend after login as moderator general category poll can be deleted.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-40********************************', 'INFO');
-		casper.echo('*******************************Enable Delete poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by Delete poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('*******************************Case-40********************************', 'INFO');
+		this.echo('*******************************Enable Delete poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by Delete poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_delete',true,1,function(err,href){
 			if(!err){
@@ -1139,7 +1204,6 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 					casper.waitForSelector('a span.caret',function sucess(){  
 						casper.click('a.dropdown-toggle.text-muted i.glyphicon.glyphicon-chevron-down'); 	
 						casper.test.assertExists('a[href^="/poll/polldelete"]');
-						casper.capture('19898.png');
 						casper.click('a[href^="/poll/polldelete"]');
 						casper.then(function(){
 							casper.echo('Message:poll is deleted','INFO');
@@ -1155,16 +1219,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Enable the Delete poll topic moderator permission from backend of general category and verify from frontend after login as moderator other category poll can not be deleted.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-41********************************', 'INFO');
-		casper.echo('*******************************Enable Delete poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
+		this.echo('*******************************Case-41********************************', 'INFO');
+		this.echo('*******************************Enable Delete poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by delete poll on a topic from other category from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_delete',true,2,function(err,href){
 			if(!err){
@@ -1183,7 +1249,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
@@ -1191,7 +1257,8 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 
 	//This is for reassigning a editing poll permission to a moderator  
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Changing Editing poll permission in order to show poll dropdown*****************', 'INFO');
+		this.echo('*******************************Changing Editing poll permission in order to show poll dropdown*****************', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		casper.then(function(){
 			change_permission(casper,'p_poll_edit',true,function(err){
 				if(!err){
@@ -1201,10 +1268,12 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		});
 	});
 
+	//Disable the Delete poll topic moderator permission from backend of general category and verify from frontend after login as moderator general category poll cannot be deleted as there is not delete option in poll dropdown.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-42********************************', 'INFO');
-		casper.echo('*******************************Disable Delete poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by Delete poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('*******************************Case-42********************************', 'INFO');
+		this.echo('*******************************Disable Delete poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by Delete poll on a topic from category(cat1) from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_delete',false,1,function(err,href){
 			if(!err){
@@ -1224,16 +1293,18 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//Disable the Delete poll topic moderator permission from backend of general category and verify from frontend after login as moderator other category poll cannot be deleted as there is no poll dropdown.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-43********************************', 'INFO');
-		casper.echo('*******************************Disable Delete poll Topic/Post*****************', 'INFO');
-		casper.echo('Verify by delete poll on a topic from other category from shield icon', 'INFO');
+		this.echo('*******************************Case-43********************************', 'INFO');
+		this.echo('*******************************Disable Delete poll Topic/Post*****************', 'INFO');
+		this.echo('Verify by delete poll on a topic from other category from shield icon', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		AddPoll=1;
 		 ModeratorPermission(casper,'p_poll_delete',false,2,function(err,href){
 			if(!err){
@@ -1252,29 +1323,30 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.echo('Shield Icon Doesnt Exists','ERROR');
 					});
 					},function fail(){
-						casper.echo('Href of topic doesnot found','ERROR');	
+						casper.echo('Topic that we have started previously does not exist','ERROR');	
 				}); 
 			}
 		});
 	});
 
+	//changing the approval new post permission to all post
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('Login To Backend URL and Enable Approve New Posts', 'INFO');
-		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		casper.echo('---------------------------------------------------------------------------');		
+		this.echo('Login To Backend URL and Enable Approve New Posts', 'INFO');
+		this.echo('Title of the page :' +this.getTitle(), 'INFO');
+		this.echo('---------------------------------------------------------------------------');		
 		//setting page -> security page
 		casper.waitForSelector('a[data-tooltip-elm="ddSettings"]', function success() {
 			casper.test.assertExists('a[data-tooltip-elm="ddSettings"]');
-			casper.click('a[data-tooltip-elm="ddSettings"]');
+			this.click('a[data-tooltip-elm="ddSettings"]');
 			casper.waitForSelector('a[href="/tool/members/mb/settings?tab=Security"]', function success() {
 				casper.test.assertExists('a[href="/tool/members/mb/settings?tab=Security"]');
-				casper.click('a[href="/tool/members/mb/settings?tab=Security"]');
+				this.click('a[href="/tool/members/mb/settings?tab=Security"]');
 				casper.waitForSelector('#post_approval', function success() {
 					casper.test.assertExists('#post_approval');
-					casper.click('#post_approval');
-					casper.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
+					this.click('#post_approval');
+					this.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
 					casper.test.assertExists('button[type="submit"]');
-					casper.click('button[type="submit"]');
+					this.click('button[type="submit"]');
 					casper.then(function(){});
 					}, function fail() {
 						casper.echo(err);
@@ -1288,10 +1360,50 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 
 	});
 
+	//Open forum backend url and enable post approval for registered user.
+		casper.thenOpen(config.backEndUrl,function() {
+			this.echo('Login To Backend URL and enable start topic checkbox and view category checkbox', 'INFO');
+			this.echo('title of the page : ' +this.getTitle(), 'INFO');
+			forumRegister.loginToForumBackEnd(casper, casper.test, function(err) {
+				if(!err) {
+					casper.echo('User has been successfuly login to backend', 'INFO');
+					//go to user permission
+					utils.gotoEditUserGroupPermissionpage(x, "Registered Users", casper, function(err) {
+						if (!err) {
+							casper.echo('Successfully navigated to Edit User group Permission page', 'INFO');
+							//click on checkbox
+							casper.waitForSelector('#post_threads', function success() {
+								utils.enableorDisableCheckbox('post_approval', true, casper, function(err) {
+									if(!err) {
+										casper.echo("Post approval checkbox has been enabled", 'INFO');
+										//click on save button
+										utils.clickOnElement(casper, '.btn-blue', function(err) {
+											if(!err) {
+												casper.echo('Saving Changes', 'INFO');
+												casper.waitForSelector('p[align="center"] font.heading', function success() {
+													casper.echo('Permission Setting Changed', 'INFO');;
+												}, function fail(err){
+													casper.echo('Permission Setting not changed','ERROR');						
+												});
+											}
+										});
+									}
+								});
+								}, function fail(err) {
+									casper.echo(err);
+							});
+						}
+					});
+				}
+			});
+		});
+
+	//Enable approve pending post permission from backend of general category and verify from frontend after login as moderator by approving pending post of general category.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-44********************************', 'INFO');
-		casper.echo('*******************************Enable Pending Post*****************', 'INFO');
-		casper.echo('verify by approve pending posts of cat1', 'INFO');
+		this.echo('*******************************Case-44********************************', 'INFO');
+		this.echo('*******************************Enable Pending Post*****************', 'INFO');
+		this.echo('verify by approve pending posts of cat1', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		casper.then(function(){
 			change_permission(casper,'p_approve_post',true,function(err){
 				if(!err){
@@ -1307,10 +1419,11 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								var msg = casper.evaluate(function(a) {
 									var TotalPost=document.querySelectorAll('div#feed-main a[href^="/?forum="]');
 									var CategoryPost=document.querySelectorAll('div#feed-main a[href="'+ a +'"]');
-									if(TotalPost.length==CategoryPost.length)
-									return 'All Post for Approval are from General Category';
-									else
-									return 'All Post for Approval are not from this Category';
+									if(TotalPost.length==CategoryPost.length){
+										return 'All Post for Approval are from General Category';
+									}else{
+										return 'All Post for Approval are not from this Category';
+									}
 								},forum);
 								casper.echo('Message:'+msg,'INFO');
 								casper.click('i.glyphicon.glyphicon-ok');
@@ -1339,22 +1452,22 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 	});
 
 
+	//Enable approve pending post permission from backend of general category and verify from frontend after login as moderator by message all pending post are from other category .
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-45********************************', 'INFO');
-		casper.echo('*******************************Enable Pending Post*****************', 'INFO');
-		casper.echo('verify by approve pending posts of other cat1', 'INFO');
+		this.echo('*******************************Case-45********************************', 'INFO');
+		this.echo('*******************************Enable Pending Post*****************', 'INFO');
+		this.echo('verify by approve pending posts of other cat1', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		casper.then(function(){
 			change_permission(casper,'p_approve_post',true,function(err){
 				if(!err){
 					ComposePost(casper,1,function(err,href){
 						if(!err){
-							casper.capture('1asd.png');
 							forumLogin.logoutFromApp(casper, function(){
 								casper.waitForSelector('a#td_tab_login',function success(){
 									casper.echo('Successfully logout from application', 'INFO');
 									ComposePost(casper,2,function(err,href){
 										if(!err){
-											casper.capture('2asd.png');
 											var selector='ul li.col-xs-12:nth-child(2) span.columns-wrapper span.col-xs-7 a';
 											var forum = casper.evaluate(function(a) {
 													var forum=document.querySelector(a).getAttribute('href');
@@ -1365,10 +1478,11 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 												var msg = casper.evaluate(function(a) {
 									
 													var CategoryPost=document.querySelectorAll('div#feed-main a[href="'+ a +'"]');
-													if(CategoryPost.length==0)
-													return 'There are no pending post available from this category';
-													else
-													return 'Some post are pending for approval for this category';
+													if(CategoryPost.length==0){
+														return 'There are no pending post available from this category';
+													}else{
+														return 'Some post are pending for approval for this category';
+													}
 												},forum);
 												casper.echo('Message:'+msg,'INFO');
 												casper.then(function(){
@@ -1400,11 +1514,13 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		
 		
 	});
-
+	
+	//Disable approve pending post permission from backend of general category and verify from frontend after login as moderator approvel queue is not available.
 	casper.thenOpen(config.backEndUrl,function() {
-		casper.echo('*******************************Case-46********************************', 'INFO');
-		casper.echo('*******************************Disable Pending Post*****************', 'INFO');
-		casper.echo('verify by approve pending posts of cat1', 'INFO');
+		this.echo('*******************************Case-46********************************', 'INFO');
+		this.echo('*******************************Disable Pending Post*****************', 'INFO');
+		this.echo('verify by approve pending posts of cat1', 'INFO');
+		this.echo('title of the page : ' +this.getTitle(), 'INFO');
 		change_permission(casper,'p_approve_post',false,function(err){
 			if(!err){
 
@@ -1429,11 +1545,12 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 			
 		});
 		
-	});	
+	});
 
+	//Deleting the user1 i.e moderator.
 	casper.thenOpen(config.backEndUrl, function(){
-		casper.echo('************************Deleting user1*********************', 'INFO');
-		casper.echo('title of the page : '+casper.getTitle());
+		this.echo('************************Deleting user1*********************', 'INFO');
+		this.echo('title of the page : '+casper.getTitle());
 		 casper.waitForSelector('div#my_account_forum_menu', function success() {
 			DeleteUser(casper,json['user1'].uname,function(err){
 				if(!err){
@@ -1441,13 +1558,14 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 				}
 			});
 			},function fail() {
-				casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+				casper.echo('Backend Does Not Open Succesfully', 'ERROR');
 		});	
 	});
 
+	//Deleting the user2 i.e  registered user
 	casper.thenOpen(config.backEndUrl, function(){
-		casper.echo('************************Deleting user2*********************', 'INFO');
-		casper.echo('title of the page : '+casper.getTitle());
+		this.echo('************************Deleting user2*********************', 'INFO');
+		this.echo('title of the page : '+ this.getTitle());
 		 casper.waitForSelector('div#my_account_forum_menu', function success() {
 			DeleteUser(casper,json['user2'].uname,function(err){
 				if(!err){
@@ -1461,13 +1579,13 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 				}
 			});
 			},function fail() {
-				casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+				casper.echo('Backend Does Not Open Succesfully', 'ERROR');
 		});	
 	});
 
-
 }
 
+//Method to chenge permission of moderator ac to the user pass the name of checkbox and its value true or false, open category after login as register user ac to category no pass by user,add poll if addpoll flag is set,logout from registered user and finally login as moderator.
 var ModeratorPermission=function(driver,checkbox_name,trueorfalse,category_no,callback){
 	var ahref;
 	change_permission(driver,checkbox_name,trueorfalse,function(err){
@@ -1490,7 +1608,6 @@ var ModeratorPermission=function(driver,checkbox_name,trueorfalse,category_no,ca
 											driver.sendKeys('#poll_option_2 div input', json['AddPoll'].option2, {reset:true});
 											driver.click('#save_poll');
 											driver.waitForSelector('input[name="pollvotesave"]',function success(){
-												driver.capture('1a.png');
 												driver.echo('Message:Poll Added Successfully','INFO');
 												},function fail(){
 													driver.echo('Poll doesnot saved Succesfully','ERROR');
@@ -1540,7 +1657,6 @@ var ComposePost=function(driver,category_no,callback){
 	driver.then(function(){
 		Open_Category(driver,category_no,'user2',function(err){
 			if(!err){
-				driver.capture('9.png');
 				try{
 					driver.test.assertExists('a#topics_tab');
 					driver.click('a#topics_tab');
@@ -1560,10 +1676,8 @@ var ComposePost=function(driver,category_no,callback){
 							driver.test.assertExists('#reply_submit');
 							driver.click('#reply_submit');
 							driver.wait(7000,function(){
-								driver.capture('10.png');
 								forumLogin.logoutFromApp(driver,function(){
 									driver.waitForSelector('a#td_tab_login',function success(){
-										casper.capture('11110.png');
 										driver.echo('Successfully logout from application', 'INFO');
 										driver.thenOpen(config.url, function() {
 											forumLogin.loginToApp(json['user1'].uname, json['user1'].upass, casper, function(err){
@@ -1608,8 +1722,7 @@ var ComposePost=function(driver,category_no,callback){
 var change_permission=function(driver,checkbox_name,trueorfalse,callback){
 	driver.waitForSelector('div#my_account_forum_menu', function success() {
 		ClickOnCategoryLinks(casper,function(err){
-			if(!err){			
-				driver.capture('category.png');			
+			if(!err){					
 				driver.echo('Category Page Found..........................','INFO');					
 				driver.waitForSelector('div#tab_wrapper',function sucess(){
 					driver.test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
@@ -1632,7 +1745,7 @@ var change_permission=function(driver,checkbox_name,trueorfalse,callback){
 						driver.then(function(){
 							driver.page.sendEvent("keypress", this.page.event.key.Enter);
 						});
-						driver.wait(7000,function(){driver.capture('ea.png');});
+						driver.wait(7000,function(){driver.capture('img.png');});
 						},function fail(){
 							driver.echo('Form Doesnt open to change permission of moderator','ERROR');
 					});
@@ -1642,7 +1755,7 @@ var change_permission=function(driver,checkbox_name,trueorfalse,callback){
 			}
 		});
 		},function fail() {
-			casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+			casper.echo('Backend Does Not Open Succesfully', 'ERROR');
 	});
 	driver.then(function() {
 		return callback(null);
@@ -1664,15 +1777,11 @@ var Open_Category=function(driver,category_no,user,callback){
 						casper.test.assertExists('a[href="/categories"]');
 
 						casper.click('a[href="/categories"]');	
-						casper.wait(7000,function(){
-							casper.waitForSelector('ul li.col-xs-12:nth-child('+ category_no +') span.columns-wrapper span.col-xs-7 a',function success(){ 				
-								casper.click('ul li.col-xs-12:nth-child('+ category_no +') span.columns-wrapper span.col-xs-7 a');
-								},function fail(){
-									casper.echo('Unable to Open This Category','ERROR');
-							});
-
-						
-						});												
+						casper.waitForSelector('.table-responsive ul li',function success(){ 				
+							casper.click('ul li.col-xs-12:nth-child('+ category_no +') span.columns-wrapper span.col-xs-7 a');
+							},function fail(){
+								casper.echo('Unable to Open This Category','ERROR');
+						});					
 						},function fail(){
 							casper.echo('Unable to Open Sidebar','ERROR');
 					});
@@ -1692,10 +1801,8 @@ var DeleteTopic=function(driver,href,callback){
 	driver.echo('30000000000000****************.................', 'INFO');
 	forumLogin.logoutFromApp(driver,function(){
 		driver.waitForSelector('a#td_tab_login',function success(){
-			casper.capture('11110.png');
 			driver.echo('Successfully logout from application', 'INFO');
 			driver.thenOpen(config.url, function() {
-				casper.capture('11111.png');
 				forumLogin.loginToApp(json['user2'].uname, json['user2'].upass, casper, function(err){
 					if(!err) {
 						driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
@@ -1755,7 +1862,7 @@ var StartTopic = function(driver,callback){
 		driver.waitForSelector('#post_submit',function success() {												
 			driver.test.assertExists('#post_submit');
 			driver.click('#post_submit');
-			driver.waitForSelector('a#sub_post_reply',function success(){ 
+			driver.waitForSelector('span[id^=post_message]',function success(){ 
 				href = driver.evaluate(function() {
 						var ahref;				  
 						var str= window.location.href;
@@ -1767,7 +1874,7 @@ var StartTopic = function(driver,callback){
 				});
 				return callback(null,href);
 				},function fail(){
-					driver.echo('Unable to Retrieve URL','ERROR');
+					driver.echo('Topic does not Started Successfully','ERROR');
 			});
 			},function fail(){
 				driver.echo('Unable to submit form','ERROR');
@@ -1790,8 +1897,8 @@ var ClickOnCategoryLinks=function(driver, callback){
 	});
 };
 
-	
-var checkbox_checked= function(href,callback){
+//Method to check the checkbox in order to show floating menu if appears.	
+var CheckboxChecked= function(href,callback){
            var value = casper.evaluate(function(str) {
 				var checkbox_value;				  
 				var n = str.indexOf('-');
@@ -1802,7 +1909,6 @@ var checkbox_checked= function(href,callback){
 			},href);
 	casper.waitForSelector('input[value="'+value+'"]',function success(){
 		casper.click('input[value="'+value+'"]');
-		casper.capture('123.png');
 		casper.echo('Checkbox checked','INFO');
 		},function fail(){
 			casper.echo('Checkbox doesnot checked','ERROR');
@@ -1812,6 +1918,7 @@ var checkbox_checked= function(href,callback){
 	});
 }
 
+//Method to delete user
 var DeleteUser=function(driver,data,callback){
 	driver.then(function(){
 		driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]'); 

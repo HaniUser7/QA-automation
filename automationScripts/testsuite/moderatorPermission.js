@@ -1,3 +1,4 @@
+'use strict';
 var forumRegister = require('./register.js');
 var json = require('../testdata/moderator.json');
 var config = require('../../config/config.json');
@@ -9,63 +10,60 @@ var verifyModeratorPermission = require('./verifyModeratorPermission.js');
 
 var mod_permission = module.exports = {};
 
-mod_permission.mod_permissionfeatureTest=function(casper,x){
+mod_permission.mod_permissionfeatureTest=function(casper,test,x){
 
 		casper.on('remote.alert', function(message) {
-		casper.echo('alert message: ' + message, 'INFO');
+			this.echo('alert message: ' + message, 'INFO');
 		});
 
 		casper.start();
 
-
+		//Open Forum Backend URL And Remove Short Answer fields. 
 		casper.then(function() {
-			editProfile.removeShortAnswerFields(casper, casper.test, function(err) {
+			editProfile.removeShortAnswerFields(casper, test, function(err) {
 				if(!err){
 					casper.echo('User Field Removed Successfully......','INFO');
-				}
-				else
-					casper.echo(err);	
+				}	
 			});
 		});
 
-		//Login To Backend URL and disable Approve New Posts
+		//Login To Backend URL and disable Approve New Registration,disable Approve new post and disable Email address verification 
 		casper.thenOpen(config.backEndUrl,function() {
-			casper.echo('Login To Backend URL and disable Approve New Registration and Disable Approve new post', 'INFO');
-			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-			casper.echo('---------------------------------------------------------------------------');		
+			this.echo('Login To Backend URL and disable Approve New Registration,Disable Approve new post and disable Email address verification', 'INFO');
+			this.echo('Title of the page :' +this.getTitle(), 'INFO');
+			this.echo('---------------------------------------------------------------------------');		
 			//setting page -> security page
 			casper.waitForSelector('a[data-tooltip-elm="ddSettings"]', function success() {
-				casper.test.assertExists('a[data-tooltip-elm="ddSettings"]');
-				casper.click('a[data-tooltip-elm="ddSettings"]');
+				test.assertExists('a[data-tooltip-elm="ddSettings"]');
+				this.click('a[data-tooltip-elm="ddSettings"]');
 				casper.waitForSelector('a[href="/tool/members/mb/settings?tab=Security"]', function success() {
-					casper.test.assertExists('a[href="/tool/members/mb/settings?tab=Security"]');
-					casper.click('a[href="/tool/members/mb/settings?tab=Security"]');
+					test.assertExists('a[href="/tool/members/mb/settings?tab=Security"]');
+					this.click('a[href="/tool/members/mb/settings?tab=Security"]');
 					casper.waitForSelector('#post_approval', function success() {
-						casper.test.assertExists('#post_approval');
-						casper.click('#post_approval');
-						casper.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
+						test.assertExists('#post_approval');
+						this.click('#post_approval');
+						this.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
 						utils.enableorDisableCheckbox('reqregapp',false, casper, function() {
 							casper.echo('checkbox is unchecked to diasble approve registration', 'INFO');
 							utils.enableorDisableCheckbox('confirm_email',false, casper, function() {
 								casper.echo('checkbox is unchecked to disable Email address verification', 'INFO');	
-								casper.test.assertExists('button[type="submit"]');
+								test.assertExists('button[type="submit"]');
 								casper.click('button[type="submit"]');
 								casper.then(function(){});
 							});
-							
 						});
 						}, function fail() {
-							casper.echo(err);
+							this.echo('ERROR OCCURRED', 'ERROR');
 					});
 					}, function fail(err) {
-						casper.echo(err);
+						this.echo('ERROR OCCURRED', 'ERROR');
 				});
-			}, function fail(err) {
-				casper.echo(err);
+				}, function fail(err) {
+					this.echo('ERROR OCCURRED', 'ERROR');
 			});
 		});
 
-
+		//Open Forum Backend URL And Register User.
 		casper.thenOpen(config.url, function(){
 			this.echo('**************************Registering User***************************', 'INFO');
 			this.echo('title of the page : '+this.getTitle());
@@ -77,19 +75,19 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 								casper.waitForSelector('div.panel-body.table-responsive', function sucess(){
 									casper.echo('User is Succesfully Registered....................','INFO');
 									},function fail(){
-										this.echo('User is Not Succesfully Registered','ERROR');
+										casper.echo('User is Not Succesfully Registered','ERROR');
 								});
 							}
 					});
 					},function fail(){
-						this.echo('User Registeration Form Does Not Found','ERROR');
+						this.echo('User Registration form Does Not Get Open','ERROR');
 				});
 				},function fail(){
-					this.echo('Problem in opening Url','ERROR');
+					this.echo('Frontend Does Not Open Succesfully','ERROR');
 			});
 		});
 
-
+		//Open Forum Backend URL And Add Moderator.
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('*******************************Case-1********************************', 'INFO');
 			this.echo('Verfiy with Add a moderator for category(General)','INFO');
@@ -109,11 +107,11 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					}
 				});
  				},function fail() {
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});
 		});	
 
-
+		//Open forum backend url and delete moderator that we have added in previous test scenario.
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('*******************************Case-2********************************', 'INFO');
 			this.echo('Verfiy with delete a moderator for category(GENERAL)','INFO');
@@ -127,10 +125,11 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					}
 				});
 				},function fail(){
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});		
 		});
 		
+		//Open forum backend url and add same moderator in two category.
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('*******************************Case-3********************************', 'INFO');
 			this.echo('verify with add same moderator in two different category(General and next to General CATEGORY)', 'INFO');
@@ -156,12 +155,13 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					}
 				});
  				},function fail() {
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});
 					
 				
 		});
-
+		
+		//Open forum backend url and delete moderator that is in two different category.
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('*******************************Case-4********************************', 'INFO');
 			this.echo('verify with delete moderator"when same moderator added in two different category ', 'INFO');
@@ -175,10 +175,11 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					}
 				});
 				},function fail(){
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});		
 		});
 	
+		//Open forum backend url and add moderator in category general.
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('Add a moderator for category(General)','INFO');
 			this.echo('title of the page : '+this.getTitle());
@@ -196,40 +197,39 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					}
 				});
  				},function fail() {
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});
 			
 		});
 		
-		
+		//Open forum backend url and add member title of the moderator that we have added in last test scenario..
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('*******************************Case-5********************************', 'INFO');
 			this.echo('verify with member title (add html tags)', 'INFO');
 			this.echo('title of the page : '+this.getTitle());
-			casper.waitForSelector(
-'div#my_account_forum_menu', function success() {
+			casper.waitForSelector('div#my_account_forum_menu', function success() {
 				ClickOnCategoryLinks(casper,function(err){
 					if(!err){							
 						casper.echo('Category Page Found..........................','INFO');					
 						casper.waitForSelector('div#tab_wrapper',function sucess(){
-							casper.test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
+							test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
 							casper.mouse.move('div#sortable ul.ui-sortable li:nth-child(1) div.select');
 							var firstLiId = casper.evaluate(function() {
 										document.querySelector("a.moderateAction").style.display = 'block';
 										var id = document.querySelector('div#sortable ul.ui-sortable li:nth-child(1)').getAttribute('id');
 										return id;
 									});
-							casper.test.assertExists('a.moderateAction[data-forumid="'+firstLiId+'"]');
+							test.assertExists('a.moderateAction[data-forumid="'+firstLiId+'"]');
 							casper.click('a.moderateAction[data-forumid="'+firstLiId+'"]');
-							casper.test.assertExists('div#forumModerator'+firstLiId + ' a:last-child');
-							var user_id = this.evaluate(function() {				  
+							test.assertExists('div#forumModerator'+firstLiId + ' a:last-child');
+							var user_id = casper.evaluate(function() {				  
 			 							var str= document.querySelector('div.tooltipMenu.forumModeratorbutton a:last-child').getAttribute('href');
 										var n = str.indexOf('userid=');
 										var href=str.substring(n+('userid=').length);
 										n =href.indexOf('&');
 										var user_id=href.substring(0,n);
 						 				return user_id;
-									});
+							});
 							casper.click('div#forumModerator'+firstLiId + ' a:last-child');
 							casper.waitForSelector('form#add_mod_form',function success(){
 								casper.sendKeys('input[name="usertitle"]','',{reset:true});
@@ -244,26 +244,27 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 												   var front_endtitle=str.substring(n+1);
 					 							   return front_endtitle;
 											    });
-										casper.test.assertEquals(title,'xyzabc</i>','Verified Member Tittle With HTML tags');										
+										test.assertEquals(title,'xyzabc</i>','Verified Member Tittle With HTML tags');										
 										},function fail(){
-											casper.echo('Unable to open Frontend','ERROR');
+											casper.echo('frontend Does Not Open Succesfully','ERROR');
 									});
 								});
 								},function fail(){
-									casper.echo('Unable to open Form','ERROR');
+									casper.echo('moderator permission edit Form does not appears','ERROR');
 							});
 							},function fail(){
-								casper.echo('Unable to open Categories','ERROR');
+								casper.echo('div#tab_wrapper selector does not appear','ERROR');
 						});
 					}
 				});
  				},function fail() {
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});
 					
 				
 		});
 
+		//Open forum backend url and remove moderator title that we have added in last scenario.
 		casper.thenOpen(config.backEndUrl, function(){
 			this.echo('*******************************Case-6********************************', 'INFO');
 			this.echo('verify with remove moderator title', 'INFO');
@@ -273,16 +274,16 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 					if(!err){							
 						casper.echo('Category Page Found..........................','INFO');					
 						casper.waitForSelector('div#tab_wrapper',function sucess(){
-							casper.test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
+							test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
 							casper.mouse.move('div#sortable ul.ui-sortable li:nth-child(1) div.select');
 							var firstLiId = casper.evaluate(function() {
 										document.querySelector("a.moderateAction").style.display = 'block';
 										var id = document.querySelector('div#sortable ul.ui-sortable li:nth-child(1)').getAttribute('id');
 										return id;
 									});
-							casper.test.assertExists('a.moderateAction[data-forumid="'+firstLiId+'"]');
+							test.assertExists('a.moderateAction[data-forumid="'+firstLiId+'"]');
 							casper.click('a.moderateAction[data-forumid="'+firstLiId+'"]');
-							casper.test.assertExists('div#forumModerator'+firstLiId + ' a:last-child');
+							test.assertExists('div#forumModerator'+firstLiId + ' a:last-child');
 							var user_id = casper.evaluate(function() {				  
 			 							var str= document.querySelector('div.tooltipMenu.forumModeratorbutton a:last-child').getAttribute('href');
 										var n = str.indexOf('userid=');
@@ -290,7 +291,7 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 										n =href.indexOf('&');
 										var user_id=href.substring(0,n);
 						 				return user_id;
-									});
+							});
 							casper.click('div#forumModerator'+firstLiId + ' a:last-child');
 							casper.waitForSelector('form#add_mod_form',function success(){
 								casper.sendKeys('input[name="usertitle"]','',{reset:true});
@@ -306,36 +307,36 @@ mod_permission.mod_permissionfeatureTest=function(casper,x){
 										});
 										casper.echo('Title->'+title);						
 										},function fail(){
-											casper.echo('Unable to open Frontend','ERROR');
+											this.echo('Front end Does Not Open Succesfully', 'ERROR');
 									});
 								});
 								},function fail(){
-									casper.echo('Unable to open Form','ERROR');
+									casper.echo('moderator permission edit Form does not appears','ERROR');
 							});
 							},function fail(){
-								casper.echo('Unable to open Categories','ERROR');
+								casper.echo('div#tab_wrapper selector does not appear','ERROR');
 						});
 					}
 				});
  				},function fail() {
-					casper.echo('Problem in opening Dashboard as we have previosly login', 'ERROR');
+					this.echo('Backend Does Not Open Succesfully', 'ERROR');
 			});
 					
 		});	
 
 		//Logout from front end
 		casper.thenOpen(config.url,function() {
-			forumRegister.redirectToLogout(casper, casper.test, function() {});
+			forumRegister.redirectToLogout(casper, test, function() {});
 		});
 	
-		//Verify Moderator Permission
+		//Verify Moderator Permission module call.
 		casper.then(function() {
-			casper.echo('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-			casper.echo('Verifying Moderator Permission', 'INFO');
+			this.echo('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+			this.echo('Verifying Moderator Permission', 'INFO');
 			verifyModeratorPermission.verifyModeratorPermissionfeatureTest(casper, x, function(){
 				casper.echo('Verifying Moderator Permission Feature', 'INFO');
 			});
-		});	
+		});		
 
 };
 
@@ -403,7 +404,7 @@ var RemoveModerator=function(driver,callback){
 			driver.waitForSelector('div#tab_wrapper',function sucess(){
 				driver.test.assertExists('div#sortable ul.ui-sortable li:nth-child(1) div.select');
 				driver.mouse.move('div#sortable ul.ui-sortable li:nth-child(1) div.select');
-				var firstLiId = casper.evaluate(function() {
+				var firstLiId = driver.evaluate(function() {
 							document.querySelector("a.moderateAction").style.display = 'block';
 							var id = document.querySelector('div#sortable ul.ui-sortable li:nth-child(1)').getAttribute('id');
 							return id;
@@ -421,10 +422,10 @@ var RemoveModerator=function(driver,callback){
 						 }														
 					});
 					},function fail(){
-						driver.echo('Form Doesnt open to Remove moderator from this Category','ERROR');
+						driver.echo('div#tab_wrapper selector does not appear','ERROR');
 				});
 				},function fail(){
-					driver.echo('Problem in Opening Categories','ERROR');
+					driver.echo('Categories page doesnot loaded','ERROR');
 			});
 		}
 	});
