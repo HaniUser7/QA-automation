@@ -1,3 +1,5 @@
+//----- This js file moderator permission functionlity ---------//
+
 'use strict';
 var forumRegister = require('./register.js');
 var json = require('../testdata/moderator.json');
@@ -8,9 +10,9 @@ var utils = require('./utils.js');
 var verifyModeratorPermission = require('./verifyModeratorPermission.js');
 
 
-var mod_permission = module.exports = {};
+var modPermission = module.exports = {};
 
-mod_permission.mod_permissionfeatureTest=function(casper,test,x){
+modPermission.mod_permissionfeatureTest=function(casper,test,x){
 
 		casper.on('remote.alert', function(message) {
 			this.echo('alert message: ' + message, 'INFO');
@@ -44,22 +46,27 @@ mod_permission.mod_permissionfeatureTest=function(casper,test,x){
 						this.click('#post_approval');
 						this.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
 						utils.enableorDisableCheckbox('reqregapp',false, casper, function() {
-							casper.echo('checkbox is unchecked to diasble approve registration', 'INFO');
-							utils.enableorDisableCheckbox('confirm_email',false, casper, function() {
-								casper.echo('checkbox is unchecked to disable Email address verification', 'INFO');	
-								test.assertExists('button[type="submit"]');
-								casper.click('button[type="submit"]');
-								casper.then(function(){});
-							});
+							if(!err){
+								casper.echo('checkbox is unchecked to diasble approve registration', 'INFO');
+								utils.enableorDisableCheckbox('confirm_email',false, casper, function() {
+									if(!err){
+										casper.echo('checkbox is unchecked to disable Email address verification', 'INFO');	
+										test.assertExists('button[type="submit"]');
+										casper.click('button[type="submit"]');
+										casper.then(function(){});
+									}
+								});
+							}
+							
 						});
 						}, function fail() {
-							this.echo('ERROR OCCURRED', 'ERROR');
+							this.echo('Post approval checkbox does not appears','ERROR');
 					});
-					}, function fail(err) {
-						this.echo('ERROR OCCURRED', 'ERROR');
+					}, function fail() {
+						this.echo('Forum Setting page is not visible','ERROR');
 				});
-				}, function fail(err) {
-					this.echo('ERROR OCCURRED', 'ERROR');
+				}, function fail() {
+					this.echo('Setting link is not visible','ERROR');
 			});
 		});
 
@@ -385,7 +392,6 @@ var AddNewModerator=function(driver,data,category_no,callback){
 					}, false);
 					driver.test.assertExists('form#add_mod_form button','Add New Moderator Form Found');
 					driver.click('form#add_mod_form button');
-					
 				}
 			});
 			}, function fail(){	
@@ -434,23 +440,24 @@ var RemoveModerator=function(driver,callback){
 	});
 }
 //Method to return tittle of user ac to user id passed to it. 
-var user_title= function(driver,user_id,callback){
-	var title;
+var UserTitle= function(driver,user_id,callback){
+	var Title;
 	driver.thenOpen(config.url+ 'profile/' +user_id,function(){ 
 		driver.waitForSelector('div#fb-root',function success(){
-			title = driver.evaluate(function() {
+			Title = driver.evaluate(function() {
 					   var moderator = document.querySelector('div#uploadAvatar ul li:nth-child(2) span.profile-title');					           
 					   var str=moderator.innerHTML.trim();
 					   var n = str.indexOf('>');
 					   var front_endtitle=str.substring(n+1);
 					   return front_endtitle;
-			 });	casper.echo('title='+title);						
+			 });
+			driver.echo('title='+Title);						
 			},function fail(){
-				driver.echo('Problem in opening frontend ','ERROR');
+				driver.echo('User Profile does not open sucessfully','ERROR');
 		});
 	});
 	driver.then(function() {
-		return callback(null,title);
+		return callback(null,Title);
 	});
 }
 		

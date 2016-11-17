@@ -1,3 +1,4 @@
+//----- This js file verify moderator permission functionlity ---------//
 'use strict';
 var utils = require('./utils.js');
 var json = require('../testdata/moderator.json');
@@ -30,7 +31,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						this.echo('User Registeration Form Does Not Found','ERROR');
 				});
 				},function fail(){
-					this.echo('Problem in opening Url','ERROR');
+					this.echo('Frontend Does Not Open Succesfully','ERROR');
 			});
 		});
 		
@@ -40,7 +41,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		});
 
 
-		//Open forum backend url and enable start topic and view category.
+		//Open forum backend url and enable register user permissions.
 		casper.thenOpen(config.backEndUrl,function() {
 			this.echo('Login To Backend URL and enable start topic checkbox and view category checkbox', 'INFO');
 			this.echo('title of the page : ' +this.getTitle(), 'INFO');
@@ -72,7 +73,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 									}
 								});
 								}, function fail(err) {
-									casper.echo(err);
+									casper.echo('Form Full User Group Permission is not visible in 5 seconds ');
 							});
 						}
 					});
@@ -367,7 +368,6 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								casper.echo('*******************************Case-15********************************', 'INFO');
 
 								casper.echo('*******************************Successfully Verified********************************', 'INFO');
-
 							}
 
 						});
@@ -507,12 +507,12 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.test.assertExists('i.glyphicon.glyphicon-right-arrow');
 							casper.click('i.glyphicon.glyphicon-right-arrow');
 							casper.waitForSelector('form[name=admindd]',function success(){											
-								var category = casper.evaluate(function() {
+								var Category = casper.evaluate(function() {
 											var cat = document.querySelector('select[name="moveto"]');			
 											return cat[1].value;
 								});
 								casper.fill('form[name="admindd"]',{
-										'moveto': category
+										'moveto': Category
 								},false);
 								casper.test.assertExists('form[name="admindd"] button');
 								casper.click('form[name="admindd"] button');
@@ -532,7 +532,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 									});
 								});
 								},function fail(){
-									casper.echo('Unable to open form to Move post');
+									casper.echo('Topic does not move successfully','ERROR');
 							});
 							},function fail(){
 								casper.echo('Floating menu doesnot appears in 5 seconds','ERROR');
@@ -1349,13 +1349,13 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 					this.click('button[type="submit"]');
 					casper.then(function(){});
 					}, function fail() {
-						casper.echo(err);
+						this.echo('Post approval checkbox does not appears','ERROR');
 				});
 				}, function fail(err) {
-					casper.echo(err);
+					this.echo('Forum Setting page is not visible','ERROR');
 			});
 			}, function fail(err) {
-				casper.echo(err);
+				this.echo('Setting link is not visible','ERROR');
 		});
 
 	});
@@ -1372,7 +1372,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						if (!err) {
 							casper.echo('Successfully navigated to Edit User group Permission page', 'INFO');
 							//click on checkbox
-							casper.waitForSelector('#post_threads', function success() {
+							casper.waitForSelector('#post_approval', function success() {
 								utils.enableorDisableCheckbox('post_approval', true, casper, function(err) {
 									if(!err) {
 										casper.echo("Post approval checkbox has been enabled", 'INFO');
@@ -1390,7 +1390,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 									}
 								});
 								}, function fail(err) {
-									casper.echo(err);
+									casper.echo('Post approval checkbox is not appears in 5 seconds','ERROR');
 							});
 						}
 					});
@@ -1429,6 +1429,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								casper.click('i.glyphicon.glyphicon-ok');
 								casper.wait(7000,function(){
 									forumLogin.logoutFromApp(casper, function(){
+										if(!err){
 											casper.waitForSelector('a#td_tab_login',function success(){
 												casper.echo('Successfully logout from application', 'INFO');
 												casper.echo('*******************************Case-44********************************', 'INFO');
@@ -1436,6 +1437,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 												},function fail(){
 													casper.echo('Unable to Successfully logout from application', 'INFO');
 											});
+										}
 									});
 								});
 								},function fail(){
@@ -1530,13 +1532,15 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.echo('Approvel queue is not available','INFO');
 						casper.then(function(){
 							forumLogin.logoutFromApp(casper, function(){
-								casper.waitForSelector('a#td_tab_login',function success(){
-									casper.echo('Successfully logout from application', 'INFO');
-									casper.echo('*******************************Case-46********************************', 'INFO');
-									casper.echo('*******************************Successfully Verified********************************', 'INFO');
-									},function fail(){
-										casper.echo('Unable to Successfully logout from application', 'INFO');
-								});
+								if(!err){
+									casper.waitForSelector('a#td_tab_login',function success(){
+										casper.echo('Successfully logout from application', 'INFO');
+										casper.echo('*******************************Case-46********************************', 'INFO');
+										casper.echo('*******************************Successfully Verified********************************', 'INFO');
+										},function fail(){
+											casper.echo('Unable to Successfully logout from application', 'INFO');
+									});
+								}
 							});
 						});
 					}
@@ -1574,12 +1578,11 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 					casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
 					casper.test.assertExists('a[href="/tool/members/login?action=logout"]');
 					casper.click('a[href="/tool/members/login?action=logout"]');			
-						
 				   	casper.echo('-----------------------Logout Successfully--------------------------------','INFO');
 				}
 			});
 			},function fail() {
-				casper.echo('Backend Does Not Open Succesfully', 'ERROR');
+				this.echo('Backend Does Not Open Succesfully', 'ERROR');
 		});	
 	});
 
@@ -1780,13 +1783,13 @@ var Open_Category=function(driver,category_no,user,callback){
 						casper.waitForSelector('.table-responsive ul li',function success(){ 				
 							casper.click('ul li.col-xs-12:nth-child('+ category_no +') span.columns-wrapper span.col-xs-7 a');
 							},function fail(){
-								casper.echo('Unable to Open This Category','ERROR');
+								casper.echo('Category Doesnot open Sucessfully','ERROR');
 						});					
 						},function fail(){
-							casper.echo('Unable to Open Sidebar','ERROR');
+							casper.echo('Sidebar Menu bar is not visible','ERROR');
 					});
 					}, function fail() {
-						casper.echo('ERROR OCCURRED', 'ERROR');
+						casper.echo('Not Successfully login', 'ERROR');
 				});
 			}
 		});
@@ -1800,49 +1803,53 @@ var Open_Category=function(driver,category_no,user,callback){
 var DeleteTopic=function(driver,href,callback){
 	driver.echo('30000000000000****************.................', 'INFO');
 	forumLogin.logoutFromApp(driver,function(){
-		driver.waitForSelector('a#td_tab_login',function success(){
-			driver.echo('Successfully logout from application', 'INFO');
-			driver.thenOpen(config.url, function() {
-				forumLogin.loginToApp(json['user2'].uname, json['user2'].upass, casper, function(err){
-					if(!err) {
-						driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
-							driver.test.assertDoesntExist('#td_tab_login');
-							driver.waitForSelector('a[href="'+href+'"]',function success(){
-								driver.click('a[href="'+href+'"]');
-								driver.waitForSelector('i.glyphicon.glyphicon-chevron-down',function sucess(){
-									driver.click('i.glyphicon.glyphicon-chevron-down');
-									driver.test.assertExists('a[href^="/mbactions/delete"]');
-									driver.click('a[href^="/mbactions/delete"]');
-									driver.waitForSelector('div.panel-body.table-responsive',function sucess(){
-										driver.echo('Message:Post is Deleted','INFO');
-										driver.then(function(){
-											forumLogin.logoutFromApp(driver, function(){
-												driver.waitForSelector('a#td_tab_login',function success(){
+		if(!err){
+			driver.waitForSelector('a#td_tab_login',function success(){
+				driver.echo('Successfully logout from application', 'INFO');
+				driver.thenOpen(config.url, function() {
+					forumLogin.loginToApp(json['user2'].uname, json['user2'].upass, casper, function(err){
+						if(!err) {
+							driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
+								driver.test.assertDoesntExist('#td_tab_login');
+								driver.waitForSelector('a[href="'+href+'"]',function success(){
+									driver.click('a[href="'+href+'"]');
+									driver.waitForSelector('i.glyphicon.glyphicon-chevron-down',function sucess(){
+										driver.click('i.glyphicon.glyphicon-chevron-down');
+										driver.test.assertExists('a[href^="/mbactions/delete"]');
+										driver.click('a[href^="/mbactions/delete"]');
+										driver.waitForSelector('div.panel-body.table-responsive',function sucess(){
+											driver.echo('Message:Post is Deleted','INFO');
+											driver.then(function(){
+												forumLogin.logoutFromApp(driver, function(){
+													if(!err){
+														driver.waitForSelector('a#td_tab_login',function success(){
 
-													driver.echo('Successfully logout from application', 'INFO');
-													},function fail(){
-														driver.echo('Unable to Successfully logout from application', 'ERROR');
+															driver.echo('Successfully logout from application', 'INFO');
+															},function fail(){
+																driver.echo('Unable to Successfully logout from application', 'ERROR');
+														});
+													}
 												});
 											});
+											},function fail(){
+												driver.echo('Post Doesnot Deleted Successfully','ERROR');
 										});
 										},function fail(){
-											driver.echo('Post Doesnot Deleted Successfully','ERROR');
+											driver.echo('Unable to Click on Dropdown','ERROR');
 									});
 									},function fail(){
-										driver.echo('Unable to Click on Dropdown','ERROR');
+										driver.echo('Problem in opening this Topic','ERROR');	
 								});
-								},function fail(){
-									driver.echo('Problem in opening this Topic','ERROR');	
+								}, function fail() {
+									driver.echo('Not Successfully login', 'ERROR');
 							});
-							}, function fail() {
-								driver.echo('ERROR OCCURRED', 'ERROR');
-						});
-					}
+						}
+					});
 				});
+				},function fail(){
+					driver.echo('Unable to Successfully logout from application', 'INFO');
 			});
-			},function fail(){
-				driver.echo('Unable to Successfully logout from application', 'INFO');
-		});
+		}
 	});
 	driver.then(function() {
 		return callback(null);
@@ -1850,7 +1857,7 @@ var DeleteTopic=function(driver,href,callback){
 }
 //Method to StartTopic 
 var StartTopic = function(driver,callback){
-	var href;
+	var Href;
 	driver.click('a[href^="/post/printadd"]');
 	driver.waitForSelector('#message_ifr',function success(){								
 		driver.sendKeys('input[name="subject"]', json['StartTopic'].subject, {reset:true});								
@@ -1863,7 +1870,7 @@ var StartTopic = function(driver,callback){
 			driver.test.assertExists('#post_submit');
 			driver.click('#post_submit');
 			driver.waitForSelector('span[id^=post_message]',function success(){ 
-				href = driver.evaluate(function() {
+				Href = driver.evaluate(function() {
 						var ahref;				  
 						var str= window.location.href;
 						var n = str.indexOf('.com');
@@ -1872,7 +1879,7 @@ var StartTopic = function(driver,callback){
 						ahref=ahref.substring(0,n);	
 						return ahref;
 				});
-				return callback(null,href);
+				return callback(null,Href);
 				},function fail(){
 					driver.echo('Topic does not Started Successfully','ERROR');
 			});
@@ -1899,7 +1906,7 @@ var ClickOnCategoryLinks=function(driver, callback){
 
 //Method to check the checkbox in order to show floating menu if appears.	
 var CheckboxChecked= function(href,callback){
-           var value = casper.evaluate(function(str) {
+           var Value = casper.evaluate(function(str) {
 				var checkbox_value;				  
 				var n = str.indexOf('-');
 				checkbox_value=str.substring(n+1);
@@ -1907,8 +1914,8 @@ var CheckboxChecked= function(href,callback){
 				checkbox_value=checkbox_value.substring(0,n);	
 				return checkbox_value;
 			},href);
-	casper.waitForSelector('input[value="'+value+'"]',function success(){
-		casper.click('input[value="'+value+'"]');
+	casper.waitForSelector('input[value="'+Value+'"]',function success(){
+		casper.click('input[value="'+Value+'"]');
 		casper.echo('Checkbox checked','INFO');
 		},function fail(){
 			casper.echo('Checkbox doesnot checked','ERROR');
