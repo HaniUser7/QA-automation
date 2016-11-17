@@ -246,25 +246,19 @@ switch (feature) {
     	casper.test.begin('VERIFY CATEGORY PERMISSIONS TEST', function(test) {
 		var verifyCategoryPermissions = require("./testsuite/verifyCategoryPermissions.js");
 		verifyCategoryPermissions.featureTest(casper, test);
-		var errors = [];
 		casper.run(function(){
-			if (errors.length > 0) {
-        				this.echo(errors.length + ' Javascript errors found', "WARNING");
-        			}else{
-        				this.echo(errors.length + ' Javascript errors found', "INFO");
-        			}
-        			casper.exit();
-        			test.done();
+			test.done();
+			test.assert(true);
 		});
 	});
         break;
         
         
+     
 		
 		
 		 
         
-		
 		
 		
         case "uploadAttachment":
