@@ -1,8 +1,8 @@
 var config = require("../config/config.json");
 
 casper.options.viewportSize = config.app.viewportSize;
-casper.options.verbose = config.app.verbose;
-casper.options.logLevel = config.app.logLevel;
+//casper.options.verbose = config.app.verbose;
+//casper.options.logLevel = config.app.logLevel;
 //casper.options.waitTimeout = config.app.waitTimeout;
 
 var feature = casper.cli.get('feature');
@@ -238,19 +238,33 @@ switch (feature) {
 			test.assert(true);
 		});
 	});
-        break;
+	
+	     break;
         
         
+      
+        
+		
+		 
         case "verifyCategoryPermissions":
     	casper.test.begin('VERIFY CATEGORY PERMISSIONS TEST', function(test) {
 		var verifyCategoryPermissions = require("./testsuite/verifyCategoryPermissions.js");
 		verifyCategoryPermissions.featureTest(casper, test);
+		var errors = [];
 		casper.run(function(){
-			test.done();
-			test.assert(true);
+			if (errors.length > 0) {
+        				this.echo(errors.length + ' Javascript errors found', "WARNING");
+        			}else{
+        				this.echo(errors.length + ' Javascript errors found', "INFO");
+        			}
+        			casper.exit();
+        			test.done();
 		});
 	});
         break;
+		
+		
+		
         case "uploadAttachment":
     	casper.test.begin('VERIFY UPLOAD ATTACHMENT TEST', function(test) {
 		var uploadAttachment = require("./testsuite/uploadAttachment.js");
