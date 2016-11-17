@@ -242,10 +242,6 @@ switch (feature) {
 	     break;
         
         
-      
-        
-		
-		 
         case "verifyCategoryPermissions":
     	casper.test.begin('VERIFY CATEGORY PERMISSIONS TEST', function(test) {
 		var verifyCategoryPermissions = require("./testsuite/verifyCategoryPermissions.js");
@@ -262,6 +258,12 @@ switch (feature) {
 		});
 	});
         break;
+        
+        
+		
+		
+		 
+        
 		
 		
 		
