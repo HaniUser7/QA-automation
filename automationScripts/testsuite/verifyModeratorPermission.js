@@ -6,7 +6,6 @@ var forumLogin = require('./forum_login.js');
 var forumRegister = require('./register.js');
 var generalPermission = require('./generalPermission.js');
 var verifyModeratorPermission = module.exports = {};
-var AddPoll=0;
 
 verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, x, callback) {
 
@@ -98,12 +97,13 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 										casper.click('div#sortable ul.ui-sortable li:nth-child(1) div.select a.manageAction');
 										casper.click('div#sortable ul.ui-sortable li:nth-child(1) div.select a.change_perm');
 										casper.waitForSelector('form[name="frmFormPermissionsDialog"]', function success() {
-
-											utils.enableorDisableCheckbox('view_forum_'+grpId, true, casper, function() {
-												casper.echo('checkbox is checked for view category for general category', 'INFO');
-											});
-											casper.then(function(){
-												casper.click('div[aria-describedby="change_perm_dialog"]  button[title="Close"] span.ui-button-text');
+											utils.enableorDisableCheckbox('view_forum_'+grpId, true, casper, function(err) {
+												if(!err){
+													casper.echo('checkbox is checked for view category for general category', 'INFO');								
+													casper.wait(7000,function(){
+														casper.click('div[aria-describedby="change_perm_dialog"]  button[title="Close"] span.ui-button-text');
+													});
+												}	
 											});
 											}, function fail() {
 												casper.echo('change permission dialogue not opened for general category', 'ERROR');
@@ -114,7 +114,6 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 									}, function fail() {
 										casper.echo('category permission page not loaded in 5 seconds', 'ERROR');
 								});
-
 						});
 						
 					}				
@@ -130,7 +129,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 			this.echo('******************************Enable Edit Post********************************', 'INFO');
 			this.echo('Verify by edit post from category(cat1)', 'INFO');
 			this.echo('title of the page : ' +this.getTitle(), 'INFO');
-			 ModeratorPermission(casper,'p_edit_post',true,1,function(err,href){
+			 ModeratorPermission(casper,'p_edit_post',true,1,0,function(err,href){
 				if(!err){
 					casper.waitForSelector('a[href="'+href+'"]',function success(){
 						casper.click('a[href="'+href+'"]');
@@ -162,7 +161,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 			this.echo('*******************************Enable Edit Post********************************', 'INFO');
 			this.echo('Verify by edit post from other category', 'INFO');
 			this.echo('title of the page : ' +this.getTitle(), 'INFO');
-			 ModeratorPermission(casper,'p_edit_post',true,2,function(err,href){
+			 ModeratorPermission(casper,'p_edit_post',true,2,0,function(err,href){
 				if(!err){
 					casper.waitForSelector('a[href="'+href+'"]',function success(){
 						casper.click('a[href="'+href+'"]');
@@ -193,7 +192,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Edit Post********************************', 'INFO');
 		this.echo('Verify by edit post from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_edit_post',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_edit_post',false,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -223,7 +222,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Edit Post********************************', 'INFO');
 		this.echo('Verify by edit post from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_edit_post',false,2,function(err,href){
+		 ModeratorPermission(casper,'p_edit_post',false,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -253,7 +252,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Delete Post********************************', 'INFO');
 		casper.echo('Verify by delete post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_delete_post',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_delete_post',true,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -263,7 +262,8 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.click('a[id^="delete_first_post"]');
 						casper.echo('Message:Post is Deleted Successfully','INFO');
 						casper.wait(7000,function(){
-								forumLogin.logoutFromApp(casper, function(){
+								forumLogin.logoutFromApp(casper, function(err){
+									if(!err){
 										casper.waitForSelector('a#td_tab_login',function success(){
 											casper.echo('Successfully logout from application', 'INFO');
 											casper.echo('*******************************Case-12********************************', 'INFO');
@@ -271,6 +271,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 											},function fail(){
 												casper.echo('Unable to Successfully logout from application', 'ERROR');
 										});
+									}	
 								});
 						});
 						},function fail(){
@@ -290,7 +291,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Delete Post********************************', 'INFO');
 		this.echo('Verify by delete post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_delete_post',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_delete_post',true,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -320,7 +321,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Delete Post********************************', 'INFO');
 		this.echo('verify with delete post from cat1 by select one/all post/topic by check box', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_delete_post',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_delete_post',true,1,0,function(err,href){
 			if(!err){
 				CheckboxChecked(href,function(){
 					if(!err){
@@ -329,7 +330,8 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 							casper.click('i.glyphicon.glyphicon-trash');
 							casper.echo('Message:Post is Deleted Successfully','INFO');
 							casper.wait(7000,function(){
-								forumLogin.logoutFromApp(casper, function(){
+								forumLogin.logoutFromApp(casper, function(err){
+									if(!err){
 										casper.waitForSelector('a#td_tab_login',function success(){
 											casper.echo('Successfully logout from application', 'INFO');
 											casper.echo('*******************************Case-14********************************', 'INFO');
@@ -337,6 +339,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 											},function fail(){
 												casper.echo('Unable to Successfully logout from application', 'ERROR');
 										});
+									}
 								});
 							});
 							},function fail(){
@@ -355,7 +358,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Delete Post********************************', 'INFO');
 		this.echo('Verify by delete post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_delete_post',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_delete_post',false,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -387,7 +390,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Delete Post********************************', 'INFO');
 		this.echo('Verify by delete post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_delete_post',false,2,function(err,href){
+		 ModeratorPermission(casper,'p_delete_post',false,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -417,7 +420,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Move Topic/Post*****************', 'INFO');
 		this.echo('Verify by move post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_move_post',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_move_post',true,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -470,7 +473,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Move Post********************************', 'INFO');
 		this.echo('Verify by move post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_move_post',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_move_post',true,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -499,7 +502,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Move Post********************************', 'INFO');
 		this.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_move_post',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_move_post',true,1,0,function(err,href){
 			if(!err){
 				CheckboxChecked(href,function(){
 					if(!err){
@@ -517,7 +520,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								casper.test.assertExists('form[name="admindd"] button');
 								casper.click('form[name="admindd"] button');
 								casper.wait(5000,function(){
-									casper.thenOpen(config.url+'?forum='+category,function(){
+									casper.thenOpen(config.url+'?forum='+Category,function(){
 										casper.waitForSelector('span.topic-content a',function success(){
 											casper.test.assertExists('a[href="'+ href +'"]');	
 											casper.echo('Message:Post is Successfully moved','INFO');	
@@ -549,7 +552,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Move Post********************************', 'INFO');
 		this.echo('Verify by move post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_move_post',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_move_post',false,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -557,14 +560,17 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.test.assertDoesntExist('a[href^="/mbactions/move"]');
 						casper.echo('Message:Topic cannot be moved','INFO');
 						casper.then(function(){
-							forumLogin.logoutFromApp(casper, function(){
-								casper.waitForSelector('a#td_tab_login',function success(){
-									casper.echo('Successfully logout from application', 'INFO');
-									casper.echo('*******************************Case-20********************************', 'INFO');
-									casper.echo('*******************************Successfully Verified********************************', 'INFO');
-									},function fail(){
-										casper.echo('Unable to Successfully logout from application', 'INFO');
-								});
+							forumLogin.logoutFromApp(casper, function(err){
+								if(!err){
+									casper.waitForSelector('a#td_tab_login',function success(){
+										casper.echo('Successfully logout from application', 'INFO');
+										casper.echo('*******************************Case-20********************************', 'INFO');
+										casper.echo('*******************************Successfully Verified********************************', 'INFO');
+										},function fail(){
+											casper.echo('Unable to Successfully logout from application', 'INFO');
+									});
+								}
+								
 							});
 						});
 						},function fail(){
@@ -583,7 +589,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Move Post********************************', 'INFO');
 		this.echo('Verify by move post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_move_post',false,2,function(err,href){
+		 ModeratorPermission(casper,'p_move_post',false,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -591,14 +597,16 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.test.assertDoesntExist('a span.caret');
 						casper.echo('Message:Shield Icon is not Visible','INFO');
 						casper.then(function(){
-							forumLogin.logoutFromApp(casper, function(){
-								casper.waitForSelector('a#td_tab_login',function success(){
-									casper.echo('Successfully logout from application', 'INFO');
-									casper.echo('*******************************Case-21********************************', 'INFO');
-									casper.echo('*******************************Successfully Verified********************************', 'INFO');
-									},function fail(){
-										casper.echo('Unable to Successfully logout from application', 'INFO');
-								});
+							forumLogin.logoutFromApp(casper, function(err){
+								if(!err){
+									casper.waitForSelector('a#td_tab_login',function success(){
+										casper.echo('Successfully logout from application', 'INFO');
+										casper.echo('*******************************Case-21********************************', 'INFO');
+										casper.echo('*******************************Successfully Verified********************************', 'INFO');
+										},function fail(){
+											casper.echo('Unable to Successfully logout from application', 'ERROR');
+									});
+								}
 							});
 						});
 						},function fail(){
@@ -617,7 +625,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Move Post********************************', 'INFO');
 		this.echo('verify with Move post from cat1 by select one/all post/topic by check box', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_move_post',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_move_post',false,1,0,function(err,href){
 			if(!err){
 				CheckboxChecked(href,function(){
 					if(!err){
@@ -646,7 +654,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Lock Topic/Post*****************', 'INFO');
 		this.echo('Verify by lock post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_lock_threads',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_lock_threads',true,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -681,7 +689,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Lock Topic/Post*****************', 'INFO');
 		this.echo('Verify by lock post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_lock_threads',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_lock_threads',true,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -710,7 +718,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Lock Topic/Post*****************', 'INFO');
 		this.echo('Verify by lock post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_lock_threads',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_lock_threads',false,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -740,7 +748,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Lock Topic/Post*****************', 'INFO');
 		this.echo('Verify by lock post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_lock_threads',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_lock_threads',true,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -769,7 +777,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Pin Topic/Post*****************', 'INFO');
 		this.echo('Verify by pin post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_pin_threads',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_pin_threads',true,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -804,7 +812,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable pin Topic/Post*****************', 'INFO');
 		this.echo('Verify by pin post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_pin_threads',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_pin_threads',true,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -833,7 +841,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable pin topic********************************', 'INFO');
 		this.echo('verify with pin post/topic from cat1 by select one/all post/topic by check box', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_pin_threads',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_pin_threads',true,1,0,function(err,href){
 			if(!err){
 				CheckboxChecked(href,function(){
 					if(!err){
@@ -880,7 +888,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Pin Topic/Post*****************', 'INFO');
 		this.echo('Verify by pin post/topic from category(cat1)', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_pin_threads',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_pin_threads',false,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -910,7 +918,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable pin Topic/Post*****************', 'INFO');
 		this.echo('Verify by pin post/topic from other category', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_pin_threads',false,2,function(err,href){
+		 ModeratorPermission(casper,'p_pin_threads',false,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -940,7 +948,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable pin topic********************************', 'INFO');
 		this.echo('verify with pin post/topic from cat1 by select one/all post/topic by check box', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_pin_threads',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_pin_threads',false,1,0,function(err,href){
 			if(!err){
 				CheckboxChecked(href,function(){
 					if(!err){
@@ -969,7 +977,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Add poll Topic/Post*****************', 'INFO');
 		this.echo('verify create a poll on a topic of cat1 from the Shield icon','INFO'); 
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_poll_add',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_poll_add',true,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1011,7 +1019,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Add poll Topic/Post*****************', 'INFO');
 		this.echo('verify create a poll on a topic of other category from the Shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_poll_add',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_poll_add',true,2,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1040,7 +1048,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Add poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by add poll on a topic from category(cat1) from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		 ModeratorPermission(casper,'p_poll_add',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_poll_add',false,1,0,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1070,8 +1078,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by edit poll on a topic from category(cat1) from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_edit',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_poll_edit',true,1,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1102,8 +1109,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_edit',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_poll_edit',true,2,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1134,8 +1140,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by edit poll on a topic from category(cat1) from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_edit',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_poll_edit',false,1,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1165,8 +1170,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable edit poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by edit poll on a topic from other category from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_edit',false,2,function(err,href){
+		 ModeratorPermission(casper,'p_poll_edit',false,2,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1196,8 +1200,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Delete poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by Delete poll on a topic from category(cat1) from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_delete',true,1,function(err,href){
+		 ModeratorPermission(casper,'p_poll_delete',true,1,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1231,8 +1234,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Enable Delete poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by delete poll on a topic from other category from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_delete',true,2,function(err,href){
+		 ModeratorPermission(casper,'p_poll_delete',true,2,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1274,8 +1276,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Delete poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by Delete poll on a topic from category(cat1) from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_delete',false,1,function(err,href){
+		 ModeratorPermission(casper,'p_poll_delete',false,1,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1305,8 +1306,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 		this.echo('*******************************Disable Delete poll Topic/Post*****************', 'INFO');
 		this.echo('Verify by delete poll on a topic from other category from shield icon', 'INFO');
 		this.echo('title of the page : ' +this.getTitle(), 'INFO');
-		AddPoll=1;
-		 ModeratorPermission(casper,'p_poll_delete',false,2,function(err,href){
+		 ModeratorPermission(casper,'p_poll_delete',false,2,1,function(err,href){
 			if(!err){
 				casper.waitForSelector('a[href="'+href+'"]',function success(){
 					casper.click('a[href="'+href+'"]');
@@ -1347,7 +1347,11 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 					this.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
 					casper.test.assertExists('button[type="submit"]');
 					this.click('button[type="submit"]');
-					casper.then(function(){});
+					casper.waitUntilVisible('div#ajax-msg-top', function success() {
+						this.echo('Forum Settings Changed Successfully','INFO');
+						},function fail(){
+							this.echo('Forum setting is not changed','ERROR');
+					});
 					}, function fail() {
 						this.echo('Post approval checkbox does not appears','ERROR');
 				});
@@ -1428,7 +1432,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 								casper.echo('Message:'+msg,'INFO');
 								casper.click('i.glyphicon.glyphicon-ok');
 								casper.wait(7000,function(){
-									forumLogin.logoutFromApp(casper, function(){
+									forumLogin.logoutFromApp(casper, function(err){
 										if(!err){
 											casper.waitForSelector('a#td_tab_login',function success(){
 												casper.echo('Successfully logout from application', 'INFO');
@@ -1465,47 +1469,50 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 				if(!err){
 					ComposePost(casper,1,function(err,href){
 						if(!err){
-							forumLogin.logoutFromApp(casper, function(){
-								casper.waitForSelector('a#td_tab_login',function success(){
-									casper.echo('Successfully logout from application', 'INFO');
-									ComposePost(casper,2,function(err,href){
-										if(!err){
-											var selector='ul li.col-xs-12:nth-child(2) span.columns-wrapper span.col-xs-7 a';
-											var forum = casper.evaluate(function(a) {
-													var forum=document.querySelector(a).getAttribute('href');
-													return forum;
-											},selector);	
-											casper.click('i.glyphicon.glyphicon-tasks.has-notif');
-											casper.waitForSelector('i.glyphicon.glyphicon-ok',function success(){
-												var msg = casper.evaluate(function(a) {
+							forumLogin.logoutFromApp(casper, function(err){
+								if(!err){
+									casper.waitForSelector('a#td_tab_login',function success(){
+										casper.echo('Successfully logout from application', 'INFO');
+										ComposePost(casper,2,function(err,href){
+											if(!err){
+												var selector='ul li.col-xs-12:nth-child(2) span.columns-wrapper span.col-xs-7 a';
+												var forum = casper.evaluate(function(a) {
+														var forum=document.querySelector(a).getAttribute('href');
+														return forum;
+												},selector);	
+												casper.click('i.glyphicon.glyphicon-tasks.has-notif');
+												casper.waitForSelector('i.glyphicon.glyphicon-ok',function success(){
+													var msg = casper.evaluate(function(a) {
 									
-													var CategoryPost=document.querySelectorAll('div#feed-main a[href="'+ a +'"]');
-													if(CategoryPost.length==0){
-														return 'There are no pending post available from this category';
-													}else{
-														return 'Some post are pending for approval for this category';
-													}
-												},forum);
-												casper.echo('Message:'+msg,'INFO');
-												casper.then(function(){
-													forumLogin.logoutFromApp(casper, function(){
-															casper.waitForSelector('a#td_tab_login',function success(){
-																casper.echo('Successfully logout from application', 'INFO');
-																casper.echo('*******************************Case-45********************************', 'INFO');
-																casper.echo('*******************************Successfully Verified********************************', 'INFO');
-																},function fail(){
-																	casper.echo('Unable to Successfully logout from application', 'INFO');
-															});
+														var CategoryPost=document.querySelectorAll('div#feed-main a[href="'+ a +'"]');
+														if(CategoryPost.length==0){
+															return 'There are no pending post available from this category';
+														}else{
+															return 'Some post are pending for approval for this category';
+														}
+													},forum);
+													casper.echo('Message:'+msg,'INFO');
+													casper.then(function(){
+														forumLogin.logoutFromApp(casper, function(err){
+																casper.waitForSelector('a#td_tab_login',function success(){
+																	casper.echo('Successfully logout from application', 'INFO');
+																	casper.echo('*******************************Case-45********************************', 'INFO');
+																	casper.echo('*******************************Successfully Verified********************************', 'INFO');
+																	},function fail(){
+																		casper.echo('Unable to Successfully logout from application', 'INFO');
+																});
+														});
 													});
-												});
-												},function fail(){
-													casper.echo("verfify post icon does not exist",'ERROR');
-											});												
-										}
+													},function fail(){
+														casper.echo("verfify post icon does not exist",'ERROR');
+												});												
+											}
+										});
+										},function fail(){
+											casper.echo('Unable to Successfully logout from application', 'INFO');
 									});
-									},function fail(){
-										casper.echo('Unable to Successfully logout from application', 'INFO');
-								});
+								}
+								
 							});
 						}
 					});
@@ -1531,7 +1538,7 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 						casper.test.assertDoesntExist('i.glyphicon.glyphicon-tasks.has-notif');
 						casper.echo('Approvel queue is not available','INFO');
 						casper.then(function(){
-							forumLogin.logoutFromApp(casper, function(){
+							forumLogin.logoutFromApp(casper, function(err){
 								if(!err){
 									casper.waitForSelector('a#td_tab_login',function success(){
 										casper.echo('Successfully logout from application', 'INFO');
@@ -1589,8 +1596,9 @@ verifyModeratorPermission.verifyModeratorPermissionfeatureTest=function(casper, 
 }
 
 //Method to chenge permission of moderator ac to the user pass the name of checkbox and its value true or false, open category after login as register user ac to category no pass by user,add poll if addpoll flag is set,logout from registered user and finally login as moderator.
-var ModeratorPermission=function(driver,checkbox_name,trueorfalse,category_no,callback){
+var ModeratorPermission=function(driver,checkbox_name,trueorfalse,category_no,AddPoll,callback){
 	var ahref;
+	driver.echo('dhjfdfhhdjsfhdhfh='+AddPoll,'INFO');
 	change_permission(driver,checkbox_name,trueorfalse,function(err){
 		if(!err){
 			driver.then(function(){
@@ -1621,12 +1629,14 @@ var ModeratorPermission=function(driver,checkbox_name,trueorfalse,category_no,ca
 									});
 								}
 								driver.then(function(){
-									forumLogin.logoutFromApp(driver, function(){
+									forumLogin.logoutFromApp(driver, function(err){
+										if(!err){
 											driver.waitForSelector('a#td_tab_login',function success(){
 												driver.echo('Successfully logout from application', 'INFO');
 												},function fail(){
 													driver.echo('Unable to Successfully logout from application', 'INFO');
 											});
+										}
 									});
 								});
 								driver.then(function(){
@@ -1679,27 +1689,29 @@ var ComposePost=function(driver,category_no,callback){
 							driver.test.assertExists('#reply_submit');
 							driver.click('#reply_submit');
 							driver.wait(7000,function(){
-								forumLogin.logoutFromApp(driver,function(){
-									driver.waitForSelector('a#td_tab_login',function success(){
-										driver.echo('Successfully logout from application', 'INFO');
-										driver.thenOpen(config.url, function() {
-											forumLogin.loginToApp(json['user1'].uname, json['user1'].upass, casper, function(err){
-												if(!err) {
-													driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
-														driver.test.assertDoesntExist('#td_tab_login');
-														driver.echo('User has been successfuly login to application', 'INFO'); 
-															driver.click('i.icon.icon-menu');
-															driver.test.assertExists('a[href="/categories"]');
-															driver.click('a[href="/categories"]');
-															}, function fail() {
-																driver.echo('ERROR OCCURRED', 'ERROR');
-													});
-												}
+								forumLogin.logoutFromApp(driver,function(err){
+									if(!err){
+										driver.waitForSelector('a#td_tab_login',function success(){
+											driver.echo('Successfully logout from application', 'INFO');
+											driver.thenOpen(config.url, function() {
+												forumLogin.loginToApp(json['user1'].uname, json['user1'].upass, casper, function(err){
+													if(!err) {
+														driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
+															driver.test.assertDoesntExist('#td_tab_login');
+															driver.echo('User has been successfuly login to application', 'INFO'); 
+																driver.click('i.icon.icon-menu');
+																driver.test.assertExists('a[href="/categories"]');
+																driver.click('a[href="/categories"]');
+																}, function fail() {
+																	driver.echo('ERROR OCCURRED', 'ERROR');
+														});
+													}
+												});
 											});
+											},function fail(){
+												driver.echo('Unable to Successfully logout from application', 'ERROR');
 										});
-										},function fail(){
-											driver.echo('Unable to Successfully logout from application', 'ERROR');
-									});
+									}									
 								});
 							});
 							},function fail(){
@@ -1758,7 +1770,7 @@ var change_permission=function(driver,checkbox_name,trueorfalse,callback){
 			}
 		});
 		},function fail() {
-			casper.echo('Backend Does Not Open Succesfully', 'ERROR');
+			driver.echo('Backend Does Not Open Succesfully', 'ERROR');
 	});
 	driver.then(function() {
 		return callback(null);
@@ -1801,8 +1813,7 @@ var Open_Category=function(driver,category_no,user,callback){
 
 //Method to Delete topic as after login as a Registered user.
 var DeleteTopic=function(driver,href,callback){
-	driver.echo('30000000000000****************.................', 'INFO');
-	forumLogin.logoutFromApp(driver,function(){
+	forumLogin.logoutFromApp(driver,function(err){
 		if(!err){
 			driver.waitForSelector('a#td_tab_login',function success(){
 				driver.echo('Successfully logout from application', 'INFO');
@@ -1820,7 +1831,7 @@ var DeleteTopic=function(driver,href,callback){
 										driver.waitForSelector('div.panel-body.table-responsive',function sucess(){
 											driver.echo('Message:Post is Deleted','INFO');
 											driver.then(function(){
-												forumLogin.logoutFromApp(driver, function(){
+												forumLogin.logoutFromApp(driver, function(err){
 													if(!err){
 														driver.waitForSelector('a#td_tab_login',function success(){
 
@@ -1907,12 +1918,12 @@ var ClickOnCategoryLinks=function(driver, callback){
 //Method to check the checkbox in order to show floating menu if appears.	
 var CheckboxChecked= function(href,callback){
            var Value = casper.evaluate(function(str) {
-				var checkbox_value;				  
-				var n = str.indexOf('-');
-				checkbox_value=str.substring(n+1);
-				n =checkbox_value.indexOf('?');
-				checkbox_value=checkbox_value.substring(0,n);	
-				return checkbox_value;
+				var CheckboxValue;				  
+				var N = str.indexOf('-');
+				CheckboxValue=str.substring(N+1);
+				N =CheckboxValue.indexOf('?');
+				CheckboxValue=CheckboxValue.substring(0,N);	
+				return CheckboxValue;
 			},href);
 	casper.waitForSelector('input[value="'+Value+'"]',function success(){
 		casper.click('input[value="'+Value+'"]');

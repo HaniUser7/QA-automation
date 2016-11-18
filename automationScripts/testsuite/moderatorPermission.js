@@ -12,7 +12,7 @@ var verifyModeratorPermission = require('./verifyModeratorPermission.js');
 
 var modPermission = module.exports = {};
 
-modPermission.mod_permissionfeatureTest=function(casper,test,x){
+modPermission.modPermissionfeatureTest=function(casper,test,x){
 
 		casper.on('remote.alert', function(message) {
 			this.echo('alert message: ' + message, 'INFO');
@@ -22,9 +22,9 @@ modPermission.mod_permissionfeatureTest=function(casper,test,x){
 
 		//Open Forum Backend URL And Remove Short Answer fields. 
 		casper.then(function() {
+			//remove short answer fields.
 			editProfile.removeShortAnswerFields(casper, test, function(err) {
 				if(!err){
-					casper.echo('User Field Removed Successfully......','INFO');
 				}	
 			});
 		});
@@ -45,19 +45,22 @@ modPermission.mod_permissionfeatureTest=function(casper,test,x){
 						test.assertExists('#post_approval');
 						this.click('#post_approval');
 						this.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
-						utils.enableorDisableCheckbox('reqregapp',false, casper, function() {
+						utils.enableorDisableCheckbox('reqregapp',false, casper, function(err) {
 							if(!err){
 								casper.echo('checkbox is unchecked to diasble approve registration', 'INFO');
-								utils.enableorDisableCheckbox('confirm_email',false, casper, function() {
+								utils.enableorDisableCheckbox('confirm_email',false, casper, function(err) {
 									if(!err){
 										casper.echo('checkbox is unchecked to disable Email address verification', 'INFO');	
 										test.assertExists('button[type="submit"]');
 										casper.click('button[type="submit"]');
-										casper.then(function(){});
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo('Forum Settings Changed Successfully','INFO');
+											},function fail(){
+												casper.echo('Forum setting is not changed','ERROR');
+										});
 									}
 								});
 							}
-							
 						});
 						}, function fail() {
 							this.echo('Post approval checkbox does not appears','ERROR');
@@ -66,14 +69,14 @@ modPermission.mod_permissionfeatureTest=function(casper,test,x){
 						this.echo('Forum Setting page is not visible','ERROR');
 				});
 				}, function fail() {
-					this.echo('Setting link is not visible','ERROR');
+					this.echo('To change Settings link is not visible','ERROR');
 			});
 		});
 
 		//Open Forum Backend URL And Register User.
-		casper.thenOpen(config.url, function(){
+		 casper.thenOpen(config.url, function(){
 			this.echo('**************************Registering User***************************', 'INFO');
-			this.echo('title of the page : '+this.getTitle());
+			this.echo('title of the page : '+this.getTitle(),'INFO');
 			casper.waitForSelector('a[href="/register/register"]', function sucess(){
 				this.click('a[href="/register/register"]');
 				casper.waitForSelector('form[name="PostTopic"]', function sucess(){
@@ -87,7 +90,7 @@ modPermission.mod_permissionfeatureTest=function(casper,test,x){
 							}
 					});
 					},function fail(){
-						this.echo('User Registration form Does Not Get Open','ERROR');
+						this.echo('User Registration form Does Not Open','ERROR');
 				});
 				},function fail(){
 					this.echo('Frontend Does Not Open Succesfully','ERROR');
@@ -340,7 +343,7 @@ modPermission.mod_permissionfeatureTest=function(casper,test,x){
 		casper.then(function() {
 			this.echo('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
 			this.echo('Verifying Moderator Permission', 'INFO');
-			verifyModeratorPermission.verifyModeratorPermissionfeatureTest(casper, x, function(){
+			verifyModeratorPermission.verifyModeratorPermissionfeatureTest(casper,x, function(){
 				casper.echo('Verifying Moderator Permission Feature', 'INFO');
 			});
 		});		
@@ -353,7 +356,6 @@ modPermission.mod_permissionfeatureTest=function(casper,test,x){
 	driver.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
 	driver.test.assertExists('a[href="/tool/members/login?action=logout"]');
 	driver.click('a[href="/tool/members/login?action=logout"]');										
-   	driver.echo('---------------------------------------------------------------------------','INFO');
 	return callback(null);
 }; 
 //Method  to Open Category Page.
@@ -363,7 +365,6 @@ var ClickOnCategoryLinks=function(driver, callback){
 		driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 		driver.test.assertExists('div#ddContent a[href="/tool/members/mb/forums"]');
 		driver.click('div#ddContent a[href="/tool/members/mb/forums"]');
-		driver.echo('---------------------------------------------------------------------------','INFO');
 	});
 	driver.then(function() {
 		return callback(null);
@@ -445,11 +446,11 @@ var UserTitle= function(driver,user_id,callback){
 	driver.thenOpen(config.url+ 'profile/' +user_id,function(){ 
 		driver.waitForSelector('div#fb-root',function success(){
 			Title = driver.evaluate(function() {
-					   var moderator = document.querySelector('div#uploadAvatar ul li:nth-child(2) span.profile-title');					           
-					   var str=moderator.innerHTML.trim();
-					   var n = str.indexOf('>');
-					   var front_endtitle=str.substring(n+1);
-					   return front_endtitle;
+					   var Moderator = document.querySelector('div#uploadAvatar ul li:nth-child(2) span.profile-title');					           
+					   var str=Moderator.innerHTML.trim();
+					   var N = str.indexOf('>');
+					   var FrontendTitle=str.substring(N+1);
+					   return FrontendTitle;
 			 });
 			driver.echo('title='+Title);						
 			},function fail(){
