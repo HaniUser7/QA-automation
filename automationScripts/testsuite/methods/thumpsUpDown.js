@@ -1,6 +1,7 @@
 /***These are the function which has been called in thumpsUpDown.js and also will be used in other js file as per requirement**********/
 
 'use strict';
+var registerMethod = require('./methods/register.js');
 var thumpsUpDownMethod = module.exports = {};
 //*************************************************PRIVATE METHODS***********************************************
 
@@ -63,3 +64,81 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 	
 	return callback(null);
 };
+
+//Method For Enabling View Profile For Registered User
+thumpsUpDownMethod.viewChangePermission = function(driver, test, callback) {
+	try {
+		test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+		driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+		try {
+			test.assertExists('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+			driver.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+			driver.waitForSelector('table.text.fullborder', function success() {
+				var grpName = this.evaluate(function(){
+					for(var i=1; i<=7; i++) {
+						var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+						if (x1.innerText == 'Registered Users') {
+							var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+							return x2;
+						}
+					}
+				});
+				this.click('a[href="'+grpName+'"]');
+				return callback(null);
+			}, function fail() {
+				driver.echo('ERROR OCCURRED', 'ERROR');
+			});
+		}catch(e) {
+			test.assertDoesntExist('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+		}
+	}catch(e) {
+		test.assertDoesntExist('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+	}
+};
+thumpsUpDownMethod.disableViewProfile = function(driver, test, callback) {
+//Login To Forum Back-end And Change Permissions From back End
+	driver.then(function() {
+		registerMethod.loginToForumBackEnd(casper, test, function(err) {
+			if(!err) {
+				casper.waitForSelector('div#my_account_forum_menu', function success() {
+					thumpsUpDownMethod.viewChangePermission(casper, test, function(err) {
+						if(!err) {
+							casper.waitForSelector('#view_profiles', function success() {
+								casper.echo('Opened Change Permission Page Successfully', 'INFO')
+								try {
+									utils.enableorDisableCheckbox('view_profiles', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									try {
+										test.assertExists('button.button.btn-m.btn-blue');
+										this.click('button.button.btn-m.btn-blue');
+										casper.waitForSelector('font[color="red"]', function() {
+											var successMsg = this.fetchText('font[color="red"]');
+											var expectedSuccessMsg = 'Your user group settings have been updated.';
+											if(successMsg && successMsg!= '')
+												verifySuccessMsg(successMsg, expectedSuccessMsg, 'UncheckedViewProfile', casper, function() {
+											});
+										});
+									}catch(e) {
+										test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+					
+								}catch(e) {
+									test.assertDoesntExist('#view_messageboard');
+								}
+							}, function fail() {
+								casper.echo('ERROR OCCURRED', 'ERROR');
+							});
+						}else {
+							casper.echo('Error : '+err, 'INFO');
+						}
+					});
+				}, function fail() {
+					casper.echo('ERROR OCCURRED', 'ERROR');
+				});
+			}else {
+				casper.echo('Error : '+err, 'INFO');
+			}
+		});
+	});
+}

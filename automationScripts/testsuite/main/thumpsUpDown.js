@@ -10,8 +10,16 @@ thumpsUpDown.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		this.echo("Title of the page :"+this.getTitle());
 		
-		// call method to Reset password with valid user name
-		thumpsUpDownTestcases.unregisterUserOnPostListingPage();
+		// call method to verify the thumbs up for guest user(unregister user) on post listing page
+		//thumpsUpDownTestcases.unregisterUserOnPostListingPageLike();
 		
+		// call method to verify the thumbs down for guest user(unregister user) on post listing page
+		//thumpsUpDownTestcases.unregisterUserOnPostListingPageDislike();
+
+		// call method to verify the thumbs up for guest user(unregister user) on Topic listing page
+		//thumpsUpDownTestcases.unregisterUserOnTopicListingPageLike();
+		
+		// call method to verify the thumbs up and down for (register user) on Topic listing page
+		thumpsUpDownTestcases.registerUserOnTopicListingPageLike();
 	});
 };
