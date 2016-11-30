@@ -1,6 +1,7 @@
 'use strict';
 var forumLoginMethod = require('../methods/login.js');
 var json = require('../../testdata/registerData.json');
+var config = require('../../../config/config.json');
 var wait = require('../wait.js');
 var registerMethod=module.exports = {};
 

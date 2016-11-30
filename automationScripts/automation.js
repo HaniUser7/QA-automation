@@ -14,10 +14,10 @@ if(feature){
 
 switch (feature) {
     		
-	case "register":
-		casper.test.begin('REGISTRATION TEST', function(test) {
-			var forumRegister = require("./testsuite/main/register.js");
-			forumRegister.featureTest(casper, casper.test);
+	case "registerSetting":
+		casper.test.begin('REGISTRATION BACKEND ENABLE SETTING TEST', function(test) {
+			var registerSetting = require("./testsuite/main/registerSetting.js");
+			registerSetting.featureTest(casper, casper.test);
 			casper.run(function(){
 				test.done();
 				test.assert(true);

@@ -150,34 +150,11 @@
     },
     
     "setValueOnRegister" : [{
-    	"required" : "1",
-    	"visibility" : "1"
-    }, 
-    
-    {
-    	"required" : "1",
-    	"visibility" : "2"
-    },
-    
-    {
-    	"required" : "1",
-    	"visibility" : "4"
-    },
-    
-    {
-    	"required" : "0",
-    	"visibility" : "1"
-    },
-    
-    {
-    	"required" : "0",
-    	"visibility" : "2"
-    },
-    
-    {
     	"required" : "0",
     	"visibility" : "4"
-    }],
+    } 
+    
+   ],
     
     "fullnameData" : {
     	"uname" : "blank_fullname",
