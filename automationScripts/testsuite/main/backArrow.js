@@ -22,5 +22,11 @@ backArrow.featureTest = function(casper, test) {
 	
 		backArrowTests.readAllPost();
 
+		backArrowTests.postListingPage();
+
+		backArrowTests.topicListingPage();
+
+		backArrowTests.forumListingPage();
+
 	});
 };

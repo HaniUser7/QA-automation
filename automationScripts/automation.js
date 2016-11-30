@@ -24,6 +24,17 @@ switch (feature) {
 			});
 		});
 	break;
+
+	case "backArrow":
+		casper.test.begin('BACK ARROW TEST', function(test) {
+			var backArrow = require("./testsuite/main/backArrow.js");
+			backArrow.featureTest(casper, casper.test);
+			casper.run(function(){
+				test.done();
+				test.assert(true);
+			});
+		});
+	break;
 	
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
