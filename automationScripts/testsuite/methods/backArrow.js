@@ -44,4 +44,69 @@ backArrowMethods.startTopic = function(data,driver,callback){
 };
 
 
+backArrowMethods.selectCategory = function(data,driver,callback){
+	driver.test.assertExists('i.icon.icon-menu');
+	driver.click('i.icon.icon-menu');
+	driver.test.assertExists('a[href="/categories"]');
+	driver.click('a[href="/categories"]');
+	wait.waitForElement('.table-responsive ul li', driver, function(err, isExists) {	
+		if(!err){
+			if(isExists) {
+				driver.test.assertExists('.table-responsive ul li:nth-child(1) a');
+				driver.click('.table-responsive ul li:nth-child(1) a');
+				wait.waitForElement('#back_arrow_topic', driver, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							try{
+								driver.test.assertExists('a#topics_tab');
+								driver.click('a#topics_tab');
+							}catch(e){
+								driver.test.assertDoesntExist('a#topics_tab');
+							}   
+							wait.waitForElement('.panel-heading li:nth-child(1).active', driver, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										try{
+											driver.test.assertExists('span.topic-content a');
+											backArrowMethods.startTopic(data, driver, function(err){
+												if(!err){
+													driver.capture('234.png');
+													driver.test.assertExists('#backArrowPost');
+													driver.click('#backArrowPost');
+													wait.waitForElement('#back_arrow_topic', driver, function(err, isExists) {	
+														if(!err){
+															if(isExists) {
+																//click on back arrow
+													  			
+															} else {
+																casper.echo('Back arrow does not appears in 5 seconds ', 'ERROR');
+															}	
+														}
+													});
+																									}
+											});
+										}catch(e){
+											driver.test.assertDoesntExist('span.topic-content a');
+																						
+										}
+											return callback(null);
+									} else {
+										driver.echo('latest topic is not appeared in 5 seconds ', 'ERROR');
+									}	
+								}
+							});
+						} else {
+							driver.echo('Category Doesnot open Sucessfully', 'ERROR');
+						}	
+					}
+				});
+			} else {
+				driver.echo('Category Doesnot open Sucessfully', 'ERROR');
+			}	
+		}
+	});
+}
+
+
+
 

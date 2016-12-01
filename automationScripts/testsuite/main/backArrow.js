@@ -28,5 +28,7 @@ backArrow.featureTest = function(casper, test) {
 
 		backArrowTests.forumListingPage();
 
+		backArrowTests.moveTopicListingPage();
+
 	});
 };

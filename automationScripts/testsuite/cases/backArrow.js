@@ -17,7 +17,6 @@ var json  = require('../../testdata/backArrowData.json');
 backArrowTests.verifyBackArrow= function() {
 
 	/*****Verify back arrow on topic listing page*****/
-	casper.echo('*****************************Case1**********************************','INFO');
 	casper.echo('Verify back arrow on topic listing page', 'INFO');
 	forumLoginMethod.loginToApp(json['registered_user'].username, json['registered_user'].password, casper, function(err) {
 		if(!err) {
@@ -75,7 +74,6 @@ backArrowTests.sortOption= function() {
 	casper.then(function(){
 
 		/*****Verify with sorting options like latest/new/top*****/
-		casper.echo('*****************************Case2**********************************','INFO');
 		casper.echo('Verify with sorting options like latest/new/top', 'INFO');
 		casper.test.assertExists('.table-responsive ul li:nth-child(2) a');
 		casper.click('.table-responsive ul li:nth-child(2) a');
@@ -115,7 +113,6 @@ backArrowTests.sortOption= function() {
 backArrowTests.readAllPost= function() {
 	casper.then(function(){
 		/*****Verify back arrow with Read all post button on topic listing page*****/
-		casper.echo('*****************************Case3**********************************','INFO');
 		casper.echo('Verify back arrow with Read all post button on topic listing page', 'INFO');
 		try{
 			casper.test.assertExists('a[href="/?action=markread"] span');
@@ -145,7 +142,6 @@ backArrowTests.readAllPost= function() {
 backArrowTests.postListingPage = function() {
 	casper.then(function(){
 		/*****Verify back arrow when user login on post listing page directly*****/
-		casper.echo('*****************************Case4**********************************','INFO');
 		casper.echo('Verify back arrow when user login on post listing page directly', 'INFO');
 		casper.test.assertExists('.table-responsive ul li:nth-child(2) a');
 		casper.click('.table-responsive ul li:nth-child(2) a');
@@ -174,7 +170,6 @@ backArrowTests.postListingPage = function() {
 backArrowTests.topicListingPage = function() {
 	casper.then(function(){
 		/*****Verify with Start new topic on topic listing page*****/
-		casper.echo('*****************************Case5**********************************','INFO');
 		casper.echo('Verify with Start new topic on topic listing page', 'INFO');
 		casper.test.assertExists('.table-responsive ul li:nth-child(2) a');
 		casper.click('.table-responsive ul li:nth-child(2) a');
@@ -207,7 +202,6 @@ backArrowTests.topicListingPage = function() {
 backArrowTests.forumListingPage = function() {
 	casper.then(function(){
 		/*****Verify with Start new topic on topic listing page*****/
-		casper.echo('*****************************Case6**********************************','INFO');
 		casper.echo('Verify with Start new topic on forum listing page', 'INFO');
 		casper.click('i.icon.icon-menu');
 		casper.test.assertExists('a[href="/categories"]');
@@ -231,6 +225,18 @@ backArrowTests.forumListingPage = function() {
 	});	
 };
 
+backArrowTests.moveTopicListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with move topic on topic listing page*****/
+		casper.echo('Verify back arrow with move topic on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+
+
+			}		
+		}); 
+	});	
+};
 
 
 
