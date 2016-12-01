@@ -1,0 +1,33 @@
+{
+
+       "setValueOnRegister" : [{
+    	"required" : "0",
+    	"visibility" : "4"
+    } 
+    
+   ],
+	"setHiddenValueOn" : {
+		"required" : "Yes",
+		"visibility" : "Hidden"
+	},
+	"setVisibleValueOn" : {
+		"required" : "Yes",
+		"visibility" : "Visible"
+	},
+	"setRegistrationValueOn" : {
+		"required" : "Yes",
+		"visibility" : "Registration page only"
+	},
+	"setHiddenValueOff" : {
+		"required" : "No",
+		"visibility" : "Hidden"
+	},
+	"setVisibleValueOff" : {
+		"required" : "No",
+		"visibility" : "Visible"
+	},
+	"setRegistrationValueOff" : {
+		"required" : "No",
+		"visibility" : "Registration page only"
+	}	
+}
