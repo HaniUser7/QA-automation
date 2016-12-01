@@ -23,7 +23,7 @@ loginPrivacyOptionTests.loginPrivacyOption=function(){
 					casper.capture('222.png');
 					casper.click('button.button.btn-m.btn-blue');
 					casper.thenOpen(config.url, function() {
-						casploginPrivacyOptionTests.loginPrivacyFrmCalenderer.capture('front.png');
+						
 					});					
 				}
 			});	
