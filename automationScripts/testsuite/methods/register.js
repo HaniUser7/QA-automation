@@ -1,6 +1,6 @@
 'use strict';
 var forumLoginMethod = require('../methods/login.js');
-var json = require('../../testdata/registerData.json');
+//var json = require('../../testdata/registerData.json');
 var wait = require('../wait.js');
 var registerMethod=module.exports = {};
 
@@ -8,7 +8,7 @@ var registerMethod=module.exports = {};
 
 //Login To Forum Back End
 
-registerMethod.loginToForumBackEnd = function(driver, test, callback) {
+registerMethod.loginToForumBackEnd = function(driver, callback) {
 		
 	//Click On Login Link 
 	wait.waitForElement('a#navLogin', casper, function(err, isExist) {

@@ -1,11 +1,14 @@
 /***These are the function which has been called in thumpsUpDown.js and also will be used in other js file as per requirement**********/
 
 'use strict';
-var registerMethod = require('./methods/register.js');
+var registerMethod = require('./register.js');
+var utils = require('./utils.js');
+var wait = require('../wait.js');
+var backEndForumRegisterMethod = require('./backEndRegistration.js');
 var thumpsUpDownMethod = module.exports = {};
 //*************************************************PRIVATE METHODS***********************************************
 
-//Method For Verifying Error Message On Thums UP/DOWN
+//Method For Verifying Error Message On Thumps UP/DOWN
 thumpsUpDownMethod.verifyErrorMsg = function(errorMessage, expectedErrorMsg, msgTitle, driver, callback) {
 	driver.echo('Actual Error message : '+errorMessage, 'INFO');
 	driver.echo('Expected Error message : '+expectedErrorMsg, 'INFO');
@@ -66,79 +69,95 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 };
 
 //Method For Enabling View Profile For Registered User
-thumpsUpDownMethod.viewChangePermission = function(driver, test, callback) {
+thumpsUpDownMethod.viewChangePermission = function(driver, callback) {
 	try {
-		test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+		driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 		driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 		try {
-			test.assertExists('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+			driver.test.assertExists('div#ddUsers a[href="/tool/members/mb/usergroup"]');
 			driver.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
-			driver.waitForSelector('table.text.fullborder', function success() {
-				var grpName = this.evaluate(function(){
-					for(var i=1; i<=7; i++) {
-						var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-						if (x1.innerText == 'Registered Users') {
-							var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
-							return x2;
-						}
-					}
-				});
-				this.click('a[href="'+grpName+'"]');
-				return callback(null);
-			}, function fail() {
-				driver.echo('ERROR OCCURRED', 'ERROR');
-			});
-		}catch(e) {
-			test.assertDoesntExist('div#ddUsers a[href="/tool/members/mb/usergroup"]');
-		}
-	}catch(e) {
-		test.assertDoesntExist('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-	}
-};
-thumpsUpDownMethod.disableViewProfile = function(driver, test, callback) {
-//Login To Forum Back-end And Change Permissions From back End
-	driver.then(function() {
-		registerMethod.loginToForumBackEnd(casper, test, function(err) {
-			if(!err) {
-				casper.waitForSelector('div#my_account_forum_menu', function success() {
-					thumpsUpDownMethod.viewChangePermission(casper, test, function(err) {
-						if(!err) {
-							casper.waitForSelector('#view_profiles', function success() {
-								casper.echo('Opened Change Permission Page Successfully', 'INFO')
-								try {
-									utils.enableorDisableCheckbox('view_profiles', false, casper, function() {
-										casper.echo('checkbox is unchecked', 'INFO');
-									});
-									try {
-										test.assertExists('button.button.btn-m.btn-blue');
-										this.click('button.button.btn-m.btn-blue');
-										casper.waitForSelector('font[color="red"]', function() {
-											var successMsg = this.fetchText('font[color="red"]');
-											var expectedSuccessMsg = 'Your user group settings have been updated.';
-											if(successMsg && successMsg!= '')
-												verifySuccessMsg(successMsg, expectedSuccessMsg, 'UncheckedViewProfile', casper, function() {
-											});
-										});
-									}catch(e) {
-										test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
-					
-								}catch(e) {
-									test.assertDoesntExist('#view_messageboard');
-								}
-							}, function fail() {
-								casper.echo('ERROR OCCURRED', 'ERROR');
-							});
-						}else {
-							casper.echo('Error : '+err, 'INFO');
+			wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
+				if(isExists) {
+					var grpName = driver.evaluate(function(){
+						for(var i=1; i<=7; i++) {
+							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+							if (x1.innerText == 'Registered Users') {
+								document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+								var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+								return x2;
+							}
 						}
 					});
-				}, function fail() {
-					casper.echo('ERROR OCCURRED', 'ERROR');
+					driver.click('a[href="'+grpName+'"]');
+					return callback(null);
+				} else {
+					driver.echo('Table not found', 'ERROR');
+				}
+			});
+		}catch(e) {
+			driver.test.assertDoesntExist('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+		}
+	}catch(e) {
+		driver.test.assertDoesntExist('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+	}
+};
+thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
+//Login To Forum Back-end And Change Permissions From back End
+	driver.then(function() {
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					if(isExists) {
+						thumpsUpDownMethod.viewChangePermission(casper, function(err) {
+							if(!err) {
+								wait.waitForElement('#view_profiles', casper, function(err, isExists) {
+									if(isExists) {
+										casper.echo('Opened Change Permission Page Successfully', 'INFO')
+										try {
+											utils.enableorDisableCheckbox('view_profiles', false, casper, function() {
+											casper.echo('checkbox is unchecked', 'INFO');
+											});
+											try {
+												casper.test.assertExists('button.button.btn-m.btn-blue');
+												this.click('button.button.btn-m.btn-blue');
+												wait.waitForElement('font[color="red"]', driver, function(err, isExists) {
+													if(isExists) {
+														var successMsg = this.fetchText('font[color="red"]');
+														var expectedSuccessMsg = 'Your user group settings have been updated.';
+														if(successMsg && successMsg!= '')
+															thumpsUpDownMethod.verifySuccessMsg(successMsg, expectedSuccessMsg, 'UncheckedViewProfile', casper, function() {
+															return callback(null);
+														});
+													} else {
+												
+													}
+												});
+											}catch(e) {
+												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+												return callback(null);
+											}
+										}catch(e) {
+											//casper.test.assertDoesntExist('#view_messageboard');
+										}
+									} else {
+									
+									}
+								});
+							}else {
+								casper.echo('Error : '+err, 'INFO');
+							}
+						});
+					} else {
+						casper.echo('ERROR OCCURRED', 'ERROR');
+					}
 				});
 			}else {
 				casper.echo('Error : '+err, 'INFO');
 			}
+		});
+		casper.then(function() {
+			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+			});
 		});
 	});
 }

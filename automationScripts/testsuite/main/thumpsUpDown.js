@@ -19,7 +19,19 @@ thumpsUpDown.featureTest = function(casper, test) {
 		// call method to verify the thumbs up for guest user(unregister user) on Topic listing page
 		//thumpsUpDownTestcases.unregisterUserOnTopicListingPageLike();
 		
+		// method to verify the thumbs up and down for (register user) on Topic listing page
+		//thumpsUpDownTestcases.registerUserOnTopicListingPageLike();
+
 		// call method to verify the thumbs up and down for (register user) on Topic listing page
-		thumpsUpDownTestcases.registerUserOnTopicListingPageLike();
+		//thumpsUpDownTestcases.registerUserOnPostListingPageLike();
+		
+		// method to verify with click on likers/dislikers username when disable view profile permission ->AS A REGISTER USER 
+		//thumpsUpDownTestcases.clickOnLikersUsername();
+		
+		//"method to verify When registered/moderator user click on link of own name from voter list. when disable view profile permission"
+		//thumpsUpDownTestcases.clickOnOwnName();
+		
+		//"method To verify the functionality of reputation tab which is showing in profile page-
+		thumpsUpDownTestcases.clickReputationTab();
 	});
 };

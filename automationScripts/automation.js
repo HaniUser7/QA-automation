@@ -23,7 +23,7 @@ switch (feature) {
 		});
 	break;
 	case "thumpsUpDown":
-		casper.test.begin('Verify forgot password functionality from home page with all valid and invalid scenarios ', function(test) {
+		casper.test.begin('Verify thumps up and down functionality from home page with all valid and invalid scenarios ', function(test) {
 			var thumpsUpDown = require("./testsuite/main/thumpsUpDown.js");
 			thumpsUpDown.featureTest(casper, casper.test);
 			casper.run(function(){
