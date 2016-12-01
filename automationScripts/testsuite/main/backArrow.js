@@ -28,7 +28,24 @@ backArrow.featureTest = function(casper, test) {
 
 		backArrowTests.forumListingPage();
 
-		backArrowTests.moveTopicListingPage();
+		backArrowTests.lockTopicListingPage();
 
+		backArrowTests.lockPostListingPage();
+
+		backArrowTests.unLockTopicListingPage();
+
+		backArrowTests.unLockPostListingPage();
+		
+		backArrowTests.pinTopicListingPage();
+
+		backArrowTests.pinPostListingPage();
+
+		backArrowTests.unPinTopicListingPage();
+
+		backArrowTests.unPinPostListingPage();
+
+		backArrowTests.deleteTopicListingPage();
+
+		
 	});
 };

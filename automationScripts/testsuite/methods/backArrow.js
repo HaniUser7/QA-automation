@@ -68,6 +68,9 @@ backArrowMethods.selectCategory = function(data,driver,callback){
 									if(isExists) {
 										try{
 											driver.test.assertExists('span.topic-content a');
+											return callback(null);	
+										}catch(e){
+											driver.test.assertDoesntExist('span.topic-content a');
 											backArrowMethods.startTopic(data, driver, function(err){
 												if(!err){
 													driver.capture('234.png');
@@ -76,20 +79,15 @@ backArrowMethods.selectCategory = function(data,driver,callback){
 													wait.waitForElement('#back_arrow_topic', driver, function(err, isExists) {	
 														if(!err){
 															if(isExists) {
-																//click on back arrow
-													  			
+																return callback(null);															
 															} else {
 																casper.echo('Back arrow does not appears in 5 seconds ', 'ERROR');
 															}	
 														}
-													});
-																									}
-											});
-										}catch(e){
-											driver.test.assertDoesntExist('span.topic-content a');
-																						
+													});												}
+											});							
 										}
-											return callback(null);
+											
 									} else {
 										driver.echo('latest topic is not appeared in 5 seconds ', 'ERROR');
 									}	

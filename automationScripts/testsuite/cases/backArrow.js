@@ -225,18 +225,327 @@ backArrowTests.forumListingPage = function() {
 	});	
 };
 
-backArrowTests.moveTopicListingPage = function() {
+backArrowTests.lockTopicListingPage = function() {
 	casper.then(function(){
 		/*****Verify back arrow with move topic on topic listing page*****/
 		casper.echo('Verify back arrow with move topic on topic listing page', 'INFO');
 		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
 			if(!err){
-
-
+				casper.click('input[name="id"]');
+				wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.echo('floating menu appears', 'INFO');
+							casper.test.assertExists('i.glyphicon.glyphicon-lock');
+							casper.click('i.glyphicon.glyphicon-lock');
+							wait.waitForTime(3000,casper,function(err){
+								if(!err){
+									try{
+										casper.test.assertExists('a#lock');
+										casper.click('a#lock');
+									}catch(e){
+										casper.test.assertDoesntExist('a#lock');
+									}
+									wait.waitForTime(5000,casper,function(err){
+										if(!err){
+											casper.capture('12345678.png');
+											casper.test.assertExists('#back_arrow_topic');
+											casper.click('#back_arrow_topic');
+										}
+									});
+								}
+							});
+						} else {
+							casper.echo('floating menu appears is not visible ', 'ERROR');
+						}	
+					}
+				});
 			}		
 		}); 
 	});	
 };
+
+backArrowTests.lockPostListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with lock option on post listing page*****/
+		casper.echo('Verify back arrow with lock option on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('a span.caret', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('a span.caret');
+							casper.test.assertExists('a[href^="/mbactions/lock?id="]');
+							casper.click('a[href^="/mbactions/lock?id="]');
+							wait.waitForElement('div.alert.alert-warning.text-center', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										casper.echo('Message:'+ casper.fetchText('div.alert.alert-warning.text-center').trim(),'INFO');
+										casper.capture('123.png');
+										casper.test.assertExists('#backArrowPost');
+										casper.click('#backArrowPost');
+									} else {
+										casper.echo('Topic is not Locked','ERROR');
+									}	
+								}
+							});
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.unLockTopicListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with unlock option on topic listing page*****/
+		casper.echo('Verify back arrow with unlock option on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.click('input[name="id"]');
+				wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.echo('floating menu appears', 'INFO');
+							casper.test.assertExists('i.glyphicon.glyphicon-lock');
+							casper.click('i.glyphicon.glyphicon-lock');
+							wait.waitForTime(3000,casper,function(err){
+								if(!err){
+									try{
+										casper.test.assertExists('#unlock');
+										casper.click('#unlock');
+									}catch(e){
+										casper.test.assertDoesntExist('#unlock');
+									}
+									wait.waitForTime(5000,casper,function(err){
+										if(!err){
+											casper.capture('12345678.png');
+											casper.test.assertExists('#back_arrow_topic');
+											casper.click('#back_arrow_topic');
+										}
+									});
+								}
+							});
+						} else {
+							casper.echo('floating menu appears is not visible ', 'ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.unLockPostListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with unlock option on post listing page*****/
+		casper.echo('Verify back arrow with unlock option on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('a span.caret', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('a span.caret');
+							try{
+								casper.test.assertExists('a[href^="/mbactions/unlock?id="]');
+								casper.click('a[href^="/mbactions/unlock?id="]');
+								wait.waitForTime(5000,function(err){
+									if(!err){
+										casper.test.assertExists('#backArrowPost');
+										casper.click('#backArrowPost');
+									}
+								});
+							}catch(e){
+								casper.test.assertDoesntExist('a[href^="/mbactions/unlock?id="]');
+							}
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.pinTopicListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with pin topic on topic listing page*****/
+		casper.echo('Verify back arrow with pin topic on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.click('input[name="id"]');
+				wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.echo('floating menu appears', 'INFO');
+							casper.test.assertExists('i.icon.glyphicon-pushpin');
+							casper.click('i.icon.glyphicon-pushpin');
+							casper.test.assertExists('a#pin');
+							casper.click('a#pin');
+							wait.waitForTime(5000,casper,function(err){
+								if(!err){
+									casper.test.assertExists('#back_arrow_topic');
+									casper.click('#back_arrow_topic');
+								}
+							});
+						} else {
+							casper.echo('floating menu appears is not visible ', 'ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.pinPostListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with pin option on post listing page*****/
+		casper.echo('Verify back arrow with pin option on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('a span.caret', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('a span.caret'); 	
+							try{
+								casper.test.assertExist('a[href^="/mbactions/pin?id="]');
+								casper.click('a[href^="/mbactions/pin?id="]');
+								wait.waitForTime(5000,function(err){
+									if(!err){
+										casper.click('a span.caret'); 	
+										casper.test.assertExist('a[href^="/mbactions/unpin?id="]');
+										casper.echo('Message:Topic is pinned','INFO');
+										casper.test.assertExists('#backArrowPost');
+										casper.click('#backArrowPost');
+									}
+								});		
+							}catch(e){
+								casper.test.assertDoesntExist('a[href^="/mbactions/pin?id="]');
+							}										
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+
+backArrowTests.unPinTopicListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with unpin option on topic listing page*****/
+		casper.echo('Verify back arrow with unpin option on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.click('input[name="id"]');
+				wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.echo('floating menu appears', 'INFO');
+							casper.test.assertExists('i.icon.glyphicon-pushpin');
+							casper.click('i.icon.glyphicon-pushpin');
+							casper.test.assertExists('a#unpin');
+							casper.click('a#unpin');
+							wait.waitForTime(5000,casper,function(err){
+								if(!err){
+									casper.test.assertExists('#back_arrow_topic');
+									casper.click('#back_arrow_topic');
+								}
+							});
+						} else {
+							casper.echo('floating menu appears is not visible ', 'ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.unPinPostListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with unpin option on post listing page*****/
+		casper.echo('Verify back arrow with unpin option on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('a span.caret', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('a span.caret'); 	
+							try{
+								casper.test.assertExist('a[href^="/mbactions/unpin?id="]');
+								casper.click('a[href^="/mbactions/unpin?id="]');
+								wait.waitForTime(5000,function(err){
+									if(!err){
+										casper.click('a span.caret'); 	
+										casper.test.assertExist('a[href^="/mbactions/pin?id="]');
+										casper.echo('Message:Topic is unpinned','INFO');
+										casper.test.assertExists('#backArrowPost');
+										casper.click('#backArrowPost');
+									}
+								});		
+							}catch(e){
+								casper.test.assertDoesntExist('a[href^="/mbactions/unpin?id="]');
+							}										
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.deleteTopicListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with delete topic on topic listing page*****/
+		casper.echo('Verify back arrow with delete topic on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.click('input[name="id"]');
+				wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.test.assertExists('i.glyphicon.glyphicon-trash');
+							casper.click('i.glyphicon.glyphicon-trash');
+							wait.waitForTime(5000,casper,function(err){
+								if(!err){
+									casper.echo('Message:Post is Deleted Successfully','INFO');
+									casper.test.assertExists('#back_arrow_topic');
+									casper.click('#back_arrow_topic');
+								}
+							});
+						} else {
+							casper.echo('floating menu appears is not visible ', 'ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+
+
+
+
+
 
 
 
