@@ -15,11 +15,11 @@ registerSetting.featureTest = function(casper, test) {
 
 		registerSettingTests.blankUsername();
 
-		//registerSettingTests.backEndBirthday();
+		registerSettingTests.backEndBirthday();
 
-		//registerSettingTests.Signature();
+		registerSettingTests.Signature();
 
-		//registerSettingTests.instantMessage();
+		registerSettingTests.instantMessage();
 
 
 	});
