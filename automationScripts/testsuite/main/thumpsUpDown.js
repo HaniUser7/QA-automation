@@ -32,6 +32,24 @@ thumpsUpDown.featureTest = function(casper, test) {
 		//thumpsUpDownTestcases.clickOnOwnName();
 		
 		//"method To verify the functionality of reputation tab which is showing in profile page-
-		thumpsUpDownTestcases.clickReputationTab();
+		//thumpsUpDownTestcases.clickReputationTab();
+		
+		//method To verify the reputation functionality of back end(disable)"
+		//thumpsUpDownTestcases.verifyReputationTab();
+		
+		// Method to Verify  with the increasing  order of count
+		//thumpsUpDownTestcases.verifyIncreasedCount();
+		
+		// Metod To verify the counter of thumbs down
+		//thumpsUpDownTestcases.verifyDecreasedCount();
+		
+		// Method To verify the colour of like/dislike link
+		//thumpsUpDownTestcases.verifyColour();
+		
+		// "Method To verify the functionality of reputation on profile page"
+		//thumpsUpDownTestcases.verifyReputationOnProfilePage();
+		
+		//Method To verify the user account off case
+		thumpsUpDownTestcases.verifyUserAccountOffCase();
 	});
 };

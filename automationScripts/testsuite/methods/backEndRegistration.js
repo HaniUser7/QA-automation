@@ -22,7 +22,7 @@ backEndForumRegisterMethod.registerToBackEnd = function(data, driver, callback) 
 //Logout To Forum Back End
 
 backEndForumRegisterMethod.redirectToBackEndLogout = function(driver, test, callback) {
-	try {
+	/*try {
 		driver.test.assertExists('div.ui-dialog');
 		var errorMessage = driver.fetchText('div.ui-dialog div[id^="ui-id-"]');
 		var expectedErrorMsg = "There is already a user registered with the username ";
@@ -31,7 +31,20 @@ backEndForumRegisterMethod.redirectToBackEndLogout = function(driver, test, call
 		driver.test.assertDoesntExist('div.ui-dialog');
 		driver.test.assertDoesntExist('.tooltip p');
 		driver.click('a[href="/tool/members/login?action=logout"]');
-	}
+	}*/
+	casper.test.assertExists('a[data-tooltip-elm="ddAccount"]');
+		casper.click('a[data-tooltip-elm="ddAccount"]');
+		casper.test.assertExists('a[href="/tool/members/login?action=logout"]');
+		casper.click('a[href="/tool/members/login?action=logout"]');
+		wait.waitForElement('form[name="frmLogin"]', casper, function(err, isExists) {	
+			if(!err){
+				if(isExists) {
+					casper.echo('Logout Succesfully......','INFO');
+				} else {
+					casper.echo('Unable to logout successfully', 'ERROR');
+				}	
+			}
+		});
 	return callback(null);
 };
 
