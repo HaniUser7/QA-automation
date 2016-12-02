@@ -1,6 +1,7 @@
 /***These are the function which has been called in above test cases and also will be used in other js file as per requirement**********/
 'use strict';
 
+var config = require('../../../config/config.json');
 var backArrowMethods = module.exports = {};
 var wait = require('../wait.js');
 
@@ -81,7 +82,7 @@ backArrowMethods.selectCategory = function(data,driver,callback){
 															if(isExists) {
 																return callback(null);															
 															} else {
-																casper.echo('Back arrow does not appears in 5 seconds ', 'ERROR');
+																driver.echo('Back arrow does not appears in 5 seconds ', 'ERROR');
 															}	
 														}
 													});												}
@@ -102,6 +103,57 @@ backArrowMethods.selectCategory = function(data,driver,callback){
 				driver.echo('Category Doesnot open Sucessfully', 'ERROR');
 			}	
 		}
+	});
+}
+
+//Method to change the approval new post permission to all post
+var approveAllPost=function(driver,callback){
+	driver.thenOpen(config.backEndUrl,function() {
+		driver.echo('Login To Backend URL and Enable Approve New Posts', 'INFO');
+		driver.echo('Title of the page :' +driver.getTitle(), 'INFO');
+		driver.echo('---------------------------------------------------------------------------');		
+		//setting page -> security page
+		driver.waitForSelector('a[data-tooltip-elm="ddSettings"]', function success() {
+			driver.test.assertExists('a[data-tooltip-elm="ddSettings"]');
+			driver.click('a[data-tooltip-elm="ddSettings"]');
+			driver.waitForSelector('a[href="/tool/members/mb/settings?tab=Security"]', function success() {
+				driver.test.assertExists('a[href="/tool/members/mb/settings?tab=Security"]');
+				driver.click('a[href="/tool/members/mb/settings?tab=Security"]');
+				driver.waitForSelector('#post_approval', function success() {
+					driver.test.assertExists('#post_approval');
+					driver.click('#post_approval');
+					driver.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
+					driver.test.assertExists('button[type="submit"]');
+					driver.click('button[type="submit"]');
+					driver.waitUntilVisible('div#ajax-msg-top', function success() {
+						driver.echo('Forum Settings Changed Successfully','INFO');
+						driver.test.assertExists('a[data-tooltip-elm="ddAccount"]');
+						driver.click('a[data-tooltip-elm="ddAccount"]');
+						driver.test.assertExists('a[href="/tool/members/login?action=logout"]');
+						driver.click('a[href="/tool/members/login?action=logout"]');
+						wait.waitForElement('form[name="frmLogin"]', driver, function(err, isExists) {	
+							if(!err){
+								if(isExists) {
+									driver.echo('Logout Succesfully......','INFO');
+									return callback(null);
+								} else {
+									driver.echo('Unable to logout successfully', 'ERROR');
+								}	
+							}
+						});
+						},function fail(){
+							driver.echo('Forum setting is not changed','ERROR');
+					});
+					}, function fail() {
+						driver.echo('Post approval checkbox does not appears','ERROR');
+				});
+				}, function fail() {
+					driver.echo('Forum Setting page is not visible','ERROR');
+			});
+			}, function fail() {
+				driver.echo('Setting link is not visible','ERROR');
+		});
+
 	});
 }
 

@@ -12,13 +12,13 @@ var backArrowMethod  = require('../methods/backArrow.js');
 
 var json  = require('../../testdata/backArrowData.json');
 
-//Test Case for Register With Valid Information.
+
 
 backArrowTests.verifyBackArrow= function() {
 
 	/*****Verify back arrow on topic listing page*****/
 	casper.echo('Verify back arrow on topic listing page', 'INFO');
-	forumLoginMethod.loginToApp(json['registered_user'].username, json['registered_user'].password, casper, function(err) {
+	forumLoginMethod.loginToApp(json['admin_user'].username, json['admin_user'].password, casper, function(err) {
 		if(!err) {
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
 				if(!err){
@@ -512,6 +512,54 @@ backArrowTests.unPinPostListingPage = function() {
 	});	
 };
 
+backArrowTests.addPoll = function() {
+	casper.then(function(){
+		/*****Verify back arrow with Add poll option on post listing page*****/
+		casper.echo('Verify back arrow with Add poll option on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('a span.caret', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('a span.caret'); 						
+							casper.test.assertExist('a[href^="/poll/polladd?id="]');
+							casper.click('a[href^="/poll/polladd?id="]');
+							wait.waitForElement('form#formEditPoll', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										casper.sendKeys('#poll_question',  json['AddPoll'].pollQues, {reset:true});
+										casper.sendKeys('input[name="public"]',json['AddPoll'].publicCheckbox);
+										casper.sendKeys('#poll_option_1 div input',json['AddPoll'].option1, {reset:true});
+										casper.sendKeys('#poll_option_2 div input', json['AddPoll'].option2, {reset:true});
+										casper.click('#save_poll');
+										wait.waitForElement('input[name="pollvotesave"]', casper, function(err, isExists) {	
+											if(!err){
+												if(isExists) {
+													casper.echo('Message:Poll Added Successfully','INFO');	
+													casper.test.assertExists('#backArrowPost');
+													casper.click('#backArrowPost');
+												} else {
+													casper.echo('Poll Does not added Successfully','ERROR');
+												}	
+											}
+										});
+									} else {
+										casper.echo('Form Doesnt Found to add poll','ERROR');
+									}	
+								}
+							});
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
 backArrowTests.deleteTopicListingPage = function() {
 	casper.then(function(){
 		/*****Verify back arrow with delete topic on topic listing page*****/
@@ -540,6 +588,236 @@ backArrowTests.deleteTopicListingPage = function() {
 		}); 
 	});	
 };
+
+backArrowTests.pagination = function() {
+	casper.then(function(){
+		/*****Verify  back arrow  with pagination  on topic listing page*****/
+		casper.echo('Verify  back arrow  with pagination  on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('a.btn-subtle');
+				casper.click('a.btn-subtle');
+				wait.waitForElement('i.glyphicon.glyphicon-step-backward', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.test.assertExists('.panel-heading li:nth-child(2) a');
+							casper.click('.panel-heading li:nth-child(2) a');
+							wait.waitForElement('.panel-heading li:nth-child(2).active', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										casper.test.assertExists('#back_arrow_topic');
+										casper.click('#back_arrow_topic');
+										wait.waitForElement('.panel-heading li:nth-child(1).active', casper, function(err, isExists) {	
+											if(!err){
+												if(isExists) {
+													casper.echo('Navigate back to  latest topic listing page ', 'INFO');
+												} else {
+													casper.echo('latest topic is not appeared in 5 seconds ', 'ERROR');
+												}	
+											}
+										});
+									} else {
+										casper.echo('Sorting by new topic is not possible', 'ERROR');
+									}	
+								}
+							});	
+						} else {
+							casper.echo('Backward pagination does not found ', 'ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.editAnyPost = function() {
+	casper.then(function(){
+		/*****Verify back arrow with edit any post on post listing page*****/
+		casper.echo('Verify back arrow with edit any post on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('i.glyphicon.glyphicon-chevron-down', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('i.glyphicon.glyphicon-chevron-down');
+							casper.test.assertExists('a#edit_post_request');
+							casper.click('a#edit_post_request');
+							wait.waitForElement('#message1_ifr', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										casper.echo('Message:Post is Editable','INFO');
+										casper.withFrame('message1_ifr', function() {
+											casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+											casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+											casper.sendKeys('#tinymce',json['EditTopic'].content);
+										});
+										wait.waitForElement('input[name="save"]', casper, function(err, isExists) {	
+											if(!err){
+												if(isExists) {
+													casper.test.assertExists('input[name="save"]');
+													casper.click('input[name="save"]');
+													casper.wait(5000,function(){
+														casper.capture('1234.png');
+														casper.test.assertExists('#backArrowPost');
+														casper.click('#backArrowPost');
+														wait.waitForElement('.panel-heading li:nth-child(1).active', casper, function(err, isExists) {	
+															if(!err){
+																if(isExists) {
+																	casper.echo('Navigate back to  latest topic listing page ', 'INFO');
+																} else {
+																	casper.echo('latest topic is not appeared in 5 seconds ', 'ERROR');
+																}	
+															}
+														});
+													});
+												} else {
+													casper.echo('Post is not editable','ERROR');
+												}	
+											}
+										});
+										
+									} else {
+										casper.echo('Post is not editable','ERROR');
+									}	
+								}
+							});
+						} else {
+							casper.echo('Dropdown menu doesnot appears','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.ediTitle = function() {
+	casper.then(function(){
+		/*****Verify back arrow when user edit the title and user getting updated title after back.*****/
+		casper.echo('Verify back arrow when user edit the title and user getting updated title after back.', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('small#editTopic', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('small#editTopic');
+							wait.waitForElement('i.glyphicon.glyphicon-ok', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+												
+										casper.sendKeys('.editable-input input','', {reset : true});
+										casper.sendKeys('.editable-input input',json['EditTopic'].title);
+										casper.click('i.glyphicon.glyphicon-ok');
+										wait.waitForTime(2000,casper,function(err){
+											if(!err){
+												casper.test.assertExists('#backArrowPost');
+												casper.click('#backArrowPost');
+											}
+										});
+									} else {
+										casper.echo('button does not found to submit','ERROR');
+									}	
+								}
+							});
+						} else {
+							casper.echo('Topic title cannot be edited','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.cancelEditButton = function() {
+	casper.then(function(){
+		/*****Verify back arrow when user edit the post and cancel edit button *****/
+		casper.echo('Verify back arrow when user edit the post and cancel edit button ', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('i.glyphicon.glyphicon-chevron-down', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('i.glyphicon.glyphicon-chevron-down');
+							casper.test.assertExists('a#edit_post_request');
+							casper.click('a#edit_post_request');
+							wait.waitForElement('input[name="cancel"]', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										casper.test.assertExists('input[name="cancel"]');
+										casper.click('input[name="cancel"]');
+										casper.wait(2000,function(){
+											casper.test.assertExists('#backArrowPost');
+											casper.click('#backArrowPost');
+											wait.waitForElement('.panel-heading li:nth-child(1).active', casper, function(err, isExists) {	
+												if(!err){
+													if(isExists) {
+														casper.echo('Navigate back to  latest topic listing page ', 'INFO');
+														forumLoginMethod.logoutFromApp(casper,function(err){
+															if(!err){
+																casper.capture('123434.png');
+																casper.echo('Successfully logout','INFO');
+															}
+														});
+													} else {
+														casper.echo('latest topic is not appeared in 5 seconds ', 'ERROR');
+													}	
+												}
+											});
+										});
+									} else {
+										casper.echo('Post is not editable','ERROR');
+									}	
+								}
+							});
+						} else {
+							casper.echo('Dropdown menu doesnot appears','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.= function() {
+	casper.then(function(){
+		approveAllPost(casper,function(err){
+			if(!err){
+				casper.thenOpen(config.url,function(){
+					forumLoginMethod.loginToApp(json['registered_user'].username, json['registered_user'].password, casper, function(err) {
+						if(!err) {
+							wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+											backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+
+
+			}});
+						
+									} else {
+										casper.echo('Unable to successfully login ', 'ERROR');
+									}	
+								}
+							});
+						}
+					});
+				});
+
+
+			}
+		});	
+	});			
+}; 
+
 
 
 

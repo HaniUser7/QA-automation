@@ -44,8 +44,19 @@ backArrow.featureTest = function(casper, test) {
 
 		backArrowTests.unPinPostListingPage();
 
+		backArrowTests.addPoll();
+
 		backArrowTests.deleteTopicListingPage();
 
+		backArrowTests.pagination();	
 		
+		backArrowTests.editAnyPost();	
+
+		backArrowTests.ediTitle();
+
+		backArrowTests.cancelEditButton();
+
+		backArrowTests.xyz();
+	
 	});
 };

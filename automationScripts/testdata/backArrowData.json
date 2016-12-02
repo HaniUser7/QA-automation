@@ -1,14 +1,32 @@
 {
 
-  "registered_user" : {
+  "admin_user" : {
     	"username" : "801",
+        "password" : "1234"
+  },
+
+  "registered_user" : {
+    	"username" : "vishalg",
         "password" : "1234"
   },
   
   "StartTopic": {
 	"subject":"hello",
 	"content":"hey any one is here"
+ },
+
+  "AddPoll" : {
+	"pollQues" : "Are U Happy",
+	"publicCheckbox" : true,
+	"option1" : "YES",
+	"option2" : "NO"
+ },
+
+ "EditTopic" : {
+	"title"  :"NewTitle",
+	"content":"hey I have edited this Topic"
  }
+
 }
 
 
