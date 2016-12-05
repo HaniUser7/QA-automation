@@ -34,10 +34,10 @@ registerSetting.featureTest = function(casper, test) {
 		registerSettingTest.labelSignature();
 		
 		//8.verify instantMessage Back End And Fornt End Registration Page instantMessage Enable/Disable
-		registerSettingTest.labelInstantMessage();
+		//registerSettingTest.labelInstantMessage();
 
 
 	});
-r
+
 };
 
