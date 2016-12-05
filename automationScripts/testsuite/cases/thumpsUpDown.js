@@ -722,11 +722,293 @@ thumpsUpDownTestcases.verifyReputationOnProfilePage = function() {
 };
 //Method To verify the user account off case
 thumpsUpDownTestcases.verifyUserAccountOffCase = function() {
-	//Open Back-End URL And Get Title and logout if logged in
-	casper.thenOpen(config.url, function() {
+	//Open Back-End URL And Get Title and logout if logged in Method to disable User Account from back end
+	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                      CASE 15', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('*                       To verify the user account off case                        *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		thumpsUpDownMethod.disableUserAccount(casper, function(err) {
+			if(!err) {
+				casper.echo('Disable User Account method called ','INFO');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.click("a.topic-title");
+		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertDoesntExist('i.glyphicon.glyphicon-like-alt','Like thump not find hence verified');
+				casper.test.assertDoesntExist('i.glyphicon.glyphicon-dislike-alt','Like thump not find hence verified');
+			} else {
+							
+			}
+		});
+	});
+	/*casper.thenOpen(config.backEndUrl, function() {
+		thumpsUpDownMethod.enableUserAccount(casper, function(err) {
+			if(!err) {
+				casper.echo('Enable User Account method called ','INFO');
+			}
+		});
+	});*/
+};
+// Method To verify user reputation
+thumpsUpDownTestcases.verifyReputation = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 18', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                To verify the functionality of reputation on profile page-        *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function() {
+			casper.echo('Processing to Login on forum.....', 'INFO');
+			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
+				if(isExists) {
+					casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
+					wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+						if(isExists) {
+							thumpsUpDownMethod.postTopicpage(json.newTopic, casper, function(err) {
+								if(!err) {
+									casper.echo('new topic created', 'INFO');
+								}else {
+									casper.echo('Error : '+err, 'INFO');
+								}
+							});
+								
+						} else {
+							
+						}
+					});
+				} else {
+				
+				}
+			});
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});	
+	});
+	casper.thenOpen(config.url, function() {
+		forumLoginMethod.loginToApp("hsk", "hsk", casper, function() {
+			casper.echo('Processing to Login on forum.....', 'INFO');
+			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
+				if(isExists) {
+					casper.click('ul.nav.pull-right span.caret');
+					//wait.waitForElement('span.pull-right.user-nav-panel', casper, function(err, isExists) {
+						//f(isExists) {
+							casper.capture('b.png');
+							casper.test.assertExists('a[href^="/profile"]');
+							casper.click('a[href^="/profile"]');
+								casper.wait(2000, function() {
+									casper.capture('fgfgh.png');
+									var reputationCount = casper.fetchText('li.reputation span.profile-count a');
+									var reputationCount2;
+									casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
+									casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
+									casper.click('i.glyphicon.glyphicon-like-alt');
+									//casper.test.assertExists('i.glyphicon.glyphicon-trash.text-muted.pull-right');
+									//casper.click('i.glyphicon.glyphicon-trash.text-muted.pull-right');
+									casper.wait(1000, function() {
+										casper.reload(function() {
+											casper.echo('The page is reloaded','INFO');
+											reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+											casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+											if(reputationCount > reputationCount2) {
+												casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+											}
+											if(reputationCount < reputationCount2) {
+												casper.echo('The post is deleted and count is added in reputation.','INFO');
+											}
+										});
+									});
+								});
+						//} else {
+				
+						//}
+					//});
+				} else {
+				
+				}
+			});
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});	
+	});
+};
+// Method To verify the like/unlike icon in guest user 
+thumpsUpDownTestcases.verifyLikeInGuestUser = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 20', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                       To verify the like/unlike icon in guest user               *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.click("a.topic-title");
+		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
+				casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Dislike thump find hence verified');
+			} else {
+							
+			}
+		});
+	});
+};
+// Method verify with log in pop up
+thumpsUpDownTestcases.verifyLogInPopUp = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 21', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                         To verify  with log in pop up                            *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.click("a.topic-title");
+		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
+				casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Dislike thump find hence verified');
+				casper.click('i.glyphicon.glyphicon-like-alt');
+				wait.waitForElement('div#form-dialog', casper,function(err, isExists) {
+					if(isExists) {
+						
+					} else {
+							
+					}
+				});
+			} else {
+							
+			}
+		});
+	});
+};
+// Method To verify the forget pass word link of pop up window
+thumpsUpDownTestcases.verifyLogInPopUp = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 25', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                 To verify  the forget pass word link of pop up window            *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.click("a.topic-title");
+		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
+				//casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Dislike thump find hence verified');
+				casper.click('i.glyphicon.glyphicon-like-alt');
+				wait.waitForElement('div#form-dialog', casper,function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('div.pull-right a#anchor_tab_forget_password');
+						casper.click('div.pull-right a#anchor_tab_forget_password');
+						wait.waitForElement('div.panel-body.table-responsive', casper,function(err, isExists) {
+							if(isExists) {
+								casper.test.assertExists('div.panel-body.table-responsive form.form-horizontal','Forgot password link redirected');
+						
+							} else {
+							
+							}
+						});
+					} else {
+							
+					}
+				});
+			} else {
+							
+			}
+		});
+	});
+};
+// Method "to verify create account link on pop up window when new registration is disable"
+thumpsUpDownTestcases.verifyCreateAccountInPopUp = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 26', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('* To verify  create account link on pop up window when new registration is disable *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.click("a.topic-title");
+		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
+				casper.click('i.glyphicon.glyphicon-like-alt');
+				wait.waitForElement('div#form-dialog', casper,function(err, isExists) {
+					if(isExists) {
+						casper.test.assertDoesntExist('span.text-block','Create account not found hence verified');
+					} else {
+							
+					}
+				});
+			} else {
+							
+			}
+		});
+	});
+};
+
+// Method To verify like list of fb user
+thumpsUpDownTestcases.verifyFbUserLikersList = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 29', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                          To verify like list of fb user                          *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.test.assertExists('a[href="/register/login"]');
+		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('div.modal-footer a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
+		casper.click('div.modal-footer a#fb_login em');
+		casper.waitForPopup(/facebook/, function(popup) {
+		});
+		casper.withPopup(/facebook/ , function() {
+			casper.waitForSelector('form#login_form', function success(){
+				casper.test.assertExists('form#login_form','Form Found');
+				//casper.echo("responseData.email : " +responseData.email+ " & responseData.pass : " +responseData.pass);
+				casper.fill('form#login_form',{
+					'email': "neha2top@gmail.com",
+					'pass': "vishal@kvs"
+				}, false);
+						
+				casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
+				casper.click('form[id="login_form"] input[id="u_0_2"]');
+			},function fail(){
+				casper.echo('Facebook Form Not Found','ERROR');
+			});			
+		});
+				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+					if(isExists) {
+						casper.click("a.topic-title");
+						wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('a[id^=total_vote_up_count_]');
+								casper.wait(5000, function() {
+									casper.capture('df.png');
+									casper.test.assertExists('ul#who-all','List of users found');
+								});
+							} else {
+							
+							}
+						});
+					} else {
+							
+					}
+				});
+		/*casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});*/
+	});
+};
+
+// Method To verify likers/dislikers list 
+thumpsUpDownTestcases.verifyLikersList = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 28', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                          To verify likers/dislikers list                         *', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
@@ -736,7 +1018,11 @@ thumpsUpDownTestcases.verifyUserAccountOffCase = function() {
 						casper.click("a.topic-title");
 						wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
 							if(isExists) {
-							
+								casper.click('a[id^=total_vote_up_count_]');
+								casper.wait(2000, function() {
+									casper.capture('df.png');
+									casper.test.assertExists('ul#who-all','List of users found');
+								});
 							} else {
 							
 							}
@@ -752,5 +1038,245 @@ thumpsUpDownTestcases.verifyUserAccountOffCase = function() {
 		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
 		});
+	});
+};
+
+// Method To verify reputaion count of fb user
+thumpsUpDownTestcases.reputationCountFbUser = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 27', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                        To verify reputaion count of fb user                      *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.test.assertExists('a[href="/register/login"]');
+		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('div.modal-footer a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
+		casper.click('div.modal-footer a#fb_login em');
+		casper.waitForPopup(/facebook/, function(popup) {
+		});
+		casper.withPopup(/facebook/ , function() {
+			casper.waitForSelector('form#login_form', function success(){
+				casper.test.assertExists('form#login_form','Form Found');
+				//casper.echo("responseData.email : " +responseData.email+ " & responseData.pass : " +responseData.pass);
+				casper.fill('form#login_form',{
+					'email': "neha2top@gmail.com",
+					'pass': "vishal@kvs"
+				}, false);
+						
+				casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
+				casper.click('form[id="login_form"] input[id="u_0_2"]');
+			},function fail(){
+				casper.echo('Facebook Form Not Found','ERROR');
+			});			
+		});
+		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+			if(isExists) {
+				casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
+				wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+					if(isExists) {
+						thumpsUpDownMethod.postTopicpage(json.newTopic, casper, function(err) {
+							if(!err) {
+								casper.echo('new topic created', 'INFO');
+							}else {
+								casper.echo('Error : '+err, 'INFO');
+							}
+						});
+								
+					} else {
+							
+					}
+				});
+			} else {
+							
+			}
+		});
+		casper.then(function() {
+			//forumLoginMethod.logoutFromApp(casper, function() { });
+		//});*/
+		casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
+		casper.click('ul.nav.pull-right span.caret');
+		casper.capture('111.png');
+		try {
+			test.assertExists('a#logout');			
+			casper.click('a#logout');
+			casper.waitForSelector('a#td_tab_login', function() {
+				casper.capture('logout1.png');
+				casper.test.assertExists('a#td_tab_login');
+			});			
+		}catch(e) {
+			casper.test.assertDoesntExist('a#logout');
+		}
+		});	        
+	});
+	casper.thenOpen(config.url, function() {
+		forumLoginMethod.loginToApp("hsk", "hsk", casper, function() {
+			casper.echo('Processing to Login on forum.....', 'INFO');
+			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
+				if(isExists) {
+					casper.click('ul.nav.pull-right span.caret');
+					//wait.waitForElement('span.pull-right.user-nav-panel', casper, function(err, isExists) {
+						//f(isExists) {
+							casper.capture('b.png');
+							casper.test.assertExists('a[href^="/profile"]');
+							casper.click('a[href^="/profile"]');
+								casper.wait(2000, function() {
+									casper.capture('fgfgh.png');
+									var reputationCount = casper.fetchText('li.reputation span.profile-count a');
+									var reputationCount2;
+									casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
+									casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
+									casper.click('i.glyphicon.glyphicon-like-alt');
+									//casper.test.assertExists('i.glyphicon.glyphicon-trash.text-muted.pull-right');
+									//casper.click('i.glyphicon.glyphicon-trash.text-muted.pull-right');
+									casper.wait(1000, function() {
+										casper.reload(function() {
+											casper.echo('The page is reloaded','INFO');
+											reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+											casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+											if(reputationCount > reputationCount2) {
+												casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+											}
+											if(reputationCount < reputationCount2) {
+												casper.echo('The post is deleted and count is added in reputation.','INFO');
+											}
+										});
+									});
+								});
+						//} else {
+				
+						//}
+					//});
+				} else {
+				
+				}
+			});
+		});
+		/*casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});*/	
+	});
+};
+// Method To verify reputaion link on profile page when reputation is off for fb user
+thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                      CASE 31', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*   To verify reputaion link on profile page when reputation is off for fb user    *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		// method called to change the backend setting-> disable reputation functionality
+		thumpsUpDownMethod.disableReputation(casper, function(err) {
+			if(!err) {
+				casper.echo('Disable reputation functionality method called ','INFO');
+			}
+		});
+	});
+	//Open front and logged in from fb user
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.test.assertExists('a[href="/register/login"]');
+		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
+		casper.click('a#fb_login em');
+		casper.waitForPopup(/facebook/, function(popup) {
+		});
+		casper.withPopup(/facebook/ , function() {
+			casper.waitForSelector('form#login_form', function success(){
+				casper.test.assertExists('form#login_form','Form Found');
+				casper.fill('form#login_form',{
+					'email': "neha2top@gmail.com",
+					'pass': "vishal@kvs"
+				}, false);
+						
+				casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
+				casper.click('form[id="login_form"] input[id="u_0_2"]');
+			},function fail(){
+				casper.echo('Facebook Form Not Found','ERROR');
+			});			
+		});
+		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+			if(isExists) {
+				casper.click('ul.nav.pull-right span.caret');
+				casper.capture('b.png');
+				casper.test.assertExists('a[href^="/profile"]');
+				casper.click('a[href^="/profile"]');
+				casper.wait(2000, function() {
+					casper.capture('fgfgh.png');
+				});
+			} else {
+				
+			}
+		});
+		/*casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});*/	
+	});
+	casper.thenOpen(config.backEndUrl, function() {
+		// method called to change the backend setting-> enable Reputation
+		thumpsUpDownMethod.enableReputation(casper, function(err) {
+			if(!err) {
+				casper.echo('Enable Reputation method called ','INFO');
+			}
+		});
+	});
+};
+// Method To verify reputaion link on profile page when reputation is on for fb user
+thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                      CASE 32', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*   To verify reputaion link on profile page when reputation is on for fb user    *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		// method called to change the backend setting-> disable reputation functionality
+		thumpsUpDownMethod.enableReputation(casper, function(err) {
+			if(!err) {
+				casper.echo('Disable reputation functionality method called ','INFO');
+			}
+		});
+	});
+	//Open front and logged in from fb user
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		casper.test.assertExists('a[href="/register/login"]');
+		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
+		casper.click('a#fb_login em');
+		casper.waitForPopup(/facebook/, function(popup) {
+		});
+		casper.withPopup(/facebook/ , function() {
+			casper.waitForSelector('form#login_form', function success(){
+				casper.test.assertExists('form#login_form','Form Found');
+				casper.fill('form#login_form',{
+					'email': "neha2top@gmail.com",
+					'pass': "vishal@kvs"
+				}, false);
+						
+				casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
+				casper.click('form[id="login_form"] input[id="u_0_2"]');
+			},function fail(){
+				casper.echo('Facebook Form Not Found','ERROR');
+			});			
+		});
+		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+			if(isExists) {
+				casper.click('ul.nav.pull-right span.caret');
+				casper.capture('b.png');
+				casper.test.assertExists('a[href^="/profile"]');
+				casper.click('a[href^="/profile"]');
+				casper.wait(2000, function() {
+					casper.capture('fgfgh.png');
+				});
+			} else {
+				
+			}
+		});
+		/*casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});*/	
 	});
 };

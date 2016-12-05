@@ -50,6 +50,33 @@ thumpsUpDown.featureTest = function(casper, test) {
 		//thumpsUpDownTestcases.verifyReputationOnProfilePage();
 		
 		//Method To verify the user account off case
-		thumpsUpDownTestcases.verifyUserAccountOffCase();
+		//thumpsUpDownTestcases.verifyUserAccountOffCase();
+		
+		// Method To verify user reputation
+		//thumpsUpDownTestcases.verifyReputation();
+		
+		// Method To verify the like/unlike icon in guest user 
+		//thumpsUpDownTestcases.verifyLikeInGuestUser();
+		
+		// Method To verify the forget pass word link of pop up window
+		//thumpsUpDownTestcases.verifyLogInPopUp();
+		
+		// Method "to verify create account link on pop up window when new registration is disable"
+		//thumpsUpDownTestcases.verifyCreateAccountInPopUp();
+		
+		// Method To verify likers/dislikers list 
+		//thumpsUpDownTestcases.verifyLikersList();
+		
+		// Method To verify like list of fb user
+		//thumpsUpDownTestcases.verifyFbUserLikersList();
+		
+		// Method To verify reputaion count of fb user
+		//thumpsUpDownTestcases.reputationCountFbUser();
+		
+		// Method To verify reputaion link on profile page when reputation is off for fb user
+		//thumpsUpDownTestcases.verifyReputationOnFbUser();
+		
+		// Method To verify reputaion link on profile page when reputation is on for fb user
+		thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn();
 	});
 };

@@ -32,18 +32,6 @@ thumpsUpDownMethod.verifySuccessMsg = function(successMsg, expectedSuccessMsg, m
 	return callback(null);
 };
 
-// method for goto New Topic page to application
-thumpsUpDownMethod.gotoNewTopicpage = function(driver, callback) {
-	driver.test.assertExists('#links-nav');
-	driver.click('#links-nav');
-	driver.test.assertExists('#latest_topics_show');
-	driver.click('#latest_topics_show');
-	driver.waitForSelector('a[href="/post/printadd"]', function success() {
-		this.click('a[href="/post/printadd"]');
-		return callback(null);
-	});
-};
-
 // method for goto post topic page to application
 thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 	casper.echo("data.title : "+data.title, 'INFO');
@@ -55,7 +43,7 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 		this.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
  		this.sendKeys('#tinymce', data.content);
 	});	
-		driver.wait(3000);
+		//driver.wait(3000);
 		driver.click('#all_forums_dropdown');
 		driver.fill('form[name="PostTopic"]',{
 			'forum' : data.category
@@ -284,6 +272,7 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 										utils.enableorDisableCheckbox('reputation', true, casper, function() {
 											casper.echo('checkbox is checked', 'INFO');
 										});
+										wait(5000, function() {
 										try {
 												casper.test.assertExists('button.button.btn-m.btn-blue');
 												casper.click('button.button.btn-m.btn-blue');
@@ -292,6 +281,7 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 												return callback(null);
 											}
+										});
 									} else {
 										casper.echo('Reputation checkbox', 'ERROR');
 									}
@@ -326,16 +316,19 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 								casper.click('div#ddSettings a:nth-child(2)');
 								wait.waitForElement('input#REQreg', casper, function(err, isExists) {
 									if(isExists) {
-										utils.enableorDisableCheckbox('reqreg', false, casper, function() {
+										utils.enableorDisableCheckbox('REQreg', false, casper, function() {
 											casper.echo('checkbox is uncheckedchecked', 'INFO');
 										});
+										
+										casper.click('div.ui-dialog-buttonset button');
+										casper.capture('asd15.png');
 										try {
 												casper.test.assertExists('button.button.btn-m.btn-blue');
+												casper.mouse.move('button.button.btn-m.btn-blue');
 												casper.click('button.button.btn-m.btn-blue');
-												return callback(null);
+												
 											}catch(e) {
 												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-												return callback(null);
 											}
 									} else {
 										casper.echo('User Account checkbox not found', 'ERROR');
@@ -356,10 +349,11 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 		casper.then(function() {
 			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 			});
+		return callback(null);
 		});
 };
 //Method to enable User Account from back end
-thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
+thumpsUpDownMethod.enableUserAccount = function(driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
 			if(!err) {
 				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
@@ -371,7 +365,7 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 								casper.click('div#ddSettings a:nth-child(2)');
 								wait.waitForElement('input#REQreg', casper, function(err, isExists) {
 									if(isExists) {
-										utils.enableorDisableCheckbox('reqreg', true, casper, function() {
+										utils.enableorDisableCheckbox('REQreg', true, casper, function() {
 											casper.echo('checkbox is checked', 'INFO');
 										});
 										try {
@@ -403,3 +397,5 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 			});
 		});
 };
+
+
