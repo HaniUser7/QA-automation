@@ -129,7 +129,7 @@ loginPrivacyOptionTests.loginPrivacyFrmCalender=function() {
 	});
 };
 
-//loginPrivacyOptionTests.loginPrivacyFrmCalender
+//loginPrivacyOptionTests.loginPrivacyFrmDonate
 loginPrivacyOptionTests.loginPrivacyDonate=function() {
 	casper.thenOpen(config.backEndUrl ,function(){			
 		casper.echo('***********Check Login from Donate option is side menu**************','INFO');		

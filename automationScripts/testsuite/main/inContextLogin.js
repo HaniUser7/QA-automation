@@ -21,9 +21,9 @@ inContextLogin.featureTest = function(casper, test) {
 		//Incontext Login while Like this Topic from list of topics 
 		inContextLoginTests.inContextLoginLikeTopicHome();
 		//Verify Forgot Password link on InContext Login popup
-		/*inContextLoginTests.inContextLoginForgotpassword();
+		/*inContextLoginTests.inContextLoginForgotpassword();*/
 		//inContext Login from vote on post from post list 
-		inContextLoginTests.inContextLoginVoteOnpost();	*/
+		inContextLoginTests.inContextLoginVoteOnpost();	
 		
 		//inContext Login from Email button on Profile view screen of any user
 		inContextLoginTests.inContextLoginEmailButton();
@@ -31,7 +31,17 @@ inContextLogin.featureTest = function(casper, test) {
 		inContextLoginTests.inContextLoginTopicListing();
 		//inContext Login from the Forum Main page when 'View Forum' permission is Disabled.
 		inContextLoginTests.inContextLoginForumDisable();
+
+		// Login from post listing page when 'View Attachment' permission is Disabled.
 		
+		inContextLoginTests.inContextLoginViewAttachment();
+
+		//inContext Login  when 'View Profile' permission is Disabled.
+		inContextLoginTests.inContextLoginViewProfileDisable();
+		//inContext Login when View Calendar permission is Disabled
+		inContextLoginTests.inContextLoginViewCalendarDisable();
+		//Login when 'Post Event' permission is Disabled.
+		inContextLoginTests.inContextLoginPostEvent();
 
 	});
 

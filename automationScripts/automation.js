@@ -42,7 +42,17 @@ switch (feature) {
 				test.done();
 			});
 		});
-	break;		
+	break;
+	
+	case "       ":
+		casper.test.begin('Verify Login page on Forum by enabling Privacy Private  option from backend' , function(test) {
+			var loginByPrivacyOption=require("../testsuite/main/loginByPrivacyOption.js");
+			loginByPrivacyOption.featureTest(casper,casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});	
+		
 
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 

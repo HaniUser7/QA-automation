@@ -6,20 +6,22 @@ var wait=require('../wait.js');
 //Login To Forum Back End
 loginPrivacyOptionMethod.loginToForumBackEnd = function(driver,callback) {
 		
-	//Click On Login Link 
-	wait.waitForElement('a#navLogin', casper, function(err, isExist) {
-		if(isExist) {
-			driver.click('a#navLogin');
-			driver.echo('Successfully open login form.....', 'INFO');
-			fillDataToLogin(config.backendCred, driver, function(err) {
-				if (!err)
-					driver.echo('Proccessing to login on forum back end....', 'INFO');
+	//Click On Login Link
+	wait.waitForTime('1000' , casper , function(err) {
+		wait.waitForElement('a#navLogin', casper, function(err, isExist) {
+			if(isExist) {
+				driver.click('a#navLogin');
+				driver.echo('Successfully open login form.....', 'INFO');
+				fillDataToLogin(config.backendCred, driver, function(err) {
+					if (!err)
+						driver.echo('Proccessing to login on forum back end....', 'INFO');
 				
-			});
-		} else {
-			driver.echo('Login Link Not Found', 'ERROR');
-		}
-		return callback(null)
+				});
+			} else {
+				driver.echo('Login Link Not Found', 'ERROR');
+			}
+			return callback(null)
+		});
 	});
 };
 
