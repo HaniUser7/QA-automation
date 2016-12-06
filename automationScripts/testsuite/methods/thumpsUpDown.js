@@ -272,8 +272,8 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 										utils.enableorDisableCheckbox('reputation', true, casper, function() {
 											casper.echo('checkbox is checked', 'INFO');
 										});
-										wait(5000, function() {
-										try {
+										//casper.wait(5000, function() {
+											try {
 												casper.test.assertExists('button.button.btn-m.btn-blue');
 												casper.click('button.button.btn-m.btn-blue');
 												return callback(null);
@@ -281,7 +281,7 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 												return callback(null);
 											}
-										});
+										//});
 									} else {
 										casper.echo('Reputation checkbox', 'ERROR');
 									}

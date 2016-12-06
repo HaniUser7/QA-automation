@@ -97,7 +97,7 @@ thumpsUpDownTestcases.registerUserOnTopicListingPageLike = function() {
 						casper.capture('fgfgh.png');
 					});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -303,11 +303,11 @@ thumpsUpDownTestcases.clickOnOwnName = function() {
 											});
 										});
 									} else {
-							
+										casper.echo('Post not found','ERROR');
 									}
 								});
 							} else {
-							
+								casper.echo('User not logged in','ERROR');
 							}
 						});
 					}else {
@@ -367,15 +367,15 @@ thumpsUpDownTestcases.clickReputationTab = function() {
 										});
 									});
 								} else {
-				
+									casper.echo('Not clicked on a member','ERROR');
 								}
 							});
 						} else {
-				
+							casper.echo('Member list not found','ERROR');
 						}
 					});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -416,15 +416,15 @@ thumpsUpDownTestcases.verifyReputationTab = function() {
 										casper.capture('fgh.png');
 									});
 								} else {
-				
+									casper.echo('Not clicked on a member','ERROR');
 								}
 							});
 						} else {
-				
+							casper.echo('Member list not found','ERROR');
 						}
 					});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -477,11 +477,11 @@ thumpsUpDownTestcases.verifyIncreasedCount = function() {
 									});
 								}
 							} else {
-							
+								casper.echo('Not clicked on Topic','ERROR');
 							}
 						});
 					} else {
-							
+						casper.echo('User not logged in','ERROR');		
 					}
 				});
 			}else {
@@ -531,11 +531,11 @@ thumpsUpDownTestcases.verifyDecreasedCount = function() {
 									});
 								}
 							} else {
-							
+								casper.echo('Not clicked on Topic','ERROR');
 							}
 						});
 					} else {
-							
+						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
@@ -599,11 +599,11 @@ thumpsUpDownTestcases.verifyDecreasedCount = function() {
 									});
 								}
 							} else {
-							
+								casper.echo('Not clicked on Topic','ERROR');
 							}
 						});
 					} else {
-							
+						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
@@ -634,7 +634,8 @@ thumpsUpDownTestcases.verifyColour = function() {
 								try {
 									casper.test.assertExists('a.login_dialog.text-muted.voted-yes','the post is already liked by the user ');
 									var colour = casper.evaluate(function() {
-										var color = document.querySelector('.post-options a.text-muted.voted-yes').style.color;
+										//var color = document.querySelector('.post-options a.text-muted.voted-yes').style.color;
+										var color = document.querySelector('a#post_vote_up_34222956').getAttribute('color');
 										return color;
 									});
 									casper.echo('The color of the like thump after clicked'+colour,'INFO');
@@ -650,11 +651,11 @@ thumpsUpDownTestcases.verifyColour = function() {
 									});
 								}
 							} else {
-							
+								casper.echo('Not clicked on Topic','ERROR');
 							}
 						});
 					} else {
-							
+						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
@@ -711,7 +712,7 @@ thumpsUpDownTestcases.verifyReputationOnProfilePage = function() {
 						//}
 					//});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -743,7 +744,7 @@ thumpsUpDownTestcases.verifyUserAccountOffCase = function() {
 				casper.test.assertDoesntExist('i.glyphicon.glyphicon-like-alt','Like thump not find hence verified');
 				casper.test.assertDoesntExist('i.glyphicon.glyphicon-dislike-alt','Like thump not find hence verified');
 			} else {
-							
+				casper.echo('Not clicked on Topic','ERROR');			
 			}
 		});
 	});
@@ -779,11 +780,11 @@ thumpsUpDownTestcases.verifyReputation = function() {
 							});
 								
 						} else {
-							
+							casper.echo('Start New Topic button not found','ERROR');
 						}
 					});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -830,7 +831,7 @@ thumpsUpDownTestcases.verifyReputation = function() {
 						//}
 					//});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -853,7 +854,7 @@ thumpsUpDownTestcases.verifyLikeInGuestUser = function() {
 				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
 				casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Dislike thump find hence verified');
 			} else {
-							
+				casper.echo('Not clicked on Topic','ERROR');			
 			}
 		});
 	});
@@ -876,11 +877,11 @@ thumpsUpDownTestcases.verifyLogInPopUp = function() {
 					if(isExists) {
 						
 					} else {
-							
+						casper.echo('Login Popup not appeared','ERROR');	
 					}
 				});
 			} else {
-							
+				casper.echo('Not clicked on Topic','ERROR');			
 			}
 		});
 	});
@@ -908,15 +909,15 @@ thumpsUpDownTestcases.verifyLogInPopUp = function() {
 								casper.test.assertExists('div.panel-body.table-responsive form.form-horizontal','Forgot password link redirected');
 						
 							} else {
-							
+								casper.echo('Not clicked on Forgot password link','ERROR');
 							}
 						});
 					} else {
-							
+						casper.echo('Popup not appeared','ERROR');	
 					}
 				});
 			} else {
-							
+				casper.echo('Not clicked on Topic','ERROR');			
 			}
 		});
 	});
@@ -938,11 +939,11 @@ thumpsUpDownTestcases.verifyCreateAccountInPopUp = function() {
 					if(isExists) {
 						casper.test.assertDoesntExist('span.text-block','Create account not found hence verified');
 					} else {
-							
+						casper.echo('Popup not appeared','ERROR');	
 					}
 				});
 			} else {
-							
+				casper.echo('Not clicked on Topic','ERROR');			
 			}
 		});
 	});
@@ -978,24 +979,24 @@ thumpsUpDownTestcases.verifyFbUserLikersList = function() {
 				casper.echo('Facebook Form Not Found','ERROR');
 			});			
 		});
-				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+			if(isExists) {
+				casper.click("a.topic-title");
+				wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
 					if(isExists) {
-						casper.click("a.topic-title");
-						wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
-							if(isExists) {
-								casper.click('a[id^=total_vote_up_count_]');
-								casper.wait(5000, function() {
-									casper.capture('df.png');
-									casper.test.assertExists('ul#who-all','List of users found');
-								});
-							} else {
-							
-							}
+						casper.click('a[id^=total_vote_up_count_]');
+						casper.wait(5000, function() {
+							casper.capture('df.png');
+							casper.test.assertExists('ul#who-all','List of users found');
 						});
 					} else {
-							
+						casper.echo('Not clicked on Topic','ERROR');	
 					}
 				});
+			} else {
+				casper.echo('User not logged in','ERROR');			
+			}
+		});
 		/*casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
 		});*/
@@ -1024,11 +1025,11 @@ thumpsUpDownTestcases.verifyLikersList = function() {
 									casper.test.assertExists('ul#who-all','List of users found');
 								});
 							} else {
-							
+								casper.echo('Not clicked on Topic','ERROR');
 							}
 						});
 					} else {
-							
+						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
@@ -1082,32 +1083,31 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 							}else {
 								casper.echo('Error : '+err, 'INFO');
 							}
-						});
-								
+						});		
 					} else {
-							
+						casper.echo('Start New Topic not found','ERROR');	
 					}
 				});
 			} else {
-							
+				casper.echo('User not logged in','ERROR');				
 			}
 		});
 		casper.then(function() {
 			//forumLoginMethod.logoutFromApp(casper, function() { });
 		//});*/
-		casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
-		casper.click('ul.nav.pull-right span.caret');
-		casper.capture('111.png');
-		try {
-			test.assertExists('a#logout');			
-			casper.click('a#logout');
-			casper.waitForSelector('a#td_tab_login', function() {
-				casper.capture('logout1.png');
-				casper.test.assertExists('a#td_tab_login');
-			});			
-		}catch(e) {
-			casper.test.assertDoesntExist('a#logout');
-		}
+			casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
+			casper.click('ul.nav.pull-right span.caret');
+			casper.capture('111.png');
+			try {
+				test.assertExists('a#logout');			
+				casper.click('a#logout');
+				casper.waitForSelector('a#td_tab_login', function() {
+					casper.capture('logout1.png');
+					casper.test.assertExists('a#td_tab_login');
+				});			
+			}catch(e) {
+				casper.test.assertDoesntExist('a#logout');
+			}
 		});	        
 	});
 	casper.thenOpen(config.url, function() {
@@ -1149,7 +1149,7 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 						//}
 					//});
 				} else {
-				
+					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
@@ -1207,7 +1207,7 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 					casper.capture('fgfgh.png');
 				});
 			} else {
-				
+				casper.echo('User not logged in','ERROR');
 			}
 		});
 		/*casper.then(function() {
@@ -1272,7 +1272,7 @@ thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
 					casper.capture('fgfgh.png');
 				});
 			} else {
-				
+				casper.echo('User not logged in','ERROR');
 			}
 		});
 		/*casper.then(function() {

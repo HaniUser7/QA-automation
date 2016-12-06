@@ -44,7 +44,7 @@ thumpsUpDown.featureTest = function(casper, test) {
 		//thumpsUpDownTestcases.verifyDecreasedCount();
 		
 		// Method To verify the colour of like/dislike link
-		//thumpsUpDownTestcases.verifyColour();
+		thumpsUpDownTestcases.verifyColour();
 		
 		// "Method To verify the functionality of reputation on profile page"
 		//thumpsUpDownTestcases.verifyReputationOnProfilePage();
@@ -77,6 +77,6 @@ thumpsUpDown.featureTest = function(casper, test) {
 		//thumpsUpDownTestcases.verifyReputationOnFbUser();
 		
 		// Method To verify reputaion link on profile page when reputation is on for fb user
-		thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn();
+		//thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn();
 	});
 };
