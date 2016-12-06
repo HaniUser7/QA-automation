@@ -28,6 +28,12 @@ backArrow.featureTest = function(casper, test) {
 
 		backArrowTests.forumListingPage();
 
+		backArrowTests.moveTopicListingPage();
+
+		backArrowTests.movePostListingPage();
+
+		backArrowTests.movePostfromPostListingPage();
+
 		backArrowTests.lockTopicListingPage();
 
 		backArrowTests.lockPostListingPage();
@@ -56,7 +62,9 @@ backArrow.featureTest = function(casper, test) {
 
 		backArrowTests.cancelEditButton();
 
-		backArrowTests.xyz();
+		backArrowTests.approvePostListingPage();
+
+		backArrowTests.approvePage();
 	
 	});
 };

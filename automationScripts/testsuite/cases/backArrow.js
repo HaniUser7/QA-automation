@@ -210,7 +210,7 @@ backArrowTests.forumListingPage = function() {
 			if(!err){
 				if(isExists) {
 					casper.reload(function(){
-						backArrowMethod.startTopic(json['StartTopic'],casper ,function(err){
+						backArrowMethod.startTopic(json['StartTopic'], casper ,function(err){
 							if(!err){
 								casper.test.assertExists('#backArrowPost');
 								casper.click('#backArrowPost');
@@ -222,6 +222,158 @@ backArrowTests.forumListingPage = function() {
 				}	
 			}
 		});	
+	});	
+};
+
+backArrowTests.moveTopicListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with move topic on topic listing page*****/
+		casper.echo('Verify back arrow with move topic on topic listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'], casper, function(err){
+			if(!err){
+				casper.click('input[name="id"]');
+				wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.echo('floating menu appears', 'INFO');
+							casper.test.assertExists('#move');
+							casper.click('#move');
+							wait.waitForElement('form[name=admindd]', casper, function(err, isExists){
+								if(!err){
+									if(isExists){
+										var Category = casper.evaluate(function() {
+											var cat = document.querySelector('select[name="moveto"]');			
+											return cat[1].value;
+										});
+										casper.fill('form[name="admindd"]',{
+												'moveto': Category
+										},false);
+										casper.test.assertExists('form[name="admindd"] button');
+										casper.click('form[name="admindd"] button');
+										wait.waitForTime(5000,casper, function(err){
+											if(!err){
+												casper.test.assertExists('#back_arrow_topic');
+												casper.click('#back_arrow_topic');	
+											}
+										});
+									}else{
+										casper.echo('Topic does not move successfully','ERROR');
+									}
+								}
+							});
+						} else {
+							casper.echo('floating menu appears is not visible ', 'ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+
+backArrowTests.movePostListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with move topic on post listing page*****/
+		casper.echo('Verify back arrow with move topic on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				casper.click('span.topic-content a');
+				wait.waitForElement('a span.caret', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('a span.caret');
+							casper.test.assertExists('a[href^="/mbactions/move?id"]');
+							casper.click('a[href^="/mbactions/move?id"]');
+							wait.waitForElement('form[name=admindd]', casper, function(err, isExists){
+								if(!err){
+									if(isExists){
+										var Category = casper.evaluate(function() {
+											var cat = document.querySelector('select[name="moveto"]');			
+											return cat[1].value;
+										});
+										casper.fill('form[name="admindd"]',{
+												'moveto': Category
+										},false);
+										casper.test.assertExists('form[name="admindd"] button');
+										casper.click('form[name="admindd"] button');
+										wait.waitForTime(5000,casper, function(err){
+											if(!err){
+												casper.capture('122345.png');
+												casper.test.assertExists('#back_arrow_topic');
+												casper.click('#back_arrow_topic');	
+											}
+										});
+									}else{
+										casper.echo('Topic does not move successfully','ERROR');
+									}
+								}
+							});
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
+	});	
+};
+
+backArrowTests.movePostfromPostListingPage = function() {
+	casper.then(function(){
+		/*****Verify back arrow with move topic on post listing page*****/
+		casper.echo('Verify back arrow with move topic on post listing page', 'INFO');
+		backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
+			if(!err){
+				casper.test.assertExists('span.topic-content a');
+				var Href = casper.evaluate(function() {
+					var Href = document.querySelector('li:nth-child(2) span.topic-content a').getAttribute('href');			
+					return Href ;
+				});
+				casper.echo('href=' +  config.url + Href ,'INFO');
+				casper.click('span.topic-content a');
+				wait.waitForElement('input#firstpid', casper, function(err, isExists) {	
+					if(!err){
+						if(isExists) {
+							casper.click('input#firstpid');
+							wait.waitForElement('div.hover-menu.open', casper, function(err, isExists) {	
+								if(!err){
+									if(isExists) {
+										casper.click('#moveposts');
+										wait.waitForTime(5000,casper, function(err){
+											if(!err){
+												casper.click('#exist_thread');
+												var Url=config.url + Href;
+												casper.sendKeys('input[name="mergethreadurl"]', Url, {reset:true});
+												casper.test.assertExists('#move_posts');
+												casper.click('#move_posts');
+
+												wait.waitForElement('#posts-list', casper, function(err, isExists) {	
+													if(!err){
+														if(isExists) {
+												
+															casper.test.assertExists('#backArrowPost');
+															casper.click('#backArrowPost');
+														} else {
+															casper.echo('Post list not appears','ERROR');
+														}	
+													}
+												});	
+											}
+										});
+									} else {
+										casper.echo('Floating menu doesnot appears in 5 Seconds','ERROR');
+									}	
+								}
+							});
+						} else {
+							casper.echo('Shield Icon Doesnt Exists','ERROR');
+						}	
+					}
+				});
+			}		
+		}); 
 	});	
 };
 
@@ -787,22 +939,54 @@ backArrowTests.cancelEditButton = function() {
 	});	
 };
 
-backArrowTests.= function() {
+backArrowTests.approvePostListingPage= function() {
 	casper.then(function(){
-		approveAllPost(casper,function(err){
+		/*****Verify back arrow on post listing page*****/
+		casper.echo('Verify back arrow on post listing page', 'INFO');
+		backArrowMethod.ApprovePost(casper,function(err){
 			if(!err){
 				casper.thenOpen(config.url,function(){
-					forumLoginMethod.loginToApp(json['registered_user'].username, json['registered_user'].password, casper, function(err) {
+					forumLoginMethod.loginToApp(json['admin_user'].username, json['admin_user'].password, casper, function(err) {
 						if(!err) {
 							wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
 								if(!err){
 									if(isExists) {
-											backArrowMethod.selectCategory(json['StartTopic'],casper,function(err){
-			if(!err){
+										casper.test.assertExists('a[href="/categories"]');
+										casper.click('a[href="/categories"]');
+										wait.waitForElement('i.glyphicon.glyphicon-tasks.has-notif',casper,function(err,isExists){
+											if(!err){
+												if(isExists) {
+													casper.click('i.glyphicon.glyphicon-tasks.has-notif');
+													wait.waitForElement('i.glyphicon.glyphicon-ok',casper,function(err,isExists){
+														if(!err){
+															if(isExists) {
+																casper.click('span.post-body-author a');
+																wait.waitForElement('span.text-danger',casper,function(err,isExists){
+																	if(!err){
+																		if(isExists) {
+																			casper.test.assertExists('#backArrowPost');
+																			casper.click('#backArrowPost');
+																			wait.waitForElement('#feed-main',casper,function(err,isExists){
+																				if(!err){
+																					if(isExists) {
+																						casper.echo('navigate back to approval queue','INFO');
+																					}
+																			}
+																			});
+																		}
+																	}
 
+																});
+															}
+														}
 
-			}});
-						
+													});	
+												}else{
+
+												}
+											}
+
+										});
 									} else {
 										casper.echo('Unable to successfully login ', 'ERROR');
 									}	
@@ -812,11 +996,40 @@ backArrowTests.= function() {
 					});
 				});
 
-
 			}
 		});	
 	});			
 }; 
+
+
+backArrowTests.approvePage= function() {
+	casper.then(function(){
+		/*****Verify back arrow on approval page*****/
+		casper.echo('Verify back arrow on approval page', 'INFO');
+		casper.click('i.glyphicon.glyphicon-ok');
+		wait.waitForElement('#emptyQueue', casper, function(err, isExists) {	
+			if(!err){
+				if(isExists) {
+					var msg=casper.fetchText('.alert.alert-info.text-center');
+					casper.echo('msg=' +msg);
+					forumLoginMethod.logoutFromApp(casper,function(err){
+						if(!err){
+							casper.capture('123434.png');
+							casper.echo('Successfully logout','INFO');
+							backArrowMethod.disableApprovePost(casper,function(err){
+								if(!err){}
+							});
+						}
+					});
+					
+				} else {
+					casper.echo('Unable to click on pending post','ERROR');
+				}	
+			}
+		});	
+	});			
+}; 
+
 
 
 
