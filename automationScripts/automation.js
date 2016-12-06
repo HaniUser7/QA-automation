@@ -44,14 +44,15 @@ switch (feature) {
 		});
 	break;
 	
-	case "       ":
-		casper.test.begin('Verify Login page on Forum by enabling Privacy Private  option from backend' , function(test) {
-			var loginByPrivacyOption=require("../testsuite/main/loginByPrivacyOption.js");
-			loginByPrivacyOption.featureTest(casper,casper.test);
+	case "profilePage":
+		casper.test.begin('Verify profile page Message button for own profile page ' , function(test) {
+			var profilePage=require("../testsuite/main/profilePage.js");
+			profilePage.featureTest(casper,casper.test);
 			casper.run(function(){
 				test.done();
 			});
-		});	
+		});
+	break;	
 		
 
 	default:
