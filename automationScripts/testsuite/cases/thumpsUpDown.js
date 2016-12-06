@@ -176,8 +176,6 @@ thumpsUpDownTestcases.clickOnLikersUsername = function() {
 	//Open Front-End URL and verify with click on likers/dislikers username when disable view profile permission AS A REGISTER USER 
 	casper.thenOpen(config.url, function() {
 		this.echo('Title of the page :' +this.getTitle(), 'INFO');
-		//wait.waitForElement('a#td_tab_login',casper, function(err, isExists) {
-			//if(isExists) {
 				forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 					if(!err) {
 						wait.waitForElement('i.icon.icon-menu', casper, function(err, isExists) {
@@ -237,15 +235,11 @@ thumpsUpDownTestcases.clickOnLikersUsername = function() {
 						casper.echo('Error : '+err, 'INFO');
 					}
 				});
-			//} else {
-				//casper.echo('a#td_tab_login not found', 'ERROR');
-			//}
 			casper.then(function() {
 				forumLoginMethod.logoutFromApp(casper, function() { });
 			});
-		//});
 	});
-	casper.then(function() {
+	casper.thenOpen(config.backEndUrl, function() {
 		// method called to change the backend setting-> enable View Profile
 		thumpsUpDownMethod.enableViewProfile(casper, function(err) {
 			if(!err) {
@@ -748,13 +742,13 @@ thumpsUpDownTestcases.verifyUserAccountOffCase = function() {
 			}
 		});
 	});
-	/*casper.thenOpen(config.backEndUrl, function() {
+	casper.thenOpen(config.backEndUrl, function() {
 		thumpsUpDownMethod.enableUserAccount(casper, function(err) {
 			if(!err) {
 				casper.echo('Enable User Account method called ','INFO');
 			}
 		});
-	});*/
+	});
 };
 // Method To verify user reputation
 thumpsUpDownTestcases.verifyReputation = function() {
@@ -798,38 +792,30 @@ thumpsUpDownTestcases.verifyReputation = function() {
 			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
 				if(isExists) {
 					casper.click('ul.nav.pull-right span.caret');
-					//wait.waitForElement('span.pull-right.user-nav-panel', casper, function(err, isExists) {
-						//f(isExists) {
-							casper.capture('b.png');
-							casper.test.assertExists('a[href^="/profile"]');
-							casper.click('a[href^="/profile"]');
-								casper.wait(2000, function() {
-									casper.capture('fgfgh.png');
-									var reputationCount = casper.fetchText('li.reputation span.profile-count a');
-									var reputationCount2;
-									casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
-									casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
-									casper.click('i.glyphicon.glyphicon-like-alt');
-									//casper.test.assertExists('i.glyphicon.glyphicon-trash.text-muted.pull-right');
-									//casper.click('i.glyphicon.glyphicon-trash.text-muted.pull-right');
-									casper.wait(1000, function() {
-										casper.reload(function() {
-											casper.echo('The page is reloaded','INFO');
-											reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
-											casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
-											if(reputationCount > reputationCount2) {
-												casper.echo('The post is deleted and count is not added in reputation.','INFO');	
-											}
-											if(reputationCount < reputationCount2) {
-												casper.echo('The post is deleted and count is added in reputation.','INFO');
-											}
-										});
-									});
-								});
-						//} else {
-				
-						//}
-					//});
+					casper.capture('b.png');
+					casper.test.assertExists('a[href^="/profile"]');
+					casper.click('a[href^="/profile"]');
+					casper.wait(2000, function() {
+						casper.capture('fgfgh.png');
+						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
+						var reputationCount2;
+						casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
+						casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
+						casper.click('i.glyphicon.glyphicon-like-alt');
+						casper.wait(1000, function() {
+							casper.reload(function() {
+								casper.echo('The page is reloaded','INFO');
+								reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+								casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+								if(reputationCount > reputationCount2) {
+									casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+								}
+								if(reputationCount < reputationCount2) {
+									casper.echo('The post is deleted and count is added in reputation.','INFO');
+								}
+							});
+						});
+					});
 				} else {
 					casper.echo('User not logged in','ERROR');
 				}
@@ -924,26 +910,44 @@ thumpsUpDownTestcases.verifyLogInPopUp = function() {
 };
 // Method "to verify create account link on pop up window when new registration is disable"
 thumpsUpDownTestcases.verifyCreateAccountInPopUp = function() {
-	casper.thenOpen(config.url, function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                      CASE 26', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('* To verify  create account link on pop up window when new registration is disable *', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		//Method to disable New Registration from back end
+		thumpsUpDownMethod.disableNewRegistration(casper, function(err) {
+			if(!err) {
+				casper.echo('Disable New Registration functionality method called ','INFO');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 		casper.click("a.topic-title");
 		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
 			if(isExists) {
 				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
 				casper.click('i.glyphicon.glyphicon-like-alt');
-				wait.waitForElement('div#form-dialog', casper,function(err, isExists) {
+				wait.waitForElement('div.modal-dialog', casper,function(err, isExists) {
 					if(isExists) {
-						casper.test.assertDoesntExist('span.text-block','Create account not found hence verified');
+						casper.echo('Create account not found hence verified','INFO');
 					} else {
 						casper.echo('Popup not appeared','ERROR');	
 					}
 				});
 			} else {
 				casper.echo('Not clicked on Topic','ERROR');			
+			}
+		});
+	});
+	casper.thenOpen(config.backEndUrl, function() {
+		//Method to enable New Registration from back end
+		thumpsUpDownMethod.enableNewRegistration(casper, function(err) {
+			if(!err) {
+				casper.echo('Enable New Registration method called ','INFO');
 			}
 		});
 	});
@@ -967,12 +971,10 @@ thumpsUpDownTestcases.verifyFbUserLikersList = function() {
 		casper.withPopup(/facebook/ , function() {
 			casper.waitForSelector('form#login_form', function success(){
 				casper.test.assertExists('form#login_form','Form Found');
-				//casper.echo("responseData.email : " +responseData.email+ " & responseData.pass : " +responseData.pass);
 				casper.fill('form#login_form',{
 					'email': "neha2top@gmail.com",
 					'pass': "vishal@kvs"
 				}, false);
-						
 				casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
 				casper.click('form[id="login_form"] input[id="u_0_2"]');
 			},function fail(){
@@ -1060,7 +1062,6 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 		casper.withPopup(/facebook/ , function() {
 			casper.waitForSelector('form#login_form', function success(){
 				casper.test.assertExists('form#login_form','Form Found');
-				//casper.echo("responseData.email : " +responseData.email+ " & responseData.pass : " +responseData.pass);
 				casper.fill('form#login_form',{
 					'email': "neha2top@gmail.com",
 					'pass': "vishal@kvs"
@@ -1092,17 +1093,14 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 				casper.echo('User not logged in','ERROR');				
 			}
 		});
+		// code to logout for facebook user
 		casper.then(function() {
-			//forumLoginMethod.logoutFromApp(casper, function() { });
-		//});*/
 			casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
 			casper.click('ul.nav.pull-right span.caret');
-			casper.capture('111.png');
 			try {
-				test.assertExists('a#logout');			
+				casper.test.assertExists('a#logout');			
 				casper.click('a#logout');
 				casper.waitForSelector('a#td_tab_login', function() {
-					casper.capture('logout1.png');
 					casper.test.assertExists('a#td_tab_login');
 				});			
 			}catch(e) {
@@ -1116,46 +1114,38 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
 				if(isExists) {
 					casper.click('ul.nav.pull-right span.caret');
-					//wait.waitForElement('span.pull-right.user-nav-panel', casper, function(err, isExists) {
-						//f(isExists) {
-							casper.capture('b.png');
-							casper.test.assertExists('a[href^="/profile"]');
-							casper.click('a[href^="/profile"]');
-								casper.wait(2000, function() {
-									casper.capture('fgfgh.png');
-									var reputationCount = casper.fetchText('li.reputation span.profile-count a');
-									var reputationCount2;
-									casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
-									casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
-									casper.click('i.glyphicon.glyphicon-like-alt');
-									//casper.test.assertExists('i.glyphicon.glyphicon-trash.text-muted.pull-right');
-									//casper.click('i.glyphicon.glyphicon-trash.text-muted.pull-right');
-									casper.wait(1000, function() {
-										casper.reload(function() {
-											casper.echo('The page is reloaded','INFO');
-											reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
-											casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
-											if(reputationCount > reputationCount2) {
-												casper.echo('The post is deleted and count is not added in reputation.','INFO');	
-											}
-											if(reputationCount < reputationCount2) {
-												casper.echo('The post is deleted and count is added in reputation.','INFO');
-											}
-										});
-									});
-								});
-						//} else {
-				
-						//}
-					//});
+					casper.capture('b.png');
+					casper.test.assertExists('a[href^="/profile"]');
+					casper.click('a[href^="/profile"]');
+					casper.wait(2000, function() {
+						casper.capture('fgfgh.png');
+						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
+						var reputationCount2;
+						casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
+						casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
+						casper.click('i.glyphicon.glyphicon-like-alt');
+						casper.wait(1000, function() {
+							casper.reload(function() {
+								casper.echo('The page is reloaded','INFO');
+								reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+								casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+								if(reputationCount > reputationCount2) {
+									casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+								}
+								if(reputationCount < reputationCount2) {
+									casper.echo('The post is deleted and count is added in reputation.','INFO');
+								}
+							});
+						});
+					});
 				} else {
 					casper.echo('User not logged in','ERROR');
 				}
 			});
 		});
-		/*casper.then(function() {
+		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
-		});*/	
+		}); 	
 	});
 };
 // Method To verify reputaion link on profile page when reputation is off for fb user
@@ -1173,6 +1163,14 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 				casper.echo('Disable reputation functionality method called ','INFO');
 			}
 		});
+		//Method to enable Facebook login from back end
+		casper.then(function() {
+			thumpsUpDownMethod.enableFacebookLogin(casper, function(err) {
+				if(!err) {
+					casper.echo('enable Facebook login functionality method called ','INFO');
+				}
+			});
+		});
 	});
 	//Open front and logged in from fb user
 	casper.thenOpen(config.url, function() {
@@ -1210,9 +1208,20 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 				casper.echo('User not logged in','ERROR');
 			}
 		});
-		/*casper.then(function() {
-			forumLoginMethod.logoutFromApp(casper, function() { });
-		});*/	
+		// code to logout for facebook user
+		casper.then(function() {
+			casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
+			casper.click('ul.nav.pull-right span.caret');
+			try {
+				casper.test.assertExists('a#logout');			
+				casper.click('a#logout');
+				casper.waitForSelector('a#td_tab_login', function() {
+					casper.test.assertExists('a#td_tab_login');
+				});			
+			}catch(e) {
+				casper.test.assertDoesntExist('a#logout');
+			}
+		});		
 	});
 	casper.thenOpen(config.backEndUrl, function() {
 		// method called to change the backend setting-> enable Reputation
@@ -1220,6 +1229,14 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 			if(!err) {
 				casper.echo('Enable Reputation method called ','INFO');
 			}
+		});
+		//Method to disable Facebook login from back end
+		casper.then(function() {
+			thumpsUpDownMethod.disableFacebookLogin(casper, function(err) {
+				if(!err) {
+					casper.echo('Disable Facebook login functionality method called ','INFO');
+				}
+			});
 		});
 	});
 };
@@ -1232,10 +1249,10 @@ thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
 		casper.echo('*   To verify reputaion link on profile page when reputation is on for fb user    *', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		// method called to change the backend setting-> disable reputation functionality
+		// method called to change the backend setting-> Enable reputation functionality
 		thumpsUpDownMethod.enableReputation(casper, function(err) {
 			if(!err) {
-				casper.echo('Disable reputation functionality method called ','INFO');
+				casper.echo('Enable reputation functionality method called ','INFO');
 			}
 		});
 	});
@@ -1277,6 +1294,6 @@ thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
 		});
 		/*casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
-		});*/	
+		});*/
 	});
 };

@@ -43,7 +43,6 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 		this.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
  		this.sendKeys('#tinymce', data.content);
 	});	
-		//driver.wait(3000);
 		driver.click('#all_forums_dropdown');
 		driver.fill('form[name="PostTopic"]',{
 			'forum' : data.category
@@ -115,10 +114,10 @@ thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
 														var expectedSuccessMsg = 'Your user group settings have been updated.';
 														if(successMsg && successMsg!= '')
 															thumpsUpDownMethod.verifySuccessMsg(successMsg, expectedSuccessMsg, 'UncheckedViewProfile', casper, function() {
-															return callback(null);
+															
 														});
 													} else {
-												
+														casper.echo('Red colored text not found', 'ERROR');
 													}
 												});
 											}catch(e) {
@@ -129,7 +128,7 @@ thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
 											casper.test.assertDoesntExist('#view_messageboard');
 										}
 									} else {
-									
+										casper.echo('View profile checkbox not found', 'ERROR');
 									}
 								});
 							}else {
@@ -137,7 +136,7 @@ thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
 							}
 						});
 					} else {
-						casper.echo('ERROR OCCURRED', 'ERROR');
+						casper.echo('Forum Menu not found', 'ERROR');
 					}
 				});
 			}else {
@@ -147,6 +146,7 @@ thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
 		casper.then(function() {
 			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 			});
+			return callback(null);
 		});
 	});
 };
@@ -176,10 +176,10 @@ thumpsUpDownMethod.enableViewProfile = function(driver, callback) {
 														var expectedSuccessMsg = 'Your user group settings have been updated.';
 														if(successMsg && successMsg!= '')
 															thumpsUpDownMethod.verifySuccessMsg(successMsg, expectedSuccessMsg, 'UncheckedViewProfile', casper, function() {
-															return callback(null);
+															
 														});
 													} else {
-												
+														casper.echo('Red colored text not found', 'ERROR');
 													}
 												});
 											}catch(e) {
@@ -190,7 +190,7 @@ thumpsUpDownMethod.enableViewProfile = function(driver, callback) {
 											casper.test.assertDoesntExist('#view_messageboard');
 										}
 									} else {
-									
+										casper.echo('View profile checkbox not found', 'ERROR');
 									}
 								});
 							}else {
@@ -208,194 +208,369 @@ thumpsUpDownMethod.enableViewProfile = function(driver, callback) {
 		casper.then(function() {
 			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 			});
+			return callback(null);
 		});
 	});
 };
 //Method to disable Likes & Reputation from back end
 thumpsUpDownMethod.disableReputation = function(driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
-			if(!err) {
-				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
-					if(isExists) {
-						driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
-							if(isExists) {
-								casper.click('div#ddSettings a:nth-child(2)');
-								wait.waitForElement('input#reputation', casper, function(err, isExists) {
-									if(isExists) {
-										utils.enableorDisableCheckbox('reputation', false, casper, function() {
-											casper.echo('checkbox is uncheckedchecked', 'INFO');
-										});
-										try {
-												casper.test.assertExists('button.button.btn-m.btn-blue');
-												casper.click('button.button.btn-m.btn-blue');
-												return callback(null);
-											}catch(e) {
-												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-												return callback(null);
-											}
-									} else {
-										casper.echo('Reputation checkbox', 'ERROR');
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(2)');
+							wait.waitForElement('input#reputation', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('reputation', false, casper, function() {
+										casper.echo('checkbox is uncheckedchecked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
-								});
-							} else {
-								casper.echo('Setting  tooltip menu not found', 'ERROR');
-							}
-						});
-					} else {
-						casper.echo('Backend Menu not found', 'ERROR');
-					}
-				});
-			}else {
-				casper.echo('Error : '+err, 'INFO');
-			}
-		});
-		casper.then(function() {
-			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+								} else {
+									casper.echo('Reputation checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
 			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 		});
+		return callback(null);
+	});
 };
 //Method to Enable Likes & Reputation from back end
 thumpsUpDownMethod.enableReputation = function(driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
-			if(!err) {
-				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
-					if(isExists) {
-						driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
-							if(isExists) {
-								casper.click('div#ddSettings a:nth-child(2)');
-								wait.waitForElement('input#reputation', casper, function(err, isExists) {
-									if(isExists) {
-										utils.enableorDisableCheckbox('reputation', true, casper, function() {
-											casper.echo('checkbox is checked', 'INFO');
-										});
-										//casper.wait(5000, function() {
-											try {
-												casper.test.assertExists('button.button.btn-m.btn-blue');
-												casper.click('button.button.btn-m.btn-blue');
-												return callback(null);
-											}catch(e) {
-												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-												return callback(null);
-											}
-										//});
-									} else {
-										casper.echo('Reputation checkbox', 'ERROR');
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(2)');
+							wait.waitForElement('input#reputation', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('reputation', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
-								});
-							} else {
-								casper.echo('Setting  tooltip menu not found', 'ERROR');
-							}
-						});
-					} else {
-						casper.echo('Backend Menu not found', 'ERROR');
-					}
-				});
-			}else {
-				casper.echo('Error : '+err, 'INFO');
-			}
-		});
-		casper.then(function() {
-			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+								} else {
+									casper.echo('Reputation checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
 			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 		});
+		return callback(null);
+	});
 };
 //Method to disable User Account from back end
 thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
-			if(!err) {
-				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
-					if(isExists) {
-						driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
-							if(isExists) {
-								casper.click('div#ddSettings a:nth-child(2)');
-								wait.waitForElement('input#REQreg', casper, function(err, isExists) {
-									if(isExists) {
-										utils.enableorDisableCheckbox('REQreg', false, casper, function() {
-											casper.echo('checkbox is uncheckedchecked', 'INFO');
-										});
-										
-										casper.click('div.ui-dialog-buttonset button');
-										casper.capture('asd15.png');
-										try {
-												casper.test.assertExists('button.button.btn-m.btn-blue');
-												casper.mouse.move('button.button.btn-m.btn-blue');
-												casper.click('button.button.btn-m.btn-blue');
-												
-											}catch(e) {
-												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-											}
-									} else {
-										casper.echo('User Account checkbox not found', 'ERROR');
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(2)');
+							wait.waitForElement('input#REQreg', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('REQreg', false, casper, function() {
+										casper.echo('checkbox is uncheckedchecked', 'INFO');
+									});
+									casper.click('div.ui-dialog-buttonset button');
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
-								});
-							} else {
-								casper.echo('Setting  tooltip menu not found', 'ERROR');
-							}
-						});
-					} else {
-						casper.echo('Backend Menu not found', 'ERROR');
-					}
-				});
-			}else {
-				casper.echo('Error : '+err, 'INFO');
-			}
-		});
-		casper.then(function() {
-			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+								} else {
+									casper.echo('User Account checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
 			});
-		return callback(null);
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 		});
+		return callback(null);
+	});
 };
 //Method to enable User Account from back end
 thumpsUpDownMethod.enableUserAccount = function(driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
-			if(!err) {
-				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
-					if(isExists) {
-						driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-						wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
-							if(isExists) {
-								casper.click('div#ddSettings a:nth-child(2)');
-								wait.waitForElement('input#REQreg', casper, function(err, isExists) {
-									if(isExists) {
-										utils.enableorDisableCheckbox('REQreg', true, casper, function() {
-											casper.echo('checkbox is checked', 'INFO');
-										});
-										try {
-												casper.test.assertExists('button.button.btn-m.btn-blue');
-												casper.click('button.button.btn-m.btn-blue');
-												return callback(null);
-											}catch(e) {
-												casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-												return callback(null);
-											}
-									} else {
-										casper.echo('User Account checkbox not found', 'ERROR');
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(2)');
+							wait.waitForElement('input#REQreg', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('REQreg', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
-								});
-							} else {
-								casper.echo('Setting  tooltip menu not found', 'ERROR');
-							}
-						});
-					} else {
-						casper.echo('Backend Menu not found', 'ERROR');
-					}
-				});
-			}else {
-				casper.echo('Error : '+err, 'INFO');
-			}
-		});
-		casper.then(function() {
-			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+								} else {
+									casper.echo('User Account checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
 			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 		});
+		return callback(null);
+	});
 };
-
+//Method to disable New Registration from back end
+thumpsUpDownMethod.disableNewRegistration = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#new_user_registration', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('new_user_registration', false, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+								} else {
+									casper.echo('New Registration checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+//Method to enable New Registration from back end
+thumpsUpDownMethod.enableNewRegistration = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#new_user_registration', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('new_user_registration', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+								} else {
+									casper.echo('New Registration checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+//Method to enable Facebook login from back end
+thumpsUpDownMethod.enableFacebookLogin = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(5)');
+							wait.waitForElement('input#facebook_connect', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('facebook_connect', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+								} else {
+									casper.echo('Facebook Connect checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+//Method to disable Facebook login from back end
+thumpsUpDownMethod.disableFacebookLogin = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(5)');
+							wait.waitForElement('input#facebook_connect', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('facebook_connect', false, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.wait(2000);
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+								} else {
+									casper.echo('Facebook Connect checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
 
