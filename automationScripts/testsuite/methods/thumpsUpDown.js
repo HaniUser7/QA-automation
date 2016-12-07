@@ -43,10 +43,10 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 		this.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
  		this.sendKeys('#tinymce', data.content);
 	});	
-		driver.click('#all_forums_dropdown');
+		/*driver.click('#all_forums_dropdown');
 		driver.fill('form[name="PostTopic"]',{
 			'forum' : data.category
-		},false);
+		},false);*/
 	
 	driver.then(function() {
 		driver.click('#post_submit');
@@ -61,8 +61,8 @@ thumpsUpDownMethod.viewChangePermission = function(driver, callback) {
 		driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 		driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 		try {
-			driver.test.assertExists('div#ddUsers a[href="/tool/members/mb/usergroup"]');
-			driver.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+			driver.test.assertExists('div#ddUsers a:nth-child(1)');
+			driver.click('div#ddUsers a:nth-child(1)');
 			wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
 				if(isExists) {
 					var grpName = driver.evaluate(function(){
@@ -91,7 +91,7 @@ thumpsUpDownMethod.viewChangePermission = function(driver, callback) {
 //Method For Disable View Profile For Registered User
 thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
 //Login To Forum Back-end And Change Permissions From back End
-	driver.then(function() {
+	//driver.then(function() {
 		registerMethod.loginToForumBackEnd(casper, function(err) {
 			if(!err) {
 				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
@@ -148,7 +148,7 @@ thumpsUpDownMethod.disableViewProfile = function(driver, callback) {
 			});
 			return callback(null);
 		});
-	});
+	//});
 };
 //Method For Enable View Profile For Registered User
 thumpsUpDownMethod.enableViewProfile = function(driver, callback) {
