@@ -18,3 +18,16 @@ wait.waitForTime = function(time , driver, callback){
 	});
 };
 
+wait.waitForVisible = function(element, driver, callback){
+	driver.waitUntilVisible(element, function success(){
+		driver.echo('Selector '+ element  +' appears' ,'INFO');
+		return callback(null, true);		
+		},function fail(){
+			driver.echo('Selector ' + element + ' not appears', 'ERROR');
+			return callback(null, false);	
+	});
+};
+
+
+
+
