@@ -523,8 +523,6 @@ inContextLoginTests.inContextLoginQuote=function(){
 							casper.thenOpen(config.url, function() {
 								wait.waitForElement('form[name="posts"] a#topic_8849273', casper , function(err, isExists) {
 									if(isExists) {	
-
-										//casper.click('form[name="posts"] a.topic-title');
 										casper.evaluate(function() {
 											document.querySelector('a#topic_8849273').click();
 										});
