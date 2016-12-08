@@ -50,7 +50,7 @@ thumpsUpDown.featureTest = function(casper, test) {
 		thumpsUpDownTestcases.verifyReputationOnProfilePage();
 		
 		//Method To verify the user account off case
-		//thumpsUpDownTestcases.verifyUserAccountOffCase();
+		thumpsUpDownTestcases.verifyUserAccountOffCase();
 		
 		// Method To verify user reputation
 		thumpsUpDownTestcases.verifyReputation();

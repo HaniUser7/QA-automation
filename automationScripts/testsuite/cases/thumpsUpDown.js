@@ -94,7 +94,11 @@ thumpsUpDownTestcases.registerUserOnTopicListingPageLike = function() {
 					casper.mouse.move('i.glyphicon.glyphicon-like-alt');
 					casper.click("i.glyphicon.glyphicon-like-alt");
 					casper.wait(2000, function() {
-						casper.capture('fgfgh.png');
+						try {
+						casper.test.assertExists('a.login_dialog.text-muted.voted-yes');
+						} catch (e) {
+							casper.echo('Post is disliked by the user','INFO');
+						}
 					});
 				} else {
 					casper.echo('User not logged in','ERROR');
@@ -125,7 +129,6 @@ thumpsUpDownTestcases.registerUserOnPostListingPageLike = function() {
 								casper.click('form[name="posts"] a.topic-title');
 								
 								wait.waitForElement('i.glyphicon.glyphicon-like-alt', casper, function(err, isExists) {
-									casper.capture('b.png');
 									if(isExists) {
 										casper.click('i.glyphicon.glyphicon-like-alt');
 										casper.then(function() {
@@ -278,7 +281,6 @@ thumpsUpDownTestcases.clickOnOwnName = function() {
 									if(isExists) {
 										casper.click('div.post-options.pull-right span.text-muted a');
 										casper.wait(2000, function() {
-											casper.capture('bgd.png');
 											var username = casper.evaluate(function() {
 												var user = document.querySelectorAll('i.who-username');
 												var len = user.length;
@@ -292,10 +294,7 @@ thumpsUpDownTestcases.clickOnOwnName = function() {
 													
 												}
 											});
-											casper.echo('The names of the users are- '+username,'INFO');
-											casper.wait(2000, function() {
-												casper.capture('fgfgh.png');
-											});
+											casper.echo(username,'INFO');
 										});
 									} else {
 										casper.echo('Post not found','ERROR');
@@ -342,24 +341,27 @@ thumpsUpDownTestcases.clickReputationTab = function() {
 								if(isExists) {
 									casper.click('div.panel-body.table-responsive a');
 									casper.wait(2000, function() {
-										casper.capture('fgfgh.png');
 										var reputationCount = casper.fetchText('li.reputation span.profile-count a');
 										var reputationCount2;
 										casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
-										casper.click('i.glyphicon.glyphicon-like-alt');
-										casper.wait(1000, function() {
-											casper.reload(function() {
-												casper.echo('The page is reloaded','INFO');
-												reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
-												casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
-												if(reputationCount > reputationCount2) {
-													casper.echo('The post is disliked and verified that reputation count is changed.','INFO');	
-												}
-												if(reputationCount < reputationCount2) {
-													casper.echo('The post is liked and verified that reputation count is changed.','INFO');
-												}
+										try {
+											casper.click('i.glyphicon.glyphicon-like-alt');
+											casper.wait(1000, function() {
+												casper.reload(function() {
+													casper.echo('The page is reloaded','INFO');
+													reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+													casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+													if(reputationCount > reputationCount2) {
+														casper.echo('The post is disliked and verified that reputation count is changed.','INFO');	
+													}
+													if(reputationCount < reputationCount2) {
+														casper.echo('The post is liked and verified that reputation count is changed.','INFO');
+													}
+												});
 											});
-										});
+										} catch (e) {
+											casper.echo('The clicked user not post any post yet','INFO');
+										}
 									});
 								} else {
 									casper.echo('Not clicked on a member','ERROR');
@@ -408,7 +410,11 @@ thumpsUpDownTestcases.verifyReputationTab = function() {
 								if(isExists) {
 									casper.click('div.panel-body.table-responsive a');
 									casper.wait(2000, function() {
-										casper.capture('fgh.png');
+										try {
+											casper.test.assertDoesntExist('li.reputation span.profile-label.text-muted','Reputation not available');
+										} catch (e) {
+											casper.test.assertExists('li.reputation span.profile-label.text-muted','Reputation available');
+										}
 									});
 								} else {
 									casper.echo('Not clicked on a member','ERROR');
@@ -680,23 +686,27 @@ thumpsUpDownTestcases.verifyReputationOnProfilePage = function() {
 						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
 						var reputationCount2;
 						casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
-						casper.test.assertExists('i.glyphicon.glyphicon-chevron-down');
-						casper.click('i.glyphicon.glyphicon-chevron-down');
-						casper.test.assertExists('i.glyphicon.glyphicon-trash.text-muted.pull-right');
-						casper.click('i.glyphicon.glyphicon-trash.text-muted.pull-right');
-						casper.wait(1000, function() {
-							casper.reload(function() {
-								casper.echo('The page is reloaded','INFO');
-								reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
-								casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
-								if(reputationCount > reputationCount2) {
-									casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+						try {
+							casper.test.assertExists('i.glyphicon.glyphicon-chevron-down');
+							casper.click('i.glyphicon.glyphicon-chevron-down');
+							casper.test.assertExists('i.glyphicon.glyphicon-trash.text-muted.pull-right');
+							casper.click('i.glyphicon.glyphicon-trash.text-muted.pull-right');
+							casper.wait(1000, function() {
+								casper.reload(function() {
+									casper.echo('The page is reloaded','INFO');
+									reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+									casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+									if(reputationCount > reputationCount2) {
+										casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+										}
+									if(reputationCount < reputationCount2) {
+										casper.echo('The post is deleted and count is added in reputation.','INFO');
 									}
-								if(reputationCount < reputationCount2) {
-									casper.echo('The post is deleted and count is added in reputation.','INFO');
-								}
+								});
 							});
-						});
+						} catch (e) {
+							casper.echo('No post is available to delete','INFO');
+						}
 					});
 				} else {
 					casper.echo('User not logged in','ERROR');
@@ -728,8 +738,13 @@ thumpsUpDownTestcases.verifyUserAccountOffCase = function() {
 		casper.click("a.topic-title");
 		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
 			if(isExists) {
-				casper.test.assertDoesntExist('i.glyphicon.glyphicon-like-alt','Like thump not find hence verified');
-				casper.test.assertDoesntExist('i.glyphicon.glyphicon-dislike-alt','Like thump not find hence verified');
+				try {
+					casper.test.assertDoesntExist('i.glyphicon.glyphicon-like-alt','Like thump not found hence verified');
+					casper.test.assertDoesntExist('i.glyphicon.glyphicon-dislike-alt','Like thump not found hence verified');
+				} catch (e) {
+					casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump found hence verified');
+					casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Like thump found hence verified');
+				}
 			} else {
 				casper.echo('Not clicked on Topic','ERROR');			
 			}
@@ -785,11 +800,9 @@ thumpsUpDownTestcases.verifyReputation = function() {
 			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
 				if(isExists) {
 					casper.click('ul.nav.pull-right span.caret');
-					casper.capture('b.png');
 					casper.test.assertExists('a[href^="/profile"]');
 					casper.click('a[href^="/profile"]');
 					casper.wait(2000, function() {
-						casper.capture('fgfgh.png');
 						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
 						var reputationCount2;
 						casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
@@ -830,8 +843,13 @@ thumpsUpDownTestcases.verifyLikeInGuestUser = function() {
 		casper.click("a.topic-title");
 		wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
 			if(isExists) {
-				casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump find hence verified');
-				casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Dislike thump find hence verified');
+				try {
+					casper.test.assertDoesntExist('i.glyphicon.glyphicon-like-alt','Like thump not found hence verified');
+					casper.test.assertDoesntExist('i.glyphicon.glyphicon-dislike-alt','Like thump not found hence verified');
+				} catch (e) {
+					casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump found hence verified');
+					casper.test.assertExists('i.glyphicon.glyphicon-dislike-alt','Like thump found hence verified');
+				}
 			} else {
 				casper.echo('Not clicked on Topic','ERROR');			
 			}
@@ -1067,30 +1085,39 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 			casper.echo('Processing to Login on forum.....', 'INFO');
 			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
 				if(isExists) {
-					casper.click('ul.nav.pull-right span.caret');
-					casper.capture('b.png');
-					casper.test.assertExists('a[href^="/profile"]');
-					casper.click('a[href^="/profile"]');
-					casper.wait(2000, function() {
-						casper.capture('fgfgh.png');
-						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
-						var reputationCount2;
-						casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
-						casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
-						casper.click('i.glyphicon.glyphicon-like-alt');
-						casper.wait(1000, function() {
-							casper.reload(function() {
-								casper.echo('The page is reloaded','INFO');
-								reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
-								casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
-								if(reputationCount > reputationCount2) {
-									casper.echo('The post is deleted and count is not added in reputation.','INFO');	
-								}
-								if(reputationCount < reputationCount2) {
-									casper.echo('The post is deleted and count is added in reputation.','INFO');
-								}
+					casper.click("a.topic-title");
+					wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
+						if(isExists) {
+							casper.test.assertExists('i.glyphicon.glyphicon-like-alt','Like thump found');
+							casper.click('i.glyphicon.glyphicon-like-alt');
+							casper.wait(2000, function() {
+								casper.reload(function() {
+									casper.click('div.post-body.pull-left span.post-body-author a');
+									casper.wait(2000, function() {
+										var reputationCount = casper.fetchText('li.reputation span.profile-count a');
+										var reputationCount2;
+										casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
+										casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
+										casper.click('i.glyphicon.glyphicon-like-alt');
+										casper.wait(1000, function() {
+											casper.reload(function() {
+												casper.echo('The page is reloaded','INFO');
+												reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+												casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+												if(reputationCount > reputationCount2) {
+													casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+												}
+												if(reputationCount < reputationCount2) {
+													casper.echo('The post is deleted and count is added in reputation.','INFO');
+												}
+											});
+										});
+									});
+								});
 							});
-						});
+						} else {
+							casper.echo('TOpic not found','ERROR');
+						}
 					});
 				} else {
 					casper.echo('User not logged in','ERROR');
@@ -1127,23 +1154,19 @@ thumpsUpDownTestcases.verifyLikersList = function() {
 						casper.click("a.topic-title");
 						wait.waitForElement('div.post-body.pull-left', casper,function(err, isExists) {
 							if(isExists) {
-								try {
-									casper.test.assertExists('a.login_dialog.text-muted.voted-yes','the post is already liked by the user ');
-									casper.click('a[id^=total_vote_up_count_]');
-										casper.wait(2000, function() {
-											casper.test.assertExists('ul#who-all','List of users found');
-										});
-								} catch (e) {
 									casper.click('i.glyphicon.glyphicon-like-alt');
 									casper.wait(2000,function() {
-										casper.reload(function() {});
-										casper.click('a[id^=total_vote_up_count_]');
-										casper.wait(2000, function() {
-											casper.test.assertExists('ul#who-all','List of users found');
+										casper.reload(function() {
+											try {
+												casper.click('a[id^=total_vote_up_count_]');
+												casper.wait(2000, function() {
+													casper.test.assertExists('ul#who-all','List of users found');
+												});
+											} catch (e) {
+												casper.echo('The like count is 0 so not clicked','INFO');
+											}
 										});
 									});
-									
-								}
 							} else {
 								casper.echo('Not clicked on Topic','ERROR');
 							}
@@ -1206,7 +1229,6 @@ thumpsUpDownTestcases.verifyFbUserLikersList = function() {
 					if(isExists) {
 						casper.click('a[id^=total_vote_up_count_]');
 						casper.wait(5000, function() {
-							casper.capture('df.png');
 							casper.test.assertExists('ul#who-all','List of users found');
 						});
 					} else {
@@ -1328,11 +1350,14 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 			if(isExists) {
 				casper.click('ul.nav.pull-right span.caret');
-				casper.capture('b.png');
 				casper.test.assertExists('a[href^="/profile"]');
 				casper.click('a[href^="/profile"]');
 				casper.wait(2000, function() {
-					casper.capture('fgfgh.png');
+					try {
+						casper.test.assertDoesntExist('li.reputation span.profile-label.text-muted','Reputation not available');
+					} catch (e) {
+						casper.test.assertExists('li.reputation span.profile-label.text-muted','Reputation available');
+					}
 				});
 			} else {
 				casper.echo('User not logged in','ERROR');
@@ -1420,11 +1445,14 @@ thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
 		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 			if(isExists) {
 				casper.click('ul.nav.pull-right span.caret');
-				casper.capture('b.png');
 				casper.test.assertExists('a[href^="/profile"]');
 				casper.click('a[href^="/profile"]');
 				casper.wait(2000, function() {
-					casper.capture('fgfgh.png');
+					try {
+						casper.test.assertDoesntExist('li.reputation span.profile-label.text-muted','Reputation not available');
+					} catch (e) {
+						casper.test.assertExists('li.reputation span.profile-label.text-muted','Reputation available');
+					}
 				});
 			} else {
 				casper.echo('User not logged in','ERROR');

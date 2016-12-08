@@ -22,6 +22,7 @@ switch (feature) {
 			});
 		});
 	break;
+	
 	case "thumpsUpDown":
 		casper.test.begin('Verify thumps up and down functionality from home page with all valid and invalid scenarios ', function(test) {
 			var thumpsUpDown = require("./testsuite/main/thumpsUpDown.js");
@@ -32,11 +33,22 @@ switch (feature) {
 		});
 	break;
 	
+	case "postEventMemberApproval":
+		casper.test.begin('Verify post, Event and Member Approval functionality from home page with all valid and invalid scenarios ', function(test) {
+			var postEventMemberApproval = require("./testsuite/main/postEventMemberApproval.js");
+			postEventMemberApproval.featureTest(casper, casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});
+	break;
+	
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
         	casper.echo("Options:");
-        	casper.echo(" forgotPassword");
-        	casper.echo(" thumpsUpDown");
+        	casper.echo("forgotPassword");
+        	casper.echo("thumpsUpDown");
+        	casper.echo("postEventMemberApproval");
 		casper.exit();
 };
 
