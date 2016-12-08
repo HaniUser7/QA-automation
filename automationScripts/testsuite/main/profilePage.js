@@ -11,11 +11,10 @@ profilePage.featureTest = function(casper, test) {
 	//Verify with sending message by message button.
 	profilePageTests.profilePageMessageButton();
 	//All Post tab for own profile page
-	profilePageTests.profilePageSendFile();
-	
-	//profilePageTests.profilePageInsertImage();
-
-	//profilePageTests.profilePageMessageButton();
+	//profilePageTests.profilePageSendFile();
+	//verify with reputation link after disable the permissions
+	profilePageTests.profilePageAllReputationDisable();
+	//
 
 	});
 

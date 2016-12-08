@@ -137,64 +137,10 @@ profilePageTests.profilePageSendFile=function(){
 		});
 	};
 
-//verify with insert a photo and send it
-
-/*profilePageTests.profilePageInsertImage=function(){
-	casper.echo('*****************verify with insert a photo and send it*************************','INFO');
-	casper.thenOpen(config.url , function() {
-		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		
-		inContextLoginMethod.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");
-			}else {
-				casper.echo('Processing to Login on forum.....', 'INFO');
-				casper.wait(1000,function(){
-				wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
-				if(isExists) {
-					casper.click('a[href^="/profile/24525147"]');
-					wait.waitForElement('a#send_message', casper , function(err ,isExists) {
-						if(isExists) {
-							casper.click('a#send_message');
-							casper.waitUntilVisible('a#send_pmsg_button.btn.btn-primary' ,function() {
-								//if(isExists) {
-									profilePageMethod.fillDataToMessage(casper, function(err) {
-										if(!err)
-											casper.echo('Data fill successfully','INFO');		
-									});
-									wait.waitForTime(1000 , casper ,function(err) {
-																			wait.waitForElement('ul.nav.pull-right span.caret', casper ,function(err ,isExists){
-	inContextLoginMethod.logoutFromApp(casper, function(err){
-		if (!err)
-			casper.echo('Successfully logout from application', 'INFO');
-		});
-});
-																									
-
-								
-																									
-							});	
-
-						
-						//}
-					});
-				}
-			});
-		}
-	});
-
-	});						
-}		
-
-});
-
-});
-};
-
 
 //Verify with sending message by message button when message permission is disable from back end
 
-profilePageTests.profilePageMessageButton=function(){
+/*profilePageTests.profilePageMessageButton=function(){
 casper.echo('************Verify with sending message by message button when message permission is disable from back end.*****************','INFO');
 	//add required config file
 	loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {
@@ -254,7 +200,7 @@ casper.echo('************Verify with sending message by message button when mess
 }
 
 });
-};
+};*/
 
 
 
@@ -298,31 +244,56 @@ profilePageTests.profilePageAllPostTab=function(){
 	});
 };
 
+//Reputation
+//verify with reputation link after disable the permissions
 
+profilePageTests.profilePageAllReputationDisable=function(){
+	casper.thenOpen(config.backEndUrl,function(){	
+		casper.echo('****************verify with reputation link after disable the permissions*****************','INFO');
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});					
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]' , casper , function(err ,isExists) {
+			if(isExists) {
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');	
+				casper.click('div#ddSettings a[href="/tool/members/mb/settings?tab="General"]');
+				wait.waitForElement('div#ddSettings' , casper ,function(err , isExists) {
+					if(isExists) {
+						//casper.click('div#ddSettings a:nth-child(2)');
+						utils.enableorDisableCheckbox('reputation', false, casper, function() {
+							casper.echo('checkbox is uncheckedchecked', 'INFO');
+						});
+						casper.thenOpen(config.url , function() {
+							inContextLoginMethod.loginToApp(json['validInfo'].username, json['validInfo'].password, casper, function(err) {
+								if (err) {
+									casper.echo("Error occurred in callback user not logged-in", "ERROR");
+								}else {
+									casper.echo('Processing to Login on forum.....', 'INFO');
+								wait.waitForTime(1000 , casper ,function(err) {
+									wait.waitForElement('ul.nav.pull-right span.caret', casper ,function(err ,isExists){		
+										if(isExists) {
+											casper.click('ul.nav.pull-right span.caret');
+											casper.click('a#user-nav-panel-profile');	
+											wait.waitForElement('a#emailMember' , casper , function(err , isExists) {
+												if(isExists) {
+													casper.echo('reputations is not present','INFO');
 
-profilePageTests.profilePageAllPostTab=function(){
-	casper.thenOpen(config.url,function(){	
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+												}
+											});
+										}
+									});				
+								});
+							}
+						});
+					});//config url
+				}
+			});
+		}
 	});
-};*/
+
+});
+
+};
 
