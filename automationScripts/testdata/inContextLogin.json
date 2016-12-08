@@ -21,6 +21,13 @@
     	"username" : "rajatk2",
         "password" : "rk@123",
         "expectedSuccessMsg" : ""
-    }
+    },
+
+    "validInfos" : {
+	"username" : "hani",
+        "password" : "hani",
+        "expectedSuccessMsg" : ""
+   }
+
     
 }

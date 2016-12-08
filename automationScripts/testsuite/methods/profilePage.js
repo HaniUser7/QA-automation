@@ -18,3 +18,19 @@ profilePageMethod.fillDataToMessage = function(driver, callback) {
 };
 
 
+
+profilePageMethod.fillEdit=function(driver , callback) {
+	driver.fillSelectors('
+
+
+
+
+
+
+
+
+
+
+
+};
+
