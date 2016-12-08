@@ -77,7 +77,6 @@ backArrowMethods.selectCategory = function(data,driver,callback){
 											driver.test.assertDoesntExist('span.topic-content a');
 											backArrowMethods.startTopic(data, driver, function(err){
 												if(!err){
-													driver.capture('234.png');
 													driver.test.assertExists('#backArrowPost');
 													driver.click('#backArrowPost');
 													wait.waitForElement('#back_arrow_topic', driver, function(err, isExists) {	

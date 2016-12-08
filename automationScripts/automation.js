@@ -35,6 +35,17 @@ switch (feature) {
 			});
 		});
 	break;
+
+	case "addNewTopic":
+		casper.test.begin('ADD NEW TOPIC TEST', function(test) {
+			var addNewTopic = require("./testsuite/main/addNewTopic.js");
+			addNewTopic.featureTest(casper, casper.test);
+			casper.run(function(){
+				test.done();
+				test.assert(true);
+			});
+		});
+	break;
 	
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
