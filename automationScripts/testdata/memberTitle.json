@@ -1,0 +1,33 @@
+
+{
+    "Member" : [{
+        "title" : "junior member",
+        "numberofpost" : "0"
+    },
+    
+    {
+       "title" : "member",
+        "numberofpost" : "10"
+    },
+
+     {
+       "title" : "senior member",
+        "numberofpost" : "15"
+    }
+   ],
+
+   "registered_user" : {
+    	"username" : "vishalg",
+        "password" : "1234"
+   },
+  
+  "StartTopic": {
+	"subject":"hello",
+	"content":"hey any one is here"
+  }
+}
+
+
+
+
+

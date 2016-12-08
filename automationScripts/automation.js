@@ -36,6 +36,17 @@ switch (feature) {
 		});
 	break;
 	
+	case "memberTitle":
+		casper.test.begin('MEMBER TITLE', function(test) {
+			var memberTitle = require("./testsuite/main/memberTitle.js");
+			memberTitle.featureTest(casper, casper.test);
+			casper.run(function(){
+				test.done();
+				test.assert(true);
+			});
+		});
+	break;
+
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
         	casper.echo("Options:");
