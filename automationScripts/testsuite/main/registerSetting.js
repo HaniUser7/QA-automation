@@ -7,13 +7,13 @@ var registerSetting = module.exports = {};
 
 
 registerSetting.featureTest = function(casper, test) {
-  
+ 
 	casper.start(config.backEndUrl, function() {
 
 		this.echo('Title Of The Page :' +this.getTitle(), 'INFO');
 
 		//1.Test case for Back-end Full Name front end Registration with Full name blank data
-		registerSettingTest.fullNameBlankData();
+		//registerSettingTest.fullNameBlankData();
 		
 		//2.Test case for Back-end Birthday front end Registration with Birthday blank data
 		registerSettingTest.birthdayBlankData();
@@ -25,16 +25,32 @@ registerSetting.featureTest = function(casper, test) {
 		registerSettingTest.instantMessageBlankData();
 		
 		//5.verify Full Name Back End And Fornt End Registration Page Full Name Enable/Disable
-		registerSettingTest.labelFullName();
+		//registerSettingTest.labelFullName();
 		
 		//6.verify Birthday Back End And Fornt End Registration Page Birthday Enable/Disable
-		registerSettingTest.labelBirthday();
+		//registerSettingTest.labelBirthday();
 		
 		//7.verify Signature Back End And Fornt End Registration Page Signature Enable/Disable
-		registerSettingTest.labelSignature();
+		//registerSettingTest.labelSignature();
 		
 		//8.verify instantMessage Back End And Fornt End Registration Page instantMessage Enable/Disable
 		//registerSettingTest.labelInstantMessage();
+		
+		//9.Test case for New Registration With Start New Topic Page Login
+		//registerSettingTest.registrationStartNewTopic();
+		
+		//10.Test case for New Registration With New Topic Page Login
+		//registerSettingTest.registrationNewTopic();
+		 
+		 //11.Test case for Incontext login with New Registration 
+		//registerSettingTest.registrationIncontextlogin();
+		
+		//12.Test case for Registration with different username format 
+	    //registerSettingTest.differentUsernameFormat();
+		
+		//registerSettingTest.inContextRegistrationEnable();
+		 
+		//registerSettingTest.backEndSetting();
 
 
 	});

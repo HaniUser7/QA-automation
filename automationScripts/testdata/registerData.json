@@ -232,6 +232,24 @@
         "birthday" : "04/12/1991",
         "usignature" : "hii...how r u?",
         "namePrivate" : true
+    },
+	
+	  "valid" : {
+    	"uname" : "a",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Your username must contain uppercase letters from A-Z"
+    },
+	 "Info" : {
+    	"uname" : "801",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
     }
     
 }
