@@ -28,5 +28,13 @@ addNewTopic.featureTest = function(casper, test) {
 
 		addNewTopicTests.composeTopicListingPage();
 
+		addNewTopicTests.composeLatestTopicPage();
+
+		addNewTopicTests.postPreviewForComposeTopic();
+
+		addNewTopicTests.displayMsg();
+
+		addNewTopicTests.postWithoutSelectingCategory();
+
 	});
 };

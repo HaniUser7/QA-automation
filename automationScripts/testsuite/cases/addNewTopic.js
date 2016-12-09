@@ -34,7 +34,7 @@ addNewTopicTests.addNewCategory = function() {
 									wait.waitForElement('#back_arrow_topic', casper, function(err, isExists) {	
 										if(!err){
 											if(isExists) {
-												addNewTopicMethod.startTopic(json["StartTopic"],casper,function(err){
+												/*addNewTopicMethod.startTopic(json["StartTopic"],casper,function(err){
 													if(!err){
 														var msg = casper.fetchText('span[id^=post_message]');
 														
@@ -42,7 +42,7 @@ addNewTopicTests.addNewCategory = function() {
 														casper.test.assertEquals(msg.trim(),json["StartTopic"].content);
 														casper.echo('Verified Posted Message','INFO');
 													}
-												});
+												});*/
 												
 											} else {
 												casper.echo('Category Doesnot open Sucessfully', 'ERROR');
@@ -299,8 +299,8 @@ addNewTopicTests.composeCategoryListingPage = function() {
 
 addNewTopicTests.composeTopicListingPage = function() {
 	casper.then(function(){
-		/*****Verify Compost Topic on Latest Topic Page(For Guest/Registered User/Admin)*****/
-		casper.echo('Verify Compost Topic on Latest Topic Page(For Guest/Registered User/Admin)', 'INFO');
+		/*****Verify Compost Topic on Topic Listing Page(For Guest/Registered User/Admin)*****/
+		casper.echo('Verify Compose Topic on Topic Listing Page(For Guest/Registered User/Admin)', 'INFO');
 		casper.thenOpen(config.url,function(){
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
 				if(!err){
@@ -338,6 +338,228 @@ addNewTopicTests.composeTopicListingPage = function() {
 		});
 	});			
 }; 
+
+
+addNewTopicTests.composeLatestTopicPage = function() {
+	casper.then(function(){
+		/*****Verify Compost Topic on Latest Topic Page(For Guest/Registered User/Admin)*****/
+		casper.echo('Verify Compost Topic on Latest Topic Page(For Guest/Registered User/Admin)', 'INFO');
+		casper.thenOpen(config.url,function(){
+			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
+				if(!err){
+					if(isExists) {
+						casper.test.assertExists('#latest_topics_show a');
+						casper.click('#latest_topics_show a');
+						wait.waitForElement('.panel-heading', casper, function(err, isExists) {	
+							if(!err){
+								if(isExists) {
+									addNewTopicMethod.startTopic(json["StartTopic"],casper,function(err){
+										if(!err){
+											casper.echo('Topic Started Successfully','INFO');
+										}
+									});
+									
+								} else {
+									casper.echo('Does not navigate  to topic listing page ', 'ERROR');
+								}	
+							}
+						});
+						
+					} else {
+						casper.echo('Unable to successfully login ', 'ERROR');
+					}	
+				}
+			});
+		});
+	});			
+}; 
+
+addNewTopicTests.postPreviewForComposeTopic = function() {
+	casper.then(function(){
+		/*****Verify Preview Post of Compose Topic(For Guest/Registered User/Admin)*****/
+		casper.echo('Verify Preview Post of Compose Topic(For Guest/Registered User/Admin)', 'INFO');
+		casper.thenOpen(config.url,function(){
+			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
+				if(!err){
+					if(isExists) {
+						casper.test.assertExists('#latest_topics_show a');
+						casper.click('#latest_topics_show a');
+						wait.waitForElement('.panel-heading', casper, function(err, isExists) {	
+							if(!err){
+								if(isExists) {
+									casper.test.assertExists('a[href^="/post/printadd"]');
+									casper.click('a[href^="/post/printadd"]');
+									wait.waitForElement('#message_ifr', casper, function(err, isExists) {	
+										if(!err){
+											if(isExists) {
+												casper.sendKeys('input[name="subject"]', json["StartTopic"].subject, {reset:true});
+												casper.withFrame('message_ifr', function() {
+													casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+													casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+													casper.sendKeys('#tinymce',json["StartTopic"].content);
+												});	
+												wait.waitForElement('#all_forums_dropdown', casper, function(err, isExists) {	
+													if(!err){
+														if(isExists) {
+															var Category = casper.evaluate(function(a) {
+																var Category=document.querySelector('#all_forums_dropdown');
+																return Category[1].value;
+															});
+															casper.fill('form[name="PostTopic"]',{
+																'forum' : Category
+															},false);
+															casper.test.assertExists('#previewpost_sbt');
+															casper.click('#previewpost_sbt');
+															wait.waitForElement('#post_message_0', casper, function(err, isExists) {	
+																casper.echo('Post preview get displayed on top of page','INFO');
+															});
+																
+														} else {
+															casper.echo('Category Dropdown doesnt appears','ERROR');
+														}	
+													}
+												});
+											} else {
+												casper.echo('Unable to Open Form To Start Topic','ERROR');
+											}	
+										}
+									});
+			
+			
+								} else {
+									casper.echo('Does not navigate  to topic listing page ', 'ERROR');
+								}	
+							}
+						});		
+					} else {
+						casper.echo('Unable to successfully login ', 'ERROR');
+					}	
+				}
+			});
+		});
+	});			
+}; 
+
+
+addNewTopicTests.displayMsg = function() {
+	casper.then(function(){
+		/*****Verify Preview Post of Compose Topic(For Guest/Registered User/Admin)*****/
+		casper.echo('Verify Preview Post of Compose Topic(For Guest/Registered User/Admin)', 'INFO');
+		casper.thenOpen(config.url,function(){
+			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
+				if(!err){
+					if(isExists) {
+						casper.test.assertExists('#latest_topics_show a');
+						casper.click('#latest_topics_show a');
+						wait.waitForElement('.panel-heading', casper, function(err, isExists) {	
+							if(!err){
+								if(isExists) {
+									casper.test.assertExists('a[href^="/post/printadd"]');
+									casper.click('a[href^="/post/printadd"]');
+									wait.waitForElement('#message_ifr', casper, function(err, isExists) {	
+										if(!err){
+											if(isExists) {
+												casper.test.assertExists('#previewpost_sbt');
+												casper.click('#previewpost_sbt');
+												wait.waitForElement('.alert.alert-danger.text-center', casper, function(err, isExists) {	
+													if(!err){
+														if(isExists) {
+															var msg = casper.fetchText('.alert.alert-danger.text-center');
+															casper.echo(msg.trim(),'INFO');	
+														} else {
+															casper.echo('Alert message doesnt visible','ERROR');
+														}	
+													}
+												});
+					
+											} else {
+												casper.echo('Unable to Open Form To Start Topic','ERROR');
+											}	
+										}
+									});
+								} else {
+									casper.echo('Does not navigate  to topic listing page ', 'ERROR');
+								}	
+							}
+						});
+					} else {
+						casper.echo('Unable to successfully login ', 'ERROR');
+					}	
+				}
+			});
+		});
+	});			
+}; 
+
+addNewTopicTests.postWithoutSelectingCategory = function() {
+	casper.then(function(){
+		/*****Verify Compose Topic without  selecting any category(For Guest/Registered User/Admin)*****/
+		casper.echo('Verify Compose Topic without selecting any category(For Guest/Registered User/Admin)', 'INFO');
+		casper.thenOpen(config.url,function(){
+			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExists) {	
+				if(!err){
+					if(isExists) {
+						casper.test.assertExists('#latest_topics_show a');
+						casper.click('#latest_topics_show a');
+						wait.waitForElement('.panel-heading', casper, function(err, isExists) {	
+							if(!err){
+								if(isExists) {
+									casper.test.assertExists('a[href^="/post/printadd"]');
+									casper.click('a[href^="/post/printadd"]');
+									wait.waitForElement('#message_ifr', casper, function(err, isExists) {	
+										if(!err){
+											if(isExists) {
+												casper.sendKeys('input[name="subject"]', json["StartTopic"].subject, {reset:true});
+												casper.withFrame('message_ifr', function() {
+													casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+													casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+													casper.sendKeys('#tinymce',json["StartTopic"].content);
+												});	
+												wait.waitForElement('#post_submit', casper, function(err, isExists) {	
+													if(!err){
+														if(isExists) {
+															casper.click('#post_submit');
+															wait.waitForElement('.alert.alert-danger.text-center', casper, function(err, isExists) {	
+																if(!err){
+																	if(isExists) {
+																		var msg = casper.fetchText('.alert.alert-danger.text-center');
+												
+																		casper.echo(msg.trim(),'INFO');	
+																											} else {
+																		casper.echo('Alert message doesnt visible','ERROR');
+																	}	
+																}
+															});	
+														} else {
+															casper.echo('Category Dropdown doesnt appears','ERROR');
+														}	
+													}
+												});
+											} else {
+												casper.echo('Unable to Open Form To Start Topic','ERROR');
+											}	
+										}
+									});
+			
+			
+								} else {
+									casper.echo('Does not navigate  to topic listing page ', 'ERROR');
+								}	
+							}
+						});		
+					} else {
+						casper.echo('Unable to successfully login ', 'ERROR');
+					}	
+				}
+			});
+		});
+	});			
+}; 
+
+
+
+
+
 
 
 
