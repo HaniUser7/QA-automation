@@ -652,9 +652,9 @@ profilePageTests.profilePagePostCount=function(){
 
 profilePageTests.profilePagePostCount=function(){
 	casper.thenOpen(config.url,function(){		
-		casper.echo('**********Verify with like the post.*******,'INFO');
+		casper.echo('**********Verify with like the post.*******','INFO');
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
-		inContextLoginMethod.loginToApp(json['validInfosef'].username, json['validInfosef'].password, casper, function(err) {
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");
 			}else {
@@ -663,18 +663,163 @@ profilePageTests.profilePagePostCount=function(){
 					wait.waitForElement('form[name="posts"] a.topic-title', casper ,function(err ,isExists){
 						if(isExists) {
 							casper.click('form[name="posts"] a.topic-title');
-											
+							wait.waitForElement('i.glyphicon.glyphicon-like-alt' , casper , function(err , isExists) {
+								if(isExists) {
+									
+									//casper.click('i[data-original-title="Like this post"]');
+									try {
+										casper.click('i.glyphicon.glyphicon-like-alt');
+										casper.click('ul.nav.pull-right span.caret');
+										casper.click('a#user-nav-panel-profile');
 							
+										wait.waitForElement('div#UserProfile div:nth-child(2) span a:nth-child(3)' , casper , function(err , isExists) {
+										if(isExists) {
+											casper.click('div#UserProfile div:nth-child(2) span a:nth-child(3)');
+											inContextLoginMethod.logoutFromApp(casper, function(err){
+												if (!err)
+													casper.echo('Successfully logout from application', 'INFO');
+									 		});
+										}
+
+
+									    });
+									}catch(e){
+
+										casper.echo('No post available','INFO');
+										postEventMemberApprovalMethod.startTopic('a.pull-right.btn.btn-uppercase.btn-primary', casper , function(err , isExists) {
+											if(!err) {
+
+												casper.echo('Topic created successfully','INFO');
+											}	
+
+
+									});										
+								}
+							}
+						});
+
+																		
+
 						}
+
+
 					});
+							
 				});
 			}
-	  	});	
+		});
+	});
+};
+
+//verify with dislike the same post you already liked
+
+profilePageTests.profilePageDislikePostCount=function(){
+	casper.thenOpen(config.url,function(){
+		casper.echo('**********verify with dislike the same post you already liked*******','INFO');
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');		
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");
+			}else {
+				casper.echo('Processing to Login on forum.....', 'INFO');
+				wait.waitForTime(1000 , casper ,function(err) {
+					wait.waitForElement('form[name="posts"] a.topic-title', casper ,function(err ,isExists){
+						if(isExists) {
+							
+								casper.click('span.topic-content a');
+								wait.waitForElement('i.glyphicon.glyphicon-dislike-alt' , casper , function(err , isExists) {
+
+									if(isExists) {
+										
+										casper.capture('144445.png');										
+										casper.click('i.glyphicon.glyphicon-dislike-alt');
+										
+									}
+								/*var password = casper.evaluate(function() {
+									var id = document.querySelector('').getAttribute('data-original-title');
+									return id;
+								});*/
+								//casper.echo("message :" +password,'INFO');
+								//casper.click('a#'+password+'');
+								
+								casper.click('ul.nav.pull-right span.caret');
+								casper.click('a#user-nav-panel-profile');
+								wait.waitForElement('div#UserProfile div:nth-child(2) span a:nth-child(3)' , casper , function(err , isExists) {
+									if(isExists) {
+										casper.click('div#UserProfile div:nth-child(2) span a:nth-child(3)');
+										casper.wait(1000,function(){
+											casper.capture('123.png');
+
+										});
+										
+										inContextLoginMethod.logoutFromApp(casper, function(err){
+											if (!err)
+												casper.echo('Successfully logout from application', 'INFO');
+									 	});
+										
+
+									}
+									
+								});
+
+							});											
+
+						}
+
+
+					});
+							
+				});
+			}
+		});
+	});
+};
+
+
+//verify with delete the post that you liked
+
+profilePageTests.profilePageDeletePostCount=function(){
+	casper.thenOpen(config.url,function(){	
+		casper.echo('**********verify with delete the post that you liked*******','INFO');
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');		
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");
+			}else {
+				casper.echo('Processing to Login on forum.....', 'INFO');
+				wait.waitForTime(1000 , casper ,function(err) {
+					wait.waitForElement('form[name="posts"] a.topic-title', casper ,function(err ,isExists){
+						if(isExists) {
+							casper.click('span.topic-content a');
+							wait.waitForElement('i.glyphicon.glyphicon-like-alt' , casper , function(err , isExists) {
+								if(isExists) {
+									
+									//casper.click('i[data-original-title="Like this post"]');
+									try {
+										casper.click('i.glyphicon.glyphicon-like-alt');
+										casper.click('ul.nav.pull-right span.caret');
+										casper.click('a#user-nav-panel-profile');
+							
+										wait.waitForElement('div#UserProfile div:nth-child(2) span a:nth-child(3)' , casper , function(err , isExists) {
+												
+							
+
+
+										});
+
+									}catch(e){
 
 
 
 
 
+
+
+
+									}			
+				});
+			}
+		});	
 
 
 
@@ -695,24 +840,4 @@ profilePageTests.profilePagePostCount=function(){
 
 	});
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -29,6 +29,7 @@ profilePage.featureTest = function(casper, test) {
 	//profilePageTests.profilePageDeleteIcon();
 	profilePageTests.profilePagePostCount();
 	//
+	profilePageTests.profilePageDislikePostCount();
 
 
 
