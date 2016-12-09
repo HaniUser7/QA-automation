@@ -19,18 +19,10 @@ profilePageMethod.fillDataToMessage = function(driver, callback) {
 
 
 
-profilePageMethod.fillEdit=function(driver , callback) {
-	driver.fillSelectors('
-
-
-
-
-
-
-
-
-
-
-
+profilePageMethod.fillData = function(driver , callback) {
+	driver.fillSelectors('form[name="PostTopic"]',{
+		'div.editable-input':'hani1'
+	},false);
+	driver.click('button.btn.btn-primary.btn-sm.editable-submit i');
+	
 };
-

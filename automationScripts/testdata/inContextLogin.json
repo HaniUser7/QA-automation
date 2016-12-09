@@ -27,7 +27,20 @@
 	"username" : "hani",
         "password" : "hani",
         "expectedSuccessMsg" : ""
-   }
+   },
+
+   "validInfose" : {
+	"username" : "hani12",
+	"password" :"hani12",
+	"expectedSuccessMsg" :""
+  },
+
+  "validInfosef" : {
+	"username" : "hani123",
+	"password" :"hani123",
+	"expectedSuccessMsg" :""
+  }
+	
 
     
 }

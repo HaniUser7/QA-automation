@@ -10,7 +10,7 @@ profilePage.featureTest = function(casper, test) {
 	casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
 
 	//Verify with sending message by message button.
-	//profilePageTests.profilePageMessageButton();
+	profilePageTests.profilePageMessageButton();
 	//All Post tab for own profile page.
 	//profilePageTests.profilePageSendFile();	
 	//sending message by message button when message permission is disable from back end
@@ -18,9 +18,17 @@ profilePage.featureTest = function(casper, test) {
 	//Verify all post tab before start a topic/or post.
 	//profilePageTests.profilePageAllPostTab();
 	//Verify with All post tab after start a topic/post.
-	profilePageTests.profilePageAllPostTabDelete();
-	
-
+	//profilePageTests.profilePageAllPostTabDelete();
+	//verify with reputation link after disable the permissions
+	//profilePageTests.profilePageAllReputationDisable();
+	//verify with reputation link after enable the permissions
+	//profilePageTests.profilePageAllReputationEnable();
+	//
+	//profilePageTests.profilePageEditUserIcon();
+	//
+	//profilePageTests.profilePageDeleteIcon();
+	profilePageTests.profilePagePostCount();
+	//
 
 
 
