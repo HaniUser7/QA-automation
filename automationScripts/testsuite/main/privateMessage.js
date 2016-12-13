@@ -25,27 +25,55 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.deleteFromConversationPage();
 		
 		// method To verify mark as unread(check box)(single)
-		privateMessageTestcases.unreadCheckbox();
+		//privateMessageTestcases.unreadCheckbox();
 		
 		// method To verify mark as unread(check box)(multiple)
-		privateMessageTestcases.unreadMultipleCheckbox();
+		//privateMessageTestcases.unreadMultipleCheckbox();
 		
 		// method To verify mark as unread(check box)(all)
-		privateMessageTestcases.unreadAllCheckbox();
+		//privateMessageTestcases.unreadAllCheckbox();
 		
 		// method To verify mark as read(check box)(single)
-		privateMessageTestcases.readCheckbox();
+		//privateMessageTestcases.readCheckbox();
 		
 		// method To verify mark as read(check box)(multiple)
-		privateMessageTestcases.readMultipleCheckbox();
+		//privateMessageTestcases.readMultipleCheckbox();
 		
 		// method To verify mark as read(check box)(all)
-		privateMessageTestcases.readAllCheckbox();
+		//privateMessageTestcases.readAllCheckbox();
 		
 		// method to verify mark as read(coversation page)
-		privateMessageTestcases.readFromConversationPage();
+		//privateMessageTestcases.readFromConversationPage();
 		
-	
+		// method Move single conversation(inbox to archieve)
+		//privateMessageTestcases.moveSingleToArchieve();
+		
+		// method to move multiple conversation(inbox to archieve)
+		//privateMessageTestcases.moveMultipleToArchieve();
+		
+		// method to move all coversation(inbox to archieve)
+		//privateMessageTestcases.moveAllToArchieve();
+		
+		// method to Move single conversation(archieve to inbox)
+		//privateMessageTestcases.moveSingleToInbox();
+		
+		// method to move multiple conversation(archieve to inbox)
+		//privateMessageTestcases.moveMultipleToInbox();
+		
+		// method to move all coversation(archieve to inbox)
+		//privateMessageTestcases.moveAllToInbox();
+		
+		// method To verify ignored member (check box)
+		//privateMessageTestcases.ignoreUser();
+		
+		// method to verify with unignore user
+		privateMessageTestcases.unignoreUser();
+		
+		// method To Verify deleted member on ignore list
+		//privateMessageTestcases.deletedMemberOnIgnoreList();
+		
+		// method to verify with send reply on previous message after ignoring
+		//privateMessageTestcases.replyOnPreviousMessage();
 		
 	});
 };
