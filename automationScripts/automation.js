@@ -52,6 +52,16 @@ switch (feature) {
 				test.done();
 			});
 		});
+	break;
+
+	case "upload" :
+		casper.test.begin('******Verify upload Image**********' , function(test) {
+			var upload=require("../testsuite/main/upload.js");
+			upload.featureTest(casper,casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});
 	break;	
 		
 

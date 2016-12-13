@@ -32,23 +32,5 @@ profilePage.featureTest = function(casper, test) {
 	profilePageTests.profilePageDislikePostCount();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	});
 };

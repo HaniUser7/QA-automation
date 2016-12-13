@@ -808,35 +808,14 @@ profilePageTests.profilePageDeletePostCount=function(){
 										});
 
 									}catch(e){
-
-
-
-
-
-
+										
 
 
 									}			
-				});
-			}
-		});	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+								}
+							});
+						}
+					});	
 
 	});
 };
