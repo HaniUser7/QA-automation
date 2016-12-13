@@ -159,7 +159,7 @@
         "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account  "
     },
 	"alphanumericSpaceInvaild" : {
-    	"uname" : "Ab@CD12",
+    	"uname" : "Ab@ CD12",
         "uemail" : "801@wt.com",
         "upass" : "1234",
         "fullName" : "18",
@@ -212,7 +212,76 @@
         "usignature" : "This is my signature 18",
         "namePrivate" : true,
         "expectedSuccessMsg" : "Your usename must contain Lower case and upper case letters including spaces"
+    },
+	"lowercaseUpperInvaild" : {
+    	"uname" : "Ab@CD",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : " Your usename must contain lowercase and uppercase letters"
+    },
+	"lowercaseUpperVaild" : {
+    	"uname" : "OnlyySid",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account"
+    },
+	"lowercase-a-zInvaild" : {
+    	"uname" : "KULWINDER",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Your usename must contain Lowercase letters from a-z"
+    },
+	"lowercase-a-zVaild" : {
+    	"uname" : "kulwinder",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account"
+    },
+	"lowercase-a-zSpaceInvaild" : {
+    	"uname" : "poonamkapoor",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Your usename must contain Lowercase letters from a-z including spaces"
+    },
+	"lowercase-a-zSpaceVaild" : {
+    	"uname" : "poonam kapoor",
+        "uemail" : "801@wt.com",
+        "upass" : "1234",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account"
     }
+	
+	
+	
 	
 	
 	
