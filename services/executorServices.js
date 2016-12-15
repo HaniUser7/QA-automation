@@ -22,15 +22,6 @@ executorServices.executeJob = function(commitDetails, callback){
 			return callback();
 		}
 		
-		//Deleting Old Directory That Contains Screenshots
-		fs.readdir(path, function (err, data) {
-			if(err) {
-				console.error("Error : "+err);
-			}else {
-				attachmentServices.deleteFolderRecursive(path);
-			}
-		});
-		
 		//Executing automation test script
 		console.log("Executing Automation script");
 		exec("/etc/automation/bin/automation.sh", function(code, stdout, stderr) {
@@ -92,11 +83,20 @@ executorServices.executeJob = function(commitDetails, callback){
 														console.error("error occurred while sending email: "+err);
 													else
 														console.log("Mail sent successfully.");
-													//Deleting commit specific log files
-													fs.unlinkSync(automationLogFile);
-													fs.unlinkSync(failLogFile);
-													console.log("Commit specific log files deleted.");
-													return callback();
+													//Deleting Old Directory That Contains Screenshots
+													fs.readdir(path, function (err, data) {
+														if(err) {
+															console.error("Error : "+err);
+														}else {
+															attachmentServices.deleteFolderRecursive(path, function() {
+																//Deleting commit specific log files
+																fs.unlinkSync(automationLogFile);
+																fs.unlinkSync(failLogFile);
+																console.log("Commit specific log files deleted.");
+																return callback();
+															});
+														}
+													});
 												});
 											});
 										}
