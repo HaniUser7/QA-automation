@@ -97,7 +97,6 @@ executorServices.executeJob = function(commitDetails, callback){
 															});
 														}
 													});
-														
 												});
 											});
 										}
