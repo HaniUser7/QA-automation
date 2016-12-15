@@ -1,7 +1,6 @@
 'use strict';
 var fs = require('fs');
 var attachmentServices = module.exports = {};
-var commitDetails = {};
 
 //Method to Delete Old Directory
 attachmentServices.deleteFolderRecursive = function(path, callback) {
