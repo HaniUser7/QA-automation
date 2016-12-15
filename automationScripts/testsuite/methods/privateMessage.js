@@ -104,22 +104,24 @@ privateMessageMethod.disableMessage = function(driver, callback) {
 
 // method to compose a private message to a user
 privateMessageMethod.createMessage = function(data, driver, callback) {		
-	driver.capture('dfgd.png');					
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
-	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});							
-	driver.withFrame('pmessage_new_ifr', function() {
-		driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
-		driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
-		driver.sendKeys('#tinymce',data.pmessage);
+	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});		
+	driver.test.assertExists('textarea#pmessage_new');
+	driver.evaluate(function() {
+		document.querySelector('textarea#pmessage_new').click();
 	});
-	driver.then(function() {
-		driver.click('a#send_pmsg_button');
-		casper.wait(5000, function() {
-			casper.capture('tyr.png');
+	casper.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+		driver.withFrame('pmessage_new_ifr', function() {
+			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
+			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+			driver.sendKeys('#tinymce', data.pmessage);
 		});
 	});
+	
 	driver.then(function() {
+		driver.test.assertExists('a#send_pmsg_button');
+		driver.click('a#send_pmsg_button');
 		return callback(null);
 	});
 };

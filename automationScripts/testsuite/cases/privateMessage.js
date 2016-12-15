@@ -21,8 +21,7 @@ privateMessageTestcases.createPrivateMessage = function() {
 						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 							if(isExists) {
 								casper.click('a.send_new_pmsg');
-								casper.wait(9000, function() {
-									casper.capture('tyr.png');
+								casper.waitUntilVisible('div#pmessage_modal', function() {
 									privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 										if(!err) {
 											casper.echo('Message sent..','INFO');
@@ -1216,14 +1215,18 @@ privateMessageTestcases.verifyHoverCardOnUserName = function() {
 									wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
 										if(isExists) {
 											casper.mouse.move('div#current_msg_details a#display_user');
-											casper.capture('dfgtry.png');
-											wait.waitForVisible('div[style="display: block;"]', casper, function(err, isExists) {
+											//wait.waitForVisible('div[style="display: block;"]', casper, function(err, isExists) {
+											/*wait.waitUntilVisible('div.popover.hovercard.fade.bottom.in', casper, function(err, isExists) {
+												casper.capture('1.png');
 												if(isExists) {
 													casper.echo('Showing hover card when user user hovering mouse on the user name ','INFO');
 													casper.capture('pd.png');
 												} else {
 													casper.echo('User profile page not found','ERROR');
 												}
+											});*/
+											casper.waitUntilVisible('div.popover-content', function() {
+												casper.capture('1.png');
 											});
 										} else {
 											casper.echo('Inbox not found','ERROR');
