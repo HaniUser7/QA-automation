@@ -15,6 +15,24 @@ privateMessage.featureTest = function(casper, test) {
 		// method To verify delete Conversation
 		//privateMessageTestcases.deleteConversation();
 		
+		// method to compose a message by scenario 2
+		//privateMessageTestcases.composeScenarioSecond();
+		
+		// method to compose message by Scenario3
+		//privateMessageTestcases.composeMessageScenarioThird();
+		
+		// method to verify when we enter invalid recipients name
+		//privateMessageTestcases.invalidRecipientsName();
+		
+		// method to verify when we leave blank reciepients name
+		//privateMessageTestcases.blankRecipientsName();
+		
+		// method to verify when leave blank subject 
+		//privateMessageTestcases.blankSubject();
+		
+		// method to verify when leave blank message body
+		//privateMessageTestcases.blankMessageBody();
+		
 		// method To verify delete multiple Conversation
 		//privateMessageTestcases.deleteMultipleConversation();
 		
@@ -67,7 +85,7 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.ignoreUser();
 		
 		// method to verify with unignore user
-		privateMessageTestcases.unignoreUser();
+		//privateMessageTestcases.unignoreUser();
 		
 		// method To Verify deleted member on ignore list
 		//privateMessageTestcases.deletedMemberOnIgnoreList();
@@ -75,5 +93,13 @@ privateMessage.featureTest = function(casper, test) {
 		// method to verify with send reply on previous message after ignoring
 		//privateMessageTestcases.replyOnPreviousMessage();
 		
+		// method to Verify profile link on user name
+		//privateMessageTestcases.verifyProfileLinkOnUserName();
+		
+		// method to Verify hover card on user name
+		privateMessageTestcases.verifyHoverCardOnUserName();
+		
+		// method To verify "See all" link when there are no conversation.
+		//privateMessageTestcases.verifySeeAll();
 	});
 };

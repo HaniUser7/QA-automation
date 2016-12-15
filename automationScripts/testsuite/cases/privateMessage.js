@@ -11,18 +11,44 @@ var privateMessageTestcases = module.exports = {};
 
 // method to create a message
 privateMessageTestcases.createPrivateMessage = function() {
-	try {
-		casper.test.assertExists('i#private_message_notification');
-		privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-			if(!err) {
-			
-			}
-		});
-	} catch (e) {
-	
-	}	
+	casper.echo('                       Method to send a msg','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								casper.wait(9000, function() {
+									casper.capture('tyr.png');
+									privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+										if(!err) {
+											casper.echo('Message sent..','INFO');
+										}
+									});
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Message not sent..','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
 };
-
+// Test cases to verify Delete conversation
 // method To verify delete Conversation
 privateMessageTestcases.deleteConversation = function() {
 	casper.echo('                       Test case 1','INFO');
@@ -35,6 +61,7 @@ privateMessageTestcases.deleteConversation = function() {
 						casper.click('i#private_message_notification');
 						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
 							if(isExists) {
+								casper.capture('tyr.png');
 								casper.click('ul#private_message_dropdown a.pull-left');
 								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
 									if(isExists) {
@@ -1122,3 +1149,457 @@ privateMessageTestcases.deletedMemberOnIgnoreList = function() {
 	});
 };
 
+// Test cases for Extra's
+// method to Verify profile link on user name
+privateMessageTestcases.verifyProfileLinkOnUserName = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                       Test case 2','INFO');
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {
+							casper.test.assertExists('i#private_message_notification');
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('ul#private_message_dropdown a.pull-left');
+									wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
+										if(isExists) {
+											casper.click('div#current_msg_details a#display_user');
+											wait.waitForElement('div#UserProfile', casper, function(err, isExists) {
+												if(isExists) {
+													casper.echo('Redirect to profile page','INFO');
+												} else {
+													casper.echo('User profile page not found','ERROR');
+												}
+											});
+										} else {
+											casper.echo('Inbox not found','ERROR');
+										}
+									});
+								} else {
+									casper.echo('Inbox at popup not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Private message tab not found','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	});
+};
+
+// method to Verify hover card on user name
+privateMessageTestcases.verifyHoverCardOnUserName = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                       Test case 3','INFO');
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {
+							casper.test.assertExists('i#private_message_notification');
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('ul#private_message_dropdown a.pull-left');
+									wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
+										if(isExists) {
+											casper.mouse.move('div#current_msg_details a#display_user');
+											casper.capture('dfgtry.png');
+											wait.waitForVisible('div[style="display: block;"]', casper, function(err, isExists) {
+												if(isExists) {
+													casper.echo('Showing hover card when user user hovering mouse on the user name ','INFO');
+													casper.capture('pd.png');
+												} else {
+													casper.echo('User profile page not found','ERROR');
+												}
+											});
+										} else {
+											casper.echo('Inbox not found','ERROR');
+										}
+									});
+								} else {
+									casper.echo('Inbox at popup not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Private message tab not found','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	});
+};
+
+// method To verify "See all" link when there are no conversation.
+privateMessageTestcases.verifySeeAll = function() {
+	casper.thenOpen(config.url, function() {
+		casper.echo('                       Test case 4','INFO');
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {
+							casper.test.assertExists('i#private_message_notification');
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown li.user-nav-list-all', casper, function(err, isExists) {
+								if(isExists) {
+									try {
+										casper.test.assertDoesntExist('li[id^="pm_notification_list"]');
+										var text = casper.fetchText('ul#private_message_dropdown li.user-nav-list-all a');
+										var string = text.toString();
+										casper.echo('***************'+string,'INFO');
+										var expectedText = 'Go to inbox';
+										if(string==expectedText){
+											casper.echo('see all link is convert to Go to inbox link verified','INFO');
+										} else {
+											casper.echo('not verified','INFO');
+										}	
+									} catch (e) {
+										casper.test.assertExists('li[id^="pm_notification_list"]');
+										var text = casper.fetchText('ul#private_message_dropdown li.user-nav-list-all a');
+										var string = text.toString();
+										var expectedText = 'See All';
+										if(string==expectedText){
+											casper.echo('conversation present so See All verified', 'INFO');
+										} else {
+											casper.echo('conversation present so See All not verified','INFO');
+										}	
+									}
+								} else {
+									casper.echo('Inbox at popup not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Private message tab not found','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	});
+};
+// Test cases To verify sending new message
+// method to compose a message by scenario 2
+privateMessageTestcases.composeScenarioSecond = function() {
+	casper.echo('                       Test case 2','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.mouse.move('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
+										casper.click('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
+										casper.wait(9000, function() {
+											casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', json["Privatemessage"].to, {keepFocus: true});
+											casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus: true} );
+					
+											casper.sendKeys('input[id="pm_subject"]', json["Privatemessage"].subject, {keepFocus:true});							
+											
+											casper.withFrame('pmessage_new_ifr', function() {
+												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
+												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce',json["Privatemessage"].pmessage);
+											});
+											casper.then(function() {
+												casper.click('a#send_pmsg_button');
+												casper.wait(5000, function() {
+													casper.capture('tyr.png');
+												});
+											});
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Private message tab not found','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});
+};
+
+// method to compose message by Scenario3
+privateMessageTestcases.composeMessageScenarioThird = function() {
+	casper.echo('                      Test Case 3','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+				if(isExists) {
+					casper.click('ul.nav.pull-right span.caret');
+					casper.test.assertExists('a[href^="/profile"]');
+					casper.click('a[href^="/profile"]');
+					casper.wait(2000, function() {
+						casper.click('div.pull-left.profile-menu a#send_message');
+						casper.capture('abc.png');
+						casper.wait(9000, function() {
+							privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+								if(!err) {
+									casper.echo('Message sent..','INFO');
+								}
+							});
+						});
+					});
+				} else {
+					casper.echo('User not logged in','ERROR');
+				}
+			});						
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};
+
+// method to verify when we enter invalid recipients name
+privateMessageTestcases.invalidRecipientsName = function() {
+	casper.echo('                                    Test case 4','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								casper.wait(9000, function() {
+									casper.capture('tyr.png');
+									privateMessageMethod.createMessage(json.invalidRecipientsName, casper, function(err) {
+										if(!err) {
+											casper.capture('case4.png');
+											casper.echo('Message sent..','INFO');
+											casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+										}
+									});
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Message not sent..','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};
+
+// method to verify when we leave blank reciepients name
+privateMessageTestcases.blankRecipientsName = function() {
+	casper.echo('                                    Test case 5','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								casper.wait(9000, function() {
+									casper.capture('tyr.png');
+									privateMessageMethod.createMessage(json.blankRecipientsName, casper, function(err) {
+										if(!err) {
+											casper.capture('case5.png');
+											casper.echo('Message sent..','INFO');
+											casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+										}
+									});
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Message not sent..','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};
+
+// method to verify when leave blank subject 
+privateMessageTestcases.blankSubject = function() {
+	casper.echo('                                    Test case 6','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								casper.wait(9000, function() {
+									casper.capture('tyr.png');
+									privateMessageMethod.createMessage(json.blankSubject, casper, function(err) {
+										if(!err) {
+											casper.capture('case6.png');
+											casper.echo('Message sent..','INFO');
+											//casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+										}
+									});
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Message not sent..','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};
+
+// method to verify when leave blank message body
+privateMessageTestcases.blankMessageBody = function() {
+	casper.echo('                                    Test case 7','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								casper.wait(9000, function() {
+									casper.capture('tyr.png');
+									privateMessageMethod.createMessage(json.blankMessageBody, casper, function(err) {
+										if(!err) {
+											casper.capture('case7.png');
+											casper.echo('Message sent..','INFO');
+											casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+										}
+									});
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Message not sent..','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};
+
+// method To verify auto drop down in reciver's field
+privateMessageTestcases.autoDropdown = function() {
+	casper.echo('                                    Test case 9','INFO');
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+				if(isExists) {
+					try {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								casper.wait(9000, function() {
+									casper.capture('tyr.png');
+									driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
+									driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
+					} catch (e) {
+						casper.echo('Message not sent..','INFO');
+					}
+				}else {
+					casper.echo('User not logged in', 'INFO');
+				}
+			});
+		} else {
+			casper.echo('User not logged','ERROR');						
+		}
+	});
+	casper.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};

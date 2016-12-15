@@ -103,41 +103,21 @@ privateMessageMethod.disableMessage = function(driver, callback) {
 };
 
 // method to compose a private message to a user
-privateMessageMethod.createMessage = function(data, driver, callback) {
-	driver.click('i#private_message_notification');
-	wait.waitForElement('ul#private_message_dropdown', driver, function(err, isExists) {
-		if(isExists) {
-			driver.click('a.send_new_pmsg');							
-			driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {reset:true});
-			driver.sendKeys('input[id="pm_subject"]', data.subject, {reset:true});							
-			driver.withFrame('pmessage_new_ifr', function() {
-				driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});		
-				driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
-				driver.sendKeys('#tinymce',data.pmessage);
-			});
-			driver.then(function() {
-				driver.click('a#send_pmsg_button');
-			});
-			
-			/*driver.waitForSelector('#all_forums_dropdown', function success() {
-				driver.click('#all_forums_dropdown');
-				driver.fill('form[name="PostTopic"]',{
-					'forum' : data.category
-				},false);
-				driver.then(function() {
-					driver.click('#post_submit');
-				});
-			}, function fail() {
-				driver.waitForSelector('#post_submit',function success() {							
-					driver.test.assertExists('#post_submit');
-					driver.click('#post_submit');
-				},function fail() {
-					driver.echo('Unable to submit form','ERROR');
-				});
-			});*/
-		} else {
-			driver.echo('Send a New Messag Pop not found','ERROR');
-		}
+privateMessageMethod.createMessage = function(data, driver, callback) {		
+	driver.capture('dfgd.png');					
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {keepFocus:true});
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
+	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});							
+	driver.withFrame('pmessage_new_ifr', function() {
+		driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
+		driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+		driver.sendKeys('#tinymce',data.pmessage);
+	});
+	driver.then(function() {
+		driver.click('a#send_pmsg_button');
+		casper.wait(5000, function() {
+			casper.capture('tyr.png');
+		});
 	});
 	driver.then(function() {
 		return callback(null);
