@@ -37,10 +37,10 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.autoDropdown();
 		
 		//To verify Attachement /Insert Photo link when disable
-		privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable();
+		//privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable();
 		
 		// method To verify Attachement /Insert Photo link when enable
-		privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable();
+		//privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable();
 		
 		// method To verify delete multiple Conversation
 		//privateMessageTestcases.deleteMultipleConversation();
@@ -110,5 +110,17 @@ privateMessage.featureTest = function(casper, test) {
 		
 		// method To verify "See all" link when there are no conversation.
 		//privateMessageTestcases.verifySeeAll();
+		
+		// method To verify leave conversation( single)
+		//privateMessageTestcases.leaveSingleConversation();
+		
+		// method To verify leave conversation (Multiple)
+		//privateMessageTestcases.leaveMultipleConversation();
+		
+		// method To verify leave conversation (all)
+		//privateMessageTestcases.leaveAllConversation();
+		
+		// method to verify with reply option
+		privateMessageTestcases.verifyReplyOption();
 	});
 };
