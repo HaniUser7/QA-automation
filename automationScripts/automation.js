@@ -14,10 +14,10 @@ if(feature){
 
 switch (feature) {
     		
-	case "registerSetting":
-		casper.test.begin('REGISTRATION BACKEND ENABLE SETTING TEST', function(test) {
-			var registerSetting = require("./testsuite/main/registerSetting.js");
-			registerSetting.featureTest(casper, casper.test);
+	case "uploadAttachment":
+		casper.test.begin('UPLOAD ATTACHEMENT SETTING TEST', function(test) {
+			var uploadAttachment = require("./testsuite/main/uploadAttachment.js");
+			uploadAttachment.featureTest(casper, casper.test);
 			casper.run(function(){
 				test.done();
 				test.assert(true);

@@ -1,7 +1,13 @@
 {
 	"screenShotsLocation": "../Screenshots/",
+<<<<<<< HEAD
 	"url": "http://beta24.websitetoolbox.com/",
 	"backEndUrl": "https://beta24.websitetoolbox.com/tool/members/login",
+=======
+	
+	"url": "http://beta22.websitetoolbox.com/",
+	"backEndUrl": "http://beta22.websitetoolbox.com/tool/members/login",
+>>>>>>> 0fb0d6a4ee41021715329386220f18143088a76b
 	"app": {	
 		"verbose" : true,
 	 	"logLevel" : "debug",
@@ -13,7 +19,11 @@
 	},
 
 	"backendCred" : {
+<<<<<<< HEAD
 		"uname" : "beta24",
+=======
+		"uname" : "beta22",
+>>>>>>> 0fb0d6a4ee41021715329386220f18143088a76b
     		"upass" : "test",
     		"apiKey" : "4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q"
 	},

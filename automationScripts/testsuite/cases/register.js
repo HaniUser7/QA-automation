@@ -561,7 +561,6 @@ registerTests.validInfo= function() {
 		registerMethod.registerToApp(json['validInfo'], casper, function(err) {
 			if(!err) {
 				casper.echo('Processing to registration on forum.....', 'INFO');
-				casper.capture('3.png');
 				registerMethod.redirectToLogout(casper, casper.test, function(err) {
 					if(!err) {
 						casper.echo('User logout successfully', 'INFO');

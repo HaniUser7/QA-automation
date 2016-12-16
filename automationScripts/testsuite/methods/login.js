@@ -18,14 +18,16 @@ forumLoginMethod.loginToApp = function(username, password, driver, callback) {
 		try {
 			driver.test.assertExists('form[name="frmLogin"] input[type="submit"]');
 			driver.click('form[name="frmLogin"] input[type="submit"]');
+			return callback(null);
 		} catch(e) {
 			driver.test.assertExists('form[name="frmLogin"] button[type="submit"]');
 			driver.click('form[name="frmLogin"] button[type="submit"]');
+			return callback(null);
 		}
 	} catch(e) {
 		driver.echo("The user is already logged-in.", 'INFO');
+		return callback(null);
 	}	 
-	return callback(null);
 };
 
 
@@ -60,6 +62,17 @@ forumLoginMethod.verifyErrorMsg = function(errorMessage, expectedErrorMsg, msgTi
 	}
 	return callback(null);
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 
