@@ -8,7 +8,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with post from topic listing page(Attachment/insert photos)
 		uploadTests.uploadPostAttachment();
 		//Verify with post from topic listing page(insert photos)
-		uploadTests.uploadPostAttachmentInsert();
+		/*uploadTests.uploadPostAttachmentInsert();
 		//Verify with start new Topic Attachment
 		uploadTests.uploadStartNewTopic();
 		//Verify with start new Topic Insert
@@ -22,12 +22,40 @@ upload.featureTest = function(casper, test) {
 		//verify start new topic from forum listing
 		uploadTests.uploadStartNewTopicforumlisting();
 		//verify postreply under category
-		uploadTests.uploadPostListingUnderCategory();
-
-
-
-
-
+		uploadTests.uploadPostListingUnderCategory();*/
+		//calender
+		//uploadTests.uploadCalenderEvent();
+		//
+		//uploadTests.uploadCalenderEditEvent();
+		//
+		//uploadTests.uploadCalenderEditEventrecurring();
+		//
+		//uploadTests.uploadPrivateMessage();
+		//
+		//uploadTests.uploadPrivateMessageInbox();
+		//
+		//uploadTests.uploadPrivateMessageInboxReplySection();
+		//
+		//uploadTests.uploadEditPostCameraWeb();
+		//
+		/*uploadTests.uploadEditPostAttachment();
+		//
+		uploadTests.uploadEditPostcameraWebaddress();
+		//
+		uploadTests.uploadEditPostcameraWebbrowse();
+		//
+		uploadTests.uploadEditPostUnderCategoryPostReplyAttachment();
+*/
+		//
+		//uploadTests.uploadEditPostUnderCategoryPostReplycamerabrowse();
+		//
+		uploadTests.uploadEditPostUnderCategoryPostReplycamerawebaddress();
+		//
+		uploadTests.uploadEditPostUnderCategoryPostReplyImagebuttonbrowse();
+		//
+		uploadTests.uploadEditPostUnderCategoryPostReplyImagebuttonwebaddress();
+		//
+		uploadTests.uploadEditPostundercategoryAttachment();
 
 
 
