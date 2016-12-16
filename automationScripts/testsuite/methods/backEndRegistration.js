@@ -40,12 +40,13 @@ backEndForumRegisterMethod.redirectToBackEndLogout = function(driver, test, call
 			if(!err){
 				if(isExists) {
 					casper.echo('Logout Succesfully......','INFO');
+					return callback(null);
 				} else {
 					casper.echo('Unable to logout successfully', 'ERROR');
+					return callback(null);
 				}	
 			}
 		});
-	return callback(null);
 };
 
 //Method For Verifying Error Message On Registration Form After Submitting Form.

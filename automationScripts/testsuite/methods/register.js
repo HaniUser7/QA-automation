@@ -2,6 +2,7 @@
 var forumLoginMethod = require('../methods/login.js');
 //var json = require('../../testdata/registerData.json');
 var wait = require('../wait.js');
+var config = require('../../../config/config.json');
 var registerMethod=module.exports = {};
 
 /************************************PRIVATE METHODS***********************************/

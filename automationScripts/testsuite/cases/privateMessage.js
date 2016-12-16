@@ -6,12 +6,13 @@ var config = require('../../../config/config.json');
 var privateMessageMethod = require('../methods/privateMessage.js');
 var registerMethod = require('../methods/register.js');
 var forumLoginMethod = require('../methods/login.js');
+var backEndForumRegisterMethod = require('../methods/backEndRegistration.js');
 var wait = require('../wait.js');
 var privateMessageTestcases = module.exports = {};
 
 // method to create a message
 privateMessageTestcases.createPrivateMessage = function() {
-	casper.echo('                       Method to send a msg','INFO');
+	casper.echo('                       Test case 1- Method to send a msg','INFO');
 	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 		if(!err) {
 			wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -24,7 +25,7 @@ privateMessageTestcases.createPrivateMessage = function() {
 								casper.waitUntilVisible('div#pmessage_modal', function() {
 									privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 										if(!err) {
-											casper.echo('Message sent..','INFO');
+											casper.echo('Message sent called successfully..','INFO');
 										}
 									});
 								});
@@ -1225,7 +1226,7 @@ privateMessageTestcases.verifyHoverCardOnUserName = function() {
 													casper.echo('User profile page not found','ERROR');
 												}
 											});*/
-											casper.waitUntilVisible('div.popover-content', function() {
+											casper.wait(5000, function() {
 												casper.capture('1.png');
 											});
 										} else {
@@ -1604,5 +1605,95 @@ privateMessageTestcases.autoDropdown = function() {
 	});
 	casper.then(function() {
 		forumLoginMethod.logoutFromApp(casper, function() { });
+	});	
+};
+
+//To verify Attachement /Insert Photo link when disable
+privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                         Test case 11a','INFO');
+		privateMessageMethod.disableAttachments(casper, function(err) {
+			if(!err) {
+				casper.echo('Backend setting changed succesfully','INFO');
+			}	
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {	
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									casper.waitUntilVisible('div#pmessage_modal', function() {
+										casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
+										casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Message not sent..','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	});	
+};
+
+// method To verify Attachement /Insert Photo link when enable
+privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                         Test case 11b','INFO');
+		privateMessageMethod.enableAttachments(casper, function(err) {
+			if(!err) {
+				casper.echo('BAckend setting changed succesfully','INFO');
+			}	
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {	
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									casper.waitUntilVisible('div#pmessage_modal', function() {
+										casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
+										casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Message not sent..','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
 	});	
 };

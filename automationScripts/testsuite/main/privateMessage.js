@@ -33,6 +33,15 @@ privateMessage.featureTest = function(casper, test) {
 		// method to verify when leave blank message body
 		//privateMessageTestcases.blankMessageBody();
 		
+		// method To verify auto drop down in reciver's field
+		//privateMessageTestcases.autoDropdown();
+		
+		//To verify Attachement /Insert Photo link when disable
+		privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable();
+		
+		// method To verify Attachement /Insert Photo link when enable
+		privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable();
+		
 		// method To verify delete multiple Conversation
 		//privateMessageTestcases.deleteMultipleConversation();
 		
@@ -97,7 +106,7 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.verifyProfileLinkOnUserName();
 		
 		// method to Verify hover card on user name
-		privateMessageTestcases.verifyHoverCardOnUserName();
+		//privateMessageTestcases.verifyHoverCardOnUserName();
 		
 		// method To verify "See all" link when there are no conversation.
 		//privateMessageTestcases.verifySeeAll();
