@@ -4,7 +4,7 @@ var json = require('../../testdata/inContextLogin.json');
 var uploadMethods = require('../methods/uploadmethod.js');
 var inContextLoginMethod = require('../methods/inContextLogin.js');
 var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
-var postEventMemberApprovalMethod = require('../methods/postEventMemberApproval.js');
+//var postEventMemberApprovalMethod = require('../methods/postEventMemberApproval.js');
 var wait=require('../wait.js');
 var utils=require('../utils.js');
 uploadTests = module.exports = {};
@@ -22,15 +22,25 @@ uploadTests.uploadPostAttachment=function(){
  'INFO');
 			try {
 				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
-				casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-				
-				
-				
+					if(isExists){
+						casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+						casper.click('span.topic-content a');
+						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+								inContextLoginMethod.logoutFromApp(casper, function(err){
+									if (!err)
+										casper.echo('Successfully logout from application', 'INFO');
+								});			
+							}
+						});						
+					}
+				});
 			} catch (e) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
 						//method to create a new topic
-						postEventMemberApprovalMethod.startTopic(json['newtopic'], casper, function(err) {
+						uploadMethods.startTopic(json['newtopic'], casper, function(err) {
 							if(!err) {
 								casper.echo('new topic created', 'INFO');
 							}else {
@@ -42,24 +52,13 @@ uploadTests.uploadPostAttachment=function(){
 					}
 				});
 			}
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});
-			});
 		}
-			/*wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExist) {
-				if(isExists) {
-					
-					casper.test.assertExists('form[name="posts"] a.topic-title');
-					casper.click('span.topic-content a');
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				}
-			});*/
+		casper.then(function() {
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
+				
+			});
 		});
 	});
 };
@@ -1922,7 +1921,7 @@ inContextLoginMethod.logoutFromApp(casper, function(err){
 };
 
 //Verify with Edit topic listing page under category insert photo camera browse
-uploadTests.uploadEditPostundercategoryAttachment=function(){
+uploadTests.uploadEditPostundercategorycamerabrowse=function(){
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
 		casper.echo('*************Verify with Edit post from topic listing page(Attachment)**********','INFO');
@@ -1936,27 +1935,134 @@ uploadTests.uploadEditPostundercategoryAttachment=function(){
 				if(isExists){
 					casper.click('i.glyphicon.glyphicon-chevron-down');
 					casper.click('a#edit_post_request');
-					casper.click('i.icon.glyphicon
+					casper.click('i.icon.glyphicon');
 					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
-					if(isExists) {
-						casper.click('span.mceIcon.mce_imagebutton');
-						uploadMethods.Webbrowse(casper , function(err){
-							if(!err)
-								casper.echo('Webbrowse method called successfully','INFO');
+						if(isExists) {
+							casper.click('i.glyphicon.glyphicon-camera');
+							uploadMethods.Webbrowse(casper , function(err){
+								if(!err)
+									casper.echo('Webbrowse method called successfully','INFO');
 																	
+							});
+							inContextLoginMethod.logoutFromApp(casper, function(err){
+								if (!err)
+									casper.echo('Successfully logout from application', 'INFO');
+							});															
+						}
 					});
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});															
 				}
 			});
 		});
+	});
+};
 
+//Verify with Edit topic listing page under category insert photo camera webaddress
+uploadTests.uploadEditPostundercategorycamerawebaddress=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
+		casper.echo('*************Verify with Edit post from topic listing page(Attachment)**********','INFO');
+		uploadMethods.webaddresslogin(casper ,function(err) {
+			if(!err)
+				casper.echo('Method called successfully' , 'INFO');
+				
+		});
+		casper.then(function(){
+			wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
+				if(isExists){
+					casper.click('i.glyphicon.glyphicon-chevron-down');
+					casper.click('a#edit_post_request');
+					casper.click('i.icon.glyphicon');
+					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('i.glyphicon.glyphicon-camera');
+							uploadMethods.Webbrowse(casper , function(err){
+								if(!err)
+									casper.echo('Webbrowse method called successfully','INFO');
+																	
+							});
+							inContextLoginMethod.logoutFromApp(casper, function(err){
+								if (!err)
+									casper.echo('Successfully logout from application', 'INFO');
+							});															
+						}
+					});
+				}
+			});
+		});
+	});
+};
 
+//Verify with Edit topic listing page under category insert photo Image button browse
+uploadTests.uploadEditPostundercategoryimagebuttonbrowse=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
+		casper.echo('*************Verify with Edit post from topic listing page(Attachment)**********','INFO');
+		uploadMethods.webaddresslogin(casper ,function(err) {
+			if(!err)
+				casper.echo('Method called successfully' , 'INFO');
+				
+		});
+		casper.then(function(){
+			wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
+				if(isExists){
+					casper.click('i.glyphicon.glyphicon-chevron-down');
+					casper.click('a#edit_post_request');
+					casper.click('i.icon.glyphicon');
+					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('span.mceIcon.mce_imagebutton');
+							uploadMethods.Webbrowse(casper , function(err){
+								if(!err)
+									casper.echo('Webbrowse method called successfully','INFO');
+																	
+							});
+							inContextLoginMethod.logoutFromApp(casper, function(err){
+								if (!err)
+									casper.echo('Successfully logout from application', 'INFO');
+							});															
+						}
+					});
+				}
+			});
+		});
+	});
+};
 
-
-
+//Verify with Edit topic listing page under category insert photo Image button webaddress
+uploadTests.uploadEditPostundercategoryimagebuttonwebaddress=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
+		casper.echo('*************Verify with Edit post from topic listing page(Attachment)**********','INFO');
+		uploadMethods.webaddresslogin(casper ,function(err) {
+			if(!err)
+				casper.echo('Method called successfully' , 'INFO');
+				
+		});
+		casper.then(function(){
+			wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
+				if(isExists){
+					casper.click('i.glyphicon.glyphicon-chevron-down');
+					casper.click('a#edit_post_request');
+					casper.click('i.icon.glyphicon');
+					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('span.mceIcon.mce_imagebutton');
+							uploadMethods.Webbrowse(casper , function(err){
+								if(!err)
+									casper.echo('Webbrowse method called successfully','INFO');
+																	
+							});
+							inContextLoginMethod.logoutFromApp(casper, function(err){
+								if (!err)
+									casper.echo('Successfully logout from application', 'INFO');
+							});															
+						}
+					});
+				}
+			});
+		});
+	});
+}
 
 
 
