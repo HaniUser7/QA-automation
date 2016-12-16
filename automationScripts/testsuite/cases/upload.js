@@ -21,7 +21,10 @@ uploadTests.uploadPostAttachment=function(){
 
  'INFO');
 			try {
+				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 				casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+				
+				
 				
 			} catch (e) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
