@@ -10,19 +10,15 @@ var screenShotsDir = config.screenShotsLocation + 'uploadAttachment/';
 var errorMessage = "";
 
 
-	
-	
-
 //test case for uploadAttachmentBackendSetting
 uploadAttachmentTest.backEndSetting= function() {
 	casper.then(function() {
-		casper.echo('*************************************************', 'INFO');
-		casper.echo('test case for registerBackendSetting ', 'INFO');
-		casper.echo('********************************************', 'INFO');
-
+	casper.echo('*************************************************', 'INFO');
+	casper.echo('test case for registerBackendSetting ', 'INFO');
+	casper.echo('********************************************', 'INFO');
 		uploadAttachmentMethod.backEndSetting(casper, function(err) {
 			if(!err){
-				casper.echo('registerSettingMethod of backEndSetting run sucessful')
+			    casper.echo('registerSettingMethod of backEndSetting run sucessful')
 			}
 		});
 
@@ -30,9 +26,6 @@ uploadAttachmentTest.backEndSetting= function() {
 
 }
 
-
-
-	
 
 //1.test case for verify with upload avatar from registration page(verify it from )
 uploadAttachmentTest.avatarFromRegistration= function() {
@@ -550,22 +543,61 @@ uploadAttachmentTest.uploadAvatarFacebookEnable= function() {
 		});
 	
 }
-/*
-//10.test case for verify with use my facebook avatar option
-uploadAttachmentTest.uploadAvatarFacebookEnable= function() {
+
+//10.test case for verify with select none option for avavtar
+uploadAttachmentTest.uploadAvatarFacebookNone= function() {
 	
-		
+	casper.thenOpen(config.url, function() {
+			casper.echo('******************** case-10 ************************', 'INFO');
+			casper.echo('test case for verify with use my facebook avatar option', 'INFO');
+			casper.echo('********************************************', 'INFO');
+			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+			wait.waitForElement('.pull-right a[href="/register/register"]', casper, function(err, isExist) {
+				if(!err){
+					if(isExist) {
+						casper.test.assertExists('.pull-right a[href="/register/register"]');
+						casper.click('.pull-right a[href="/register/register"]');
+						casper.echo('Successfully open register form.....', 'INFO');
+							wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+								if(!err){
+									if(isExist) {			
+										casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
+										casper.click('a#fblogin');
+									    uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
+											if(!err){
+												wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+														    //casper.test.assertExists('#av_none');
+						                                 // casper.click('#av_none');
+															registerTests.validInfo();			   
+														} else {
+															casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
+														}
+													}
+												});
+											}
+										});
+									} else {
+										casper.echo('User didn\'t not found any register link', 'ERROR');
+									}
+								}
+							});
+					} else {
+						casper.echo('User didn\'t not found any register link', 'ERROR');
+					}
+				}
+			});
+			
+		});	
 	
 }
-*/
-
-
 
 //11.test case for verify with use my facebook avatar option(error)
 uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 	
     casper.thenOpen(config.url, function() {
-			casper.echo('******************** case-10 ************************', 'INFO');
+			casper.echo('******************** case-11 ************************', 'INFO');
 			casper.echo('verify with use my facebook avatar option', 'INFO');
 			casper.echo('********************************************', 'INFO');
 			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
@@ -581,41 +613,11 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 								if(isExist) {			
 									casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
 									casper.click('a#fblogin');
-									casper.eachThen(jsons['InvalidInfo'], function(response) {
-										var responseData = response.data;
-										casper.echo('user data : '+JSON.stringify(responseData), 'INFO');
-											casper.waitForPopup(/facebook/, function(popup) {
-										},20000);
-										casper.withPopup(/facebook/ , function() {
-											wait.waitForElement('form#login_form', casper, function(err, isExist) {
-												if(!err){
-													if(isExist) {	
-														casper.test.assertExists('form#login_form');
-														casper.echo("responseData.email : " +responseData.email+ " & responseData.pass : " +responseData.pass);
-														casper.fill('form#login_form',{
-															'email': responseData.email,
-															'pass': responseData.pass
-														}, false);
-														casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
-														casper.click('form[id="login_form"] input[id="u_0_2"]');
-													} else {
-													casper.echo('Facebook Form Not Found','ERROR');
-													}
-												}
-											});
-											if (responseData.errorType != "success") {
-												casper.wait(1000, function() {
-													casper.capture(screenShotsDir + '101.png');
-												});
-											}
-											
-										});
-										if (responseData.errorType == "success") {
-											casper.wait(5000, function() {
-												casper.capture(screenShotsDir + '102.png');
-											});
-										}	
-									});	
+									uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
+										if(!err){
+										 casper.echo('uploadAttachmentMethod facebookPopUp is working ','INFO');
+										}
+									});
 								} else {
 									casper.echo('User didn\'t not found any register link', 'ERROR');
 								}
@@ -632,7 +634,7 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 }
 
 //12.test case for verify with upload avavtar when none option is enable(testcase related 11)
-uploadAttachmentTest.uploadAvatarFacebookOption= function() {	
+uploadAttachmentTest.uploadAvatarFacebookEnable= function() {	
 		casper.thenOpen(config.url, function() {
 			casper.echo('******************** case-12 ************************', 'INFO');
 			casper.echo('test case for verify with upload avavtar when none option is enable', 'INFO');
@@ -644,26 +646,24 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 						casper.test.assertExists('.pull-right a[href="/register/register"]');
 						casper.click('.pull-right a[href="/register/register"]');
 						casper.echo('Successfully open register form.....', 'INFO');
-							wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+								wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
 								if(!err){
 									if(isExist) {			
 										casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
 										casper.click('a#fblogin');
-									//log in related pop issue
-										wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+									    uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
 											if(!err){
-												if(isExist) {
-												   casper.capture(screenShotsDir + '12.png');
-												   casper.test.assertExists('input[type="file"]');
-												   casper.click('input[type="file"]');
-													casper.thenOpen('http://s3.amazonaws.com/files.websitetoolbox.com/200676/3156405' , function(){
-														wait.waitForTime(1000 , casper , function(err) {
-															casper.capture(screenShotsDir + '13.png');
-														});
-													});								   
-												} else {
-													casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
-												}
+												wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+														    casper.test.assertExists('#av_none');
+						                                    casper.click('#av_none');
+															registerTests.validInfo();			   
+														} else {
+															casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
+														}
+													}
+												});
 											}
 										});
 									} else {
@@ -683,11 +683,11 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 }
 
 
-//13.test case for verify with upload avavtar on profile pagewhen use face book  is enable
-uploadAttachmentTest.uploadAvatarFacebookOption= function() {
+//13.test case for verify with upload avavtar on profile page when use face book  is enable
+uploadAttachmentTest.uploadAvatarFacebookProfile= function() {
 		
 		casper.thenOpen(config.url, function() {
-			casper.echo('******************** case-12 ************************', 'INFO');
+			casper.echo('******************** case-13 ************************', 'INFO');
 			casper.echo('test case for verify with upload avavtar when none option is enable', 'INFO');
 			casper.echo('********************************************', 'INFO');
 			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
@@ -702,21 +702,20 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 									if(isExist) {			
 										casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
 										casper.click('a#fblogin');
-									//log in related pop issue
-										wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+									    uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
 											if(!err){
-												if(isExist) {
-												   casper.capture(screenShotsDir + '12.png');
-												   casper.test.assertExists('input[type="file"]');
-												   casper.click('input[type="file"]');
-													casper.thenOpen('http://s3.amazonaws.com/files.websitetoolbox.com/200676/3156405' , function(){
-														wait.waitForTime(1000 , casper , function(err) {
-															casper.capture(screenShotsDir + '13.png');
-														});
-													});								   
-												} else {
-													casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
-												}
+												wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+														  casper.test.assertExists('#av_fb');
+						                                  casper.click('#av_fb');
+														  registerTests.validInfo();	
+																					   
+														} else {
+															casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
+														}
+													}
+												});
 											}
 										});
 									} else {
@@ -729,9 +728,62 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 					}
 				}
 			});
+			
 			casper.then(function(){
-				registerTests.validInfo()	
+			  // verify upload avatar for the first time on profile page
+                uploadAttachmentTest.uploadAvatarProfile();	
 			});
+			
+		});
+		
+		
+}
+
+//14.test case for verify with upload avavtar from profile page when you select none at the time of registration
+uploadAttachmentTest.uploadAvatarFacebookProfileNone= function() {
+		
+		casper.thenOpen(config.url, function() {
+			casper.echo('******************** case-13 ************************', 'INFO');
+			casper.echo('test case for verify with upload avavtar when none option is enable', 'INFO');
+			casper.echo('********************************************', 'INFO');
+			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+			wait.waitForElement('.pull-right a[href="/register/register"]', casper, function(err, isExist) {
+				if(!err){
+					if(isExist) {
+						casper.test.assertExists('.pull-right a[href="/register/register"]');
+						casper.click('.pull-right a[href="/register/register"]');
+						casper.echo('Successfully open register form.....', 'INFO');
+							wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+								if(!err){
+									if(isExist) {			
+										casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
+										casper.click('a#fblogin');
+									   uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
+											if(!err){
+												wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+															casper.test.assertExists('#av_none');
+															casper.click('#av_none');
+															registerTests.validInfo();			   
+														} else {
+															casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
+														}
+													}
+												});
+											}
+										});
+									} else {
+										casper.echo('User didn\'t not found any register link', 'ERROR');
+									}
+								}
+							});
+					} else {
+						casper.echo('User didn\'t not found any register link', 'ERROR');
+					}
+				}
+			});
+			
 			casper.then(function(){
 			  // verify upload avatar for the first time on profile page
                 uploadAttachmentTest.uploadAvatarProfile();	
@@ -743,6 +795,112 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 }
 
 
+//15.test case for verify upload avatar on edit profile page if you select use my face book at the time of registration
+uploadAttachmentTest.uploadAvatarFacebookEditeProfile= function() {
+		
+		casper.thenOpen(config.url, function() {
+			casper.echo('******************** case-15 ************************', 'INFO');
+			casper.echo('test case for verify with upload avavtar when none option is enable', 'INFO');
+			casper.echo('********************************************', 'INFO');
+			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+			wait.waitForElement('.pull-right a[href="/register/register"]', casper, function(err, isExist) {
+				if(!err){
+					if(isExist) {
+						casper.test.assertExists('.pull-right a[href="/register/register"]');
+						casper.click('.pull-right a[href="/register/register"]');
+						casper.echo('Successfully open register form.....', 'INFO');
+							wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+								if(!err){
+									if(isExist) {			
+										casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
+										casper.click('a#fblogin');
+									    uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
+											if(!err){
+												wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+														  casper.test.assertExists('#av_fb');
+						                                 casper.click('#av_fb');
+														  registerTests.validInfo();	
+																					   
+														} else {
+															casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
+														}
+													}
+												});
+											}
+										});
+									} else {
+										casper.echo('User didn\'t not found any register link', 'ERROR');
+									}
+								}
+							});
+					} else {
+						casper.echo('User didn\'t not found any register link', 'ERROR');
+					}
+				}
+			});
+			casper.then(function(){
+               uploadAttachmentTest.uploadAvatarEditProfileChange();	
+			});
+			
+		});
+		
+		
+}
+
+
+//16.verify with upload avavtar from edit profile page when you select none at the time of registration
+uploadAttachmentTest.uploadAvatarFacebookEditeProfileNone= function() {
+		
+		casper.thenOpen(config.url, function() {
+			casper.echo('******************** case-16 ************************', 'INFO');
+			casper.echo('verify with upload avavtar from edit profile page when you select none at the time of registration', 'INFO');
+			casper.echo('********************************************', 'INFO');
+			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+			wait.waitForElement('.pull-right a[href="/register/register"]', casper, function(err, isExist) {
+				if(!err){
+					if(isExist) {
+						casper.test.assertExists('.pull-right a[href="/register/register"]');
+						casper.click('.pull-right a[href="/register/register"]');
+						casper.echo('Successfully open register form.....', 'INFO');
+							wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+								if(!err){
+									if(isExist) {			
+										casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
+										casper.click('a#fblogin');
+									    uploadAttachmentMethod.facebookPopUp(casper,casper.test, function(err) {
+											if(!err){
+												wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+														    casper.test.assertExists('#av_none');
+						                                   casper.click('#av_none');
+															registerTests.validInfo();			   
+														} else {
+															casper.echo('User didn\'t not found any Member Registration form link', 'ERROR');
+														}
+													}
+												});
+											}
+										});
+									} else {
+										casper.echo('User didn\'t not found any register link', 'ERROR');
+									}
+								}
+							});
+					} else {
+						casper.echo('User didn\'t not found any register link', 'ERROR');
+					}
+				}
+			});
+			casper.then(function(){
+               uploadAttachmentTest.uploadAvatarEditProfileChange();	
+			});
+		});
+		
+		
+}
 
 
 
@@ -751,8 +909,9 @@ uploadAttachmentTest.uploadAvatarFacebookOption= function() {
 
 
 
-	
-						
+
+
+					
 
 
 

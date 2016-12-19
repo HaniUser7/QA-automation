@@ -3,6 +3,8 @@ var wait = require('../wait.js');
 var utils = require('../utils.js');
 var registerMethod = require('./register.js');
 var forumLoginMethod = require('../methods/login.js');
+var jsons = require('../../testdata/fbData.json');
+var screenShotsDir = config.screenShotsLocation + 'uploadAttachment/';
 var uploadAttachmentMethod=module.exports = {};
 var errorMessage = "";
 
@@ -12,7 +14,7 @@ var errorMessage = "";
 //Method for Incontext login with New Registration
 uploadAttachmentMethod.backEndSetting = function(casper,callback) {	
 	casper.then(function(){
-	/*	casper.echo('***********************case-01 *********************','INFO');
+		casper.echo('***********************case-01 *********************','INFO');
 		uploadAttachmentMethod.userAccountSettings(true,casper,casper.test,function(err){
 			if(!err){
                casper.echo('uploadAttachmentMethod of userAccountSettings working','INFO');
@@ -50,7 +52,7 @@ uploadAttachmentMethod.backEndSetting = function(casper,callback) {
 				}
 			});	
 		});
-	*/	casper.then(function(){
+		casper.then(function(){
 			casper.echo('***********************case-06 *********************','INFO');
 			uploadAttachmentMethod.backendSettingFacebook('Yes',casper,casper.test,function(err){
 				if(!err){
@@ -403,8 +405,57 @@ uploadAttachmentMethod.backendSettingFacebook= function(value,casper,test,callba
 	});
 }
 
-/**********************Method For Registration with different username format ************/
+/**********************Method For facebook popup with different username format ************/
 
+//Method for logout from application
+uploadAttachmentMethod.facebookPopUp = function(casper,test, callback) {
+	casper.then(function(){		
+		casper.test.assertExists('a#fblogin','Facebook Login Button Found On login Page Of FrontEndUrl');
+		casper.click('a#fblogin');
+		casper.eachThen(jsons['InvalidInfo'], function(response) {
+			var responseData = response.data;
+			casper.echo('user data : '+JSON.stringify(responseData), 'INFO');
+				casper.waitForPopup(/facebook/, function(popup) {
+			},20000);
+			casper.withPopup(/facebook/ , function() {
+				wait.waitForElement('form#login_form', casper, function(err, isExist) {
+					if(!err){
+						if(isExist) {	
+							casper.test.assertExists('form#login_form');
+							casper.echo("responseData.email : " +responseData.email+ " & responseData.pass : " +responseData.pass);
+							casper.fill('form#login_form',{
+								'email': responseData.email,
+								'pass': responseData.pass
+							}, false);
+							casper.test.assertExists('form[id="login_form"] input[id="u_0_2"]');
+							casper.click('form[id="login_form"] input[id="u_0_2"]');
+							
+						} else {
+						casper.echo('Facebook Form Not Found','ERROR');
+						}
+					}
+				});
+				if (responseData.errorType != "success") {
+					casper.wait(2000, function() {
+						casper.capture(screenShotsDir + '101.png');
+						
+					});
+				}
+				
+			});
+			if (responseData.errorType == "success") {
+				casper.wait(5000, function() {
+					casper.capture(screenShotsDir + '102.png');
+					
+				});
+			}	
+		});	
+	});
+	casper.then(function(){
+		 return callback(null);
+	});
+		
+};
 
 
 //Method for logout from application
