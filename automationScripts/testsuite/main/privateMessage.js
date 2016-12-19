@@ -121,6 +121,15 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.leaveAllConversation();
 		
 		// method to verify with reply option
-		privateMessageTestcases.verifyReplyOption();
+		//privateMessageTestcases.verifyReplyOption();
+		
+		// method To verify one to one conversation between sender and and single recipient
+		//privateMessageTestcases.verifyOneToOneSingleSenderAndReciever();
+		
+		// method To verify one to one conversation between sender and multiple recipient
+		//privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever();
+		
+		// method verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only
+		privateMessageTestcases.verifyMultipleRecieverAndReplyByOne();
 	});
 };

@@ -229,3 +229,32 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 		});
 	});
 };
+
+// method to compose a private message to many user
+privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {		
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {keepFocus:true});
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]','a', {keepFocus:true});
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
+	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});		
+	driver.test.assertExists('textarea#pmessage_new');
+	driver.evaluate(function() {
+		document.querySelector('textarea#pmessage_new').click();
+	});
+	driver.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+		driver.withFrame('pmessage_new_ifr', function() {
+			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
+			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+			driver.sendKeys('#tinymce', data.pmessage);
+		});
+	});
+	
+	driver.then(function() {
+		driver.test.assertExists('a#send_pmsg_button');
+		driver.click('a#send_pmsg_button');
+		driver.waitUntilVisible('div#ajax-msg-top', function() {
+			driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
+			return callback(null);
+		});
+	});
+};
