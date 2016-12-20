@@ -12,9 +12,6 @@ privateMessage.featureTest = function(casper, test) {
 		// method to create a message
 		//privateMessageTestcases.createPrivateMessage();
 		
-		// method To verify delete Conversation
-		//privateMessageTestcases.deleteConversation();
-		
 		// method to compose a message by scenario 2
 		//privateMessageTestcases.composeScenarioSecond();
 		
@@ -41,15 +38,6 @@ privateMessage.featureTest = function(casper, test) {
 		
 		// method To verify Attachement /Insert Photo link when enable
 		//privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable();
-		
-		// method To verify delete multiple Conversation
-		//privateMessageTestcases.deleteMultipleConversation();
-		
-		// method To verify delete all Conversation
-		//privateMessageTestcases.deleteAllConversation();
-		
-		// method Delete coversation from conversation page
-		//privateMessageTestcases.deleteFromConversationPage();
 		
 		// method To verify mark as unread(check box)(single)
 		//privateMessageTestcases.unreadCheckbox();
@@ -93,14 +81,14 @@ privateMessage.featureTest = function(casper, test) {
 		// method To verify ignored member (check box)
 		//privateMessageTestcases.ignoreUser();
 		
-		// method to verify with unignore user
-		//privateMessageTestcases.unignoreUser();
-		
-		// method To Verify deleted member on ignore list
-		//privateMessageTestcases.deletedMemberOnIgnoreList();
+		// method To verify with send message whos ignored you
+		//privateMessageTestcases.sendMessageWhoIgnoredYou();
 		
 		// method to verify with send reply on previous message after ignoring
-		//privateMessageTestcases.replyOnPreviousMessage();
+		//privateMessageTestcases.replyOnPreviousMessageAfterIgnoring();
+		
+		// method to verify with unignore user
+		//privateMessageTestcases.unignoreUser();
 		
 		// method to Verify profile link on user name
 		//privateMessageTestcases.verifyProfileLinkOnUserName();
@@ -112,7 +100,7 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.verifySeeAll();
 		
 		// method To verify leave conversation( single)
-		//privateMessageTestcases.leaveSingleConversation();
+		privateMessageTestcases.leaveSingleConversation();
 		
 		// method To verify leave conversation (Multiple)
 		//privateMessageTestcases.leaveMultipleConversation();
@@ -130,6 +118,18 @@ privateMessage.featureTest = function(casper, test) {
 		//privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever();
 		
 		// method verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only
-		privateMessageTestcases.verifyMultipleRecieverAndReplyByOne();
+		//privateMessageTestcases.verifyMultipleRecieverAndReplyByOne();
+		
+		// method To verify delete Conversation
+		//privateMessageTestcases.deleteConversation();
+		
+		// method To verify delete multiple Conversation
+		//privateMessageTestcases.deleteMultipleConversation();
+		
+		// method Delete coversation from conversation page
+		//privateMessageTestcases.deleteFromConversationPage();
+		
+		// method To verify delete all Conversation
+		//privateMessageTestcases.deleteAllConversation();
 	});
 };

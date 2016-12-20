@@ -219,13 +219,19 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
 	});
-	
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
 		driver.click('a#send_pmsg_button');
-		driver.waitUntilVisible('div#ajax-msg-top', function() {
-			driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
-			return callback(null);
+		driver.waitUntilVisible('div#loading_msg', function() {
+			driver.echo(casper.fetchText('div#loading_msg p'), 'INFO');
+			driver.waitUntilVisible('div#ajax-msg-top', function success() {
+				driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
+			}, function fail() {
+				driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
+			});	
+			driver.then(function() {
+				return callback(null);
+			});
 		});
 	});
 };
@@ -248,13 +254,22 @@ privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
 	});
-	
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
 		driver.click('a#send_pmsg_button');
-		driver.waitUntilVisible('div#ajax-msg-top', function() {
-			driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
-			return callback(null);
+		driver.waitUntilVisible('div#loading_msg', function() {
+			driver.echo(casper.fetchText('div#loading_msg p'), 'INFO');
+			try {
+				driver.test.assertExists('div#pm_error_msg');
+				driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
+			} catch (e) {
+				driver.waitUntilVisible('div#ajax-msg-top', function() {
+					driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
+				});	
+			}
+			driver.then(function() {
+				return callback(null);
+			});
 		});
 	});
 };
