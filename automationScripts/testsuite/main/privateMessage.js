@@ -23,7 +23,7 @@ privateMessage.featureTest = function(casper, test) {
 		
 		// method to verify when we leave blank reciepients name
 		//privateMessageTestcases.blankRecipientsName();
-		
+	
 		// method to verify when leave blank subject 
 		//privateMessageTestcases.blankSubject();
 		
@@ -38,6 +38,24 @@ privateMessage.featureTest = function(casper, test) {
 		
 		// method To verify Attachement /Insert Photo link when enable
 		//privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable();
+		
+		// method to verify with reply option
+		//privateMessageTestcases.verifyReplyOption();
+		
+		// method To verify one to one conversation between sender and and single recipient
+		//privateMessageTestcases.verifyOneToOneSingleSenderAndReciever();
+		
+		// method To verify one to one conversation between sender and multiple recipient
+		//privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever();
+		
+		// method verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only
+		//privateMessageTestcases.verifyMultipleRecieverAndReplyByOne();
+		
+		// method To verify Avtar
+		//privateMessageTestcases.verifyAvtar();
+		
+		// method To verify  send PM conversation to 25 recipient at the same time
+		privateMessageTestcases.verifyMaxRecipient();
 		
 		// method To verify mark as unread(check box)(single)
 		//privateMessageTestcases.unreadCheckbox();
@@ -99,26 +117,23 @@ privateMessage.featureTest = function(casper, test) {
 		// method To verify "See all" link when there are no conversation.
 		//privateMessageTestcases.verifySeeAll();
 		
+		// method to verify count of message icon -> send 3 messages from  s1 >log in with r1 and verify the message icon count.
+		//privateMessageTestcases.verifyMessageIconCountCaseOne();
+		
+		// method to verify count of message icon->verify when 4 user send 1 message to r1>log in with r1 and verify the message icon count.
+		//privateMessageTestcases.verifyMessageIconCountCaseTwo();
+		
+		// method To verify default image for avatar on conversation panel
+		//privateMessageTestcases.verifyDefaultAvtar();
+		
 		// method To verify leave conversation( single)
-		privateMessageTestcases.leaveSingleConversation();
+		//privateMessageTestcases.leaveSingleConversation();
 		
 		// method To verify leave conversation (Multiple)
 		//privateMessageTestcases.leaveMultipleConversation();
 		
 		// method To verify leave conversation (all)
 		//privateMessageTestcases.leaveAllConversation();
-		
-		// method to verify with reply option
-		//privateMessageTestcases.verifyReplyOption();
-		
-		// method To verify one to one conversation between sender and and single recipient
-		//privateMessageTestcases.verifyOneToOneSingleSenderAndReciever();
-		
-		// method To verify one to one conversation between sender and multiple recipient
-		//privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever();
-		
-		// method verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only
-		//privateMessageTestcases.verifyMultipleRecieverAndReplyByOne();
 		
 		// method To verify delete Conversation
 		//privateMessageTestcases.deleteConversation();

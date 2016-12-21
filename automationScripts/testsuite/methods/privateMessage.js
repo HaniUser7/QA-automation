@@ -4,7 +4,7 @@
 var registerMethod = require('./register.js');
 var utils = require('./utils.js');
 var wait = require('../wait.js');
-var json = require('../../testdata/forgotpasswordData.json');
+//var json = require('../../testdata/forgotpasswordData.json');
 var forumLoginMethod = require('../methods/login.js');
 var backEndForumRegisterMethod = require('./backEndRegistration.js');
 var privateMessageMethod = module.exports = {};
@@ -259,16 +259,50 @@ privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {
 		driver.click('a#send_pmsg_button');
 		driver.waitUntilVisible('div#loading_msg', function() {
 			driver.echo(casper.fetchText('div#loading_msg p'), 'INFO');
-			try {
-				driver.test.assertExists('div#pm_error_msg');
-				driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
-			} catch (e) {
-				driver.waitUntilVisible('div#ajax-msg-top', function() {
-					driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
-				});	
-			}
+			driver.waitUntilVisible('div#ajax-msg-top', function() {
+				driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
+			});
 			driver.then(function() {
 				return callback(null);
+			});
+		});
+	});
+};
+
+// method to compose a private message to max limit user
+privateMessageMethod.sendMessageToMxLimitUser = function(data, driver, callback) {
+	// Enter 25 recipients
+	driver.then(function() {
+		for( var i = 0; i < data.length; i++) {
+			driver.echo('Response Data : ' +data[i], 'INFO');
+			driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data[i], {keepFocus:true});
+			driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
+		}
+	});
+	driver.then(function() {
+		driver.sendKeys('input[id="pm_subject"]', "Max Limit", {keepFocus:true});		
+		driver.test.assertExists('textarea#pmessage_new');
+		driver.evaluate(function() {
+			document.querySelector('textarea#pmessage_new').click();
+		});
+		driver.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+			driver.withFrame('pmessage_new_ifr', function() {
+				driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
+				driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+				driver.sendKeys('#tinymce', "Message Send to 25 user at same time");
+			});
+		});
+		driver.then(function() {
+			driver.test.assertExists('a#send_pmsg_button');
+			driver.click('a#send_pmsg_button');
+			driver.waitUntilVisible('div#loading_msg', function() {
+				driver.echo(casper.fetchText('div#loading_msg p'), 'INFO');
+				driver.waitUntilVisible('div#ajax-msg-top', function() {
+					driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
+				});
+				driver.then(function() {
+					return callback(null);
+				});
 			});
 		});
 	});
