@@ -270,8 +270,8 @@ privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {
 };
 
 // method to compose a private message to max limit user
-privateMessageMethod.sendMessageToMxLimitUser = function(data, driver, callback) {
-	// Enter 25 recipients
+privateMessageMethod.sendMessageToMaxLimitUser = function(data, driver, callback) {
+	// Enter recipients
 	driver.then(function() {
 		for( var i = 0; i < data.length; i++) {
 			driver.echo('Response Data : ' +data[i], 'INFO');
@@ -297,9 +297,11 @@ privateMessageMethod.sendMessageToMxLimitUser = function(data, driver, callback)
 			driver.click('a#send_pmsg_button');
 			driver.waitUntilVisible('div#loading_msg', function() {
 				driver.echo(casper.fetchText('div#loading_msg p'), 'INFO');
-				driver.waitUntilVisible('div#ajax-msg-top', function() {
+				driver.waitUntilVisible('div#ajax-msg-top', function success() {
 					driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
-				});
+				}, function fail() {
+					driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
+				});	
 				driver.then(function() {
 					return callback(null);
 				});

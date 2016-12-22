@@ -1308,9 +1308,9 @@ privateMessageTestcases.verifyHoverCardOnUserName = function() {
 													casper.echo('User profile page not found','ERROR');
 												}
 											});*/
-											casper.wait(5000, function() {
+											/*casper.wait(5000, function() {
 												casper.capture('1.png');
-											});
+											});*/
 										} else {
 											casper.echo('Inbox not found','ERROR');
 										}
@@ -2803,7 +2803,6 @@ privateMessageTestcases.verifyAvtar = function() {
 									casper.click('ul#private_message_dropdown a.pull-left');
 									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
 										if(isExists) {
-											casper.capture('fhji.png');
 											var recieverImageUrl = casper.evaluate(function() {
 												var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
 												return id;
@@ -2853,9 +2852,50 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
 									casper.waitUntilVisible('div#pmessage_modal', function() {
-										privateMessageMethod.sendMessageToMxLimitUser(json.privateMessageReceipent, casper, function(err) {
+										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
+											}
+										});
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Message not sent..','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	});	
+};
+
+// method To verify  send PM conversation to 26 recipient at the same time
+privateMessageTestcases.verifyMorethanMaxRecipient = function() {
+	casper.then(function() {
+		casper.echo('                       Test case 8 ','INFO');
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {	
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									casper.waitUntilVisible('div#pmessage_modal', function() {
+										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageToMoreThanMaxLimit, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent to only 25 user not for 26th','INFO');
 											}
 										});
 									});
