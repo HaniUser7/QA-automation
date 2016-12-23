@@ -2,6 +2,7 @@ var uploadMethods= module.exports = {};
 var wait=require('../wait.js');
 var utils=require('../utils.js');
 var inContextLoginMethod = require('../methods/inContextLogin.js');
+var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
 var json = require('../../testdata/inContextLogin.json');
 
 
@@ -20,7 +21,7 @@ uploadMethods.BackEndSettings=function(driver , callback) {
 
 	wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
 		if(isExists) {
-			driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');	
+			//driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');	
 			driver.evaluate(function() {
 				document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
  			});
@@ -48,24 +49,29 @@ uploadMethods.BackEndSettings=function(driver , callback) {
 						if(isExists) {
 							utils.enableorDisableCheckbox('view_calendar',true, casper, function(err) {
 								if(!err)
-									driver.echo('Successfully checked','INFO');
+									driver.echo('Successfully checked calendar ','INFO');
 							});
-							casper.click('button.button.btn-m.btn-blue');
-							casper.then(function(){
+							//casper.click('button.button.btn-m.btn-blue');
+							/*casper.then(function(){
 								utils.enableorDisableCheckbox('other_post_replies',true, casper, function(err) {
 									if(!err)
-										driver.echo('Successfully checked','INFO');
+										driver.echo('Successfully checked post reply ','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
-								utils.enableorDisableCheckbox('upload_attachments',true, casper, function(err) {
+								/*utils.enableorDisableCheckbox('upload_attachments',true, casper, function(err) {
 									if(!err)
 										driver.echo('Successfully checked','INFO');
 								});
-								casper.click('button.button.btn-m.btn-blue');
+								casper.click('button.button.btn-m.btn-blue');*/
 							
-							});
+							//});*/
 
 							}
+							utils.enableorDisableCheckbox('other_post_replies',true, casper, function(err) {
+								if(!err)
+									driver.echo('Successfully checked post reply ','INFO');
+							});
+							casper.click('button.button.btn-m.btn-blue');
 						});
 					}
 				});	
@@ -95,15 +101,67 @@ uploadMethods.fillDataToMessage = function(driver, callback) {
 
 //camera web address method
 uploadMethods.Webaddress=function(driver , callback){
+	
 	wait.waitForElement('a#insertImage_' , casper , function(err , isExists) {
 		if(isExists) {
+			
+			wait.waitForElement('a#web' , casper , function(err , isExists){
+				if(isExists){
+		
+					casper.evaluate(function() {
+						document.querySelector('a#web').click();
+					});	
+					casper.wait(3000,function(){
+						casper.capture('PopUp1.png');
+						casper.sendKeys('input[name="fname"]', 'http://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16748568');	
+						casper.click('button#insert_image_btn');				
+						/*casper.wait(2000, function(){
+							casper.capture('inboxCameraButton.png');
+															
+						});*/
+					});
+				}
+			});
+      		}
+     });
+};
+
+//camera web browse
+
+uploadMethods.Webbrowse=function(driver , callback){
+	wait.waitForElement('a#insertImage_' , casper , function(err , isExists) {
+		if(isExists){
+			casper.capture('img123.png');
+			casper.echo('Method called successfully','INFO');
+		}
+
+
+	});
+};
+
+//private message inbox
+uploadMethods.Webbrowseinbox=function(driver , callback){
+	wait.waitForElement('a#insertImage_pmsDialog' , casper , function(err , isExists) {
+		if(isExists){
+			casper.capture('img123.png');
+			casper.echo('Method called successfully','INFO');
+		}
+
+
+	});
+};
+
+//private message inbox webaddress
+uploadMethods.Webaddressinbox=function(driver , callback){
+	wait.waitForElement('a#insertImage_pmsDialog' , casper , function(err , isExists) {
+		if(isExists) {
 			casper.evaluate(function() {
-																				document.querySelector('a#web').click();
+																				document.querySelector('a#webpmsDialog').click();
 });
 	casper.wait(1000,function(){
 		casper.capture('imagePopUp.png');
 		casper.sendKeys('input[name="fname"]', 'http://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16748568');	
-		casper.click('button#insert_image_btn');				
+		casper.click('button#insert_image_btnpmsDialog');				
 		casper.wait(2000, function(){
 			casper.capture('inboxCameraButton.png');
 															
@@ -113,21 +171,9 @@ uploadMethods.Webaddress=function(driver , callback){
      });
 };
 
-//camera web browse
-
-uploadMethods.Webbrowse=function(driver , callback){
-	wait.waitForElement('a#insertImage_' , casper , function(err , isExists) {
-		if(isExists){
-			casper.echo('Method called successfully','INFO');
-		}
-
-
-	});
-};
-
 //camera webaddress method till login
 uploadMethods.webaddresslogin=function(driver , callback) {
-	casper.echo('*************Verify with Edit topic listing page under category camera webaddress**********','INFO');
+	//casper.echo('*************Verify with Edit topic listing page under category camera webaddress**********','INFO');
 	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 		if(isExists) {
 			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
@@ -170,19 +216,21 @@ uploadMethods.webaddresslogin=function(driver , callback) {
 };
 
 
-uploadMethods.startTopic = function(data,driver,callback) {
+uploadMethods.startTopic = function(dataa,driver,callback) {
 	driver.click('a.pull-right.btn.btn-uppercase.btn-primary ');
-	driver.waitForSelector('div.post-body.pull-left',function success() {								
-		driver.sendKeys('input[name="subject"]', data.title, {reset:true});								
+	driver.waitForSelector('div.post-body.pull-left',function success() {
+                //driver.test.assertExists('form#PostTopic');								
+		driver.sendKeys('input[name="subject"]', dataa.title, {reset:true});								
 		driver.withFrame('message_ifr', function() {
 			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
 			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
-			driver.sendKeys('#tinymce',data.content);
+			driver.sendKeys('#tinymce',dataa.content);
+                        driver.capture('23.png');
 		});
 		driver.waitForSelector('#all_forums_dropdown', function success() {
 			driver.click('#all_forums_dropdown');
 			driver.fill('form[name="PostTopic"]',{
-				'forum' : data.category
+				'forum' : dataa.category
 			},false);
 			driver.then(function() {
 				driver.click('#post_submit');
@@ -203,11 +251,180 @@ uploadMethods.startTopic = function(data,driver,callback) {
 	});
 };
 
+//Verify with Edit the Post from Search result page camera webaddress
+uploadMethods.searchlogin=function(driver , callback) {
+	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
+	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+		if(isExists) {
+			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+				}else {
+					casper.echo('Processing to Login on forum.....','INFO');
+					wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
+						if(isExists) {
+							casper.click('input#inline_search_box');
+							casper.fill('form#inlineSearchForm', {
+								'keywords' :'hello'
+							},true);
+							try {
+								wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
+									if(isExists){
+										//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+										/*var grp = casper.evaluate(function(){
+											document.querySelector('div.post-body.pull-left span:nth-child(2) a').getAttribute('href');
+										});
+										casper.echo("message :" +grp,'INFO');
+										casper.click('a[href="'+grp+'"]');*/
+										casper.click('div.post-body.pull-left span:nth-child(2) a');
+										wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+											if(isExists) {
+												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+											
+											}
+										});						
+									}
+								});
+							} catch (e) {
+								wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+									if(isExists) {
+										//method to create a new topic
+										uploadMethods.startTopic(json['newtopic'], casper, function(err) {
+											if(!err) {
+												casper.echo('new topic created', 'INFO');
+											}else {
+												casper.echo('Topic not created', 'INFO');
+											}
+										});	
+									} else {
+										casper.echo('User icon not found','ERROR');	
+									}
+								});
+							}
+						}
+					});
+				}
+			});
+		}
+	});
+};
+
+
+// Method for creating subcategory
+
+/*uploadMethods.createSubCategory=function(driver , callback) {
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');	
+				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists) {
+					if(isExists){
+						casper.click('a[href="/categories"]');
+						wait.waitForElement('li#forum_190578 span.forum-title' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('li#forum_190578 span.forum-title');
+								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+									if(isExists) {
+										try {
+											casper.test.assertExists('a.topic-title','Subcategory found');
+										 }catch(e){
+											casper.echo('Subcategory not found' , 'INFO');
+											casper.thenOpen(config.backEndUrl , function(){
+												loginPrivacyOptionMethod.loginToForumBackEnd	(casper , function(err) {
+													if (!err)
+														casper.echo('LoggedIn to forum backend....', 'INFO');
+												});
+		
+												wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]', casper , function(err , isExists) {
+													if(isExists) {
+														driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');	
+														wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+															if( isExists) {
+																driver.evaluate(function() {
+																document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
+});
+														   wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err , isExists) {
+															if(isExists) {
+																casper.click('div#forum-manager-heading-actions a');
+																wait.waitForElement('input#isSubcategory' , casper , function(err , isExists){
+																	if(isExists) {	
+																	casper.fillSelectors('form#edit_forum_form',{	
+																			'input[name="forum_name"]':'hello subcategory',
+																			'textarea#forum_description':'India',
+																																},false);
+																			casper.click('input[name="isSubcategory"]');
+																		casper.click('select#parentid')
+																	casper.capture('555.png');
+																		casper.wait(2000, function(){
+																	casper.sendKeys('select[name="parentid"] option[value="190578"]', 'General');
+																	casper.capture('133.png');
+																		casper.click('form[name="frmOptions"] button');
+																			casper.wait(2000, function(){
+																					casper.capture('button.png');
+																					});
+																			});
+																		}							
+																	});	
+																}
+															});
+														}
+													});	
+												}	
+											});
+										});
+									}
+								}
+							});
+						}
+					});
+				}
+			});
+   	 	}
+	});
+
+
+	});					
 
 
 
+};*/
 
-
+uploadMethods.createSubTopic=function(driver , callback) {
+	
+		try {
+			wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
+				if(isExists){
+					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+					casper.click('span.topic-content a');
+					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+						}
+					});						
+				}
+			});
+		} catch (e) {
+			casper.then(function(){
+				driver.echo('catch block called' ,'INFO');
+				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+					if(isExists) {
+						//method to create a new topic
+						uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+							if(!err) 
+								casper.echo('new topic created', 'INFO');
+				
+						});
+					} else {
+						casper.echo('User icon not found','ERROR');	
+					}
+				});
+			});
+		}
+		
+};
 
 
 

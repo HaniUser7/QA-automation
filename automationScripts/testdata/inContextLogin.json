@@ -42,8 +42,7 @@
   },
 
   "newTopic" : {
-
-	"title" : "New Topic",
+	"title" : "NewTopic",
 	"content" : "hellloooooo!!!hani",
 	"category" : "General"
 
