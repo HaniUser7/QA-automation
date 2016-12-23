@@ -76,7 +76,9 @@ postEventMemberApprovalMethod.enableApproveNewPost = function(driver, test, call
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -122,7 +124,9 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -278,3 +282,108 @@ postEventMemberApprovalMethod.deletePost = function(driver, test, callback) {
 		});
 	});
 };
+
+//*************************method to compose a event and got id ************************************
+postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
+	driver.echo('Inside the composeEvent method','INFO');
+	driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
+		this.click('i.icon.icon-menu');
+		this.capture(screenShotsDir+'cal67.png');
+		test.assertExists('ul#calendars_toggle_link i','calender menu found');
+		this.click('ul#calendars_toggle_link i');
+		this.capture(screenShotsDir+'cal2.png');
+		test.assertExists('a[href^="/calendar/display?from_month=&from_year=&view="]','First calender found');
+		this.click('a[href^="/calendar/display?from_month=&from_year=&view="]');
+		driver.waitForSelector('div.bd-wrapper.calendar-add-event a', function success() {
+			this.click('div.bd-wrapper.calendar-add-event a');
+			driver.then(function() {
+				this.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
+				this.fillSelectors('form#PostCalEvent', {
+						'input#allDay' : 1
+				}, false); 
+				driver.then(function() {
+					driver.waitForSelector('#message_ifr', function success() {
+						test.assertExists('#message_ifr','message-ifr found');
+						driver.withFrame('message_ifr', function() {
+							try{
+								test.assertExists('#tinymce');
+								this.capture(screenShotsDir+'tiny.png');
+								this.sendKeys('#tinymce', "This is a new event");
+							}catch(e) {
+								test.assertDoesntExist('#tinymce');
+							}
+						});
+					}, function fail(){
+						driver.echo('message_ifr not found','ERROR');
+					});
+					// code get the id of event
+					driver.then(function() {
+						this.click('#post_event_buttton');
+						this.wait(5000, function() {
+							event_id = casper.evaluate( function(a) {
+								var n = a.indexOf('eventid=');
+								var stre='eventid=';
+								var leng=stre.length;
+								var h = n+leng;
+								var stringt=a.substring(h);
+								var t = stringt.indexOf('&');
+								var id = stringt.substring(0,t);
+								return id;
+							}, this.getCurrentUrl());
+							this.echo('*******event_id='+event_id,'INFO');
+							this.capture(screenShotsDir+'event.png');
+						});
+					});
+				});
+			});
+		});
+	}, function fail() {
+		driver.echo('Main Menu not found','ERROR');
+	});
+};
+
+// method to go to approval queue page
+postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, callback) {
+	driver.then(function() {
+		forumLoginMethod.logoutFromApp(casper, function() { });
+	});
+	driver.then(function() {
+		//login with admin user to get the id of the post and to approve it
+		casper.echo('Title of the page :' +driver.getTitle(), 'INFO');
+		forumLoginMethod.loginToApp(json["AdminUserLogin"].username, json["AdminUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+					if(isExists) {
+						driver.echo('User has been successfuly login to application with admin user', 'INFO');
+						driver.capture('aftercategory.png');
+						driver.waitForSelector('a[href="/categories"]', function success() {
+							test.assertExists('a[href="/categories"]','Category link found');
+							driver.click('a[href="/categories"]');
+							driver.wait(5000, function() {
+								driver.capture('aftercategory.png');
+							});
+							driver.waitForSelector('li#approvalQueue a', function success() {
+								test.assertExists('li#approvalQueue a','Approval Queue found');
+								driver.click('li#approvalQueue a');
+								driver.wait(3000, function() {
+									
+									return callback(null);
+								});
+							},function fail(){
+								driver.echo('Approval Queue not Found','INFO');
+							});        
+						},function fail(){
+							driver.echo('Categories not Found','ERROR');
+						});
+					} else {
+						casper.echo('User not logged in','ERROR');	
+					}
+				});
+			}else {
+				casper.echo('Admin user not logged in', 'INFO');
+			}
+		});
+	});
+};
+
+

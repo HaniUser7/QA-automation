@@ -1730,8 +1730,8 @@ privateMessageTestcases.composeMessageScenarioThird = function() {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
 						casper.click('ul.nav.pull-right span.caret');
-						casper.test.assertExists('a[href^="/profile"]');
-						casper.click('a[href^="/profile"]');
+						casper.test.assertExists('a#user-nav-panel-profile');
+						casper.click('a#user-nav-panel-profile');
 						casper.waitForSelector('div.pull-left.profile-menu a#send_message', function() {
 							casper.click('div.pull-left.profile-menu a#send_message');
 							casper.waitUntilVisible('div#pmessage_modal', function() {
