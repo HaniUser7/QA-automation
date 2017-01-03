@@ -43,11 +43,22 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 		this.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
  		this.sendKeys('#tinymce', data.content);
 	});	
-		/*driver.click('#all_forums_dropdown');
-		driver.fill('form[name="PostTopic"]',{
-			'forum' : data.category
-		},false);*/
-	
+	driver.waitForSelector('#all_forums_dropdown', function success() {
+			driver.click('#all_forums_dropdown');
+			driver.fill('form[name="PostTopic"]',{
+				'forum' : data.category
+			},false);
+			driver.then(function() {
+				driver.click('#post_submit');
+			});
+	}, function fail() {
+		driver.waitForSelector('#post_submit',function success() {							
+			driver.test.assertExists('#post_submit');
+			driver.click('#post_submit');
+		},function fail() {
+			driver.echo('Unable to submit form','ERROR');
+		});
+	});
 	driver.then(function() {
 		driver.click('#post_submit');
 	});
@@ -231,7 +242,9 @@ thumpsUpDownMethod.disableReputation = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -276,7 +289,9 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -322,7 +337,9 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -367,7 +384,9 @@ thumpsUpDownMethod.enableUserAccount = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -412,7 +431,9 @@ thumpsUpDownMethod.disableNewRegistration = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -457,7 +478,9 @@ thumpsUpDownMethod.enableNewRegistration = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -502,7 +525,9 @@ thumpsUpDownMethod.enableFacebookLogin = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -547,7 +572,9 @@ thumpsUpDownMethod.disableFacebookLogin = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}

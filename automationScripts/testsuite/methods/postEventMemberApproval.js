@@ -170,11 +170,17 @@ postEventMemberApprovalMethod.startTopic = function(data,driver,callback) {
 			},false);
 			driver.then(function() {
 				driver.click('#post_submit');
+				driver.waitForSelector('div#posts-list', function() {
+					driver.echo('New topic Created','INFO');
+				});
 			});
 		}, function fail() {
 			driver.waitForSelector('#post_submit',function success() {							
 				driver.test.assertExists('#post_submit');
 				driver.click('#post_submit');
+				driver.waitForSelector('div#posts-list', function() {
+					driver.echo('New topic Created','INFO');
+				});
 			},function fail() {
 				driver.echo('Unable to submit form','ERROR');
 			});
@@ -280,6 +286,38 @@ postEventMemberApprovalMethod.deletePost = function(driver, test, callback) {
 				return callback(null);
 			});
 		});
+	});
+};
+
+//*************************Method for calendar functionality ***************************************
+
+//*************************Method to enable the event approval from backend ************************
+postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddContent a:nth-child(2)');
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
 	});
 };
 

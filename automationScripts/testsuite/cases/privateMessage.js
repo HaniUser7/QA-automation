@@ -23,7 +23,7 @@ privateMessageTestcases.createPrivateMessage = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() { //changed
 										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
@@ -80,7 +80,7 @@ privateMessageTestcases.deleteConversation = function() {
 												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
 												casper.click('a#delete_conversation i');
 												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('The topmost post is deleted','INFO');
+													casper.echo('The topmost message is deleted','INFO');
 												});
 											});
 										} else {
@@ -138,7 +138,7 @@ privateMessageTestcases.deleteMultipleConversation = function() {
 												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
 												casper.click('a#delete_conversation i');
 												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('The topmost post is deleted','INFO');
+													casper.echo('The topmost messages are deleted','INFO');
 												});
 											});
 										} else {
@@ -193,7 +193,7 @@ privateMessageTestcases.deleteAllConversation = function() {
 												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
 												casper.click('a#delete_conversation i');
 												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('All post are deleted','INFO');
+													casper.echo('All messages are deleted','INFO');
 												});
 											});
 										} else {
@@ -244,7 +244,7 @@ privateMessageTestcases.deleteFromConversationPage = function() {
 											casper.echo('The conversation id is - '+converastion_id, 'INFO');
 											casper.click('a#delete_curr_conversation i');
 											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-												casper.echo('The post from conversation page is deleted','INFO');
+												casper.echo('The message from conversation page is deleted','INFO');
 											});
 										} else {
 											casper.echo('Inbox not found','ERROR');
@@ -1203,7 +1203,7 @@ privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.ignoredByUser, casper, function(err) {
 											if(!err) {
 												casper.echo('send message called...', 'INFO');
@@ -1437,7 +1437,7 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('a.send_new_pmsg');
-										casper.waitUntilVisible('div#pmessage_modal', function() {
+										casper.waitForSelector('div[class="modal fade in"]', function() {
 											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 												if(!err) {
 													casper.echo('Message sent called successfully..','INFO');
@@ -1473,7 +1473,7 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('a.send_new_pmsg');
-										casper.waitUntilVisible('div#pmessage_modal', function() {
+										casper.waitForSelector('div[class="modal fade in"]', function() {
 											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 												if(!err) {
 													casper.echo('Message sent called successfully..','INFO');
@@ -1509,7 +1509,7 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('a.send_new_pmsg');
-										casper.waitUntilVisible('div#pmessage_modal', function() {
+										casper.waitForSelector('div[class="modal fade in"]', function() {
 											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 												if(!err) {
 													casper.echo('Message sent called successfully..','INFO');
@@ -1573,11 +1573,11 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen('http://beta23.websitetoolbox.com/pm', function() {
+												casper.thenOpen(config.url+'pm', function() {
 													imageUrl = casper.evaluate(function() {
 														var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
 														return id;
@@ -1677,7 +1677,7 @@ privateMessageTestcases.composeScenarioSecond = function() {
 										if(isExists) {
 											casper.mouse.move('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
 											casper.click('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
-											casper.waitUntilVisible('div#pmessage_modal', function() {
+											casper.waitForSelector('div[class="modal fade in"]', function() {
 												casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', json["Privatemessage"].to, {keepFocus: true});
 												casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus: true} );
 					
@@ -1734,7 +1734,7 @@ privateMessageTestcases.composeMessageScenarioThird = function() {
 						casper.click('a#user-nav-panel-profile');
 						casper.waitForSelector('div.pull-left.profile-menu a#send_message', function() {
 							casper.click('div.pull-left.profile-menu a#send_message');
-							casper.waitUntilVisible('div#pmessage_modal', function() {
+							casper.waitForSelector('div[class="modal fade in"]', function() {
 								privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 									if(!err) {
 										casper.echo('Message sent..','INFO');
@@ -1769,7 +1769,7 @@ privateMessageTestcases.invalidRecipientsName = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.invalidRecipientsName, casper, function(err) {
 											if(!err) {
 												casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
@@ -1810,7 +1810,7 @@ privateMessageTestcases.blankRecipientsName = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.blankRecipientsName, casper, function(err) {
 											if(!err) {
 												casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
@@ -1851,7 +1851,7 @@ privateMessageTestcases.blankSubject = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.blankSubject, casper, function(err) {
 											if(!err) {
 											
@@ -1892,7 +1892,7 @@ privateMessageTestcases.blankMessageBody = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.blankMessageBody, casper, function(err) {
 											if(!err) {
 												casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
@@ -1933,7 +1933,7 @@ privateMessageTestcases.autoDropdown = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
 										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
 									});
@@ -1978,7 +1978,7 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = functio
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
 										casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');
 									});
@@ -2023,7 +2023,7 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
 										casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
 									});
@@ -2396,11 +2396,11 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen('http://beta23.websitetoolbox.com/pm', function() {
+												casper.thenOpen(config.url+'pm', function() {
 													converastion_id = casper.evaluate(function() {
 														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
 														return id;
@@ -2483,11 +2483,11 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.sendMessageToManyUser(json.Privatemessage, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen('http://beta23.websitetoolbox.com/pm', function() {
+												casper.thenOpen(config.url+'pm', function() {
 													converastion_id = casper.evaluate(function() {
 														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
 														return id;
@@ -2608,11 +2608,11 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.sendMessageToManyUser(json.Privatemessage, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen('http://beta23.websitetoolbox.com/pm', function() {
+												casper.thenOpen(config.url+'pm', function() {
 													converastion_id = casper.evaluate(function() {
 														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
 														return id;
@@ -2753,11 +2753,11 @@ privateMessageTestcases.verifyAvtar = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen('http://beta23.websitetoolbox.com/pm', function() {
+												casper.thenOpen(config.url+'pm', function() {
 													imageUrl = casper.evaluate(function() {
 														var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
 														return id;
@@ -2851,7 +2851,7 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent called successfully..','INFO');
@@ -2892,7 +2892,7 @@ privateMessageTestcases.verifyMorethanMaxRecipient = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitUntilVisible('div#pmessage_modal', function() {
+									casper.waitForSelector('div[class="modal fade in"]', function() {
 										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageToMoreThanMaxLimit, casper, function(err) {
 											if(!err) {
 												casper.echo('Message sent to only 25 user not for 26th','INFO');

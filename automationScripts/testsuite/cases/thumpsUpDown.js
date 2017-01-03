@@ -4,6 +4,7 @@
 var json = require('../../testdata/forgotpasswordData.json');
 var config = require('../../../config/config.json');
 var thumpsUpDownMethod = require('../methods/thumpsUpDown.js');
+var postEventMemberApprovalTestcases = require('../cases/postEventMemberApproval.js');
 var registerMethod = require('../methods/register.js');
 var forumLoginMethod = require('../methods/login.js');
 var wait = require('../wait.js');
@@ -13,27 +14,32 @@ thumpsUpDownTestcases.errors = [];
 
 // method to verify the thumbs up for guest user(unregister user) on post listing page
 thumpsUpDownTestcases.unregisterUserOnPostListingPageLike = function() {
-	casper.echo('                                      CASE 1a', 'INFO');
-	casper.echo('************************************************************************************', 'INFO');
-	casper.echo('*                        LIKE POST From Post Listing Page                          *', 'INFO');
-	casper.echo('************************************************************************************', 'INFO');
-	casper.click('form[name="posts"] a.topic-title');
-	wait.waitForElement('i.glyphicon.glyphicon-like-alt', casper, function(err, isExists) {
-		if(isExists) {
-			casper.click('i.glyphicon.glyphicon-like-alt');
-			wait.waitForElement('div#form-dialog[aria-hidden="false"]', casper, function(err, isExists) {
-				if(isExists) {
-					casper.test.assertExists('button#bootstrap_close_register_dialog','Close button at the Pop Up');
-					casper.click('button#bootstrap_close_register_dialog');
-				} else {
-					casper.echo('Pop Up not found','INFO');
-				}
-			});
-		} else {
-			casper.echo('Like button not found','INFO');
-		}
+	// method of postEventMemberApproval called once to create a topic if the topic is not created on the forum
+	postEventMemberApprovalTestcases.createTopic();
+	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 1a', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                        LIKE POST From Post Listing Page                          *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.click('form[name="posts"] a.topic-title');
+		wait.waitForElement('i.glyphicon.glyphicon-like-alt', casper, function(err, isExists) {
+			if(isExists) {
+				casper.click('i.glyphicon.glyphicon-like-alt');
+				wait.waitForElement('div#form-dialog[aria-hidden="false"]', casper, function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('button#bootstrap_close_register_dialog','Close button at the Pop Up');
+						casper.click('button#bootstrap_close_register_dialog');
+					} else {
+						casper.echo('Pop Up not found','INFO');
+					}
+				});
+			} else {
+				casper.echo('Like button not found','INFO');
+			}
+		});
 	});
 };
+
 // method to verify the thumbs down for guest user(unregister user) on post listing page
 thumpsUpDownTestcases.unregisterUserOnPostListingPageDislike = function() {
 	casper.thenOpen(config.url, function() {
@@ -806,21 +812,25 @@ thumpsUpDownTestcases.verifyReputation = function() {
 						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
 						var reputationCount2;
 						casper.echo('The value of reputation count is -'+reputationCount, 'INFO');
-						casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
-						casper.click('i.glyphicon.glyphicon-like-alt');
-						casper.wait(1000, function() {
-							casper.reload(function() {
-								casper.echo('The page is reloaded','INFO');
-								reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
-								casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
-								if(reputationCount > reputationCount2) {
-									casper.echo('The post is deleted and count is not added in reputation.','INFO');	
-								}
-								if(reputationCount < reputationCount2) {
-									casper.echo('The post is deleted and count is added in reputation.','INFO');
-								}
+						try {  //changed
+							casper.test.assertExists('i.glyphicon.glyphicon-like-alt');
+							casper.click('i.glyphicon.glyphicon-like-alt');
+							casper.wait(1000, function() {
+								casper.reload(function() {
+									casper.echo('The page is reloaded','INFO');
+									reputationCount2 = casper.fetchText('li.reputation span.profile-count a');
+									casper.echo('The value of reputation count is -'+reputationCount2, 'INFO');
+									if(reputationCount > reputationCount2) {
+										casper.echo('The post is deleted and count is not added in reputation.','INFO');	
+									}
+									if(reputationCount < reputationCount2) {
+										casper.echo('The post is deleted and count is added in reputation.','INFO');
+									}
+								});
 							});
-						});
+						} catch (e) { //changed
+						
+						}
 					});
 				} else {
 					casper.echo('User not logged in','ERROR');

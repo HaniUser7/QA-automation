@@ -22,7 +22,7 @@ postEventMemberApprovalTestcases.createTopic = function() {
 						//method to create a new topic
 						postEventMemberApprovalMethod.startTopic(json.newTopic, casper, function(err) {
 							if(!err) {
-								casper.echo('new topic created', 'INFO');
+								casper.echo('new topic method called successfully', 'INFO');
 							}else {
 								casper.echo('Topic not created', 'INFO');
 							}
