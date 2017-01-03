@@ -45,7 +45,7 @@ upload.featureTest = function(casper, test) {
 		//uploadTests.uploadPMInboxImageButton(); selector not found
 	//**************************Edit section**************************************************
 		//Verify with Edit the Post from Topic listing page attachment
-		uploadTests.uploadEditPostAttachment();
+		 uploadTests.uploadEditPostAttachment();
 		//Verify with Edit the Post from Topic listing page(insert photos) camera web address
 		uploadTests.uploadEditPostCameraWebaddress();
 		//Verify with Edit the Post from Topic listing page(insert photos) camera browse
@@ -77,17 +77,19 @@ upload.featureTest = function(casper, test) {
 		//Verify with Edit topic listing page under category insert photo camera webaddress
 		uploadTests.uploadEditPostunderCategoryCameraWebaddress();
 		//Verify with Edit topic listing page under category insert photo Image button browse
-		uploadTests.uploadEditPostunderCategoryImageButtonbrowse();
+		uploadTests.uploadEditPostunderCategoryImageButtonbrowse();*/
 		//Verify with Edit topic listing page under category insert photo Image button webaddress
 		uploadTests.uploadEditPostunderCategoryImageButtonWebaddress();
+	//******************Search section*********************************************************
 		//Verify with Edit the Post from Search result page Attachment
-		uploadTests.uploadEditPostSearch();
+		/*uploadTests.uploadEditPostSearch();
 		//Verify with Edit the Post from Search result page camera webaddress
 		uploadTests.uploadEditPostSearchCameraWebaddress();
 		//Verify with Edit the Post from Search result page Image webaddress
 		uploadTests.uploadEditPostSearchCamerabrowse();
 		//Verify with Edit the Post from Search result page Image button browse
-		uploadTests.uploadEditPostSearchImagebrowse();
+		uploadTests.uploadEditPostSearchImagebrowse();*/
+	//**************************profile page*******************************************************
 		//Verify with Edit the post from Profile page(Attachment)
 		uploadTests.uploadEditProfileAttachment();
 		//Verify with Edit the post from Profile page camera browse
@@ -108,8 +110,9 @@ upload.featureTest = function(casper, test) {
 		uploadTests.uploadAdminImagebrowse();
 		//Verify with Edit the topic/post by Admin for himself/registered user Image webaddress
 		uploadTests.uploadAdminImageWebaddress();
+	//***********************Sub-category***********************************************************
 		//Verify with sub category from forum listing page(Attachement/insert photos)
-		uploadTests.uploadSubCategory();
+		/*uploadTests.uploadSubCategory();
 		//Verify with sub category from forum listing page camera browse
 		uploadTests.uploadSubCategoryCamerabrowse();
 		//Verify with sub category from forum listing page camera webaddress
@@ -117,7 +120,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with sub category from forum listing page Image browse
 		uploadTests.uploadSubCategoryImagebrowse();
 		//Verify with sub category from forum listing page Image webaddress
-		uploadTests.uploadSubCategoryImageWebaddress();
+		uploadTests.uploadSubCategoryImageWebaddress();*/
 	   //****************************Approval section************************************
 		//Verify with Edit the post from  Approval queue Page
 		uploadTests.uploadApprovalqueue();
@@ -128,7 +131,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with Edit the post from  Approval queue Page Image browse
 		uploadTests.uploadApprovalImagebrowse();
 		//Verify with Edit the post from  Approval queue Page Image webaddress
-		uploadTests.uploadApprovalImageWebaddress();*/
+		uploadTests.uploadApprovalImageWebaddress();
 	 //*********************************Album Section***************************************	
 		//verify with add new pic in album from add photos button
 		uploadTests.uploadAlbum();
@@ -138,6 +141,25 @@ upload.featureTest = function(casper, test) {
 		uploadTests.uploadEditAlbum();
 		//verify with upload picz by click on album cover photo>add photo
 		uploadTests.uploadAlbumCover();
+		//verify with upload picz by click on album cover photo>edit album >delete all picz>add new photo
+		uploadTests.uploadAlbumDelete();
+		//verify with upload picz by click on album cover photo>edit album>delete some picz>add new photo.
+		uploadTests.uploadAlbumCoverAdd();
+		//verify with upload picz by edit album>delete all picz> add new picz
+		uploadTests.uploadEditAddNew();
+		//verify with upload picz by edit album>delete some picz>add new picz
+		uploadTests.uploadEditAddNewPicz();
+	//******************************Combine all forum cases****************************************
+		//Delete Category method
+		//uploadTests.DeleteCategory();
+		//Verify with post from topic listing page(Attachment/insert photos)
+		//uploadTests.uploadCombineAllForum();
 		
+		
+
+
+
+
+
 	});
 };

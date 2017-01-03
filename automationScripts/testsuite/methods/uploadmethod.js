@@ -113,6 +113,7 @@ uploadMethods.Webaddress=function(driver , callback){
 					});	
 					casper.wait(3000,function(){
 						casper.capture('PopUp1.png');
+						casper.test.assertExists('input[name="fname"]','Input name found');
 						casper.sendKeys('input[name="fname"]', 'http://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16748568');	
 						casper.click('button#insert_image_btn');				
 						/*casper.wait(2000, function(){
@@ -176,7 +177,7 @@ uploadMethods.webaddresslogin=function(driver , callback) {
 	//casper.echo('*************Verify with Edit topic listing page under category camera webaddress**********','INFO');
 	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 		if(isExists) {
-			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 				if (err) {
 					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 				}else {
@@ -189,9 +190,9 @@ uploadMethods.webaddresslogin=function(driver , callback) {
 							wait.waitForElement('span.forum-title:nth-child(1)' ,casper , function(err , isExists) {
 								if(isExists) {
 									casper.click('span.forum-title:nth-child(1)');
-									wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
-										if(isExists) {
-											casper.click('a#topics_tab');	
+									//wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
+										//if(isExists) {
+											//casper.click('a#topics_tab');	
 											wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists){
 												if(isExists) {
 													casper.click('span.topic-content a');
@@ -203,8 +204,8 @@ uploadMethods.webaddresslogin=function(driver , callback) {
 													});
 												}
 											});
-										}
-									});
+										//}
+									//});
 								}
 							});
 						}
@@ -256,7 +257,7 @@ uploadMethods.searchlogin=function(driver , callback) {
 	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
 	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 		if(isExists) {
-			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 				if (err) {
 					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 				}else {
@@ -265,7 +266,7 @@ uploadMethods.searchlogin=function(driver , callback) {
 						if(isExists) {
 							casper.click('input#inline_search_box');
 							casper.fill('form#inlineSearchForm', {
-								'keywords' :'hello'
+								'keywords' :'NewTopic'
 							},true);
 							try {
 								wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
@@ -427,15 +428,338 @@ uploadMethods.createSubTopic=function(driver , callback) {
 };
 
 
+//*********************************Combine all forum cases Methods********************************************
+
+//Create Category General
+
+uploadMethods.createCategory=function(driver , callback) {
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');	
+		
+				casper.waitForSelector('a[href="/categories"]' , function success(){
+					casper.test.assertExists('a[href="/categories"]' , 'Category Found');
+				}, function fail(){
+					casper.echo('Failed case called' , 'INFO');
+					casper.echo('Categories not found' ,'ERROR');
+					casper.thenOpen(config.backEndUrl , function(){
+						loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+							if (!err)
+								casper.echo('LoggedIn to forum backend....', 'INFO');
+						});
+						wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]' , casper , function(err , isExists) {
+							if(isExists) {
+								driver.evaluate(function() {
+									document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
+								});
+								wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err , isExists) {	
+									if(isExists) {
+										casper.click('div#forum-manager-heading-actions a');
+										wait.waitForElement('input#isSubcategory' , casper , function(err , isExists){	
+											if(isExists) {	
+																																						casper.fillSelectors('form#edit_forum_form',{	
+	'input[name="forum_name"]':'General',
+	'textarea#forum_description':'India',
+},false);
+																	
+																													casper.capture('555.png');
+																		casper.wait(2000, function(){
+																	//casper.sendKeys('select[name="parentid"] option[value="190578"]', 'General');
+																	casper.capture('133.png');
+																		casper.click('form[name="frmOptions"] button');
+																			casper.wait(2000, function(){
+																					casper.capture('button.png');
+
+});
+});
+											}							
+										});	
+									}
+								});
+							}
+						});
+					});
+				});
+				casper.then(function(){
+					casper.thenOpen(config.backEndUrl , function(){
+						loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+							if (!err)
+								casper.echo('LoggedIn to forum backend....', 'INFO');
+						});
+						wait.waitForElement('div#account_sub_menu a[data-tooltip-elm="ddAccount"]' , casper , function(err , isExists) {
+							if(isExists){
+								casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+								casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+								casper.test.assertExists('div#ddAccount a:nth-child(6)');
+								casper.click('div#ddAccount a:nth-child(6)');	
+								casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+							}
+						});
+					});
+				});
+			}
+		});
+	});
+};
+
+
+			
+		
+			
+
+//**************************Method to Enable Approve new Posts******************************
+
+uploadMethods.enableApproveAllPost=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]' , casper , function(err , isExists){
+			if(isExists) {
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+				/*casper.evaluate(function() {
+																														document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddSettings').click();
+});*/
+				casper.capture('88.png');
+				casper.click('div#ddSettings a[href="/tool/members/mb/settings?tab=Security"]');
+				wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+					if(isExists) {
+						casper.click('select#post_approval');
+						casper.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
+						casper.click('button.button.btn-m.btn-blue');
+						casper.wait(2000 , function(){
+							casper.capture('1567.png');
+
+						});		
+					}					
+				});	
+			}
+		}); 
+	});
+};
+
+//**************************************create sub-category method **********************************************
+uploadMethods.createSubCategory=function(driver , callback) {
+		
 
 
 
 
 
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd	(casper , function(err) {
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');	
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+																			document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
+});
+						wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.click('div#forum-manager-heading-actions a');
+								wait.waitForElement('input#isSubcategory' , casper , function(err , isExists){
+									if(isExists) {	
+										casper.fillSelectors('form#edit_forum_form',{	
+'input[name="forum_name"]':'hello subcategory',
+'textarea#forum_description':'India',
+},false);
+																			casper.click('input[name="isSubcategory"]');
+																		casper.click('select#parentid')
+																	casper.capture('sub.png');
+																		casper.wait(2000, function(){
+																	casper.sendKeys('select[name="parentid"] option[value="199222"]', 'hello Category');
+																	casper.capture('sub2.png');
+																		casper.click('form[name="frmOptions"] button');
+																			casper.wait(2000, function(){
+																					casper.capture('buttonsub.png');
+																					});
+																			});
+										}							
+									});	
+								}
+							});
+						}
+					});	
+				}	
+			});
+		});
+};
 
+//***********************************Delete Method--- Categories******************************
+uploadMethods.DeleteCategory=function(driver , callback) {
+	
+		//casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('*************Delete category*********************' , 'INFO');
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]', casper , function(err , isExists) {
+				if(isExists) {
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');	
+					wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+						if( isExists) {
+							driver.evaluate(function() {
+								document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
+});
+						wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err  , isExists) {
+							if(isExists) {	
+								casper.wait(2000 , function(){
+									casper.capture('166.png');
+									casper.click('a.forumName.atree');
+									/*casper.evaluate(function() {
+										document.querySelector('a[data-forumid="199200"]').click();
+									});*/
+									casper.capture('188.png');
+									wait.waitForElement('div.tooltipMenu.forumActionbutton a:nth-child(2)' , casper , function(err) {
+										if(isExists) {
+											//casper.click('div.tooltipMenu.forumActionbutton a:nth-child(2)');
+											casper.evaluate(function() {
+												document.querySelector('div.tooltipMenu.forumActionbutton a:nth-child(2)').click();
+											});
+											casper.wait(5000 , function(){
 
+												casper.capture('122.png');
+
+											});
+											wait.waitForElement('input[type="submit"]' , casper , function(err , isExists) {
+												if(isExists) {
+													casper.click('input[type="submit"]');
+													casper.wait(5000 , function(){
+
+														casper.capture('022.png');
+														casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+														casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+														casper.test.assertExists('div#ddAccount a:nth-child(6)');
+														casper.click('div#ddAccount a:nth-child(6)');	
+														casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+														
+
+													});
+												
+												}
+											});
+										}
+									});
+								});
+							}
+						});
+					}
+				});
+			}
+     		});
+		
+     
+};
 													
+//**************************Method to Disable Approve new Posts******************************
+
+uploadMethods.disableApproveAllPost=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]' , casper , function(err , isExists){
+			if(isExists) {
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+				/*casper.evaluate(function() {
+																														document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddSettings').click();
+});*/
+				casper.capture('88.png');
+				casper.click('div#ddSettings a[href="/tool/members/mb/settings?tab=Security"]');
+				wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+					if(isExists) {
+						casper.click('select#post_approval');
+						casper.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
+						casper.click('button.button.btn-m.btn-blue');
+						casper.wait(2000 , function(){
+							casper.capture('67.png');
+
+						});		
+					}					
+				});	
+			}
+		}); 
+	});
+};
+
+//**************************Aprovval case method************************************
+uploadMethods.Approvalmethods=function(driver , callback) {
+	casper.then(function(){
+			casper.thenOpen(config.url , function(){
+				casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+					//try {
+						casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
+							casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+						//casper.click('span.topic-content a');
+						},function fail() {
+							casper.echo('Failed block called','INFO');
+							wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+								if(isExists) {
+									//method to create a new topic
+									uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+										if(!err) {
+											casper.echo('new topic created', 'INFO');
+										}else {
+											casper.echo('Topic not created', 'INFO');
+										}
+									});
+								} else {
+									casper.echo('User icon not found','ERROR');	
+								}
+							});
+						});
+				//} catch(e) {
+				
+				//}
+					casper.then(function() {
+						inContextLoginMethod.logoutFromApp(casper, function(err){
+							if (!err)
+								casper.echo('Successfully logout from application', 'INFO');
+						});
+					});	
+				}
+			});
+    		});
+	});
+	casper.then(function(){
+		casper.echo('*******************************Approve all post dropdown enable***************************** ','INFO');
+		uploadMethods.disableApproveAllPost(casper , function(err) {
+			if(!err){
+				casper.echo('all post not approved','INFO');
+				}
+		});
+			
+	});
+};
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+ 
 

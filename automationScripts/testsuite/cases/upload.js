@@ -6,6 +6,7 @@ var inContextLoginMethod = require('../methods/inContextLogin.js');
 var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
 var wait=require('../wait.js');
 var utils=require('../utils.js');
+var uploadCombine=require('../methods/combineAllForum.js');
 uploadTests = module.exports = {};
 
 
@@ -13,40 +14,44 @@ uploadTests = module.exports = {};
 uploadTests.uploadPostAttachment=function(){
 	casper.echo('                   TestCase 1                 ' ,'INFO');
 	casper.echo('*************Verify with post from topic listing page(Attachment/insert photos)**********','INFO');
-	inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-		if (err) {
-			casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-		}else {
-			casper.echo('Processing to Login on forum.....','INFO');
-			try {
-				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
-					if(isExists){
-						casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-						casper.click('span.topic-content a');
-						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+	casper.then(function(){
+		casper.echo('*******************************Approve post disabled post Method***************************** ','INFO');
+		uploadMethods.disableApproveAllPost(casper , function(err) {
+			if(!err)
+				casper.echo('approve post disabled' ,'INFO');
+		});
+	});
+	casper.thenOpen(config.url , function(){	
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
+					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+					casper.click('span.topic-content a');
+					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+						}
+					});						
+					},function fail() {
+						casper.echo('Failed block called','INFO');
+						wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 							if(isExists) {
-								casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-							}
-						});						
-					}
-				});
-			} catch (e) {
-				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					if(isExists) {
-						//method to create a new topic
-						uploadMethods.startTopic(json['newtopic'], casper, function(err) {
-							if(!err) {
-								casper.echo('new topic created', 'INFO');
-							}else {
-								casper.echo('Topic not created', 'INFO');
+								//method to create a new topic
+								uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+									if(!err) {
+										casper.echo('new topic created', 'INFO');
+									}else {
+										casper.echo('Topic not created', 'INFO');
+									}
+								});
+							} else {
+								casper.echo('User icon not found','ERROR');	
 							}
 						});
-						
-					} else {
-						casper.echo('User icon not found','ERROR');	
-					}
-				});
-			}
+					});
 			casper.then(function() {
 				inContextLoginMethod.logoutFromApp(casper, function(err){
 					if (!err)
@@ -54,8 +59,8 @@ uploadTests.uploadPostAttachment=function(){
 				});
 			});	
 		}
-		
 	});
+     });
 };
 		
 //Verify with post from topic listing page camera browse
@@ -88,6 +93,8 @@ uploadTests.uploadPostAttachmentCamera=function(){
 	});
 
 };
+
+//*********************************************Start New Topic ******************************************************
 			
 //Verify with start new Topic(latest topics page)(Attachment/insert photos)
 uploadTests.uploadStartNewTopic=function(){				
@@ -240,6 +247,7 @@ uploadTests.uploadStartNewTopicCameraWebaddress=function(){
 	});
 };
 
+//**************************************Start New Topic Undercategory**********************************************************
 
 //Verify with topic listing page under category(start new topic)(Attachment/insert photos)
 
@@ -1097,21 +1105,31 @@ uploadTests.uploadEditTopicAttachment=function(){
 		casper.echo('*************Verify with Edit post from topic listing page(Attachment)**********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....',
 			
  'INFO');
-						wait.waitForElement(' ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
-							if(isExists) {
+						/*uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+							if(!err) {
+								casper.echo('new topic created', 'INFO');
+							}else {
+								casper.echo('Topic not created', 'INFO');
+							}
+						});*/
+						
+						wait.waitForTime(5000 , casper , function(err){
+						
+							wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExist) {
+								if(isExists) {
 								//casper.test.assertExists('form[name="posts"] a.topic-title');
-								casper.click(' ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
-								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' ,casper , function(err , isExists) {
-									if(isExists) {
-										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
-											if(isExists){
+									casper.click('form[name="posts"] a.topic-title');
+									wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' ,casper , function(err , isExists) {
+										if(isExists) {
+											wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
+												if(isExists){
 												casper.click('i.glyphicon.glyphicon-chevron-down');
 												wait.waitForTime(1000 , casper , function(err) {
 													casper.click('a#edit_post_request');
@@ -1132,6 +1150,8 @@ uploadTests.uploadEditTopicAttachment=function(){
 								});
 							}
 						});
+
+					});
 						casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
 							wait.waitForTime(1000 , casper , function(err) {
 								casper.capture('upload.png');
@@ -1152,17 +1172,17 @@ uploadTests.uploadEditTopicCameraWebaddress=function(){
 		casper.echo('*************Verify with Edit post from topic listing using webaddress**********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....',
 			
  'INFO');
-						wait.waitForElement('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
+						wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExist) {
 							if(isExists) {
 								casper.test.assertExists('form[name="posts"] a.topic-title');
-								casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' ,casper , function(err , isExists) {
 									if(isExists) {
 										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
@@ -1213,17 +1233,17 @@ uploadTests.uploadEditTopicCameraWebbrowse=function(){
 		casper.echo('*************Verify with Edit post from topic listing page using browse**********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....',
 			
  'INFO');
-						wait.waitForElement('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
+						wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExist) {
 							if(isExists) {
 								casper.test.assertExists('form[name="posts"] a.topic-title');
-								casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' ,casper , function(err , isExists) {
 									if(isExists) {
 										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
@@ -1277,17 +1297,17 @@ uploadTests.uploadEditTopicImageButtonbrowse=function(){
 		casper.echo('*************Verify with Edit post from topic listing page using Image button**********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....',
 			
  'INFO');
-						wait.waitForElement('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
+						wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExist) {
 							if(isExists) {
 								casper.test.assertExists('form[name="posts"] a.topic-title');
-								casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' ,casper , function(err , isExists) {
 									if(isExists) {
 										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
@@ -1336,17 +1356,18 @@ uploadTests.uploadEditTopicImageButtonWebaddress=function(){
 		casper.echo('*************Verify with Edit post from topic listing page using Image button web address**********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....',
 			
  'INFO');
-						wait.waitForElement('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
+						wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExist) {
 							if(isExists) {
 								casper.test.assertExists('form[name="posts"] a.topic-title');
-								casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								//casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' ,casper , function(err , isExists) {
 									if(isExists) {
 										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function( err , isExists) {
@@ -1388,6 +1409,7 @@ inContextLoginMethod.logoutFromApp(casper, function(err){
 	});
 
 };
+//***********************************************Edit topic listing page under category******************************************
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 //Verify with Edit topic listing page under category (post a reply)Attachment
 uploadTests.uploadEditPostUnderCategoryPostReplyAttachment=function(){
@@ -1410,9 +1432,9 @@ uploadTests.uploadEditPostUnderCategoryPostReplyAttachment=function(){
 								wait.waitForElement('span.forum-title:nth-child(1)' ,casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span.forum-title:nth-child(1)');
-										wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
-											if(isExists) {
-												casper.click('a#topics_tab');	
+										//wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
+											//if(isExists) {
+												//casper.click('a#topics_tab');	
 												wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists){
 													if(isExists) {
 														casper.click('span.topic-content a');
@@ -1434,7 +1456,7 @@ uploadTests.uploadEditPostUnderCategoryPostReplyAttachment=function(){
 														});
 													}
 												});
-											} 											});
+											//} 											//});
 									}
 								});
 							}
@@ -1473,9 +1495,9 @@ uploadTests.uploadEditPostUnderCategoryPostReplyCamerabrowse=function(){
 								wait.waitForElement('span.forum-title:nth-child(1)' ,casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span.forum-title:nth-child(1)');
-										wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
-											if(isExists) {
-												casper.click('a#topics_tab');	
+										//wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
+											//if(isExists) {
+												//casper.click('a#topics_tab');	
 												wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists){
 													if(isExists) {
 														casper.click('span.topic-content a');
@@ -1501,7 +1523,7 @@ inContextLoginMethod.logoutFromApp(casper, function(err){
 														});
 													}
 												});
-											} 											});
+											//} 											//});
 									}
 								});
 							}
@@ -1636,7 +1658,7 @@ uploadTests.uploadEditPostunderCategoryAttachment=function(){
 		casper.echo('*************Verify with Edit post from topic listing page(Attachment)**********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1649,9 +1671,9 @@ uploadTests.uploadEditPostunderCategoryAttachment=function(){
 								wait.waitForElement('span.forum-title:nth-child(1)' ,casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span.forum-title:nth-child(1)');
-										wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
-											if(isExists) {
-												casper.click('a#topics_tab');	
+										//wait.waitForElement('a#topics_tab', casper , function(err , isExists) {
+											//if(isExists) {
+												//casper.click('a#topics_tab');	
 												wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists){
 													if(isExists) {
 														casper.click('span.topic-content a');
@@ -1671,8 +1693,8 @@ inContextLoginMethod.logoutFromApp(casper, function(err){
 														});
 													}
 												});
-											}
-										});
+											//}
+										//});
 									}				
 								});
 							}
@@ -1819,7 +1841,15 @@ uploadTests.uploadEditPostunderCategoryImageButtonWebaddress=function(){
 					//casper.click('i.icon.glyphicon');
 					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
 						if(isExists) {
-							casper.click('span.mceIcon.mce_imagebutton');
+							
+							//casper.click('span.mceIcon.mce_imagebutton');
+							casper.evaluate(function() {
+								document.querySelector('a#message1_imagebutton span').click();
+							});
+							casper.wait(5000 , function(){
+
+								casper.capture('cas.png');
+							});
 							uploadMethods.Webbrowse(casper , function(err){
 								if(!err)
 									casper.echo('Webbrowse method called successfully','INFO');
@@ -1837,6 +1867,7 @@ uploadTests.uploadEditPostunderCategoryImageButtonWebaddress=function(){
 	});
 };
 
+//-------------------------------------Search result page------------------------------------------------------------------------
 
 //Verify with Edit the Post from Search result page Attachment
 uploadTests.uploadEditPostSearch=function(){
@@ -1855,7 +1886,7 @@ uploadTests.uploadEditPostSearch=function(){
 							if(isExists) {
 								casper.click('input#inline_search_box');
 								casper.fill('form#inlineSearchForm', {
-									'keywords' :'hello'
+									'keywords' :'NewTopic'
 								},true);
 								try {
 									wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
@@ -2015,20 +2046,20 @@ uploadTests.uploadEditPostSearchImagebrowse=function(){
 					//casper.click('i.icon.glyphicon');
 					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
 						if(isExists) {
-							casper.click('span.mceIcon.mce_imagebutton');
-							uploadMethods.Webbrowse(casper , function(err){
-								if(!err)
-									casper.echo('Webbrowse method called successfully','INFO');
+							wait.waitForTime(2000 , casper , function(err) {
+								casper.click('a#message1_imagebutton span');
+								uploadMethods.Webbrowse(casper , function(err){
+									if(!err)
+										casper.echo('Webbrowse method called successfully','INFO');
 																	
-							});
-							casper.then(function(){
-								inContextLoginMethod.logoutFromApp(casper, function(err){
-									if (!err)
-										casper.echo('Successfully logout from application', 'INFO');
+								});
+								casper.then(function(){
+									inContextLoginMethod.logoutFromApp(casper, function(err){
+										if (!err)
+											casper.echo('Successfully logout from application', 'INFO');
+									});
 								});
 							});	
-
-															
 						}
 					});
 				}
@@ -2042,6 +2073,8 @@ uploadTests.uploadEditPostSearchImagebrowse=function(){
 	});
 };
 
+//--------------------------------------------------------Profile Page-----------------------------------------------------------------------
+
 //Verify with Edit the post from Profile page(Attachment)
 uploadTests.uploadEditProfileAttachment=function(){
 	casper.thenOpen(config.url , function(){
@@ -2050,7 +2083,7 @@ uploadTests.uploadEditProfileAttachment=function(){
 		casper.echo('***********Verify with Edit the post from Profile page(Attachment)************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2061,14 +2094,15 @@ uploadTests.uploadEditProfileAttachment=function(){
 								casper.click('a#user-nav-panel-profile');
 								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
 									if(isExists) {
-										casper.click('i.glyphicon.glyphicon-chevron-down');
-										casper.click('a#search_edit_post');
-										wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
+										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function(err , isExists) {
 											if(isExists){
-												casper.click('i.icon.glyphicon-paperclip');	
-											
-											}
-										});
+												casper.click('i.glyphicon.glyphicon-chevron-down');
+												casper.click('a#search_edit_post');
+												wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
+													if(isExists){
+														casper.click('i.icon.glyphicon-paperclip');	
+													}
+												});
 										casper.then(function(){
 											inContextLoginMethod.logoutFromApp(casper, function(err){
 												if (!err)
@@ -2076,6 +2110,127 @@ uploadTests.uploadEditProfileAttachment=function(){
 											});
 										});		
 											
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('1.png');
+				});
+			});
+		}
+	     });
+	});
+};
+
+//Verify with Edit the post from Profile page camera browse
+uploadTests.uploadEditPostProfileCamerabrowse=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('                   TestCase 41                ' ,'INFO');	
+		casper.echo('***********Verify with Edit the post from Profile page camera browse************','INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.click('ul.nav.pull-right span.caret');
+								casper.click('a#user-nav-panel-profile');
+								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
+									if(isExists) {
+										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function(err ,isExists) {
+											if(isExists) {
+												casper.click('i.glyphicon.glyphicon-chevron-down');
+												casper.click('a#search_edit_post');
+												wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
+													if(isExists){
+														casper.click('a[data-toggle="modal"] i.glyphicon.glyphicon-camera');
+														uploadMethods.Webbrowse(casper , function(err){
+															if(!err)
+																casper.echo('Webbrowse method called successfully','INFO');
+																	
+														});
+														casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+																if (!err)
+																	casper.echo('Successfully logout from application', 'INFO');
+																});
+														});		
+													}
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+				});
+				casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+					wait.waitForTime(1000 , casper , function(err) {
+						casper.capture('1.png');
+					});
+				});
+			}
+		});
+	});
+};
+
+//Verify with Edit the post from Profile page camera webaddress
+uploadTests.uploadEditPostProfileCameraWebaddress=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('                   TestCase 42                ' ,'INFO');	
+		casper.echo('***********Verify with Edit the post from Profile page camera webaddress************','INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.click('ul.nav.pull-right span.caret');
+								casper.click('a#user-nav-panel-profile');
+								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
+									if(isExists) {
+										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function(err , isExists) {
+											casper.click('i.glyphicon.glyphicon-chevron-down');
+											casper.click('a#search_edit_post');
+											wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
+												if(isExists){
+													casper.click('a[data-toggle="modal"] i.glyphicon.glyphicon-camera');
+													casper.wait(2000, function(){
+
+														casper.capture('cam55.png');
+
+													});
+													wait.waitForTime(2000 , casper , function(err ){
+														uploadMethods.Webaddress(casper , function(err){
+															if(!err)
+																casper.echo('Webaddress method called successfully','INFO');
+																	
+														});
+														casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+																if (!err)
+																	casper.echo('Successfully logout from application', 'INFO');
+															});
+														});
+													});		
+												}	
+											});
+										});
 									}
 								});
 							}
@@ -2092,121 +2247,6 @@ uploadTests.uploadEditProfileAttachment=function(){
 	});
 };
 
-//Verify with Edit the post from Profile page camera browse
-uploadTests.uploadEditPostProfileCamerabrowse=function(){
-	casper.thenOpen(config.url , function(){
-		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('                   TestCase 41                ' ,'INFO');	
-		casper.echo('***********Verify with Edit the post from Profile page camera browse************','INFO');
-		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
-			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-					if (err) {
-						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-					}else {
-						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
-							if(isExists) {
-								casper.click('ul.nav.pull-right span.caret');
-								casper.click('a#user-nav-panel-profile');
-								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
-									if(isExists) {
-										casper.click('i.glyphicon.glyphicon-chevron-down');
-										casper.click('a#search_edit_post');
-										wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
-											if(isExists){
-												casper.click('a#insert_image_dialog_34289513');
-												uploadMethods.Webbrowse(casper , function(err){
-													if(!err)
-														casper.echo('Webbrowse method called successfully','INFO');
-																	
-												});
-												casper.then(function(){
-													inContextLoginMethod.logoutFromApp(casper, function(err){
-														if (!err)
-															casper.echo('Successfully logout from application', 'INFO');
-													});
-												});		
-											
-											}
-										});
-									}
-								});
-							}
-						});
-					}
-				});
-			}
-		});
-		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
-			wait.waitForTime(1000 , casper , function(err) {
-				casper.capture('1.png');
-			});
-		});
-	});
-};
-
-//Verify with Edit the post from Profile page camera webaddress
-uploadTests.uploadEditPostProfileCameraWebaddress=function(){
-	casper.thenOpen(config.url , function(){
-		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('                   TestCase 42                ' ,'INFO');	
-		casper.echo('***********Verify with Edit the post from Profile page camera webaddress************','INFO');
-		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
-			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-					if (err) {
-						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-					}else {
-						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
-							if(isExists) {
-								casper.click('ul.nav.pull-right span.caret');
-								casper.click('a#user-nav-panel-profile');
-								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
-									if(isExists) {
-										casper.click('i.glyphicon.glyphicon-chevron-down');
-										casper.click('a#search_edit_post');
-										wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
-											if(isExists){
-												casper.click('a#insert_image_dialog_34289513');
-												casper.wait(2000, function(){
-
-													casper.capture('cam55.png');
-
-												});
-												wait.waitForTime(2000 , casper , function(err ){
-													uploadMethods.Webaddress(casper , function(err){
-														if(!err)
-															casper.echo('Webaddress method called successfully','INFO');
-																	
-													});
-													casper.then(function(){
-														inContextLoginMethod.logoutFromApp(casper, function(err){
-															if (!err)
-																casper.echo('Successfully logout from application', 'INFO');
-														});
-													});
-												});		
-											
-											}
-										});
-									}
-								});
-							}
-						});
-					}
-				});
-			}
-		});
-		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
-			wait.waitForTime(1000 , casper , function(err) {
-				casper.capture('1.png');
-			});
-		});
-	});
-};
-
 //Verify with Edit the post from Profile page Image webaddress
 uploadTests.uploadEditPostProfileImagewebaddress=function(){
 	casper.thenOpen(config.url , function(){
@@ -2215,7 +2255,7 @@ uploadTests.uploadEditPostProfileImagewebaddress=function(){
 		casper.echo('***********Verify with Edit the post from Profile page Image webaddress************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2226,23 +2266,26 @@ uploadTests.uploadEditPostProfileImagewebaddress=function(){
 								casper.click('a#user-nav-panel-profile');
 								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
 									if(isExists) {
-										casper.click('i.glyphicon.glyphicon-chevron-down');
-										casper.click('a#search_edit_post');
-										wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
-											if(isExists){
-												casper.click('span.mceIcon.mce_imagebutton');
-												uploadMethods.Webaddress(casper , function(err){
-													if(!err)
-														casper.echo('Webaddress method called successfully','INFO');
+										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function(err , isExists) {
+											if(isExists) {
+												casper.click('i.glyphicon.glyphicon-chevron-down');
+												casper.click('a#search_edit_post');
+												wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
+													if(isExists){
+														casper.click('span.mceIcon.mce_imagebutton');
+														uploadMethods.Webaddress(casper , function(err){
+															if(!err)
+																casper.echo('Webaddress method called successfully','INFO');
 																	
+														});
+														casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
+															});
+														});		
+													}
 												});
-												casper.then(function(){
-													inContextLoginMethod.logoutFromApp(casper, function(err){
-														if (!err)
-															casper.echo('Successfully logout from application', 'INFO');
-													});
-												});		
-											
 											}
 										});
 									}
@@ -2251,13 +2294,14 @@ uploadTests.uploadEditPostProfileImagewebaddress=function(){
 						});
 					}
 				});
+				casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+					wait.waitForTime(1000 , casper , function(err) {
+						casper.capture('1.png');
+					});
+				});
 			}
 		});
-		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
-			wait.waitForTime(1000 , casper , function(err) {
-				casper.capture('1.png');
-			});
-		});
+
 	});
 };
 
@@ -2269,7 +2313,7 @@ uploadTests.uploadEditPostProfileImagewebaddress=function(){
 		casper.echo('***********Verify with Edit the post from Profile page Image browse************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2280,23 +2324,26 @@ uploadTests.uploadEditPostProfileImagewebaddress=function(){
 								casper.click('a#user-nav-panel-profile');
 								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
 									if(isExists) {
-										casper.click('i.glyphicon.glyphicon-chevron-down');
-										casper.click('a#search_edit_post');
-										wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
-											if(isExists){
-												casper.click('span.mceIcon.mce_imagebutton');
-												uploadMethods.Webbrowse(casper , function(err){
-													if(!err)
-														casper.echo('Webbrowse method called successfully','INFO');
+										wait.waitForElement('i.glyphicon.glyphicon-chevron-down' , casper , function(err , isExists) {
+											if(isExists) {
+												casper.click('i.glyphicon.glyphicon-chevron-down');
+												casper.click('a#search_edit_post');
+												wait.waitForElement(' form[name="PostTopic"] input[type="button"]' , casper , function(err , isExists){
+													if(isExists){
+														casper.click('span.mceIcon.mce_imagebutton');
+														uploadMethods.Webbrowse(casper , function(err){
+															if(!err)
+																casper.echo('Webbrowse method called successfully','INFO');
 																	
+														});
+														casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+																if (!err)
+																	casper.echo('Successfully logout from application', 'INFO');
+																});
+														});		
+													}
 												});
-												casper.then(function(){
-													inContextLoginMethod.logoutFromApp(casper, function(err){
-														if (!err)
-															casper.echo('Successfully logout from application', 'INFO');
-													});
-												});		
-											
 											}
 										});
 									}
@@ -2501,10 +2548,10 @@ uploadTests.uploadAdminImagebrowse=function(){
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a' , casper , function(err , isExists){
+						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 							if(isExists){
 								//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-								casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 									if(isExists) {
 										//casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
@@ -2516,7 +2563,11 @@ uploadTests.uploadAdminImagebrowse=function(){
 													casper.click('a#edit_post_request');
 													wait.waitForTime(5000 , casper , function(err){
 													
-														casper.click('a#message1_imagebutton span');
+														//casper.click('a#message1_imagebutton span');
+														casper.evaluate(function() {
+document.querySelector('a#message1_imagebutton span').click();
+});
+													        casper.capture('888.png');
 														uploadMethods.Webbrowse(casper , function(err){
 															if(!err)
 																casper.echo('Webbrowse method called successfully','INFO');
@@ -2602,16 +2653,17 @@ uploadTests.uploadAdminImageWebaddress=function(){
 	});
 };
 
+//**********************************************sub-category*******************************************8888
 
 //Verify with sub category from forum listing page(Attachement/insert photos)
-uploadTests.uploadSubCategory=function(){		
+/*uploadTests.uploadSubCategory=function(){		
 	//casper.thenOpen(config.backEndUrl , function(){
 		//casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
 		//casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
 		/*uploadMethods.createSubCategory(casper ,function(err){
 			if(!err)
 				casper.echo('create subcategory  method called successfully','INFO');
-		});*/
+		});
 		casper.thenOpen(config.url , function(){
 			casper.echo('                   TestCase 50                ' ,'INFO');
 			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -2881,24 +2933,70 @@ uploadTests.uploadSubCategoryImageWebaddress=function(){
 				});
 			});
 	});
-};
-
+};*/
+//------------------------------------------------------Approval Section-------------------------------------------
 //Verify with Edit the post from  Approval queue Page
 uploadTests.uploadApprovalqueue=function(){
+	
+		
+		casper.then(function(){
+			casper.echo('        Approval all post method called           ' ,'INFO');
+			uploadMethods.enableApproveAllPost(casper , function(err){
+				if(!err) {
+					casper.echo('All posts have been approved' ,'INFO');
+				}
+			});		
+		});
+		//****************************New topic should be created to check approval******************************
+		casper.thenOpen(config.url , function(){
+			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+				}else {
+					casper.echo('Processing to Login on forum.....','INFO');
+					casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
+						//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+						wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+							if(isExists) {
+								//method to create a new topic
+								uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+									if(!err) {
+										casper.echo('new topic created', 'INFO');
+									}else {
+										casper.echo('Topic not created', 'INFO');
+									}
+								});
+							} else {
+								casper.echo('User icon not found','ERROR');	
+							}
+						});
+					});
+					casper.then(function() {
+						inContextLoginMethod.logoutFromApp(casper, function(err){
+							if (!err)
+								casper.echo('Successfully logout from application', 'INFO');
+						});
+					});	
+				}
+			});
+    		});
+
 	casper.thenOpen(config.url , function(){
-		casper.echo('                   TestCase 55                 ' ,'INFO');	
-		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('Verify with Edit the post from  Approval queue Page Attachment' ,'INFO');	
-		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				wait.waitForElement('form[name="posts"] a.topic-title' ,casper , function(err , isExists){
+			casper.echo('                   TestCase 55                 ' ,'INFO');	
+			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+			casper.echo('Verify with Edit the post from  Approval queue Page Attachment' ,'INFO');	
+			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+				}else {
+					casper.echo('Processing to Login on forum.....','INFO');
+					wait.waitForElement('form[name="posts"] a.topic-title' ,casper , function(err , isExists){
 					if(isExists) {
 						casper.click('a[href="/categories"]');
 						wait.waitForElement('span.forum-title:nth-child(1)' , casper , function( err , isexists) {
-							if(isexists) {
+							if(isExists) {
+								casper.capture('777.png');
 								casper.click('i.glyphicon.glyphicon-tasks.has-notif');	
 								wait.waitForElement('i.glyphicon.glyphicon-pencil' , casper , function( err , isExists) {
 									if(isExists) {
@@ -3330,7 +3428,10 @@ uploadTests.uploadAlbumCover=function(){
 				casper.echo('Processing to Login on forum.....','INFO');
 				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists) {
 					if(isExists) {
-						casper.click('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a');
+						//casper.click('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a');
+						casper.evaluate(function() {
+							document.querySelector('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a').click();
+						});
 						wait.waitForElement('span.album-wrapper a' , casper , function(err , isExists){
 							if(isExists) {
 								casper.click('span.album-wrapper a');
@@ -3339,7 +3440,13 @@ uploadTests.uploadAlbumCover=function(){
 									wait.waitForElement('a#uploadphotos' , casper , function(err , isExists) {
 										if(isExists) {
 											casper.click('a#uploadphotos');
-											casper.click('166.png');	
+											//casper.click('166.png');
+											casper.then(function(){
+												inContextLoginMethod.logoutFromApp(casper, function(err){
+													if (!err)
+														casper.echo('Successfully logout from application', 'INFO');
+												});
+											});		
 											
 										}
 									});
@@ -3359,12 +3466,797 @@ uploadTests.uploadAlbumCover=function(){
 	});
 };
 
+//verify with upload picz by click on album cover photo>edit album >delete all picz>add new photo
+uploadTests.uploadAlbumDelete=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo('                   TestCase 64              ' ,'INFO');	
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('verify with upload picz by click on album cover photo>edit album >delete all picz>add new photo' ,'INFO');	
+		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists) {
+					if(isExists) {
+						//casper.click('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a');
+						casper.evaluate(function() {
+							document.querySelector('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a').click();
+						});
+						
+						wait.waitForElement('span.album-wrapper a' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('span.album-wrapper a');
+								wait.waitForTime(1000 , casper , function(err) {
+									//casper.capture('156.png');
+									wait.waitForElement('a#anchor_tab_new_topic_up' , casper , function(err , isExists) {
+										if(isExists) {
+											casper.click('a#anchor_tab_new_topic_up');
+											//casper.click('166.png');
+											wait.waitForElement('a#delete_album' , casper , function(){
+												if(isExists) {
+													casper.echo('delete album link clicked ' ,'INFO');
+													casper.then(function(){
+														inContextLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
+														});
+													});	
+													
 
+												}
+											});	
+											
+										}
+									});
+								});	
+							}
+						});	
+					}
+				});
+			}
+		});
+		
+	});
+	casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16749583' , function(){
+		wait.waitForTime(1000 , casper , function(err) {
+			casper.capture('1.png');
+		});
+	});
+};
 
+//verify with upload picz by click on album cover photo>edit album>delete some picz>add new photo.
+uploadTests.uploadAlbumCoverAdd=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo('                   TestCase 65              ' ,'INFO');	
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('verify with upload picz by click on album cover photo>edit album >delete all picz>add new photo' ,'INFO');	
+		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists) {
+					if(isExists) {
+						//casper.click('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a');
+						casper.evaluate(function() {
+							document.querySelector('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a').click();
+						});
+						wait.waitForElement('span.album-wrapper a' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('span.album-wrapper a');
+								wait.waitForTime(1000 , casper , function(err) {
+									//casper.capture('156.png');
+									wait.waitForElement('a#anchor_tab_new_topic_up' , casper , function(err , isExists) {
+										if(isExists) {
+											casper.click('a#anchor_tab_new_topic_up');
+											//casper.click('166.png');
+											wait.waitForElement('a#delete_album' , casper , function(){
+												if(isExists) {
+													casper.echo('delete album link clicked ' ,'INFO');
+													wait.waitForElement('a#uploadphotos' , casper , function(){
+														if(isExists){
+															casper.echo('add photos clicked ' ,'INFO');
+															casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+																if (!err)
+																	casper.echo('Successfully logout from application', 'INFO');
+																});
+															});	
+															
 
+														} 													
 
+													});
 
-	
+												}
+											});	
+											
+										}
+									});
+								});	
+							}
+						});	
+					}
+				});
+			}
+		});
+		
+	});
+	casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16749583' , function(){
+		wait.waitForTime(1000 , casper , function(err) {
+			casper.capture('1.png');
+		});
+	});
+};
+
+//verify with upload picz by edit album>delete all picz> add new picz
+uploadTests.uploadEditAddNew=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo('                   TestCase 66              ' ,'INFO');	
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('verify with upload picz by edit album>delete all picz> add new picz' ,'INFO');	
+		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists) {
+					if(isExists) {
+						//casper.click('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a');
+						casper.evaluate(function() {
+							document.querySelector('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a').click();
+						});
+						wait.waitForElement('span.album-wrapper a' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('span.album-wrapper a');
+								wait.waitForTime(1000 , casper , function(err) {
+									//casper.capture('156.png');
+									wait.waitForElement('a#anchor_tab_new_topic_up' , casper , function(err , isExists) {
+										if(isExists) {
+											casper.click('a#anchor_tab_new_topic_up');
+											//casper.click('166.png');
+											wait.waitForElement('a#delete_album' , casper , function(){
+												if(isExists) {
+													casper.echo('delete album link clicked ' ,'INFO');
+													wait.waitForElement('a#uploadphotos' , casper , function(){
+														if(isExists){
+															casper.echo('add photos clicked ' ,'INFO');
+															casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+																if (!err)
+																	casper.echo('Successfully logout from application', 'INFO');
+																});
+															});	
+															
+															
+
+														} 													
+
+													});
+
+												}
+											});	
+											
+										}
+									});
+								});	
+							}
+						});	
+					}
+				});
+			}
+		});
+		
+	});
+	casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16749583' , function(){
+		wait.waitForTime(1000 , casper , function(err) {
+			casper.capture('1.png');
+		});
+	});
+};
+
+//verify with upload picz by edit album>delete some picz>add new picz
+uploadTests.uploadEditAddNewPicz=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo('                   TestCase 67              ' ,'INFO');	
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('verify with upload picz by edit album>delete some picz>add new picz' ,'INFO');	
+		inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function( err , isExists) {
+					if(isExists) {
+						//casper.click('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a');
+						casper.evaluate(function() {
+							document.querySelector('ul li:nth-child(1) span:nth-child(1) span:nth-child(1) a').click();
+						});
+						wait.waitForElement('span.album-wrapper a' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('span.album-wrapper a');
+								wait.waitForTime(1000 , casper , function(err) {
+									//casper.capture('156.png');
+									wait.waitForElement('a#anchor_tab_new_topic_up' , casper , function(err , isExists) {
+										if(isExists) {
+											casper.click('a#anchor_tab_new_topic_up');
+											//casper.click('166.png');
+											wait.waitForElement('a#delete_album' , casper , function(){
+												if(isExists) {
+													casper.echo('delete album link clicked ' ,'INFO');
+													wait.waitForElement('a#uploadphotos' , casper , function(){
+														if(isExists){
+															casper.echo('add photos clicked ' ,'INFO');
+															casper.then(function(){
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+																if (!err)
+																	casper.echo('Successfully logout from application', 'INFO');
+																});
+															});	
+															
+
+														} 													
+
+													});
+
+												}
+											});	
+											
+										}
+									});
+								});	
+							}
+						});	
+					}
+				});
+			}
+		});
+		
+	});
+	casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/thumb/16749583' , function(){
+		wait.waitForTime(1000 , casper , function(err) {
+			casper.capture('1.png');
+		});
+	});
+};
+//*******************************Delete all Category and Sub-Category*******************************************
+//************************************For Combine All Forum cases***********************************************
+uploadTests.DeleteCategory=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		
+		casper.then(function(){
+			casper.echo('--------------------------------------------------------------------------------------------','INFO');
+			casper.echo('                        Delete category method called                      ' , 'INFO');
+			uploadMethods.DeleteCategory(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully post attachment' ,'INFO');
+				}
+			});
+
+		});
+	});
+	//*************************Approve all post method called disabled again******************************	
+	casper.then(function(){
+		casper.echo('*******************************Approve post disabled post Method***************************** ','INFO');
+		uploadMethods.disableApproveAllPost(casper , function(err) {
+			if(!err)
+				casper.echo('approve post disabled' ,'INFO');
+		});
+	});
+	//****************************created new topic Method*******************************************************
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+			//try {
+			
+				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
+					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+					//casper.click('span.topic-content a');
+											
+					},function fail() {
+						casper.echo('Failed block called','INFO');
+						wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+							if(isExists) {
+								//method to create a new topic
+								uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+									if(!err) {
+										casper.echo('new topic created', 'INFO');
+									}else {
+										casper.echo('Topic not created', 'INFO');
+									}
+								});
+							} else {
+								casper.echo('User icon not found','ERROR');	
+							}
+						});
+					});
+			//} catch(e) {
+				
+			//}
+			casper.then(function() {
+				inContextLoginMethod.logoutFromApp(casper, function(err){
+					if (!err)
+						casper.echo('Successfully logout from application', 'INFO');
+				});
+			});	
+		}
+	});
+    });
+		
+};
+
+//**********************************Combine All Forum Cases******************************************************
+//**********************************Post Section*****************************************************************	
+uploadTests.uploadCombineAllForum=function(){
+	casper.thenOpen(config.url , function(){
+		casper.echo('                   TestCase 68             ' ,'INFO');	
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('Combine all forum cases post section' ,'INFO');
+		casper.echo('*************Verify with post from topic listing page(Attachment/insert photos)**********','INFO');
+		casper.then(function(){
+			uploadCombine.uploadPostAttachment(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully post attachment' ,'INFO');
+				}
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadPostAttachmentCamera(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		//********************************StartNewTopic*********************************************************8
+		casper.then(function(){
+			uploadCombine.uploadStartNewTopic(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully start new topic attachment' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadStartNewTopicImageButton(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully start new topic image button' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadStartNewTopicCameraBrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully start new topic camera browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadStartNewTopicCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully start new topic camera webaddress' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		//*******************************Edit Section************************************************
+		casper.echo('           Edit Section                 ' , 'INFO')
+		casper.then(function(){
+			uploadCombine.uploadEditPostCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditPostCamerabrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditTopicAttachment(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditTopicCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditTopicCameraWebbrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditTopicImageButtonWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		//***************************************Search*****************************************
+		/*casper.then(function(){
+			uploadCombine.uploadEditPostSearch(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully search attachment' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditPostSearchCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully search camera webaddress' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditPostSearchCamerabrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully search camera browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditPostSearchImagebrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});*/
+		//********************************ProfilePage*****************************************************
+		casper.then(function(){
+			uploadCombine.uploadEditProfileAttachment(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully profile page' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditPostProfileCamerabrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully profile page camera browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadEditPostProfileCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully profile page camera webaddress' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		
+		casper.then(function(){
+			uploadCombine.uploadEditPostProfileImagebrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully profile page image browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		//********************************Admin Login**************************************
+		casper.then(function(){
+			uploadCombine.uploadAdminLogin(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully admin login' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+
+		});
+		casper.then(function(){
+			uploadCombine.uploadAdminCamerabrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully amin camera browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadAdminCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully admin camera webaddress' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadAdminImagebrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadAdminImageWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully upload post camera' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		//*************************************Approvval Section********************************************
+		//***********************Method to enable Approve new posts***********************************
+		//Enable approve all post only for approvval cases 
+		
+        //********************************Enable approve all post only for approvval cases ************************************
+		casper.then(function(){
+			casper.echo('*************************************Approvval Section********************************************','INFO');
+			uploadMethods.Approvalmethods(casper , function(err) {
+				if(!err)
+					casper.echo('called' ,'INFO');
+			});
+			casper.then(function(){
+			//****************************New topic should be created to check approval******************************
+				casper.thenOpen(config.url , function(){
+					casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+					inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+						if (err) {
+							casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+						}else {
+							casper.echo('Processing to Login on forum.....','INFO');
+							casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
+							//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+								wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+									if(isExists) {
+										//method to create a new topic
+										uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+											if(!err) {
+												casper.echo('new topic created', 'INFO');
+											}else {
+												casper.echo('Topic not created', 'INFO');
+											}
+										});
+									} else {
+										casper.echo('User icon not found','ERROR');	
+									}
+								});
+							});
+						casper.then(function() {
+							inContextLoginMethod.logoutFromApp(casper, function(err){
+								if (!err)
+									casper.echo('Successfully logout from application', 'INFO');
+							});
+						});	
+					}
+				});
+    			});	
+		});
+	});		
+		casper.then(function(){
+			uploadCombine.uploadApprovalqueue(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully Approval section' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadApprovalCamerabrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully approval camera browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadApprovalCameraWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully approval camera webaddress' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadApprovalImagebrowse(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully approval camera  Image browse' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		casper.then(function(){
+			uploadCombine.uploadApprovalImageWebaddress(casper , function(err){
+				if(!err) {
+					casper.echo('combine forum called successfully approval Image webaddress' ,'INFO');
+				}
+			});	
+			casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+				wait.waitForTime(1000 , casper , function(err) {
+					casper.capture('uploadInsert.png');	
+				});
+			});
+		});
+		//***********************new category***************************
+		
+		casper.then(function(){
+			casper.echo('        Create new category method  called       ' ,'INFO');
+			uploadMethods.createCategory( casper , function(err) {
+				if(!err)
+					casper.echo('category created successfully' ,'INFO');
+			});
+			
+		});
+		/*casper.then(function(){
+			casper.echo('*******************************Approve post disabled post***************************** ','INFO');
+			uploadMethods.disableApproveNewPost(casper , function(err) {
+				if(!err)
+					casper.echo('approve post disabled' ,'INFO');
+			});
+		});*/
+		
+		
+
+			
+
+	});		
+};
+
 
 
 
