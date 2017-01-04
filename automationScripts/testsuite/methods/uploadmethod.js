@@ -756,8 +756,7 @@ uploadMethods.Approvalmethods=function(driver , callback) {
 uploadMethods.profilePost=function(driver , callback) {
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('                   TestCase 40                 ' ,'INFO');	
-		casper.echo('***********Verify with Edit the post from Profile page(Attachment)************','INFO');
+		casper.echo('***********Method to create post************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
 				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
@@ -773,20 +772,37 @@ uploadMethods.profilePost=function(driver , callback) {
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 									if(isExists) {
 										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-										
-
-
-
+										wait.waitForTime(5000 , casper , function(err) {
+											casper.capture('1.png');
+											casper.withFrame('message_ifr', function() {
+												casper.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
+												casper.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', 'dragme');
+											});
+											casper.wait(5000 , function(){
+												casper.test.assertExists('input[name="submitbutton"]','button found');
+                                                                                                casper.click('input[name="submitbutton"]');
+												casper.wait(5000 , function(){
+													casper.capture('34.png');
+													casper.then(function() {
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+														if (!err)
+															casper.echo('Successfully logout from application', 'INFO');
+														});
+													});	
+												});
+											});
+										});
 									}
+									
 								});
-							
-		
-
-
-
-
-
-
+							}
+						});
+					}
+				});
+			}
+		});
+	});
 };
 
  
