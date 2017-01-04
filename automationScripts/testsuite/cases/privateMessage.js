@@ -13,7 +13,8 @@ var privateMessageTestcases = module.exports = {};
 // method to create a message
 privateMessageTestcases.createPrivateMessage = function() {
 	casper.then(function() {
-		casper.echo('                       Test case 1- Method to send a msg','INFO');
+		casper.echo('                       Test case 1','INFO');
+		casper.echo('                  To compose a message by scenario 1','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -23,12 +24,16 @@ privateMessageTestcases.createPrivateMessage = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() { //changed
-										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) { //changed
+											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -55,6 +60,7 @@ privateMessageTestcases.createPrivateMessage = function() {
 privateMessageTestcases.deleteConversation = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 1','INFO');
+		casper.echo('                       To verify delete Conversation','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -112,6 +118,7 @@ privateMessageTestcases.deleteConversation = function() {
 privateMessageTestcases.deleteMultipleConversation = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                       To verify delete multiple Conversation','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -170,6 +177,7 @@ privateMessageTestcases.deleteMultipleConversation = function() {
 privateMessageTestcases.deleteAllConversation = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 3','INFO');
+		casper.echo('                       To verify delete all Conversation','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -225,6 +233,7 @@ privateMessageTestcases.deleteAllConversation = function() {
 privateMessageTestcases.deleteFromConversationPage = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
+		casper.echo('                       Delete coversation from conversation page','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -275,6 +284,7 @@ privateMessageTestcases.deleteFromConversationPage = function() {
 privateMessageTestcases.unreadCheckbox = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 1','INFO');
+		casper.echo('                       To verify mark as unread(check box)(single)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -334,6 +344,7 @@ privateMessageTestcases.unreadCheckbox = function() {
 privateMessageTestcases.unreadMultipleCheckbox = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                       To verify mark as unread(check box)(multiple)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -394,6 +405,7 @@ privateMessageTestcases.unreadMultipleCheckbox = function() {
 privateMessageTestcases.unreadAllCheckbox = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 3','INFO');
+		casper.echo('                       To verify mark as unread(check box)(all)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -451,6 +463,7 @@ privateMessageTestcases.unreadAllCheckbox = function() {
 privateMessageTestcases.readCheckbox = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
+		casper.echo('                       To verify mark as read(check box)(single)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -505,6 +518,7 @@ privateMessageTestcases.readCheckbox = function() {
 privateMessageTestcases.readMultipleCheckbox = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 5','INFO');
+		casper.echo('                       To verify mark as read(check box)(multiple)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -559,6 +573,7 @@ privateMessageTestcases.readMultipleCheckbox = function() {
 privateMessageTestcases.readAllCheckbox = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 6','INFO');
+		casper.echo('                       To verify mark as read(check box)(all)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -615,6 +630,7 @@ privateMessageTestcases.readAllCheckbox = function() {
 privateMessageTestcases.readFromConversationPage = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 7','INFO');
+		casper.echo('                       To verify mark as read(coversation page)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -661,6 +677,7 @@ privateMessageTestcases.readFromConversationPage = function() {
 privateMessageTestcases.moveSingleToArchieve = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 1','INFO');
+		casper.echo('                       To Move single conversation(inbox to archieve)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -720,6 +737,7 @@ privateMessageTestcases.moveSingleToArchieve = function() {
 privateMessageTestcases.moveMultipleToArchieve = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                       To move multiple conversation(inbox to archieve)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -779,6 +797,7 @@ privateMessageTestcases.moveMultipleToArchieve = function() {
 privateMessageTestcases.moveAllToArchieve = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 3','INFO');
+		casper.echo('                       To move all coversation(inbox to archieve)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -836,6 +855,7 @@ privateMessageTestcases.moveSingleToInbox = function() {
 	var converastion_id;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
+		casper.echo('                      To Move single conversation(archieve to inbox)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -899,6 +919,7 @@ privateMessageTestcases.moveMultipleToInbox = function() {
 	var converastion_id;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 5','INFO');
+		casper.echo('                       to move multiple conversation(archieve to inbox)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -963,6 +984,7 @@ privateMessageTestcases.moveAllToInbox = function() {
 	var converastion_id;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 6','INFO');
+		casper.echo('                       To move all coversation(archieve to inbox)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1024,6 +1046,7 @@ privateMessageTestcases.moveAllToInbox = function() {
 privateMessageTestcases.ignoreUser = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 1','INFO');
+		casper.echo('                      To verify ignored member (check box)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1080,6 +1103,7 @@ privateMessageTestcases.ignoreUser = function() {
 privateMessageTestcases.unignoreUser = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 3','INFO');
+		casper.echo('                      To verify with unignore user','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1133,6 +1157,7 @@ privateMessageTestcases.unignoreUser = function() {
 privateMessageTestcases.replyOnPreviousMessageAfterIgnoring = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
+		casper.echo('                 To verify with send reply on previous message after ignoring','INFO');
 		forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1194,6 +1219,7 @@ privateMessageTestcases.replyOnPreviousMessageAfterIgnoring = function() {
 privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                 To verify with send message whos ignored you','INFO');
 		forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1203,12 +1229,16 @@ privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.ignoredByUser, casper, function(err) {
-											if(!err) {
-												casper.echo('send message called...', 'INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.ignoredByUser, casper, function(err) {
+												if(!err) {
+													casper.echo('send message called...', 'INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1236,6 +1266,7 @@ privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 privateMessageTestcases.verifyProfileLinkOnUserName = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                   To Verify profile link on user name','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1285,6 +1316,7 @@ privateMessageTestcases.verifyProfileLinkOnUserName = function() {
 privateMessageTestcases.verifyHoverCardOnUserName = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 3','INFO');
+		casper.echo('                   To Verify hover card on user name','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1340,6 +1372,7 @@ privateMessageTestcases.verifyHoverCardOnUserName = function() {
 privateMessageTestcases.verifySeeAll = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
+		casper.echo('            To verify "See all" link when there are no conversation.','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1395,7 +1428,8 @@ privateMessageTestcases.verifySeeAll = function() {
 // method to verify count of message icon -> send 3 messages from  s1 >log in with r1 and verify the message icon count.
 privateMessageTestcases.verifyMessageIconCountCaseOne = function() {
 	casper.thenOpen(config.url, function() {
-		casper.echo('                       Test case 5a','INFO');
+		casper.echo('                                     Test case 5a','INFO');
+		casper.echo('to verify count of message icon -> send 3 messages from  s1 >log in with r1 and verify the message icon count.','INFO');
 		// 3 merssages send to hsk by neha
 		for(var i = 0; i<=2; i++) {
 			privateMessageTestcases.createPrivateMessage();
@@ -1425,7 +1459,8 @@ privateMessageTestcases.verifyMessageIconCountCaseOne = function() {
 // method to verify count of message icon -> verify when 4 user send 1 message to r1>log in with r1 and verify the message icon count.
 privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 	casper.thenOpen(config.url, function() {
-		casper.echo('                       Test case 5b','INFO');
+		casper.echo('                                                Test case 5b','INFO');
+		casper.echo('to verify count of message icon -> verify when 4 user send 1 message to r1>log in with r1 and verify the message icon count.','INFO');
 		privateMessageTestcases.createPrivateMessage(); // message send to hsk by neha
 		casper.then(function() {			// message send to hsk by a
 			forumLoginMethod.loginToApp("a", "a", casper, function(err) {
@@ -1437,12 +1472,16 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('a.send_new_pmsg');
-										casper.waitForSelector('div[class="modal fade in"]', function() {
-											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-												}
-											});
+										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+											if(isExists) {
+												privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+													if(!err) {
+														casper.echo('Message sent called successfully..','INFO');
+													}
+												});
+											} else {
+												driver.echo('Message pop up not found','ERROR');
+											}
 										});
 									} else {
 										driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1473,12 +1512,16 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('a.send_new_pmsg');
-										casper.waitForSelector('div[class="modal fade in"]', function() {
-											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-												}
-											});
+										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+											if(isExists) {
+												privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+													if(!err) {
+														casper.echo('Message sent called successfully..','INFO');
+													}
+												});
+											} else {
+												driver.echo('Message pop up not found','ERROR');
+											}
 										});
 									} else {
 										driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1509,12 +1552,16 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('a.send_new_pmsg');
-										casper.waitForSelector('div[class="modal fade in"]', function() {
+										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
 											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
 												if(!err) {
 													casper.echo('Message sent called successfully..','INFO');
 												}
 											});
+											} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 										});
 									} else {
 										driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1564,6 +1611,7 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 	var imageUrl;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 6','INFO');
+		casper.echo('   To verify default image for avatar on conversation panel','INFO');
 		forumLoginMethod.loginToApp("abc", "abc", casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1573,24 +1621,28 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen(config.url+'pm', function() {
-													imageUrl = casper.evaluate(function() {
-														var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
-														return id;
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+													casper.thenOpen(config.url+'pm', function() {
+														imageUrl = casper.evaluate(function() {
+															var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
+															return id;
+														});
+														casper.echo('The Url of the image is - '+imageUrl, 'INFO');
+														if(imageUrl==json.defaultAvtar) {
+															casper.echo('Sender found his avatar on conversation','INFO');
+														} else {
+															casper.echo('Sender not found his avatar on conversation','INFO');
+														}
 													});
-													casper.echo('The Url of the image is - '+imageUrl, 'INFO');
-													if(imageUrl==json.defaultAvtar) {
-														casper.echo('Sender found his avatar on conversation','INFO');
-													} else {
-														casper.echo('Sender not found his avatar on conversation','INFO');
-													}
-												});
-											}
-										});
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1663,6 +1715,7 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 privateMessageTestcases.composeScenarioSecond = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                 To compose a message by scenario 2','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1725,6 +1778,7 @@ privateMessageTestcases.composeScenarioSecond = function() {
 privateMessageTestcases.composeMessageScenarioThird = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                      Test Case 3','INFO');
+		casper.echo('               To compose message by Scenario3','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
@@ -1760,6 +1814,7 @@ privateMessageTestcases.composeMessageScenarioThird = function() {
 privateMessageTestcases.invalidRecipientsName = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                                    Test case 4','INFO');
+		casper.echo('                     to verify when we enter invalid recipients name','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1769,12 +1824,16 @@ privateMessageTestcases.invalidRecipientsName = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.invalidRecipientsName, casper, function(err) {
-											if(!err) {
-												casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.invalidRecipientsName, casper, function(err) {
+												if(!err) {
+													casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1801,6 +1860,7 @@ privateMessageTestcases.invalidRecipientsName = function() {
 privateMessageTestcases.blankRecipientsName = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                                    Test case 5','INFO');
+		casper.echo('                              To verify when we leave blank reciepients name','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1810,12 +1870,16 @@ privateMessageTestcases.blankRecipientsName = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.blankRecipientsName, casper, function(err) {
-											if(!err) {
-												casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.blankRecipientsName, casper, function(err) {
+												if(!err) {
+													casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1842,6 +1906,7 @@ privateMessageTestcases.blankRecipientsName = function() {
 privateMessageTestcases.blankSubject = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                                    Test case 6','INFO');
+		casper.echo('                              To verify when leave blank subject','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1851,12 +1916,16 @@ privateMessageTestcases.blankSubject = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.blankSubject, casper, function(err) {
-											if(!err) {
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.blankSubject, casper, function(err) {
+												if(!err) {
 											
-											}
-										});
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1883,6 +1952,7 @@ privateMessageTestcases.blankSubject = function() {
 privateMessageTestcases.blankMessageBody = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                                    Test case 7','INFO');
+		casper.echo('                              To verify when leave blank message body','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1892,12 +1962,16 @@ privateMessageTestcases.blankMessageBody = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.blankMessageBody, casper, function(err) {
-											if(!err) {
-												casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.blankMessageBody, casper, function(err) {
+												if(!err) {
+													casper.echo(casper.fetchText('div#pm_error_msg'),'INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1924,6 +1998,7 @@ privateMessageTestcases.blankMessageBody = function() {
 privateMessageTestcases.autoDropdown = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                                    Test case 9','INFO');
+		casper.echo("                          To verify auto drop down in reciver's field",'INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -1933,9 +2008,13 @@ privateMessageTestcases.autoDropdown = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
-										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
+											driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -1958,10 +2037,11 @@ privateMessageTestcases.autoDropdown = function() {
 	});	
 };
 
-//To verify Attachement /Insert Photo link when disable
+// method To verify Attachement /Insert Photo link when disable
 privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                         Test case 11a','INFO');
+		casper.echo('                    To verify Attachement /Insert Photo link when disable','INFO');
 		privateMessageMethod.disableAttachments(casper, function(err) {
 			if(!err) {
 				casper.echo('Backend setting changed succesfully','INFO');
@@ -1978,9 +2058,13 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = functio
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
-										casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
+											casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -2007,6 +2091,7 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = functio
 privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                         Test case 11b','INFO');
+		casper.echo('                To verify Attachement /Insert Photo link when enable','INFO');
 		privateMessageMethod.enableAttachments(casper, function(err) {
 			if(!err) {
 				casper.echo('BAckend setting changed succesfully','INFO');
@@ -2023,9 +2108,13 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
-										casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
+											casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -2053,6 +2142,7 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function
 privateMessageTestcases.leaveSingleConversation = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 1','INFO');
+		casper.echo('                       To verify leave conversation( single)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2144,6 +2234,7 @@ privateMessageTestcases.leaveSingleConversation = function() {
 privateMessageTestcases.leaveMultipleConversation = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('                  To verify leave conversation (Multiple)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2236,6 +2327,7 @@ privateMessageTestcases.leaveMultipleConversation = function() {
 privateMessageTestcases.leaveAllConversation = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 3','INFO');
+		casper.echo('                 To verify leave conversation (all)','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2326,6 +2418,7 @@ privateMessageTestcases.leaveAllConversation = function() {
 privateMessageTestcases.verifyReplyOption = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 1','INFO');
+		casper.echo('                    To verify with reply option','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2387,6 +2480,7 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 	var converastion_id;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
+		casper.echo('           To verify one to one conversation between sender and and single recipient','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2396,19 +2490,23 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen(config.url+'pm', function() {
-													converastion_id = casper.evaluate(function() {
-														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-														return id;
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+													casper.thenOpen(config.url+'pm', function() {
+														converastion_id = casper.evaluate(function() {
+															var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+															return id;
+														});
+														casper.echo('The conversation id is - '+converastion_id, 'INFO');
 													});
-													casper.echo('The conversation id is - '+converastion_id, 'INFO');
-												});
-											}
-										});
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -2474,6 +2572,7 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 	var converastion_id;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
+		casper.echo('        To verify one to one conversation between sender and multiple recipient','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2483,144 +2582,23 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.sendMessageToManyUser(json.Privatemessage, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen(config.url+'pm', function() {
-													converastion_id = casper.evaluate(function() {
-														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-														return id;
-													});
-													casper.echo('The conversation id is - '+converastion_id, 'INFO');
-												});
-											}
-										});
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','INFO');
-						}
-					}else {
-						casper.echo('User not logged in', 'INFO');
-					}
-				});
-			} else {
-				casper.echo('User not logged','ERROR');						
-			}
-		});
-		casper.then(function() {
-			forumLoginMethod.logoutFromApp(casper, function() { });
-			casper.then(function() {
-				forumLoginMethod.loginToApp('hsk','hsk' , casper, function(err) {
-					if(!err) {
-						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-							if(isExists) {
-								try {
-									casper.test.assertExists('i#private_message_notification');
-									casper.click('i#private_message_notification');
-									wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
 										if(isExists) {
-											casper.click('ul#private_message_dropdown a.pull-left');
-											wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-												if(isExists) {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('First User find the related message','INFO');
-												} else {
-													casper.echo('Inbox not found','ERROR');
+											privateMessageMethod.sendMessageToManyUser(json.Privatemessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+													casper.thenOpen(config.url+'pm', function() {
+														converastion_id = casper.evaluate(function() {
+															var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+															return id;
+														});
+														casper.echo('The conversation id is - '+converastion_id, 'INFO');
+													});
 												}
 											});
 										} else {
-											casper.echo('Inbox at popup not found','ERROR');
+											driver.echo('Message pop up not found','ERROR');
 										}
-									});
-								} catch (e) {
-									casper.echo('Private message tab not found','INFO');
-								}
-							}else {
-								casper.echo('User not logged in', 'INFO');
-							}
-						});
-					} else {
-						casper.echo('User not logged','ERROR');						
-					}
-				});
-				casper.then(function() {
-					forumLoginMethod.logoutFromApp(casper, function() { });
-				});
-			});
-		});
-		casper.then(function() {
-				forumLoginMethod.loginToApp('a','a' , casper, function(err) {
-					if(!err) {
-						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-							if(isExists) {
-								try {
-									casper.test.assertExists('i#private_message_notification');
-									casper.click('i#private_message_notification');
-									wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('ul#private_message_dropdown a.pull-left');
-											wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-												if(isExists) {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('Second User also find the related message','INFO');
-												} else {
-													casper.echo('Inbox not found','ERROR');
-												}
-											});
-										} else {
-											casper.echo('Inbox at popup not found','ERROR');
-										}
-									});
-								} catch (e) {
-									casper.echo('Private message tab not found','INFO');
-								}
-							}else {
-								casper.echo('User not logged in', 'INFO');
-							}
-						});
-					} else {
-						casper.echo('User not logged','ERROR');						
-					}
-				});
-				casper.then(function() {
-					forumLoginMethod.logoutFromApp(casper, function() { });
-				});
-		});
-	});
-};
-
-// method verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only
-privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
-	var converastion_id;
-	casper.thenOpen(config.url, function() {
-		casper.echo('                       Test case 5','INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
-			if(!err) {
-				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.sendMessageToManyUser(json.Privatemessage, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen(config.url+'pm', function() {
-													converastion_id = casper.evaluate(function() {
-														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-														return id;
-													});
-													casper.echo('The conversation id is - '+converastion_id, 'INFO');
-												});
-											}
-										});
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -2691,8 +2669,146 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 										casper.click('ul#private_message_dropdown a.pull-left');
 										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
 											if(isExists) {
-												casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-												casper.echo('Second User also find the related message','INFO');
+												try {
+													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+													casper.echo('Second User also find the related message','INFO');
+												} catch (e) {
+													casper.echo('Second User not find the related message','INFO');
+												}
+											} else {
+												casper.echo('Inbox not found','ERROR');
+											}
+										});
+									} else {
+										casper.echo('Inbox at popup not found','ERROR');
+									}
+								});
+							} catch (e) {
+								casper.echo('Private message tab not found','INFO');
+							}
+						}else {
+							casper.echo('User not logged in', 'INFO');
+						}
+					});
+				} else {
+					casper.echo('User not logged','ERROR');						
+				}
+			});
+			casper.then(function() {
+				forumLoginMethod.logoutFromApp(casper, function() { });
+			});
+		});
+	});
+};
+
+// method verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only
+privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
+	var converastion_id;
+	casper.thenOpen(config.url, function() {
+		casper.echo('                       Test case 5','INFO');
+		casper.echo('       To verify when:If user S1 sent a message to R1, R2 but reply coming only from R2 only','INFO');
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+					if(isExists) {
+						try {	
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.sendMessageToManyUser(json.Privatemessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+													casper.thenOpen(config.url+'pm', function() {
+														converastion_id = casper.evaluate(function() {
+															var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+															return id;
+														});
+														casper.echo('The conversation id is - '+converastion_id, 'INFO');
+													});
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
+						} catch (e) {
+							casper.echo('Message not sent..','INFO');
+						}
+					}else {
+						casper.echo('User not logged in', 'INFO');
+					}
+				});
+			} else {
+				casper.echo('User not logged','ERROR');						
+			}
+		});
+		casper.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+			casper.then(function() {
+				forumLoginMethod.loginToApp('hsk','hsk' , casper, function(err) {
+					if(!err) {
+						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+							if(isExists) {
+								try {
+									casper.test.assertExists('i#private_message_notification');
+									casper.click('i#private_message_notification');
+									wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+										if(isExists) {
+											casper.click('ul#private_message_dropdown a.pull-left');
+											wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+												if(isExists) {
+													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+													casper.echo('First User find the related message','INFO');
+												} else {
+													casper.echo('Inbox not found','ERROR');
+												}
+											});
+										} else {
+											casper.echo('Inbox at popup not found','ERROR');
+										}
+									});
+								} catch (e) {
+									casper.echo('Private message tab not found','INFO');
+								}
+							}else {
+								casper.echo('User not logged in', 'INFO');
+							}
+						});
+					} else {
+						casper.echo('User not logged','ERROR');						
+					}
+				});
+				casper.then(function() {
+					forumLoginMethod.logoutFromApp(casper, function() { });
+				});
+			});
+		});
+		casper.then(function() {
+			forumLoginMethod.loginToApp('a','a' , casper, function(err) {
+				if(!err) {
+					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+						if(isExists) {
+							try {
+								casper.test.assertExists('i#private_message_notification');
+								casper.click('i#private_message_notification');
+								wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('ul#private_message_dropdown a.pull-left');
+										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+											if(isExists) {
+												try {
+													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+													casper.echo('Second User also find the related message','INFO');
+												} catch (e) {
+													casper.echo('Second User not find the related message','INFO');
+												}
 												casper.evaluate(function() {
 													document.querySelector('textarea#pmessage_reply').click();
 												});
@@ -2744,6 +2860,7 @@ privateMessageTestcases.verifyAvtar = function() {
 	var imageUrl;
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 6','INFO');
+		casper.echo('                      To verify Avtar','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2753,24 +2870,28 @@ privateMessageTestcases.verifyAvtar = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-												casper.thenOpen(config.url+'pm', function() {
-													imageUrl = casper.evaluate(function() {
-														var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
-														return id;
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.Privatemessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+													casper.thenOpen(config.url+'pm', function() {
+														imageUrl = casper.evaluate(function() {
+															var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
+															return id;
+														});
+														casper.echo('The Url of the image is - '+imageUrl, 'INFO');
+														if(imageUrl==json.nehaImageUrl) {
+															casper.echo('Sender found his avatar on conversation','INFO');
+														} else {
+															casper.echo('Sender not found his avatar on conversation','INFO');
+														}
 													});
-													casper.echo('The Url of the image is - '+imageUrl, 'INFO');
-													if(imageUrl==json.nehaImageUrl) {
-														casper.echo('Sender found his avatar on conversation','INFO');
-													} else {
-														casper.echo('Sender not found his avatar on conversation','INFO');
-													}
-												});
-											}
-										});
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -2841,7 +2962,8 @@ privateMessageTestcases.verifyAvtar = function() {
 // method To verify  send PM conversation to 25 recipient at the same time
 privateMessageTestcases.verifyMaxRecipient = function() {
 	casper.then(function() {
-		casper.echo('                       Test case 7- Method to send a msg','INFO');
+		casper.echo('                                   Test case 7','INFO');
+		casper.echo('                     To verify  send PM conversation to 25 recipient at the same time','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2851,12 +2973,16 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent called successfully..','INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');
@@ -2883,6 +3009,7 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 privateMessageTestcases.verifyMorethanMaxRecipient = function() {
 	casper.then(function() {
 		casper.echo('                       Test case 8 ','INFO');
+		casper.echo('            To verify  send PM conversation to 26 recipient at the same time','INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2892,12 +3019,16 @@ privateMessageTestcases.verifyMorethanMaxRecipient = function() {
 							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('a.send_new_pmsg');
-									casper.waitForSelector('div[class="modal fade in"]', function() {
-										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageToMoreThanMaxLimit, casper, function(err) {
-											if(!err) {
-												casper.echo('Message sent to only 25 user not for 26th','INFO');
-											}
-										});
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageToMoreThanMaxLimit, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent to only 25 user not for 26th','INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
 									});
 								} else {
 									driver.echo('Send a New Messag Pop not found','ERROR');

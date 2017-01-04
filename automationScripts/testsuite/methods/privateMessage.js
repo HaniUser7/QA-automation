@@ -240,7 +240,7 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {		
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
-	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]','a', {keepFocus:true});
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]','shipra', {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
 	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});		
 	driver.test.assertExists('textarea#pmessage_new');
