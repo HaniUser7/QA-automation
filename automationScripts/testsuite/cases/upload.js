@@ -61,6 +61,16 @@ uploadTests.uploadPostAttachment=function(){
 		}
 	});
      });
+     //****************************created a post***************************************
+     casper.then(function(){
+	casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
+     	uploadMethods.profilePost(casper , function(err) {
+		if(!err)
+			casper.echo('post have been created' ,'INFO');
+    	});
+    });
+
+
 };
 		
 //Verify with post from topic listing page camera browse
@@ -3794,7 +3804,15 @@ uploadTests.DeleteCategory=function(driver , callback) {
 		}
 	});
     });
-		
+    //****************************created a post***************************************
+     casper.then(function(){
+	casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
+     	uploadMethods.profilePost(casper , function(err) {
+		if(!err)
+			casper.echo('post have been created' ,'INFO');
+    	});
+    });
+
 };
 
 //**********************************Combine All Forum Cases******************************************************
@@ -4173,7 +4191,8 @@ uploadTests.uploadCombineAllForum=function(){
 				});
     			});	
 		});
-	});		
+	});
+	wait.waitForTime(2000 , casper , function(err) {		
 		casper.then(function(){
 			uploadCombine.uploadApprovalqueue(casper , function(err){
 				if(!err) {
@@ -4234,6 +4253,7 @@ uploadTests.uploadCombineAllForum=function(){
 				});
 			});
 		});
+	   
 		//***********************new category***************************
 		
 		casper.then(function(){
@@ -4244,6 +4264,8 @@ uploadTests.uploadCombineAllForum=function(){
 			});
 			
 		});
+
+	});
 		/*casper.then(function(){
 			casper.echo('*******************************Approve post disabled post***************************** ','INFO');
 			uploadMethods.disableApproveNewPost(casper , function(err) {

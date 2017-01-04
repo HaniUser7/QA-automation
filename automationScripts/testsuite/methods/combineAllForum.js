@@ -22,6 +22,7 @@ uploadCombine.uploadPostAttachment=function(driver , callback){
 				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 					if(isExists){
 						casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+						casper.capture('home1.png');
 						casper.click('span.topic-content a');
 						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 							if(isExists) {
