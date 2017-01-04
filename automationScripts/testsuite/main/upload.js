@@ -9,7 +9,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with post from topic listing page(Attachment/insert photos)
 		uploadTests.uploadPostAttachment();
 		//Verify with post from topic listing page(insert photos)
-		/*uploadTests.uploadPostAttachmentCamera();
+		uploadTests.uploadPostAttachmentCamera();
 		//Verify with start new Topic Attachment
 		uploadTests.uploadStartNewTopic();
 		//Verify with start new Topic Insert
@@ -57,7 +57,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with Edit the Topic/Post from Topic listing page insert photo camera webaddress
 		uploadTests.uploadEditTopicCameraWebbrowse(); //working fine----21*/
 		//Verify with Edit the Topic/Post from Topic listing page using image button browse
-		/*uploadTests.uploadEditTopicImageButtonbrowse();
+		uploadTests.uploadEditTopicImageButtonbrowse();
 		//Verify with Edit the Topic/Post from Topic listing page using Image button webaddress
 		uploadTests.uploadEditTopicImageButtonWebaddress();
 		//Verify with Edit topic listing page under category (post a reply)Attachment
@@ -77,7 +77,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with Edit topic listing page under category insert photo camera webaddress
 		uploadTests.uploadEditPostunderCategoryCameraWebaddress();
 		//Verify with Edit topic listing page under category insert photo Image button browse
-		uploadTests.uploadEditPostunderCategoryImageButtonbrowse();*/
+		uploadTests.uploadEditPostunderCategoryImageButtonbrowse();
 		//Verify with Edit topic listing page under category insert photo Image button webaddress
 		uploadTests.uploadEditPostunderCategoryImageButtonWebaddress();
 	//******************Search section*********************************************************
@@ -151,9 +151,9 @@ upload.featureTest = function(casper, test) {
 		uploadTests.uploadEditAddNewPicz();
 	//******************************Combine all forum cases****************************************
 		//Delete Category method
-		//uploadTests.DeleteCategory();
+		uploadTests.DeleteCategory();
 		//Verify with post from topic listing page(Attachment/insert photos)
-		//uploadTests.uploadCombineAllForum();
+		uploadTests.uploadCombineAllForum();
 		
 		
 

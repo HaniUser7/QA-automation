@@ -533,7 +533,7 @@ uploadMethods.enableApproveAllPost=function(driver , callback) {
 						casper.click('select#post_approval');
 						casper.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
 						casper.click('button.button.btn-m.btn-blue');
-						casper.wait(2000 , function(){
+						casper.wait(20000 , function(){
 							casper.capture('1567.png');
 
 						});		
@@ -682,7 +682,7 @@ uploadMethods.disableApproveAllPost=function(driver , callback) {
 						casper.click('select#post_approval');
 						casper.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
 						casper.click('button.button.btn-m.btn-blue');
-						casper.wait(2000 , function(){
+						casper.wait(20000 , function(){
 							casper.capture('67.png');
 
 						});		
@@ -739,7 +739,7 @@ uploadMethods.Approvalmethods=function(driver , callback) {
 	});
 	casper.then(function(){
 		casper.echo('*******************************Approve all post dropdown enable***************************** ','INFO');
-		uploadMethods.disableApproveAllPost(casper , function(err) {
+		uploadMethods.enableApproveAllPost(casper , function(err) {
 			if(!err){
 				casper.echo('all post not approved','INFO');
 				}
@@ -752,14 +752,42 @@ uploadMethods.Approvalmethods=function(driver , callback) {
 
 
 
+//********************profile page post**********************************************************
+uploadMethods.profilePost=function(driver , callback) {
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('                   TestCase 40                 ' ,'INFO');	
+		casper.echo('***********Verify with Edit the post from Profile page(Attachment)************','INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
+							if(isExists){
+								//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+								//casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
+								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+									if(isExists) {
+										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+										
+
+
+
+									}
+								});
+							
+		
 
 
 
 
 
 
-
-
+};
 
  
 

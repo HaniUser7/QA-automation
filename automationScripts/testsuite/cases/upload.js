@@ -1842,10 +1842,10 @@ uploadTests.uploadEditPostunderCategoryImageButtonWebaddress=function(){
 					wait.waitForElement('input.btn.btn-primary' , casper , function(err , isExists){
 						if(isExists) {
 							
-							//casper.click('span.mceIcon.mce_imagebutton');
-							casper.evaluate(function() {
+							casper.click('span.mceIcon.mce_imagebutton');
+							/*casper.evaluate(function() {
 								document.querySelector('a#message1_imagebutton span').click();
-							});
+							});*/
 							casper.wait(5000 , function(){
 
 								casper.capture('cas.png');
@@ -2077,6 +2077,8 @@ uploadTests.uploadEditPostSearchImagebrowse=function(){
 
 //Verify with Edit the post from Profile page(Attachment)
 uploadTests.uploadEditProfileAttachment=function(){
+
+	
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                   TestCase 40                 ' ,'INFO');	
@@ -2940,7 +2942,7 @@ uploadTests.uploadApprovalqueue=function(){
 	
 		
 		casper.then(function(){
-			casper.echo('        Approval all post method called           ' ,'INFO');
+			casper.echo('---------------        Approval all post method called ----------------------          ' ,'INFO');
 			uploadMethods.enableApproveAllPost(casper , function(err){
 				if(!err) {
 					casper.echo('All posts have been approved' ,'INFO');

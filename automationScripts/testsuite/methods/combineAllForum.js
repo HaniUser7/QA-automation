@@ -1325,7 +1325,7 @@ uploadCombine.uploadApprovalqueue=function(){
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
 				casper.echo('Processing to Login on forum.....','INFO');
-				casper.wait(1000 , function(){
+				casper.wait(4000 , function(){
 
 					casper.capture('home.png');
 
