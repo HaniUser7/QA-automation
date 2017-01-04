@@ -3,13 +3,14 @@ var forumLoginMethod = require('../methods/login.js');
 var json = require('../../testdata/registerData.json');
 var wait = require('../wait.js');
 var utils = require('../utils.js');
+var config = require('../../../config/config.json');
 var registerMethod=module.exports = {};
 
 /************************************PRIVATE METHODS***********************************/
 
 //Login To Forum Back End
 
-registerMethod.loginToForumBackEnd = function(driver, test, callback) {
+registerMethod.loginToForumBackEnd = function(driver, callback) {
 		
 	//Click On Login Link 
 	wait.waitForElement('a#navLogin', casper, function(err, isExist) {
@@ -23,7 +24,7 @@ registerMethod.loginToForumBackEnd = function(driver, test, callback) {
 		} else {
 			driver.echo('Login Link Not Found', 'ERROR');
 		}
-		return callback(null)
+		return callback(null);
 	});
 };
 

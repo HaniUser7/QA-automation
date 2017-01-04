@@ -4,9 +4,9 @@ cd $AUTOMATION_HOME
 printf "Tests executing for LOGIN: \n" > "$AUTOMATION_HOME"/log/automation.txt
 casperjs test ./automationScripts/automation.js --feature=login >> "$AUTOMATION_HOME"/log/automation.txt
 sleep 1
-printf "\nTests executing for IN-CONTEXT LOGIN: \n" >> "$AUTOMATION_HOME"/log/automation.txt
-casperjs test ./automationScripts/automation.js --feature=inContextLogin >> "$AUTOMATION_HOME"/log/automation.txt
-sleep 1
+#printf "\nTests executing for IN-CONTEXT LOGIN: \n" >> "$AUTOMATION_HOME"/log/automation.txt
+#casperjs test ./automationScripts/automation.js --feature=inContextLogin >> "$AUTOMATION_HOME"/log/automation.txt
+#sleep 1
 #printf "\nTests executing for REGISTRATION: \n" >> "$AUTOMATION_HOME"/log/automation.txt
 #casperjs test ./automationScripts/automation.js --feature=register >> "$AUTOMATION_HOME"/log/automation.txt
 #sleep 1
@@ -16,6 +16,9 @@ sleep 1
 #printf "\nTests executing for BACKEND REGISTRATION: \n" >> "$AUTOMATION_HOME"/log/automation.txt
 #casperjs test ./automationScripts/automation.js --feature=backEndRegistration >> "$AUTOMATION_HOME"/log/automation.txt
 #sleep 1
+printf "\nTests executing for PRIVATE MESSAGES: \n" >> "$AUTOMATION_HOME"/log/automation.txt
+casperjs test ./automationScripts/automation.js --feature=privateMessage >> "$AUTOMATION_HOME"/log/automation.txt
+sleep 1
 printf "\nTests executing for FORGOT PASSWORD: \n" >> "$AUTOMATION_HOME"/log/automation.txt
 casperjs test ./automationScripts/automation.js --feature=forgotPassword >> "$AUTOMATION_HOME"/log/automation.txt
 sleep 1
