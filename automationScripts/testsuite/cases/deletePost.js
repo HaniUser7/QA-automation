@@ -22,7 +22,10 @@ deletePostTests.deletePostDeleteTopic=function(){
 						casper.echo('Processing to Login on forum.....',
 			
  'INFO');
+					        casper.wait(2000 , function(){
+						casper.capture('1546.png');
 
+						});
 
 
 
