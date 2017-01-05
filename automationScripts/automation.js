@@ -67,7 +67,7 @@ switch (feature) {
 	case "deletePost" :
 		casper.test.begin('******Verify by Delete others topic/post as admin**********' , function(test) {
 			var deletePost=require("../testsuite/main/deletePost.js");
-			upload.featureTest(casper,casper.test);
+			deletePost.featureTest(casper,casper.test);
 			casper.run(function(){
 				test.done();
 			});
