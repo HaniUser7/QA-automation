@@ -29,24 +29,26 @@ executorServices.executeJob = function(commitDetails, callback){
 			console.log('Program output:', stdout);
 			console.log('Program stderr:', stderr);
 			var testResult = stdout;
+			var automationLogFile = '/etc/automation/log/automation.txt';
+			var failLogFile = '/etc/automation/log/fail.txt';
 			if(stdout) {
 				var descriptionRes = 0;
 				var jsErrorCount = 0;
 				var failTestResult = stdout.split(' ');
+				var jsErrors = failLogFile.split(' ');
 				for(var i=0; i<failTestResult.length;i++) {
 					if(failTestResult[i+1]=='tests'  && failTestResult[i+7]!=0) {
 						descriptionRes = parseInt(descriptionRes)+parseInt(failTestResult[i+7]);
 					}
-					console.log('failTestResult[i] ::::::::::::: ' +failTestResult[i]);
-					if(failTestResult[i] == 'TypeError:') {
+					console.log('failTestResult[i] ::::::::::::: ' +jsErrors[i]);
+					if(jsErrors[i] == 'TypeError:') {
 						jsErrorCount = jsErrorCount+1;
 					}
+
 				}
 				console.log('jsErrorCount 1111::::::::::::: ' +jsErrorCount);
 				result = descriptionRes;
 			}
-			var automationLogFile = '/etc/automation/log/automation.txt';
-			var failLogFile = '/etc/automation/log/fail.txt';
 			fs.stat(failLogFile, function(err, fileStat) {
 				if (err) {
 					if (err.code == 'ENOENT') {
