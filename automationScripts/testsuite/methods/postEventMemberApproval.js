@@ -299,11 +299,53 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 				if(isExists) {
 					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+					wait.waitForElement('div#ddContent', casper, function(err, isExists) {
 						if(isExists) {
 							casper.click('div#ddContent a:nth-child(2)');
+							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('li.inactive_tab a');
+									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
+										if(isExists) {
+											//var grpName = 
+											driver.evaluate(function(){
+												for(var i=1; i<=7; i++) {
+													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+													if (x1.innerText == 'Registered Users') {
+														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
+														return;
+													}
+												}
+											});
+											//driver.click('a[id="'+grpName+'"]');
+											wait.waitForElement('input#t', driver, function(err, isExists) {
+												if(isExists) {
+													utils.enableorDisableCheckbox('t', true, casper, function() {
+														casper.echo('checkbox is checked', 'INFO');
+													});
+													try {
+														casper.test.assertExists('button.button.btn-m.btn-blue');
+														casper.click('button.button.btn-m.btn-blue');
+														casper.waitUntilVisible('div#ajax-msg-top', function() {
+															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+														});
+													}catch(e) {
+														casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+													}
+												} else {
+													driver.echo(' Require event approval checkbox not found', 'ERROR');
+												}
+											});
+										} else {
+											driver.echo('Table not found', 'ERROR');
+										}
+									});
+								} else {
+									casper.echo('Calendar Permissions tab not found', 'ERROR');
+								}
+							});
 						} else {
-							casper.echo('Setting  tooltip menu not found', 'ERROR');
+							casper.echo('Content  tooltip menu not found', 'ERROR');
 						}
 					});
 				} else {
@@ -320,6 +362,79 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 		return callback(null);
 	});
 };
+
+//*************************Method to disable the event approval from backend ************************
+postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+					wait.waitForElement('div#ddContent', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddContent a:nth-child(2)');
+							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('li.inactive_tab a');
+									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
+										if(isExists) {
+											//var grpName = 
+											driver.evaluate(function(){
+												for(var i=1; i<=7; i++) {
+													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+													if (x1.innerText == 'Registered Users') {
+														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
+														return;
+													}
+												}
+											});
+											//driver.click('a[id="'+grpName+'"]');
+											wait.waitForElement('input#t', driver, function(err, isExists) {
+												if(isExists) {
+													utils.enableorDisableCheckbox('t', false, casper, function() {
+														casper.echo('checkbox is unchecked', 'INFO');
+													});
+													try {
+														casper.test.assertExists('button.button.btn-m.btn-blue');
+														casper.click('button.button.btn-m.btn-blue');
+														casper.waitUntilVisible('div#ajax-msg-top', function() {
+															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+														});
+													}catch(e) {
+														casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+													}
+												} else {
+													driver.echo(' Require event approval checkbox not found', 'ERROR');
+												}
+											});
+										} else {
+											driver.echo('Table not found', 'ERROR');
+										}
+									});
+								} else {
+									casper.echo('Calendar Permissions tab not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Content  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
 
 //*************************method to compose a event and got id ************************************
 postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
@@ -370,6 +485,7 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 							}, this.getCurrentUrl());
 							this.echo('*******event_id='+event_id,'INFO');
 							this.capture(screenShotsDir+'event.png');
+							return callback(null);
 						});
 					});
 				});

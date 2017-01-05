@@ -207,26 +207,31 @@ thumpsUpDownTestcases.clickOnLikersUsername = function() {
 													}
 												}
 												casper.wait(2000, function() {
-													casper.reload(function() {		
-														casper.click('div.post-options.pull-right span.text-muted a');
-														wait.waitForElement('i.who-username', casper, function(err, isExists) {
-															if(isExists) {
-																casper.click('i.who-username');
-																casper.wait(2000, function() {
-																	try {
-																		casper.test.assertExists('div.text-center.bmessage.alert-info.text-danger');
-var message = casper.fetchText('div.text-center.bmessage.alert-info.text-danger');
-var errorMsg = message.substring(0, message.indexOf('<'));
-if(errorMsg && errorMsg!= '')
-thumpsUpDownMethod.verifyErrorMsg(errorMsg, "Sorry! You don't have permission to perform this action.", 'ThumsUpDown', casper, function() {});
-																	} catch (e) {
-	casper.echo("The liker name is user's logged in name so user is able to click on users name",'INFO');
-    }
-	});
-															} else {
-																casper.echo('i.who-username not found', 'ERROR');
-															}
-														});
+													casper.reload(function() {
+														try {
+															casper.test.assertExists('div.post-options.pull-right span.text-muted a');		
+															casper.click('div.post-options.pull-right span.text-muted a');
+															wait.waitForElement('i.who-username', casper, function(err, isExists) {
+																if(isExists) {
+																	casper.click('i.who-username');
+																	casper.wait(2000, function() {
+																		try {
+																			casper.test.assertExists('div.text-center.bmessage.alert-info.text-danger');
+	var message = casper.fetchText('div.text-center.bmessage.alert-info.text-danger');
+	var errorMsg = message.substring(0, message.indexOf('<'));
+	if(errorMsg && errorMsg!= '')
+	thumpsUpDownMethod.verifyErrorMsg(errorMsg, "Sorry! You don't have permission to perform this action.", 'ThumsUpDown', casper, function() {});
+																		} catch (e) {
+		casper.echo("The liker name is user's logged in name so user is able to click on users name",'INFO');
+	    }
+		});
+																} else {
+																	casper.echo('i.who-username not found', 'ERROR');
+																}
+															});
+														} catch (e) {
+															casper.test.assertDoesntExist('div.post-options.pull-right span.text-muted a')	;	
+														}
 													});
 												});	
 											} else {

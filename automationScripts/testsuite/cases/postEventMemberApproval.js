@@ -721,3 +721,53 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 		});
 	});
 };
+
+// method to check the functionality of approve post for guest user
+postEventMemberApprovalTestcases.eventApprovalQueueButton = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                      CASE 1', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                   Approve a pending post from- Approval queue button             *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		//method to enable approve new post** All posts
+		postEventMemberApprovalMethod.enableEventApproval(casper, casper.test, function(err) {
+			if(!err) {
+				casper.echo('Enable Approve New Post functionality method called ','INFO');
+			}
+		});
+		casper.then(function() {
+			//method to set the user permission to Administration 
+			postEventMemberApprovalMethod.setAdmin(casper, casper.test, function(err) {
+				if(!err) {
+					casper.echo('Set admin method called ','INFO');
+				}
+			});
+		});
+	});
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
+						this.click('a#approveEvent_'+event_id+' i');
+						}, function fail() {
+							casper.echo('approve tick not found','ERROR');
+						});
+						casper.wait(5000, function() {
+							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page','INFO');
+						});
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};

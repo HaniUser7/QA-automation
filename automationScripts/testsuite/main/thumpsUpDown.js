@@ -14,58 +14,58 @@ thumpsUpDown.featureTest = function(casper, test) {
 		thumpsUpDownTestcases.unregisterUserOnPostListingPageLike();
 		
 		// call method to verify the thumbs down for guest user(unregister user) on post listing page
-		thumpsUpDownTestcases.unregisterUserOnPostListingPageDislike();
+		//thumpsUpDownTestcases.unregisterUserOnPostListingPageDislike();
 
 		// call method to verify the thumbs up for guest user(unregister user) on Topic listing page
-		thumpsUpDownTestcases.unregisterUserOnTopicListingPageLike();
+		//thumpsUpDownTestcases.unregisterUserOnTopicListingPageLike();
 		
 		// method to verify the thumbs up and down for (register user) on Topic listing page
-		thumpsUpDownTestcases.registerUserOnTopicListingPageLike();
+		//thumpsUpDownTestcases.registerUserOnTopicListingPageLike();
 
 		// call method to verify the thumbs up and down for (register user) on Topic listing page
-		thumpsUpDownTestcases.registerUserOnPostListingPageLike();
+		//thumpsUpDownTestcases.registerUserOnPostListingPageLike();
 		
 		// method to verify with click on likers/dislikers username when disable view profile permission ->AS A REGISTER USER 
-		thumpsUpDownTestcases.clickOnLikersUsername();
+		//thumpsUpDownTestcases.clickOnLikersUsername();
 		
 		// method to verify When registered/moderator user click on link of own name from voter list. when disable view profile permission
-		thumpsUpDownTestcases.clickOnOwnName();
+		//thumpsUpDownTestcases.clickOnOwnName();
 		
 		// method To verify the functionality of reputation tab which is showing in profile page-
-		thumpsUpDownTestcases.clickReputationTab();
+		//thumpsUpDownTestcases.clickReputationTab();
 		
 		// method To verify the reputation functionality of back end(disable)"
-		thumpsUpDownTestcases.verifyReputationTab();
+		//thumpsUpDownTestcases.verifyReputationTab();
 		
 		// Method to Verify  with the increasing  order of count
-		thumpsUpDownTestcases.verifyIncreasedCount();
+		//thumpsUpDownTestcases.verifyIncreasedCount();
 		
 		// Metod To verify the counter of thumbs down
-		thumpsUpDownTestcases.verifyDecreasedCount();
+		//thumpsUpDownTestcases.verifyDecreasedCount();
 		
 		// Method To verify the colour of like/dislike link
-		thumpsUpDownTestcases.verifyColour();
+		//thumpsUpDownTestcases.verifyColour();
 		
 		// Method To verify the functionality of reputation on profile page
-		thumpsUpDownTestcases.verifyReputationOnProfilePage();
+		//thumpsUpDownTestcases.verifyReputationOnProfilePage();
 		
 		//Method To verify the user account off case
-		thumpsUpDownTestcases.verifyUserAccountOffCase();
+		//thumpsUpDownTestcases.verifyUserAccountOffCase();
 		
 		// Method To verify user reputation
-		thumpsUpDownTestcases.verifyReputation();
+		//thumpsUpDownTestcases.verifyReputation();
 		
 		// Method To verify the like/unlike icon in guest user 
-		thumpsUpDownTestcases.verifyLikeInGuestUser();
+		//thumpsUpDownTestcases.verifyLikeInGuestUser();
 		
 		// Method To verify with log in pop up
-		thumpsUpDownTestcases.verifyLogInPopUp();
+		//thumpsUpDownTestcases.verifyLogInPopUp();
 		
 		//To verify the login button 
-		thumpsUpDownTestcases.verifyLoginButton();
+		//thumpsUpDownTestcases.verifyLoginButton();
 		
 		// Method To verify the forget pass word link of pop up window
-		thumpsUpDownTestcases.verifyForgotPasswordLink();
+		//thumpsUpDownTestcases.verifyForgotPasswordLink();
 		
 		// Method "to verify create account link on pop up window when new registration is disable"
 		thumpsUpDownTestcases.verifyCreateAccountInPopUp();

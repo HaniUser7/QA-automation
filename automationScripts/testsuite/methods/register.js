@@ -2,6 +2,7 @@
 var forumLoginMethod = require('../methods/login.js');
 //var json = require('../../testdata/registerData.json');
 var wait = require('../wait.js');
+var utils = require('./utils.js');
 var config = require('../../../config/config.json');
 var registerMethod=module.exports = {};
 
@@ -94,10 +95,10 @@ registerMethod.registerToApp = function(data, driver, callback) {
 		driver.test.assertDoesntExist('form[name="PostTopic"] input[name="rules_checkbox"]');
 	}
 	
-	var actionValue = driver.evaluate(function() {   
+	/*var actionValue = driver.evaluate(function() {   
 		document.querySelector('form[name="PostTopic"]').setAttribute('action', '/register/create_account?apikey=4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q&type=json');
 		return document.querySelector('form[name="PostTopic"]').getAttribute('action');     
-	});
+	});*/
 	
 	driver.test.assertExists('form[name="PostTopic"] button');
 	driver.click('form[name="PostTopic"] button');
@@ -121,18 +122,18 @@ registerMethod.verifyErrorMsg = function(errorMessage, expectedErrorMsg, msgTitl
 
 registerMethod.redirectToLogout = function(driver, test, callback) {
 	try {
-		test.assertExists('div.bmessage');
+		driver.test.assertExists('div.bmessage');
 		var message = driver.fetchText('div.bmessage');
 		var successMsg = message.substring(0, message.indexOf('<'));
 		var expectedSuccessMsg = json['validInfo'].expectedSuccessMsg;
-		test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
+		driver.test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
 		driver.echo('Successfully done registration on forum.....', 'INFO');
 
 		
 		//Clicking On 'Back To Category' Link 
-		wait.waitForElement('a[href="/categories"]', casper, function(err, isExist) {
+		wait.waitForElement('small a[href="/categories"]', casper, function(err, isExist) {
 			if(isExist) {
-				driver.click('a[href="/categories"]');
+				driver.click('small a[href="/categories"]');
 				driver.echo('Successfully back to category', 'INFO');
 				forumLoginMethod.logoutFromApp(driver, function(err) {
 				if (!err)
@@ -165,7 +166,9 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 			});
 		}
 	}
-	return callback(null);
+	driver.then(function() {
+		return callback(null);
+	});
 };
 
 
