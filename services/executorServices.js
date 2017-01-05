@@ -35,7 +35,7 @@ executorServices.executeJob = function(commitDetails, callback){
 				var descriptionRes = 0;
 				var jsErrorCount = 0;
 				var failTestResult = stdout.split(' ');
-				var jsErrors = failLogFile.split(' ');
+				var jsErrors = fs.readFileSync(failLogFile).toString().split(' ');
 				for(var i=0; i<failTestResult.length;i++) {
 					if(failTestResult[i+1]=='tests'  && failTestResult[i+7]!=0) {
 						descriptionRes = parseInt(descriptionRes)+parseInt(failTestResult[i+7]);
