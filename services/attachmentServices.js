@@ -26,6 +26,7 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 attachmentServices.addAttachments = function(dirPath, commitDetails, callback) {
 	if( fs.existsSync(dirPath) ) {
 		console.log('directory path "'+dirPath+'" exists');
+		console.log('commitDetails : '+JSON.stringify(commitDetails));
 		fs.readdirSync(dirPath).forEach(function(file,index){
 			var curPath = dirPath + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 

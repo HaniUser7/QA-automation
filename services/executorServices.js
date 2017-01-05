@@ -7,7 +7,7 @@ var result;
 var mailServices = require('./mailServices.js');
 var createStatus = require('./createStatus.js');
 var attachmentServices = require('./attachmentServices.js');
-var path = '/var/tmp/failedScreenshots/';
+var path = '/var/tmp/failedScreenshots';
 var executorServices = module.exports = {};
 
 //It executes job. Take job details as argument, executed the job and initiates mail sending.
