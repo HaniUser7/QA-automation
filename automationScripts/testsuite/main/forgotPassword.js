@@ -4,7 +4,9 @@
 'use strict';
 var config = require('../../../config/config.json');
 var forgotPasswordTestcases = require('../cases/forgotPassword.js');
+var forgotPasswordMethod = require('../methods/forgotPassword.js');
 var forgotPassword = module.exports = {};
+forgotPassword.errors = forgotPasswordMethod.jsErrors;
 
 forgotPassword.featureTest = function(casper, test) {
 	casper.start(config.url, function() {

@@ -3,6 +3,7 @@
 var forumLoginMethod = require('./login.js');
 var config = require('../../../config/config.json');
 var forgotPasswordMethod = module.exports = {};
+forgotPasswordMethod.jsErrors = [];
 var count = 1;
 var failedScreenshotsLocation = config.failedScreenShotsLocation+'forgotPassword/';
  
@@ -10,6 +11,12 @@ var failedScreenshotsLocation = config.failedScreenShotsLocation+'forgotPassword
 casper.test.on('fail', function(failure) {
 	casper.capture(failedScreenshotsLocation+'forgotPasswordMethodError'+count+'.png');
 	count++;
+});
+
+//Method To Verify JS Errors
+casper.on("page.error", function(msg, trace) {
+	this.echo("Error:    " + msg, "ERROR");
+	forgotPasswordMethod.jsErrors.push(msg);
 });
 
 //method to send forgot password request after filling username/email form

@@ -31,10 +31,14 @@ executorServices.executeJob = function(commitDetails, callback){
 			var testResult = stdout;
 			if(stdout) {
 				var descriptionRes = 0;
+				var jsErrorCount = 0;
 				var failTestResult = stdout.split(' ');
 				for(var i=0; i<failTestResult.length;i++) {
 					if(failTestResult[i+1]=='tests'  && failTestResult[i+7]!=0) {
 						descriptionRes = parseInt(descriptionRes)+parseInt(failTestResult[i+7]);
+					}
+					if(failTestResult[i] == 'TypeError:') {
+						jsErrorCount = jsErrorCount+1;
 					}
 				}
 				result = descriptionRes;
@@ -55,9 +59,16 @@ executorServices.executeJob = function(commitDetails, callback){
 						console.log("branch : "+commitDetails.branchName);
 							if(fileSize != 0) {
 								if(commitDetails.beta == 0) {
-									createStatus.failure(commitDetails, result, function(status) {
-										console.log('state of failure : '+status);
-									});
+									if(result == 0) {
+										createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
+											console.log('state of failure : '+status);
+										});
+									
+									}else {
+										createStatus.failure(commitDetails, 'Failed '+result+' automation test cases.', function(status) {
+											console.log('state of failure : '+status);
+										});
+									}
 									//Adding test result with commit details
 									commitDetails['testResult'] = testResult;
 									//Addling log files as attachments

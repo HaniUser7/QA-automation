@@ -16,6 +16,12 @@ casper.test.on('fail', function(failure) {
 	count++;
 });
 
+//Method To Verify JS Errors
+casper.on("page.error", function(msg, trace) {
+	this.echo("Error:    " + msg, "ERROR");
+	forgotPasswordMethod.jsErrors.push(msg);
+});
+
 //method to test the Reset password with valid username functionality --Test case 1
 forgotPasswordTestcases.validUsername = function() {
 	

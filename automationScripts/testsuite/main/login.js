@@ -3,11 +3,14 @@
 'use strict';
 var config = require('../../../config/config.json');
 var forumLoginTests = require('../cases/login.js');
+var forumLoginMethod = require('../methods/login.js');
 var forumLogin = module.exports = {};
+forumLogin.errors = forumLoginMethod.jsErrors;
 
 forumLogin.featureTest = function(casper, test) {
 	
 	casper.start(config.url, function() {
+		
 		
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		

@@ -9,6 +9,13 @@ Tests executing for LOGIN:
 [32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
+[37;41;1mError:    Page load time is too high! (3 seconds) The SQL queries or perl logic must be optimized before going live.[0m
+[37;41;1mError:    Page load time is too high! (3 seconds) The SQL queries or perl logic must be optimized before going live.[0m
+[32;1m[debug][0m [phantom] Navigation requested: url=about:blank, type=Other, willNavigate=true, isMainFrame=false
+[32;1m[debug][0m [phantom] Navigation requested: url=about:blank, type=Other, willNavigate=true, isMainFrame=false
+[32;1m[debug][0m [phantom] Navigation requested: url=http://staticxx.facebook.com/connect/xd_arbiter/r/iPrOY23SGAp.js?version=42#channel=f307428bc8&origin=http%3A%2F%2Fbeta12.websitetoolbox.com, type=Other, willNavigate=true, isMainFrame=false
+[32;1m[debug][0m [phantom] Navigation requested: url=https://staticxx.facebook.com/connect/xd_arbiter/r/iPrOY23SGAp.js?version=42#channel=f307428bc8&origin=http%3A%2F%2Fbeta12.websitetoolbox.com, type=Other, willNavigate=true, isMainFrame=false
+[32;1m[debug][0m [phantom] Navigation requested: url=https://www.facebook.com/connect/ping?client_id=513568752182878&domain=beta12.websitetoolbox.com&origin=1&redirect_uri=http%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FiPrOY23SGAp.js%3Fversion%3D42%23cb%3Df3b312bb8%26domain%3Dbeta12.websitetoolbox.com%26origin%3Dhttp%253A%252F%252Fbeta12.websitetoolbox.com%252Ff307428bc8%26relation%3Dparent&response_type=token%2Csigned_request%2Ccode&sdk=joey, type=Other, willNavigate=true, isMainFrame=false
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
 [36m[info][0m [phantom] Step anonymous 2/2 http://beta12.websitetoolbox.com/ (HTTP 200)
 [32;1mTitle of the page :Avenger[0m
@@ -25,225 +32,107 @@ username : sangita & password : sangita
 [32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: form[name="frmLogin"] button[type="submit"]
 [32;1m[debug][0m [phantom] Mouse event 'click' on selector: form[name="frmLogin"] button[type="submit"]
 [32;1mlogin by valid username and password and verify error message[0m
-[36m[info][0m [phantom] Step anonymous 2/2: done in 13297ms.
+[36m[info][0m [phantom] Step anonymous 2/2: done in 737929ms.
 [36m[info][0m [phantom] Step _step 3/13 http://beta12.websitetoolbox.com/ (HTTP 200)
-[36m[info][0m [phantom] Step _step 3/13: done in 13298ms.
+[36m[info][0m [phantom] Step _step 3/13: done in 737930ms.
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
 [36m[info][0m [phantom] waitFor() finished in 40ms.
 [32;1m[debug][0m [phantom] Navigation requested: url=https://beta12.websitetoolbox.com/latest?trail=25, type=FormSubmitted, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "https://beta12.websitetoolbox.com/latest?trail=25"
-[32;1m[debug][0m [phantom] Navigation requested: url=https://data-secure.circulate.com/dapi/data?type=html;sid=tdbxpv;ea=sm1;hema=H1%3A4a50d35a7426297dd33e2eeabe2ae3c6ec2adb53%2CH2%3Ab92092e94f4926d1e27e35c503da043668711d61%2CH3%3A6d0aafc0b43631b03b7b4dddd4b828785b07fdff%2CH4%3Ae7501c431b8b23e39eb5c15131a55cfe%2CH5%3Aa4b1bc09e3e6c789b65cca6271901c5f%2CH6%3Aa38631996c7788233adc10c4b41b9bfb150b9a8b151948db2defd39da0a9e9e5%2CH7%3A1dc56277b578859faddff50eb032353021a0d35f0f089526c867ae7ba1b06f95;_t=1481692776756, type=Other, willNavigate=true, isMainFrame=false
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step success 4/14 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
+[36m[info][0m [phantom] Step success 4/14 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 504)
 [32;1mSelector a.default-user Found[0m
 [32;1mPASS[0m Fail to find element matching selector: #td_tab_login
 [32;1mUser has been successfuly login to application[0m
-[32;1mPASS[0m Find an element matching: ul.nav.pull-right span.caret
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: ul.nav.pull-right span.caret
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: ul.nav.pull-right span.caret
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: ul.nav.pull-right span.caret
-[36m[info][0m [phantom] Step success 4/14: done in 95593ms.
-[36m[info][0m [phantom] Step _step 5/15 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[36m[info][0m [phantom] Step _step 5/15: done in 95604ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 6/16 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[32;1mSelector ul.nav.pull-right span.caret Found[0m
-[32;1mPASS[0m Find an element matching: a[href^="/register/logout"]
-[32;1m[debug][0m [phantom] Navigation requested: url=https://beta12.websitetoolbox.com/register/logout?userid=24488764, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 6/16: done in 95689ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=https://beta12.websitetoolbox.com/latest?trail=25, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "https://beta12.websitetoolbox.com/latest?trail=25"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 7/17 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[36m[info][0m [phantom] Step _step 7/17: done in 99682ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 8/18 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[32;1mSelector a#td_tab_login Found[0m
-[32;1mSuccessfully logout from application[0m
-[36m[info][0m [phantom] Step success 8/18: done in 99742ms.
+[37;41;1mFAIL[0m Find an element matching: ul.nav.pull-right span.caret
+[32;1m[debug][0m [phantom] Capturing page to /var/tmp/failedScreenshots/login/loginCasesError1.png
+[36m[info][0m [phantom] Capture saved to /var/tmp/failedScreenshots/login/loginCasesError1.png
+[32;1m[debug][0m [phantom] Capturing page to /var/tmp/failedScreenshots/login/loginMethodError1.png
+[36m[info][0m [phantom] Capture saved to /var/tmp/failedScreenshots/login/loginMethodError1.png
+[33m#    type: assertExists[0m
+[33m#    file: ./automationScripts/automation.js[0m
+[33m#    subject: false[0m
+[33m#    selector: "ul.nav.pull-right span.caret"[0m
+[36m[info][0m [phantom] Step success 4/14: done in 856605ms.
 [32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 10/18 http://beta12.websitetoolbox.com/ (HTTP 200)
+[36m[info][0m [phantom] Step anonymous 6/14 http://beta12.websitetoolbox.com/ (HTTP 504)
 username : sangitajrt & password : sangita
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="frmLogin"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangitajrt
-[32;1m[debug][0m [remote] Set "pw" field value to *******
-[32;1mPASS[0m Find an element matching: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: form[name="frmLogin"] button[type="submit"]
+[32;1mThe user is already logged-in.[0m
 [32;1mlogin with invalid username and password and verify error message[0m
-[36m[info][0m [phantom] Step anonymous 10/18: done in 104675ms.
-[36m[info][0m [phantom] Step _step 11/19 http://beta12.websitetoolbox.com/ (HTTP 200)
-[36m[info][0m [phantom] Step _step 11/19: done in 104684ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 6130ms.
-[36m[info][0m [phantom] Step success 12/20 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector form[name="frmLogin"] [role="alert"] Found[0m
-[32;1mActual Error message : There is no account with the username you specified.[0m
-[32;1mExpected Error message : There is no account with the username you specified.[0m
-[32;1mError message is verified when user try to edit with "invalidUsername"[0m
-[32;1mError message is verified with expected message[0m
-[36m[info][0m [phantom] Step success 12/20: done in 110936ms.
+[36m[info][0m [phantom] Step anonymous 6/14: done in 1198533ms.
+[36m[info][0m [phantom] Step _step 7/15 http://beta12.websitetoolbox.com/ (HTTP 504)
+[36m[info][0m [phantom] Step _step 7/15: done in 1198551ms.
+[33m[warning][0m [phantom] Casper.waitFor() timeout
+[37;41;1mSelector form[name="frmLogin"] [role="alert"] Not Found[0m
+[37;41;1mAlert not found on login form element form[name="frmLogin"] [role="alert"][0m
 [32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 14/20 http://beta12.websitetoolbox.com/ (HTTP 200)
+[36m[info][0m [phantom] Step anonymous 9/15 http://beta12.websitetoolbox.com/ (HTTP 504)
 username : sangita & password : sangita123
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="frmLogin"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangita
-[32;1m[debug][0m [remote] Set "pw" field value to **********
-[32;1mPASS[0m Find an element matching: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: form[name="frmLogin"] button[type="submit"]
+[32;1mThe user is already logged-in.[0m
 [32;1mlogin with valid username and invalid password and verify error message[0m
-[36m[info][0m [phantom] Step anonymous 14/20: done in 113512ms.
-[36m[info][0m [phantom] Step _step 15/21 http://beta12.websitetoolbox.com/ (HTTP 200)
-[36m[info][0m [phantom] Step _step 15/21: done in 113530ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1511ms.
-[36m[info][0m [phantom] Step success 16/22 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector form[name="frmLogin"] [role="alert"] Found[0m
-[32;1mActual Error message : The password you entered is incorrect.[0m
-[32;1mExpected Error message : The password you entered is incorrect.[0m
-[32;1mError message is verified when user try to edit with "invalidPassword"[0m
-[32;1mError message is verified with expected message[0m
-[36m[info][0m [phantom] Step success 16/22: done in 115063ms.
+[36m[info][0m [phantom] Step anonymous 9/15: done in 2108720ms.
+[36m[info][0m [phantom] Step _step 10/16 http://beta12.websitetoolbox.com/ (HTTP 504)
+[36m[info][0m [phantom] Step _step 10/16: done in 2108739ms.
+[33m[warning][0m [phantom] Casper.waitFor() timeout
+[37;41;1mSelector form[name="frmLogin"] [role="alert"] Not Found[0m
+[37;41;1mAlert  not found  on login form element form[name="frmLogin"] [role="alert"][0m
 [32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 18/22 http://beta12.websitetoolbox.com/ (HTTP 200)
+[36m[info][0m [phantom] Step anonymous 12/16 http://beta12.websitetoolbox.com/ (HTTP 504)
 username :  & password : 
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="frmLogin"]'
-[32;1m[debug][0m [remote] Set "member" field value to 
-[32;1m[debug][0m [remote] Set "pw" field value to 
-[32;1mPASS[0m Find an element matching: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: form[name="frmLogin"] button[type="submit"]
+[32;1mThe user is already logged-in.[0m
 [32;1mlogin by leaving blank username and password and verify error message[0m
-[36m[info][0m [phantom] Step anonymous 18/22: done in 116955ms.
-[36m[info][0m [phantom] Step _step 19/23 http://beta12.websitetoolbox.com/ (HTTP 200)
-[36m[info][0m [phantom] Step _step 19/23: done in 116956ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1467ms.
-[36m[info][0m [phantom] Step success 20/24 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector form[name="frmLogin"] [role="alert"] Found[0m
-[32;1mActual Error message : You must enter your username or email address.[0m
-[32;1mExpected Error message : You must enter your username or email address.[0m
-[32;1mError message is verified when user try to edit with "blankEmailPassword"[0m
-[32;1mError message is verified with expected message[0m
-[36m[info][0m [phantom] Step success 20/24: done in 118445ms.
+[36m[info][0m [phantom] Step anonymous 12/16: done in 2298677ms.
+[36m[info][0m [phantom] Step _step 13/17 http://beta12.websitetoolbox.com/ (HTTP 504)
+[36m[info][0m [phantom] Step _step 13/17: done in 2298696ms.
+[33m[warning][0m [phantom] Casper.waitFor() timeout
+[37;41;1mSelector form[name="frmLogin"] [role="alert"] Not Found[0m
+[37;41;1mAlert  not found  on login form element form[name="frmLogin"] [role="alert"][0m
 [32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 22/24 http://beta12.websitetoolbox.com/ (HTTP 200)
+[36m[info][0m [phantom] Step anonymous 15/17 http://beta12.websitetoolbox.com/ (HTTP 504)
 username : sangita & password : 
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="frmLogin"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangita
-[32;1m[debug][0m [remote] Set "pw" field value to 
-[32;1mPASS[0m Find an element matching: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: form[name="frmLogin"] button[type="submit"]
+[32;1mThe user is already logged-in.[0m
 [32;1mlogin by leaving blank username and password and verify error message[0m
-[36m[info][0m [phantom] Step anonymous 22/24: done in 120418ms.
-[36m[info][0m [phantom] Step _step 23/25 http://beta12.websitetoolbox.com/ (HTTP 200)
-[36m[info][0m [phantom] Step _step 23/25: done in 120419ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1405ms.
-[36m[info][0m [phantom] Step success 24/26 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector form[name="frmLogin"] [role="alert"] Found[0m
-[32;1mActual Error message : You must enter your password.[0m
-[32;1mExpected Error message : You must enter your password.[0m
-[32;1mError message is verified when user try to edit with "blankEmailPassword"[0m
-[32;1mError message is verified with expected message[0m
-[36m[info][0m [phantom] Step success 24/26: done in 121846ms.
+[36m[info][0m [phantom] Step anonymous 15/17: done in 2488977ms.
+[36m[info][0m [phantom] Step _step 16/18 http://beta12.websitetoolbox.com/ (HTTP 504)
+[36m[info][0m [phantom] Step _step 16/18: done in 2488997ms.
+[33m[warning][0m [phantom] Casper.waitFor() timeout
+[37;41;1mSelector form[name="frmLogin"] [role="alert"] Not Found[0m
+[37;41;1mAlert  not found  on login form element form[name="frmLogin"] [role="alert"][0m
 [32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 26/26 http://beta12.websitetoolbox.com/ (HTTP 200)
+[36m[info][0m [phantom] Step anonymous 18/18 http://beta12.websitetoolbox.com/ (HTTP 504)
 username : sangita@websitetoolbox.com & password : sangita
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="frmLogin"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangita@websitetoolbox.com
-[32;1m[debug][0m [remote] Set "pw" field value to *******
-[32;1mPASS[0m Find an element matching: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: form[name="frmLogin"] button[type="submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: form[name="frmLogin"] button[type="submit"]
+[32;1mThe user is already logged-in.[0m
 [32;1mlogin by validEmail and password and verify error message[0m
-[36m[info][0m [phantom] Step anonymous 26/26: done in 123612ms.
-[36m[info][0m [phantom] Step _step 27/27 http://beta12.websitetoolbox.com/ (HTTP 200)
-[36m[info][0m [phantom] Step _step 27/27: done in 123613ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] waitFor() finished in 45ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=https://beta12.websitetoolbox.com/latest?trail=25, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "https://beta12.websitetoolbox.com/latest?trail=25"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step success 28/28 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[32;1mSelector a.default-user Found[0m
-[32;1mPASS[0m Fail to find element matching selector: #td_tab_login
-[32;1mUser has been successfuly login to application[0m
-[32;1mPASS[0m Find an element matching: ul.nav.pull-right span.caret
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: ul.nav.pull-right span.caret
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: ul.nav.pull-right span.caret
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: ul.nav.pull-right span.caret
-[36m[info][0m [phantom] Step success 28/28: done in 127171ms.
-[36m[info][0m [phantom] Step _step 29/29 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[36m[info][0m [phantom] Step _step 29/29: done in 127174ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 30/30 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[32;1mSelector ul.nav.pull-right span.caret Found[0m
-[32;1mPASS[0m Find an element matching: a[href^="/register/logout"]
-[32;1m[debug][0m [phantom] Navigation requested: url=https://beta12.websitetoolbox.com/register/logout?userid=24488764, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 30/30: done in 127261ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=https://beta12.websitetoolbox.com/latest?trail=25, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "https://beta12.websitetoolbox.com/latest?trail=25"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 31/31 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[36m[info][0m [phantom] Step _step 31/31: done in 130064ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 32/32 https://beta12.websitetoolbox.com/latest?trail=25 (HTTP 200)
-[32;1mSelector a#td_tab_login Found[0m
-[32;1mSuccessfully logout from application[0m
-[36m[info][0m [phantom] Step success 32/32: done in 130124ms.
-[36m[info][0m [phantom] Done 32 steps in 130144ms
-[37;42;1mPASS 18 tests executed in 127.277s, 18 passed, 0 failed, 0 dubious, 0 skipped.  [0m
+[36m[info][0m [phantom] Step anonymous 18/18: done in 2680763ms.
+[36m[info][0m [phantom] Step _step 19/19 http://beta12.websitetoolbox.com/ (HTTP 504)
+[36m[info][0m [phantom] Step _step 19/19: done in 2680783ms.
+[33m[warning][0m [phantom] Casper.waitFor() timeout
+[37;41;1mSelector a.default-user Not Found[0m
+[37;41;1mUser not logged-in element a.default-user not found[0m
+[36m[info][0m [phantom] Done 19 steps in 2690803ms
+[37;41;1m2 javaScript errors found[0m
+[37;41;1mFAIL 4 tests executed in 856.637s, 3 passed, 1 failed, 0 dubious, 0 skipped.    [0m
+[36m
+Details for the 1 failed test:
+[0m
+In ./automationScripts/automation.js
+[36m  Verify login functionality from home page with all valid and invalid scenarios [0m
+[33m    assertExists: Find an element matching: ul.nav.pull-right span.caret[0m
 [32;1m[debug][0m [phantom] Navigation requested: url=about:blank, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "about:blank"
 
@@ -259,423 +148,29 @@ Tests executing for FORGOT PASSWORD:
 [32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
 [32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 2/2 http://beta12.websitetoolbox.com/ (HTTP 200)
-Title of the page :Avenger
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 2/2: done in 27529ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 3/17 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 3/17: done in 28451ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 4/18 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangita
-[32;1m[debug][0m [remote] Set "email" field value to 
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 4/18: done in 28548ms.
-[36m[info][0m [phantom] Step _step 5/19 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 5/19: done in 28549ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 2009ms.
-[36m[info][0m [phantom] Step success 6/20 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.text-center.bmessage Found[0m
-[32;1mActual success message is --> 
-					An email containing further instructions to reset your password has been sent. This email should be received within the next 10 minutes (usually instantly).
-					
-						
-						<!--
-							document.write('<a href="/categories">[Back to Categories]</a>'); 
-						-->
-						[Back to Categories]
-					
-				[0m
-[32;1mPASS[0m Same as expected message
-[36m[info][0m [phantom] Step success 6/20: done in 30581ms.
-[36m[info][0m [phantom] Step _step 7/21 http://beta12.websitetoolbox.com/register (HTTP 200)
-[36m[info][0m [phantom] Step _step 7/21: done in 30599ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 8/22 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector small a[href="/categories"] Found[0m
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/categories, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 8/22: done in 30685ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/categories"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 10/22 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 10/22: done in 35036ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 11/23 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 11/23: done in 35960ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 12/24 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to 
-[32;1m[debug][0m [remote] Set "email" field value to sangita.digi@gmail.com
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 12/24: done in 36058ms.
-[36m[info][0m [phantom] Step _step 13/25 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 13/25: done in 36059ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1427ms.
-[36m[info][0m [phantom] Step success 14/26 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.text-center.bmessage Found[0m
-[32;1mActual success message is --> An email containing further instructions to reset your password has been sent. This email should be received within the next 10 minutes (usually instantly).
-					
-						
-						<!--
-							document.write('<a href="/categories">[Back to Categories]</a>'); 
-						-->
-						[Back to Categories][0m
-[32;1mPASS[0m Same as expected message
-[36m[info][0m [phantom] Step success 14/26: done in 37508ms.
-[36m[info][0m [phantom] Step _step 15/27 http://beta12.websitetoolbox.com/register (HTTP 200)
-[36m[info][0m [phantom] Step _step 15/27: done in 37527ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 16/28 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector small a[href="/categories"] Found[0m
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/categories, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 16/28: done in 37613ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/categories"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 18/28 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 18/28: done in 42076ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 19/29 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 19/29: done in 42994ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 20/30 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangitadgdf
-[32;1m[debug][0m [remote] Set "email" field value to 
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 20/30: done in 43094ms.
-[36m[info][0m [phantom] Step _step 21/31 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 21/31: done in 43095ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1392ms.
-[36m[info][0m [phantom] Step success 22/32 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.alert.alert-danger Found[0m
-[32;1mActual error message is --> We could not find the member account for the username or email  address you supplied. Please verify the information and resubmit the form.[0m
-[32;1mPASS[0m Same as expected message
-[32;1mError message in case of invalid username has been verified[0m
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input#cancelPassword
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input#cancelPassword
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input#cancelPassword
-[36m[info][0m [phantom] Step success 22/32: done in 44536ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/login, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/login"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 24/32 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 24/32: done in 47360ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 25/33 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 25/33: done in 48230ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 26/34 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to 
-[32;1m[debug][0m [remote] Set "email" field value to fuhjghfkj@websitetoolbox.com
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 26/34: done in 48327ms.
-[36m[info][0m [phantom] Step _step 27/35 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 27/35: done in 48329ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 3772ms.
-[36m[info][0m [phantom] Step success 28/36 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.alert.alert-danger Found[0m
-[32;1mActual error message is --> We could not find the member account for the username or email  address you supplied. Please verify the information and resubmit the form.[0m
-[32;1mPASS[0m Same as expected message
-[32;1mError message in case of invalid username has been verified[0m
-[36m[info][0m [phantom] Step success 28/36: done in 52122ms.
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 30/36 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 30/36: done in 54063ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 31/37 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 31/37: done in 54967ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 32/38 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to 
-[32;1m[debug][0m [remote] Set "email" field value to 
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 32/38: done in 55069ms.
-[36m[info][0m [phantom] Step _step 33/39 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 33/39: done in 55072ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 34/40 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] input[name="member"] Found[0m
-[32;1mActual error in tooltip --> Please enter your username or email address.[0m
-[32;1mPASS[0m Same as expected message
-[32;1mError message is verified while submit request with blank username and email[0m
-[36m[info][0m [phantom] Step success 34/40: done in 55134ms.
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 36/40 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 36/40: done in 57094ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 37/41 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 37/41: done in 58043ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 38/42 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangita
-[32;1m[debug][0m [remote] Set "email" field value to sangita.digi@gmail.com
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 38/42: done in 58142ms.
-[36m[info][0m [phantom] Step _step 39/43 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 39/43: done in 58145ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1455ms.
-[36m[info][0m [phantom] Step success 40/44 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.text-center.bmessage Found[0m
-[32;1mActual success message is --> An email containing further instructions to reset your password has been sent. This email should be received within the next 10 minutes (usually instantly).
-					
-						
-						<!--
-							document.write('<a href="/categories">[Back to Categories]</a>'); 
-						-->
-						[Back to Categories][0m
-[32;1mPASS[0m Same as expected message
-[36m[info][0m [phantom] Step success 40/44: done in 59621ms.
-[36m[info][0m [phantom] Step _step 41/45 http://beta12.websitetoolbox.com/register (HTTP 200)
-[36m[info][0m [phantom] Step _step 41/45: done in 59639ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 42/46 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector small a[href="/categories"] Found[0m
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/categories, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 42/46: done in 59726ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/categories"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 44/46 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 44/46: done in 63642ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 45/47 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 45/47: done in 64579ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 46/48 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangitargergffr
-[32;1m[debug][0m [remote] Set "email" field value to sangita@websitetoolbox.com
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 46/48: done in 64678ms.
-[36m[info][0m [phantom] Step _step 47/49 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 47/49: done in 64681ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 1511ms.
-[36m[info][0m [phantom] Step success 48/50 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.text-center.bmessage Found[0m
-[32;1mActual success message is --> An email containing further instructions to reset your password has been sent. This email should be received within the next 10 minutes (usually instantly).
-					
-						
-						<!--
-							document.write('<a href="/categories">[Back to Categories]</a>'); 
-						-->
-						[Back to Categories][0m
-[32;1mPASS[0m Same as expected message
-[36m[info][0m [phantom] Step success 48/50: done in 66214ms.
-[36m[info][0m [phantom] Step _step 49/51 http://beta12.websitetoolbox.com/register (HTTP 200)
-[36m[info][0m [phantom] Step _step 49/51: done in 66233ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 50/52 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector small a[href="/categories"] Found[0m
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/categories, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 50/52: done in 66326ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/categories"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[32;1m[debug][0m [phantom] opening url: http://beta12.websitetoolbox.com/, HTTP GET
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/, type=Other, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step anonymous 52/52 http://beta12.websitetoolbox.com/ (HTTP 200)
-[32;1mPASS[0m Find an element matching: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #td_tab_login
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: #anchor_tab_forget_password
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register/lost_pw, type=LinkClicked, willNavigate=true, isMainFrame=true
-[32;1mForgot password page is navigated[0m
-[36m[info][0m [phantom] Step anonymous 52/52: done in 71256ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register/lost_pw"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Step _step 53/53 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 53/53: done in 72164ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 54/54 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[32;1mSelector form[name="lost_pw_form"] Found[0m
-[36m[info][0m [remote] attempting to fetch form element from selector: 'form[name="lost_pw_form"]'
-[32;1m[debug][0m [remote] Set "member" field value to sangita
-[32;1m[debug][0m [remote] Set "email" field value to sangsfdsfdsdigi@gmail.com
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: input[name="Submit"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: input[name="Submit"]
-[36m[info][0m [phantom] Step success 54/54: done in 72265ms.
-[36m[info][0m [phantom] Step _step 55/55 http://beta12.websitetoolbox.com/register/lost_pw (HTTP 200)
-[36m[info][0m [phantom] Step _step 55/55: done in 72268ms.
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/register, type=FormSubmitted, willNavigate=true, isMainFrame=true
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/register"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] waitFor() finished in 2456ms.
-[36m[info][0m [phantom] Step success 56/56 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector div.text-center.bmessage Found[0m
-[32;1mActual success message is --> An email containing further instructions to reset your password has been sent. This email should be received within the next 10 minutes (usually instantly).
-					
-						
-						<!--
-							document.write('<a href="/categories">[Back to Categories]</a>'); 
-						-->
-						[Back to Categories][0m
-[32;1mPASS[0m Same as expected message
-[36m[info][0m [phantom] Step success 56/56: done in 74746ms.
-[36m[info][0m [phantom] Step _step 57/57 http://beta12.websitetoolbox.com/register (HTTP 200)
-[36m[info][0m [phantom] Step _step 57/57: done in 74765ms.
-[36m[info][0m [phantom] waitFor() finished in 40ms.
-[36m[info][0m [phantom] Step success 58/58 http://beta12.websitetoolbox.com/register (HTTP 200)
-[32;1mSelector small a[href="/categories"] Found[0m
-[32;1m[debug][0m [phantom] Mouse event 'mousedown' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'mouseup' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Mouse event 'click' on selector: small a[href="/categories"]
-[32;1m[debug][0m [phantom] Navigation requested: url=http://beta12.websitetoolbox.com/categories, type=LinkClicked, willNavigate=true, isMainFrame=true
-[36m[info][0m [phantom] Step success 58/58: done in 74858ms.
-[32;1m[debug][0m [phantom] url changed to "http://beta12.websitetoolbox.com/categories"
-[32;1m[debug][0m [phantom] Successfully injected Casper client-side utilities
-[36m[info][0m [phantom] Done 58 steps in 77148ms
-[37;42;1mPASS 16 tests executed in 74.778s, 16 passed, 0 failed, 0 dubious, 0 skipped.   [0m
+[36m[info][0m [phantom] Step anonymous 2/2 http://beta12.websitetoolbox.com/ (HTTP 504)
+Title of the page :ERROR: The requested URL could not be retrieved
+[32;1mPASS[0m Fail to find element matching selector: #td_tab_login
+[37;41;1mFAIL[0m Find an element matching: ul.nav.pull-right span.caret
+[32;1m[debug][0m [phantom] Capturing page to /var/tmp/failedScreenshots/forgotPassword/forgotPasswordCasesError1.png
+[36m[info][0m [phantom] Capture saved to /var/tmp/failedScreenshots/forgotPassword/forgotPasswordCasesError1.png
+[32;1m[debug][0m [phantom] Capturing page to /var/tmp/failedScreenshots/forgotPassword/forgotPasswordMethodError1.png
+[36m[info][0m [phantom] Capture saved to /var/tmp/failedScreenshots/forgotPassword/forgotPasswordMethodError1.png
+[32;1m[debug][0m [phantom] Capturing page to /var/tmp/failedScreenshots/login/loginMethodError1.png
+[36m[info][0m [phantom] Capture saved to /var/tmp/failedScreenshots/login/loginMethodError1.png
+[33m#    type: assertExists[0m
+[33m#    file: ./automationScripts/automation.js[0m
+[33m#    subject: false[0m
+[33m#    selector: "ul.nav.pull-right span.caret"[0m
+[36m[info][0m [phantom] Step anonymous 2/2: done in 180125ms.
+[36m[info][0m [phantom] Done 2 steps in 180127ms
+[32;1m0 javascript errors found[0m
+[37;41;1mFAIL 2 tests executed in 180.158s, 1 passed, 1 failed, 0 dubious, 0 skipped.    [0m
+[36m
+Details for the 1 failed test:
+[0m
+In ./automationScripts/automation.js
+[36m  Verify forgot password functionality from home page with all valid and invalid scenarios [0m
+[33m    assertExists: Find an element matching: ul.nav.pull-right span.caret[0m
 [32;1m[debug][0m [phantom] Navigation requested: url=about:blank, type=Other, willNavigate=true, isMainFrame=true
 [32;1m[debug][0m [phantom] url changed to "about:blank"

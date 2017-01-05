@@ -1,0 +1,4 @@
+[37;41;1mFAIL[0m Find an element matching: ul.nav.pull-right span.caret
+[37;41;1mFAIL 4 tests executed in 856.637s, 3 passed, 1 failed, 0 dubious, 0 skipped.    [0m
+[37;41;1mFAIL[0m Find an element matching: ul.nav.pull-right span.caret
+[37;41;1mFAIL 2 tests executed in 180.158s, 1 passed, 1 failed, 0 dubious, 0 skipped.    [0m

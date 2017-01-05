@@ -3,6 +3,7 @@
 var forumLoginMethod = module.exports = {};
 var wait=require('../wait.js');
 var config = require('../../../config/config.json');
+forumLoginMethod.jsErrors = [];
 var errorMessage = "";
 var count = 1;
 var failedScreenshotsLocation = config.failedScreenShotsLocation+'login/';
@@ -11,6 +12,12 @@ var failedScreenshotsLocation = config.failedScreenShotsLocation+'login/';
 casper.test.on('fail', function(failure) {
 	casper.capture(failedScreenshotsLocation+'loginMethodError'+count+'.png');
 	count++;
+});
+
+//Method To Verify JS Errors
+casper.on("page.error", function(msg, trace) {
+	this.echo("Error:    " + msg, "ERROR");
+	forumLoginMethod.jsErrors.push(msg);
 });
 
 // method for login to application by passing username and password
@@ -33,7 +40,7 @@ forumLoginMethod.loginToApp = function(username, password, driver, callback) {
 		}
 	} catch(e) {
 		driver.echo("The user is already logged-in.", 'INFO');
-	}	 
+	}
 	return callback(null);
 };
 

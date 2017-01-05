@@ -28,7 +28,7 @@ createStatus.success = function(commitDetails, callback) {
 };
 
 //Method For Creating Status If Any Automation Test Case Is Failed.
-createStatus.failure = function(commitDetails, num, callback) {
+createStatus.failure = function(commitDetails, desc, callback) {
 	var github = new Client({
     		debug: true
 	});
@@ -43,7 +43,7 @@ createStatus.failure = function(commitDetails, num, callback) {
 		repo: commitDetails.repositoryName,
 		sha: commitDetails.commitId,
 		state: "failure",
-		description: "Failed "+num+" automation test cases."
+		description: desc
 	}, function(err, res) {
 		console.log(err, res);
 		return callback(res.state);
