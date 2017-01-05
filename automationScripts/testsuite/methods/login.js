@@ -53,8 +53,10 @@ forumLoginMethod.logoutFromApp = function(driver,callback) {
 		if(isExists) {		
 			driver.test.assertExists('a[href^="/register/logout"]');
 			driver.evaluate(function() {
-				document.querySelector('a#logout').click();
+				//document.querySelector('a#logout').click();
+				return document.querySelector('a#logout').innerHTML();
 			});
+			driver.click('a#td_tab_login.');
 			wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 				if(isExists) {
 					return callback(null);
