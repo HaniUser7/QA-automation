@@ -55,10 +55,10 @@ privateMessage.featureTest = function(casper, test) {
 		privateMessageTestcases.verifyAvtar();
 		
 		// method To verify  send PM conversation to 25 recipient at the same time
-		privateMessageTestcases.verifyMaxRecipient();
+		//privateMessageTestcases.verifyMaxRecipient();
 		
 		// method To verify  send PM conversation to 26 recipient at the same time
-		privateMessageTestcases.verifyMorethanMaxRecipient();
+		//privateMessageTestcases.verifyMorethanMaxRecipient();
 		
 		// method To verify mark as unread(check box)(single)
 		privateMessageTestcases.unreadCheckbox();

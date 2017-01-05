@@ -128,8 +128,8 @@ thumpsUpDownTestcases.registerUserOnPostListingPageLike = function() {
 				wait.waitForElement('i.icon.icon-menu', casper, function(err, isExists) {
 					if(isExists) {
 						casper.click('i.icon.icon-menu');
-						casper.test.assertExists('a[href="/latest"]');
-						casper.click('a[href="/latest"]');
+						casper.test.assertExists('li#latest_topics_show a');
+						casper.click('li#latest_topics_show a');
 						wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExists) {
 							if(isExists) {
 								casper.click('form[name="posts"] a.topic-title');
@@ -143,7 +143,7 @@ thumpsUpDownTestcases.registerUserOnPostListingPageLike = function() {
 												casper.echo('CLICK OF THUMBS UP FROM TOPIC PAGE.....', 'INFO');
 											} catch(e) {
 												casper.test.assertExists('a.login_dialog.text-muted');
-												casper.echo('CLICK OF THUMBS UP FROM TOPIC PAGE.....', 'INFO');
+												casper.echo('CLICK ON THUMBS UP FROM TOPIC PAGE.....', 'INFO');
 											};
 										});
 		
@@ -190,8 +190,8 @@ thumpsUpDownTestcases.clickOnLikersUsername = function() {
 						wait.waitForElement('i.icon.icon-menu', casper, function(err, isExists) {
 							if(isExists) {
 								casper.click('i.icon.icon-menu');
-								casper.test.assertExists('a[href="/latest"]');
-								casper.click('a[href="/latest"]');
+								casper.test.assertExists('li#latest_topics_show a');
+								casper.click('li#latest_topics_show a');
 								wait.waitForElement('form[name="posts"] a.topic-title', casper, function(err, isExists) {
 									if(isExists) {
 										casper.click('form[name="posts"] a.topic-title');
@@ -686,8 +686,8 @@ thumpsUpDownTestcases.verifyReputationOnProfilePage = function() {
 			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
 				if(isExists) {
 					casper.click('ul.nav.pull-right span.caret');
-					casper.test.assertExists('a[href^="/profile"]');
-					casper.click('a[href^="/profile"]');
+					casper.test.assertExists('a#user-nav-panel-profile');
+					casper.click('a#user-nav-panel-profile');
 					casper.wait(2000, function() {
 						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
 						var reputationCount2;
@@ -806,8 +806,8 @@ thumpsUpDownTestcases.verifyReputation = function() {
 			wait.waitForElement('li.pull-right.user-panel', casper, function(err, isExists) {
 				if(isExists) {
 					casper.click('ul.nav.pull-right span.caret');
-					casper.test.assertExists('a[href^="/profile"]');
-					casper.click('a[href^="/profile"]');
+					casper.test.assertExists('a#user-nav-panel-profile');
+					casper.click('a#user-nav-panel-profile');
 					casper.wait(2000, function() {
 						var reputationCount = casper.fetchText('li.reputation span.profile-count a');
 						var reputationCount2;
@@ -1035,8 +1035,8 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 	});
 	casper.thenOpen(config.url, function() {
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		casper.test.assertExists('a[href="/register/login"]');
-		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('a#td_tab_login');
+		casper.click('a#td_tab_login');
 		casper.test.assertExists('div.modal-footer a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
 		casper.click('div.modal-footer a#fb_login em');
 		casper.waitForPopup(/facebook/, function(popup) {
@@ -1213,8 +1213,8 @@ thumpsUpDownTestcases.verifyFbUserLikersList = function() {
 	});
 	casper.thenOpen(config.url, function() {
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		casper.test.assertExists('a[href="/register/login"]');
-		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('a#td_tab_login');
+		casper.click('a#td_tab_login');
 		casper.test.assertExists('div.modal-footer a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
 		casper.click('div.modal-footer a#fb_login em');
 		casper.waitForPopup(/facebook/, function(popup) {
@@ -1337,8 +1337,8 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 	//Open front and logged in from fb user
 	casper.thenOpen(config.url, function() {
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		casper.test.assertExists('a[href="/register/login"]');
-		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('a#td_tab_login');
+		casper.click('a#td_tab_login');
 		casper.test.assertExists('a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
 		casper.click('a#fb_login em');
 		casper.waitForPopup(/facebook/, function(popup) {
@@ -1360,8 +1360,8 @@ thumpsUpDownTestcases.verifyReputationOnFbUser = function() {
 		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 			if(isExists) {
 				casper.click('ul.nav.pull-right span.caret');
-				casper.test.assertExists('a[href^="/profile"]');
-				casper.click('a[href^="/profile"]');
+				casper.test.assertExists('a#user-nav-panel-profile');
+				casper.click('a#user-nav-panel-profile');
 				casper.wait(2000, function() {
 					try {
 						casper.test.assertDoesntExist('li.reputation span.profile-label.text-muted','Reputation not available');
@@ -1432,8 +1432,8 @@ thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
 	//Open front and logged in from fb user
 	casper.thenOpen(config.url, function() {
 		casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		casper.test.assertExists('a[href="/register/login"]');
-		casper.click('a[href="/register/login"]');
+		casper.test.assertExists('a#td_tab_login');
+		casper.click('a#td_tab_login');
 		casper.test.assertExists('a#fb_login em','Facebook Login Button Found On login Page Of FrontEndUrl');
 		casper.click('a#fb_login em');
 		casper.waitForPopup(/facebook/, function(popup) {
@@ -1455,8 +1455,8 @@ thumpsUpDownTestcases.verifyReputationOnFbUserWhenOn = function() {
 		wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 			if(isExists) {
 				casper.click('ul.nav.pull-right span.caret');
-				casper.test.assertExists('a[href^="/profile"]');
-				casper.click('a[href^="/profile"]');
+				casper.test.assertExists('a#user-nav-panel-profile');
+				casper.click('a#user-nav-panel-profile');
 				casper.wait(2000, function() {
 					try {
 						casper.test.assertDoesntExist('li.reputation span.profile-label.text-muted','Reputation not available');

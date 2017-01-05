@@ -2,9 +2,10 @@
 
 'use strict';
 var registerMethod = require('./register.js');
+var config = require('../../../config/config.json');
 var utils = require('./utils.js');
 var wait = require('../wait.js');
-//var json = require('../../testdata/forgotpasswordData.json');
+var json = require('../../testdata/forgotpasswordData.json');
 var forumLoginMethod = require('../methods/login.js');
 var backEndForumRegisterMethod = require('./backEndRegistration.js');
 var privateMessageMethod = module.exports = {};
@@ -240,7 +241,7 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {		
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
-	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]','shipra', {keepFocus:true});
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',json["RegisteredUserLogin"].username2, {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
 	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});		
 	driver.test.assertExists('textarea#pmessage_new');
@@ -311,3 +312,43 @@ privateMessageMethod.sendMessageToMaxLimitUser = function(data, driver, callback
 		});
 	});
 };
+
+// method to register 26 user
+privateMessageMethod.registerUsers = function(driver, callback) {
+	driver.thenOpen(config.url, function() {
+		driver.echo('Title of the page :' +this.getTitle(), 'INFO');
+		wait.waitForElement('li.pull-right a[href="/register/register"]', casper, function(err, isExist) {
+			if(!err){
+				if(isExist) {
+					driver.test.assertExists('li.pull-right a[href="/register/register"]');
+					driver.click('li.pull-right a[href="/register/register"]');
+					wait.waitForElement('form[name="PostTopic"] input[name="member"]', casper, function(err, isExist){ 
+						 if(isExist) {
+							driver.echo('Successfully open register form.....', 'INFO');
+						} else {
+							casper.echo('postTopic form  Not Found', 'ERROR');
+						}
+					});
+				} else {
+					driver.echo("User didn't not found any register link", 'ERROR');
+				}
+			}
+		});
+	});
+	driver.eachThen(json['infoToRegisterUser'], function(response) {
+		registerMethod.registerToApp(response.data, casper, function(err) {
+			if(!err) {
+				casper.echo('Processing to registration on forum.....', 'INFO');
+				registerMethod.redirectToLogout(casper, casper.test, function(err) {
+					if(!err) {
+						casper.echo('User logout successfully', 'INFO');
+					}
+				});
+			}
+		});
+	});
+	driver.then(function() {
+		return callback(null);
+	});
+};
+

@@ -1061,7 +1061,7 @@ privateMessageTestcases.ignoreUser = function() {
 										if(isExists) {
 											casper.click('a[data-original-title="Ignored Users"]');
 											casper.waitForSelector('div#ignore-box', function() {
-												casper.sendKeys('input[id="ignore_user_field-tokenfield"]', 'hsk', {keepFocus:true});
+												casper.sendKeys('input[id="ignore_user_field-tokenfield"]', json["RegisteredUserLogin"].username1, {keepFocus:true});
 												casper.sendKeys('input[id="ignore_user_field-tokenfield"]', casper.page.event.key.Enter , {keepFocus: true});
 												casper.click('div#ignore-box input[name="save"]');
 												casper.wait(2000, function() {
@@ -1158,7 +1158,7 @@ privateMessageTestcases.replyOnPreviousMessageAfterIgnoring = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 4','INFO');
 		casper.echo('                 To verify with send reply on previous message after ignoring','INFO');
-		forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
@@ -1220,7 +1220,7 @@ privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 2','INFO');
 		casper.echo('                 To verify with send message whos ignored you','INFO');
-		forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
@@ -1436,7 +1436,7 @@ privateMessageTestcases.verifyMessageIconCountCaseOne = function() {
 		}
 		casper.then(function() {
 			// login by hsk to check the count of messages
-			forumLoginMethod.loginToApp("hsk", "hsk", casper, function(err) {
+			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 				if(!err) {
 					wait.waitForElement('span.badge.notif', casper,function(err, isExists) {
 						if(isExists) {
@@ -1463,7 +1463,7 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 		casper.echo('to verify count of message icon -> verify when 4 user send 1 message to r1>log in with r1 and verify the message icon count.','INFO');
 		privateMessageTestcases.createPrivateMessage(); // message send to hsk by neha
 		casper.then(function() {			// message send to hsk by a
-			forumLoginMethod.loginToApp("a", "a", casper, function(err) {
+			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username2, json["RegisteredUserLogin"].password2, casper, function(err) {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
@@ -1543,7 +1543,7 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 			});
 		});
 		casper.then(function() {			// message send to hsk by abc
-			forumLoginMethod.loginToApp("abc", "abc", casper, function(err) {
+			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username3, json["RegisteredUserLogin"].password3, casper, function(err) {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
@@ -1584,7 +1584,7 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 		});
 		casper.then(function() {
 			// login by hsk to check the count of messages
-			forumLoginMethod.loginToApp("hsk", "hsk", casper, function(err) {
+			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 				if(!err) {
 					wait.waitForElement('span.badge.notif', casper,function(err, isExists) {
 						if(isExists) {
@@ -1612,7 +1612,7 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 	casper.thenOpen(config.url, function() {
 		casper.echo('                       Test case 6','INFO');
 		casper.echo('   To verify default image for avatar on conversation panel','INFO');
-		forumLoginMethod.loginToApp("abc", "abc", casper, function(err) {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username3, json["RegisteredUserLogin"].password3, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
@@ -1664,7 +1664,7 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 		});
 	});
 	casper.thenOpen(config.url, function() {
-		forumLoginMethod.loginToApp("hsk", "hsk", casper, function(err) {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
@@ -2170,7 +2170,7 @@ privateMessageTestcases.leaveSingleConversation = function() {
 													forumLoginMethod.logoutFromApp(casper, function() { });
 												});
 												casper.thenOpen(config.url, function() {
-													forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
+													forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 														if(!err) {
 															wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 																if(isExists) {
@@ -2263,7 +2263,7 @@ privateMessageTestcases.leaveMultipleConversation = function() {
 													forumLoginMethod.logoutFromApp(casper, function() { });
 												});
 												casper.thenOpen(config.url, function() {
-													forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
+													forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 														if(!err) {
 															wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 																if(isExists) {
@@ -2353,7 +2353,7 @@ privateMessageTestcases.leaveAllConversation = function() {
 													forumLoginMethod.logoutFromApp(casper, function() { });
 												});
 												casper.thenOpen(config.url, function() {
-													forumLoginMethod.loginToApp('hsk', 'hsk', casper, function(err) {
+													forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 														if(!err) {
 															wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 																if(isExists) {
@@ -2526,7 +2526,7 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
 			casper.then(function() {
-				forumLoginMethod.loginToApp('hsk','hsk' , casper, function(err) {
+				forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1 , casper, function(err) {
 					if(!err) {
 						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 							if(isExists) {
@@ -2618,7 +2618,7 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
 			casper.then(function() {
-				forumLoginMethod.loginToApp('hsk','hsk' , casper, function(err) {
+				forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1 , casper, function(err) {
 					if(!err) {
 						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 							if(isExists) {
@@ -2752,7 +2752,7 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
 			casper.then(function() {
-				forumLoginMethod.loginToApp('hsk','hsk' , casper, function(err) {
+				forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1 , casper, function(err) {
 					if(!err) {
 						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 							if(isExists) {
@@ -2913,7 +2913,7 @@ privateMessageTestcases.verifyAvtar = function() {
 		});
 	});
 	casper.thenOpen(config.url, function() {
-		forumLoginMethod.loginToApp("hsk", "hsk", casper, function(err) {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username1, json["RegisteredUserLogin"].password1, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
@@ -2964,44 +2964,53 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 	casper.then(function() {
 		casper.echo('                                   Test case 7','INFO');
 		casper.echo('                     To verify  send PM conversation to 25 recipient at the same time','INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		privateMessageMethod.registerUsers(casper, function(err) {
 			if(!err) {
-				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','INFO');
-						}
-					}else {
-						casper.echo('User not logged in', 'INFO');
-					}
-				});
+				casper.echo('26 user registered sucessfully','INFO');
 			} else {
 				casper.echo('User not logged','ERROR');						
 			}
 		});
+		/*casper.then(function() {
+			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+				if(!err) {
+					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+						if(isExists) {
+							try {	
+								casper.click('i#private_message_notification');
+								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('a.send_new_pmsg');
+										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+											if(isExists) {
+												privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
+													if(!err) {
+														casper.echo('Message sent called successfully..','INFO');
+													}
+												});
+											} else {
+												driver.echo('Message pop up not found','ERROR');
+											}
+										});
+									} else {
+										driver.echo('Send a New Messag Pop not found','ERROR');
+									}
+								});
+							} catch (e) {
+								casper.echo('Message not sent..','INFO');
+							}
+						}else {
+							casper.echo('User not logged in', 'INFO');
+						}
+					});
+				} else {
+					casper.echo('User not logged','ERROR');						
+				}
+			});
+		});
 		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
-		});
+		});*/
 	});	
 };
 

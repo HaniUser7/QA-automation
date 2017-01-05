@@ -81,12 +81,12 @@ thumpsUpDownMethod.viewChangePermission = function(driver, callback) {
 							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
 							if (x1.innerText == 'Registered Users') {
 								document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-								var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+								var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
 								return x2;
 							}
 						}
 					});
-					driver.click('a[href="'+grpName+'"]');
+					driver.click('a[id="'+grpName+'"]');
 					return callback(null);
 				} else {
 					driver.echo('Table not found', 'ERROR');

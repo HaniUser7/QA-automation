@@ -44,9 +44,9 @@ var fillDataToLogin = function(data, driver, callback) {
 
 registerMethod.registerToApp = function(data, driver, callback) {
 	driver.fill('form[name="PostTopic"]', {
-		'member' : data.uname,
-		'email': data.uemail,
-		'pw' : data.upass
+		'member' : data.username,
+		'email': data.email,
+		'pw' : data.password
 		
 	}, false);
 	
@@ -88,7 +88,7 @@ registerMethod.registerToApp = function(data, driver, callback) {
 	try {
 		driver.test.assertExists('form[name="PostTopic"] input[name="rules_checkbox"]');
 		utils.enableorDisableCheckbox('rules_checkbox', true, driver, function() {
-			casper.echo("Rules Checkbox Has Been Enabled For User", 'INFO');
+			driver.echo("Rules Checkbox Has Been Enabled For User", 'INFO');
 		});
 	} catch(e) {
 		driver.test.assertDoesntExist('form[name="PostTopic"] input[name="rules_checkbox"]');
