@@ -7,7 +7,7 @@ var result;
 var mailServices = require('./mailServices.js');
 var createStatus = require('./createStatus.js');
 var attachmentServices = require('./attachmentServices.js');
-var path = '/var/tmp/failedScreenshots/';
+var path = '/var/tmp/failedScreenshots';
 var executorServices = module.exports = {};
 
 //It executes job. Take job details as argument, executed the job and initiates mail sending.
@@ -29,22 +29,23 @@ executorServices.executeJob = function(commitDetails, callback){
 			console.log('Program output:', stdout);
 			console.log('Program stderr:', stderr);
 			var testResult = stdout;
+			var automationLogFile = '/etc/automation/log/automation.txt';
+			var failLogFile = '/etc/automation/log/fail.txt';
 			if(stdout) {
 				var descriptionRes = 0;
 				var jsErrorCount = 0;
 				var failTestResult = stdout.split(' ');
+				var jsErrors = fs.readFileSync(failLogFile).toString().split(' ');
 				for(var i=0; i<failTestResult.length;i++) {
 					if(failTestResult[i+1]=='tests'  && failTestResult[i+7]!=0) {
 						descriptionRes = parseInt(descriptionRes)+parseInt(failTestResult[i+7]);
 					}
-					if(failTestResult[i] == 'TypeError:') {
+					if(jsErrors[i] == 'TypeError:') {
 						jsErrorCount = jsErrorCount+1;
 					}
 				}
 				result = descriptionRes;
 			}
-			var automationLogFile = '/etc/automation/log/automation.txt';
-			var failLogFile = '/etc/automation/log/fail.txt';
 			fs.stat(failLogFile, function(err, fileStat) {
 				if (err) {
 					if (err.code == 'ENOENT') {
