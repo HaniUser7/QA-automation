@@ -37,10 +37,12 @@ executorServices.executeJob = function(commitDetails, callback){
 					if(failTestResult[i+1]=='tests'  && failTestResult[i+7]!=0) {
 						descriptionRes = parseInt(descriptionRes)+parseInt(failTestResult[i+7]);
 					}
+					console.log('failTestResult[i] ::::::::::::: ' +failTestResult[i]);
 					if(failTestResult[i] == 'TypeError:') {
 						jsErrorCount = jsErrorCount+1;
 					}
 				}
+				console.log('jsErrorCount 1111::::::::::::: ' +jsErrorCount);
 				result = descriptionRes;
 			}
 			var automationLogFile = '/etc/automation/log/automation.txt';
@@ -59,7 +61,7 @@ executorServices.executeJob = function(commitDetails, callback){
 						console.log("branch : "+commitDetails.branchName);
 							if(fileSize != 0) {
 								if(commitDetails.beta == 0) {
-									if(result == 0) {
+									if(result == 0) {console.log('jsErrorCount 222::::::::::::: ' +jsErrorCount);
 										createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
 											console.log('state of failure : '+status);
 										});
