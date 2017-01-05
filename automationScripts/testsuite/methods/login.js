@@ -56,7 +56,6 @@ forumLoginMethod.logoutFromApp = function(driver,callback) {
 				//document.querySelector('a#logout').click();
 				return document.querySelector('a#logout').innerHTML();
 			});
-			driver.click('a#td_tab_login.');
 			wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 				if(isExists) {
 					return callback(null);
