@@ -57,9 +57,9 @@ upload.featureTest = function(casper, test) {
 		//Verify with Edit the Topic/Post from Topic listing page insert photo camera webaddress
 		uploadTests.uploadEditTopicCameraWebbrowse(); //working fine----21*/
 		//Verify with Edit the Topic/Post from Topic listing page using image button browse
-		/*uploadTests.uploadEditTopicImageButtonbrowse();
+		uploadTests.uploadEditTopicImageButtonbrowse();
 		//Verify with Edit the Topic/Post from Topic listing page using Image button webaddress
-		uploadTests.uploadEditTopicImageButtonWebaddress();
+		/*uploadTests.uploadEditTopicImageButtonWebaddress();
 		//Verify with Edit topic listing page under category (post a reply)Attachment
 		uploadTests.uploadEditPostUnderCategoryPostReplyAttachment();
 		//Verify with Edit topic listiuploadTests.uploadsubcategoryng page under category (using post a reply)camera browse
