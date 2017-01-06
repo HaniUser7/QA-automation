@@ -1082,16 +1082,20 @@ thumpsUpDownTestcases.reputationCountFbUser = function() {
 		});
 		// code to logout for facebook user
 		casper.then(function() {
-			casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
-			casper.click('ul.nav.pull-right span.caret');
 			try {
-				casper.test.assertExists('a#logout');			
-				casper.click('a#logout');
-				casper.waitForSelector('a#td_tab_login', function() {
-					casper.test.assertExists('a#td_tab_login');
-				});			
-			}catch(e) {
-				casper.test.assertDoesntExist('a#logout');
+				casper.test.assertExists('ul.nav.pull-right span.caret','Toggle button Found');
+				casper.click('ul.nav.pull-right span.caret');
+				try {
+					casper.test.assertExists('a#logout');			
+					casper.click('a#logout');
+					casper.waitForSelector('a#td_tab_login', function() {
+						casper.test.assertExists('a#td_tab_login');
+					});			
+				}catch(e) {
+					casper.test.assertDoesntExist('a#logout');
+				}
+			} catch(e) {
+				casper.test.assertDoesntExist('ul.nav.pull-right span.caret','Toggle button not Found');
 			}
 		});        
 	});
@@ -1175,7 +1179,11 @@ thumpsUpDownTestcases.verifyLikersList = function() {
 											try {
 												casper.click('a[id^=total_vote_up_count_]');
 												casper.wait(2000, function() {
-													casper.test.assertExists('ul#who-all','List of users found');
+													try {
+														casper.test.assertExists('ul#who-all','List of users found');
+													} catch (e) {
+														casper.test.assertDoesntExist('ul#who-all','List of users found');
+													}
 												});
 											} catch (e) {
 												casper.echo('The like count is 0 so not clicked','INFO');

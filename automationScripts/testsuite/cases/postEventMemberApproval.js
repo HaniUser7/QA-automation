@@ -720,10 +720,20 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 			}
 		});
 	});
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		//method to enable approve new post** All posts
+		postEventMemberApprovalMethod.enableApproveNewPost(casper, casper.test, function(err) {
+			if(!err) {
+				casper.echo('Enable Approve New Post functionality method called ','INFO');
+			}
+		});
+	});
 };
 
-// method to check the functionality of approve post for guest user
-postEventMemberApprovalTestcases.eventApprovalQueueButton = function() {
+// method to Approve a pending event -Approval queue button
+postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function() {
 	//Open Back-End URL And Get Title and logout if logged in
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                      CASE 1', 'INFO');
@@ -749,17 +759,278 @@ postEventMemberApprovalTestcases.eventApprovalQueueButton = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
 		//method to compose a post by register user
-		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err) {
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
-						this.click('a#approveEvent_'+event_id+' i');
+						this.click('a#approveEvent_'+eventId+' i');
+						}, function fail() {
+							casper.echo('approve tick not found','ERROR');
+						});
+						casper.wait(5000, function() {
+							test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
+						});
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+
+// method to Approve a pending event -By clicking on topic
+postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('form#approveMembers span.post-body-author a', function success() {
+							this.click('form#approveMembers span.post-body-author a');
+							casper.waitForSelector('div.cleared.event-footer strong', function success(){
+								test.assertExists('div.cleared.event-footer strong','Event found');
+								this.echo(this.fetchText('div.cleared.event-footer strong'),'INFO');
+								this.echo('*****************************************','INFO');
+								this.capture(screenShotsDir+'OnEventClick.png');
+							}, function fail() {
+								casper.echo('Event alert not found','ERROR');
+							});
+						},function fail(){
+							casper.echo('Event title not found','ERROR');
+						});
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to Approve a pending event byselect the pending event by  check box
+postEventMemberApprovalTestcases.eventApprovalByCheckBox = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.post-edit.pull-right.dropdown input.entry-checkbox', function success(){
+							this.click('input#eventaction_'+event_id);
+							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
+							test.assertExists('div#pending-menu span.dropdown a.text-success i', 'approve tick on the floating menu******************');
+							this.click('div#pending-menu span.dropdown a.text-success i');
+						},function fail(){
+							casper.echo('Checkbox not Found','INFO');
+						});
+						casper.wait(5000, function() {
+							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page by clicking on checkbox','INFO');
+						});  
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to Approve a pending event by select all pending event by  check box
+postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.subheading input#select_all_pending_events', function success() {
+							this.click('div.subheading input#select_all_pending_events');
+							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
+							test.assertExists('div#pending-menu span.dropdown a.text-success i', 'APPROVE TICK ON THE FLOATING MENU');
+							casper.waitForSelector('div#pending-menu',function success(){
+								this.click('div#pending-menu span.dropdown a.text-success i');
+								this.echo('                       ***********TEXT FETCHED***********','INFO');
+								this.echo(this.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
+							}, function fail(){
+								casper.echo('Floating Menu not Found','INFO');
+							});
+						},function fail(){
+							casper.echo('Checkbox not Found','INFO');
+						});  
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to Delete a pending event from- Approval queue button 
+postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
+							this.click('a#deleteEvent_'+event_id+' i');
 						}, function fail() {
 							casper.echo('approve tick not found','ERROR');
 						});
 						casper.wait(5000, function() {
 							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page','INFO');
+						});  
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to Delete a pending event -By clicking on it 
+postEventMemberApprovalTestcases.eventdeleteByClickingEvent = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('form#approveMembers span.post-body-author a', function success() {
+							this.click('form#approveMembers span.post-body-author a');
+							casper.waitForSelector('div.cleared.event-footer strong', function success(){
+								test.assertExists('div.cleared.event-footer strong','Event found');
+								this.echo(this.fetchText('div.cleared.event-footer strong'),'INFO');
+								this.echo('*****************************************','INFO');
+								this.capture(screenShotsDir+'DeleteOnEventClick.png');
+							}, function fail() {
+								casper.echo('Event alert not found','ERROR');
+							});
+						},function fail(){
+							casper.echo('Event title not found','ERROR');
+						});
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to Delete a pending event by select the pending post by  check box
+postEventMemberApprovalTestcases.eventdeleteByCheckBox = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.post-edit.pull-right.dropdown input.entry-checkbox', function success(){
+							this.click('input#eventaction_'+event_id);
+							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
+							test.assertExists('div#pending-menu span.dropdown a.text-danger i', 'Delete tick on the floating menu******************');
+							this.click('div#pending-menu span.dropdown a.text-danger i');
+						},function fail(){
+							casper.echo('Checkbox not Found','INFO');
+						});
+						casper.wait(5000, function() {
+							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page by clicking on checkbox','INFO');
+						});  
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to Delete a pending event by select all pending post by  check box
+postEventMemberApprovalTestcases.eventdeleteByAllCheckBox = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.subheading input#select_all_pending_events', function success() {
+							this.click('div.subheading input#select_all_pending_events');
+							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
+							test.assertExists('div#pending-menu span.dropdown a.text-danger i', 'Delete TICK ON THE FLOATING MENU');
+							casper.waitForSelector('div#pending-menu',function success(){
+								this.click('div#pending-menu span.dropdown a.text-danger i');
+								this.echo('                       ***********TEXT FETCHED***********','INFO');
+								this.echo(this.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
+							}, function fail(){
+								casper.echo('Floating Menu not Found','INFO');
+							});
+						},function fail(){
+							casper.echo('Checkbox not Found','INFO');
+						}); 
+					} else {
+						casper.echo('Not called goToApprovalQueuePage method','INFO');
+					}
+				});
+			} else {
+				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+};
+		
+// method to edit a pending event by clicking on it
+postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
+	//Open front end and logged in as register user
+	casper.thenOpen(config.url, function() {
+		//method to compose a post by register user
+		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
+			if(!err) {
+				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
+					if(!err) {
+						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
+						this.click('a#edit_'+event_id+' i');
+							casper.waitForSelector('div.editable-input textarea', function success() {
+								var text = this.fetchText('div.editable-input textarea');
+								this.echo('The text of the event is--'+text,'INFO');
+								this.sendKeys('div.editable-input textarea', 'Event is edited');
+								this.wait(5000,function () {
+									this.capture(screenShotsDir+'editEvent.png');
+								});
+								this.click('div.editable-buttons i.glyphicon.glyphicon-ok');
+								this.click('div.editable-buttons i.glyphicon.glyphicon-ok');
+							}, function fail(){
+								casper.echo('Text Area not found','ERROR');
+							});
+						},function fail(){
+							casper.echo('Edit button not found','ERROR');
 						});
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');

@@ -237,13 +237,18 @@ thumpsUpDownMethod.disableReputation = function(driver, callback) {
 							wait.waitForElement('input#reputation', casper, function(err, isExists) {
 								if(isExists) {
 									utils.enableorDisableCheckbox('reputation', false, casper, function() {
-										casper.echo('checkbox is uncheckedchecked', 'INFO');
+										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -289,8 +294,13 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -331,14 +341,19 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 							wait.waitForElement('input#REQreg', casper, function(err, isExists) {
 								if(isExists) {
 									utils.enableorDisableCheckbox('REQreg', false, casper, function() {
-										casper.echo('checkbox is uncheckedchecked', 'INFO');
+										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									casper.click('div.ui-dialog-buttonset button');
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -384,8 +399,13 @@ thumpsUpDownMethod.enableUserAccount = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('User account not enabled', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -426,13 +446,18 @@ thumpsUpDownMethod.disableNewRegistration = function(driver, callback) {
 							wait.waitForElement('input#new_user_registration', casper, function(err, isExists) {
 								if(isExists) {
 									utils.enableorDisableCheckbox('new_user_registration', false, casper, function() {
-										casper.echo('checkbox is checked', 'INFO');
+										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -478,8 +503,13 @@ thumpsUpDownMethod.enableNewRegistration = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -525,8 +555,13 @@ thumpsUpDownMethod.enableFacebookLogin = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -572,8 +607,13 @@ thumpsUpDownMethod.disableFacebookLogin = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');

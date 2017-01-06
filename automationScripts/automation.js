@@ -58,6 +58,7 @@ switch (feature) {
         	casper.echo("Options:");
         	casper.echo("forgotPassword");
         	casper.echo("thumpsUpDown");
+        	casper.echo("privateMessage");
         	casper.echo("postEventMemberApproval");
 		casper.exit();
 };

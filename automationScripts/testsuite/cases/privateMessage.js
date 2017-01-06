@@ -85,8 +85,10 @@ privateMessageTestcases.deleteConversation = function() {
 												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
 												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
 												casper.click('a#delete_conversation i');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
 													casper.echo('The topmost message is deleted','INFO');
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -144,8 +146,10 @@ privateMessageTestcases.deleteMultipleConversation = function() {
 												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
 												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
 												casper.click('a#delete_conversation i');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
 													casper.echo('The topmost messages are deleted','INFO');
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -200,8 +204,10 @@ privateMessageTestcases.deleteAllConversation = function() {
 												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
 												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
 												casper.click('a#delete_conversation i');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
 													casper.echo('All messages are deleted','INFO');
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -306,13 +312,15 @@ privateMessageTestcases.unreadCheckbox = function() {
 												casper.click('div#messages-menu a.dropdown-toggle');
 												casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
 												casper.click('li#markunread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function() {
+												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
 													casper.echo(casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center'),'INFO');
 													try {
 														casper.test.assertExists('span.badge.blue', 'Count Found');
 													} catch (e) {
 														casper.echo('Count not found','INFO');
 													}
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -367,13 +375,15 @@ privateMessageTestcases.unreadMultipleCheckbox = function() {
 												casper.click('div#messages-menu a.dropdown-toggle');
 												casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
 												casper.click('li#markunread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function() {
+												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
 													casper.echo(casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center'),'INFO');
 													try {
 														casper.test.assertExists('span.badge.blue', 'Count Found');
 													} catch (e) {
 														casper.echo('Count not found','INFO');
 													}
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -425,13 +435,15 @@ privateMessageTestcases.unreadAllCheckbox = function() {
 												casper.click('div#messages-menu a.dropdown-toggle');
 												casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
 												casper.click('li#markunread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function() {
+												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
 													casper.echo(casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center'),'INFO');
 													try {
 														casper.test.assertExists('span.badge.blue', 'Count Found');
 													} catch (e) {
 														casper.echo('Count not found','INFO');
 													}
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -485,8 +497,10 @@ privateMessageTestcases.readCheckbox = function() {
 												casper.click('div#messages-menu a.dropdown-toggle');
 												casper.test.assertExists('li#markread_msg_btn a', 'Mark as Read tab Found');
 												casper.click('li#markread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function() {
+												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
 													casper.echo(casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center'),'INFO');
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -540,8 +554,10 @@ privateMessageTestcases.readMultipleCheckbox = function() {
 												casper.click('div#messages-menu a.dropdown-toggle');
 												casper.test.assertExists('li#markread_msg_btn a', 'Mark as Read tab Found');
 												casper.click('li#markread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function() {
+												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
 													casper.echo(casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center'),'INFO');
+												}, function fail() {
+													casper.echo('message not found', 'INFO')
 												});
 											});
 										} else {
@@ -594,8 +610,10 @@ privateMessageTestcases.readAllCheckbox = function() {
 												try {
 													casper.test.assertExists('li#markread_msg_btn a', 'Mark as Uread tab Found');
 													casper.click('li#markread_msg_btn a');
-													casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function() {
+													casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
 														casper.echo(casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center'),'INFO');
+													}, function fail() {
+														casper.echo('message not found', 'INFO')
 													});
 												} catch(e) {
 													casper.echo('All mesages already marked as read');
@@ -644,8 +662,10 @@ privateMessageTestcases.readFromConversationPage = function() {
 									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
 										if(isExists) {
 											casper.click('a#mark_all_pmread');
-											casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top p'),'INFO');
+											}, function fail() {
+												casper.echo('message not found', 'INFO')
 											});
 										} else {
 											casper.echo('Inbox not found','ERROR');
@@ -1184,9 +1204,11 @@ privateMessageTestcases.replyOnPreviousMessageAfterIgnoring = function() {
 														$('div#message_options').show();
 													});
 													casper.click('a#reply_msg_button');
-													casper.waitUntilVisible('div#loading_msg', function() {
+													casper.waitUntilVisible('div#loading_msg', function success() {
 														casper.echo(casper.fetchText('div#loading_msg p'), 'INFO');
 														casper.echo('message replied','INFO');
+													}, function fail() {
+														casper.echo('Loading not found', 'INFO')
 													});
 												});	
 											});
@@ -1735,7 +1757,7 @@ privateMessageTestcases.composeScenarioSecond = function() {
 												casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus: true} );
 					
 												casper.sendKeys('input[id="pm_subject"]', json["Privatemessage"].subject, {keepFocus:true});							
-												casper.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+												casper.waitUntilVisible('iframe#pmessage_new_ifr', function success() {
 													casper.withFrame('pmessage_new_ifr', function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -1743,10 +1765,14 @@ privateMessageTestcases.composeScenarioSecond = function() {
 													});
 													casper.then(function() {
 														casper.click('a#send_pmsg_button');
-														casper.waitUntilVisible('div#ajax-msg-top', function() {
+														casper.waitUntilVisible('div#ajax-msg-top', function success() {
 															casper.echo(casper.fetchText('div#ajax-msg-top p'),'INFO');
+														}, function fail() {
+															casper.echo('Sent not found', 'INFO')
 														});
 													});
+												}, function fail() {
+													casper.echo('message iframe not found', 'INFO')
 												});
 											});
 										} else {
@@ -2060,8 +2086,12 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = functio
 									casper.click('a.send_new_pmsg');
 									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
 										if(isExists) {
-											casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
-											casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');
+											try {
+												casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
+												casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');
+											} catch (e) {
+												casper.echo('Attach file link and Insert link found ','INFO');
+											}
 										} else {
 											driver.echo('Message pop up not found','ERROR');
 										}
@@ -2110,8 +2140,12 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function
 									casper.click('a.send_new_pmsg');
 									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
 										if(isExists) {
-											casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
-											casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
+											try {
+												casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
+												casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
+											} catch (e) {
+												casper.echo('Attach file link and Insert link not found ','INFO');
+											}
 										} else {
 											driver.echo('Message pop up not found','ERROR');
 										}
@@ -2162,8 +2196,10 @@ privateMessageTestcases.leaveSingleConversation = function() {
 											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
 											casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
 											casper.click('a#leave_conversation i');
-											casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() {
+												driver.echo('message after leave not found', 'INFO')
 											});
 											casper.then(function() {
 												casper.then(function() {
@@ -2255,8 +2291,10 @@ privateMessageTestcases.leaveMultipleConversation = function() {
 											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
 											casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
 											casper.click('a#leave_conversation i');
-											casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() {
+												driver.echo('message after leave not found', 'INFO')
 											});
 											casper.then(function() {
 												casper.then(function() {
@@ -2345,8 +2383,10 @@ privateMessageTestcases.leaveAllConversation = function() {
 											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
 											casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
 											casper.click('a#leave_conversation i');
-											casper.waitUntilVisible('div#ajax-msg-top', function() {
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() {
+												driver.echo('message after leave not found', 'INFO')
 											});
 											casper.then(function() {
 												casper.then(function() {
@@ -2964,14 +3004,14 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 	casper.then(function() {
 		casper.echo('                                   Test case 7','INFO');
 		casper.echo('                     To verify  send PM conversation to 25 recipient at the same time','INFO');
-		privateMessageMethod.registerUsers(casper, function(err) {
+		privateMessageMethod.registerUsers(casper, function(err) {    // disable  Approve New Registrations and  Email Address Verification
 			if(!err) {
 				casper.echo('26 user registered sucessfully','INFO');
 			} else {
 				casper.echo('User not logged','ERROR');						
 			}
 		});
-		/*casper.then(function() {
+		casper.then(function() {
 			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
@@ -2985,7 +3025,7 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 											if(isExists) {
 												privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
 													if(!err) {
-														casper.echo('Message sent called successfully..','INFO');
+														casper.echo('Message sent to 25 user successfully..','INFO');
 													}
 												});
 											} else {
@@ -3010,7 +3050,7 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 		});
 		casper.then(function() {
 			forumLoginMethod.logoutFromApp(casper, function() { });
-		});*/
+		});
 	});	
 };
 

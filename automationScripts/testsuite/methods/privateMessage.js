@@ -30,8 +30,10 @@ privateMessageMethod.enableMessage = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
 											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -78,8 +80,10 @@ privateMessageMethod.disableMessage = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
 											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -126,8 +130,10 @@ privateMessageMethod.enableAttachments = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
 											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -174,8 +180,10 @@ privateMessageMethod.disableAttachments = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function() {
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
 											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -213,12 +221,14 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 	driver.evaluate(function() {
 		document.querySelector('textarea#pmessage_new').click();
 	});
-	driver.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+	driver.waitUntilVisible('iframe#pmessage_new_ifr', function success() {
 		driver.withFrame('pmessage_new_ifr', function() {
 			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
 			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
+	}, function fail() {
+		driver.echo('Message iframe not fount', 'INFO')
 	});
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
@@ -248,12 +258,14 @@ privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {
 	driver.evaluate(function() {
 		document.querySelector('textarea#pmessage_new').click();
 	});
-	driver.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+	driver.waitUntilVisible('iframe#pmessage_new_ifr', function success() {
 		driver.withFrame('pmessage_new_ifr', function() {
 			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
 			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
+	}, function fail() {
+		driver.echo('Message iframe not fount', 'INFO')
 	});
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
@@ -288,12 +300,14 @@ privateMessageMethod.sendMessageToMaxLimitUser = function(data, driver, callback
 		driver.evaluate(function() {
 			document.querySelector('textarea#pmessage_new').click();
 		});
-		driver.waitUntilVisible('iframe#pmessage_new_ifr', function() {
+		driver.waitUntilVisible('iframe#pmessage_new_ifr', function success() {
 			driver.withFrame('pmessage_new_ifr', function() {
 				driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A,{keepFocus: true});		
 				driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
 				driver.sendKeys('#tinymce', "Message Send to 25 user at same time");
 			});
+		}, function fail() {
+			driver.echo('Message iframe not fount', 'INFO')
 		});
 		driver.then(function() {
 			driver.test.assertExists('a#send_pmsg_button');

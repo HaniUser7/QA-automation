@@ -128,7 +128,7 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		var expectedSuccessMsg = json['validInfo'].expectedSuccessMsg;
 		driver.test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
 		driver.echo('Successfully done registration on forum.....', 'INFO');
-
+		driver.echo('try1........', 'ERROR');
 		
 		//Clicking On 'Back To Category' Link 
 		wait.waitForElement('small a[href="/categories"]', casper, function(err, isExist) {
@@ -143,16 +143,16 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		});
 	} catch(e) {
 		try {
-			test.assertExists('#registerEditProfile div[role="alert"]');
+			driver.test.assertExists('#registerEditProfile div[role="alert"]');
 			var errorMessage = driver.fetchText('#registerEditProfile div[role="alert"]');
 			var expectedErrorMsg = "It looks like you already have a forum account!";
+			//driver.echo('........errorMessage : ' +errorMessage+ '\nexpectedErrorMsg : ' +expectedErrorMsg, 'ERROR');
 			driver.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+			//driver.echo('........', 'ERROR');
 			driver.echo('USER ALREADY REGISTERED ON FORUM.....', 'INFO');
-			
 			return callback(null);
 		} catch(e1) {
 			driver.echo('Successfully done registration on forum.....', 'INFO');
-			
 			//Click On Logout Link
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExist) {
 			    if(isExist) {

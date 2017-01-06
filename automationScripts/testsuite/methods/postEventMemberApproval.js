@@ -11,6 +11,7 @@ var postEventMemberApprovalMethod = module.exports = {};
 var currentUrl;
 var topic;
 var postId;
+var eventId;
 //*************************************************PRIVATE METHODS***********************************************
 
 //method to set the user permission to Administration 
@@ -76,8 +77,10 @@ postEventMemberApprovalMethod.enableApproveNewPost = function(driver, test, call
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#loading_msg', function() {
+										casper.waitUntilVisible('div#loading_msg', function success() {
 											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										}, function fail() {
+											casper.echo('Loading... not found', 'INFO');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -124,8 +127,10 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#loading_msg', function() {
+										casper.waitUntilVisible('div#loading_msg', function success() {
 											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										}, function fail() {
+											casper.echo('Loading... not found', 'INFO');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -473,7 +478,7 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 					driver.then(function() {
 						this.click('#post_event_buttton');
 						this.wait(5000, function() {
-							event_id = casper.evaluate( function(a) {
+							eventId = casper.evaluate( function(a) {
 								var n = a.indexOf('eventid=');
 								var stre='eventid=';
 								var leng=stre.length;
@@ -483,9 +488,9 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 								var id = stringt.substring(0,t);
 								return id;
 							}, this.getCurrentUrl());
-							this.echo('*******event_id='+event_id,'INFO');
+							this.echo('*******event_id='+eventId,'INFO');
 							this.capture(screenShotsDir+'event.png');
-							return callback(null);
+							return callback(null, eventId);
 						});
 					});
 				});
