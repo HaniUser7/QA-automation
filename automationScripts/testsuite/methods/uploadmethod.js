@@ -546,15 +546,7 @@ uploadMethods.enableApproveAllPost=function(driver , callback) {
 
 //**************************************create sub-category method **********************************************
 uploadMethods.createSubCategory=function(driver , callback) {
-		
-
-
-
-
-
-	casper.thenOpen(config.backEndUrl , function(){
-		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		loginPrivacyOptionMethod.loginToForumBackEnd	(casper , function(err) {
+	loginPrivacyOptionMethod.loginToForumBackEnd	(casper , function(err) {
 			if (!err)
 				casper.echo('LoggedIn to forum backend....', 'INFO');
 		});
@@ -577,9 +569,25 @@ uploadMethods.createSubCategory=function(driver , callback) {
 },false);
 																			casper.click('input[name="isSubcategory"]');
 																		casper.click('select#parentid')
+var post= casper.evaluate(function(){
+	var aa=document.querySelector('select[name="post_approval"] option[value="0"]');
+  		var a= aa.length;
+    		
+       		var hh=aa[0].getAttribute('value');
+     		
+ 		return hh;
+ });
+ casper.echo("message :" +post,'INFO');
+ casper.click('a[href="'+post+'"]');
+
+
+
+
+
 																	casper.capture('sub.png');
 																		casper.wait(2000, function(){
-																	casper.sendKeys('select[name="parentid"] option[value="199222"]', 'hello Category');
+
+casper.click('select#parentid option:nth-child(1)');
 																	casper.capture('sub2.png');
 																		casper.click('form[name="frmOptions"] button');
 																			casper.wait(2000, function(){
@@ -594,7 +602,7 @@ uploadMethods.createSubCategory=function(driver , callback) {
 					});	
 				}	
 			});
-		});
+		
 };
 
 //***********************************Delete Method--- Categories******************************
@@ -804,6 +812,65 @@ uploadMethods.profilePost=function(driver , callback) {
 		});
 	});
 };
+
+//start sub-category topics
+uploadMethods.subCategoryTopic = function(dataa,driver,callback) {
+	driver.click('a.pull-right.btn.btn-uppercase.btn-primary ');
+	driver.waitForSelector('div.post-body.pull-left',function success() {
+                //driver.test.assertExists('form#PostTopic');								
+		driver.sendKeys('input[name="subject"]', dataa.title, {reset:true});								
+		driver.withFrame('message_ifr', function() {
+			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
+			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+			driver.sendKeys('#tinymce',dataa.content);
+                        driver.capture('23.png');
+		});
+		driver.waitForSelector('#all_forums_dropdown', function success() {
+			driver.click('#all_forums_dropdown');
+			driver.fill('form[name="PostTopic"]',{
+				'forum' : dataa.category
+			},false);
+			driver.then(function() {
+				driver.click('#post_submit');
+			});
+		}, function fail() {
+			driver.waitForSelector('#post_submit',function success() {							
+				driver.test.assertExists('#post_submit');
+				driver.click('#post_submit');
+			},function fail() {
+				driver.echo('Unable to submit form','ERROR');
+			});
+		});
+	},function fail(){
+		driver.echo('Unable to Open Form To Start Topic','ERROR');
+	});
+	driver.then(function() {
+		return callback(null);
+	});
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
 

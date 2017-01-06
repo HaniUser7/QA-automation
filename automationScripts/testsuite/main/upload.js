@@ -7,7 +7,7 @@ upload.featureTest = function(casper, test) {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 	//*********************Post section******************************************
 		//Verify with post from topic listing page(Attachment/insert photos)
-		/*uploadTests.uploadPostAttachment();
+		uploadTests.uploadPostAttachment();
 		//Verify with post from topic listing page(insert photos)
 		uploadTests.uploadPostAttachmentCamera();
 		//Verify with start new Topic Attachment
@@ -57,7 +57,7 @@ upload.featureTest = function(casper, test) {
 		//Verify with Edit the Topic/Post from Topic listing page insert photo camera webaddress
 		uploadTests.uploadEditTopicCameraWebbrowse(); //working fine----21*/
 		//Verify with Edit the Topic/Post from Topic listing page using image button browse
-		/*uploadTests.uploadEditTopicImageButtonbrowse();
+		uploadTests.uploadEditTopicImageButtonbrowse();
 		//Verify with Edit the Topic/Post from Topic listing page using Image button webaddress
 		uploadTests.uploadEditTopicImageButtonWebaddress();
 		//Verify with Edit topic listing page under category (post a reply)Attachment
@@ -82,16 +82,16 @@ upload.featureTest = function(casper, test) {
 		uploadTests.uploadEditPostunderCategoryImageButtonWebaddress();
 	//******************Search section*********************************************************
 		//Verify with Edit the Post from Search result page Attachment
-		/*uploadTests.uploadEditPostSearch();
+		uploadTests.uploadEditPostSearch();
 		//Verify with Edit the Post from Search result page camera webaddress
 		uploadTests.uploadEditPostSearchCameraWebaddress();
 		//Verify with Edit the Post from Search result page Image webaddress
 		uploadTests.uploadEditPostSearchCamerabrowse();
 		//Verify with Edit the Post from Search result page Image button browse
-		uploadTests.uploadEditPostSearchImagebrowse();*/
+		uploadTests.uploadEditPostSearchImagebrowse();
 	//**************************profile page*******************************************************
 		//Verify with Edit the post from Profile page(Attachment)
-		/*uploadTests.uploadEditProfileAttachment();
+		uploadTests.uploadEditProfileAttachment();
 		//Verify with Edit the post from Profile page camera browse
 		uploadTests.uploadEditPostProfileCamerabrowse();
 		//Verify with Edit the post from Profile page camera webaddress
@@ -123,7 +123,7 @@ upload.featureTest = function(casper, test) {
 		uploadTests.uploadSubCategoryImageWebaddress();*/
 	   //****************************Approval section************************************
 		//Verify with Edit the post from  Approval queue Page
-		/*uploadTests.uploadApprovalqueue();
+		uploadTests.uploadApprovalqueue();
 	        //Verify with Edit the post from  Approval queue Page camera browse
 		uploadTests.uploadApprovalCamerabrowse();
 		//Verify with Edit the post from  Approval queue Page camera webaddress
@@ -148,7 +148,7 @@ upload.featureTest = function(casper, test) {
 		//verify with upload picz by edit album>delete all picz> add new picz
 		uploadTests.uploadEditAddNew();
 		//verify with upload picz by edit album>delete some picz>add new picz
-		uploadTests.uploadEditAddNewPicz();*/
+		uploadTests.uploadEditAddNewPicz();
 	//******************************Combine all forum cases****************************************
 		//Delete Category method
 		uploadTests.DeleteCategory();
