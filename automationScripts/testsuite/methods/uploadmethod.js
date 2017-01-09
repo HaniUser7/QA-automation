@@ -220,7 +220,8 @@ uploadMethods.webaddresslogin=function(driver , callback) {
 uploadMethods.startTopic = function(dataa,driver,callback) {
 	driver.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 	driver.waitForSelector('div.post-body.pull-left',function success() {
-                //driver.test.assertExists('form#PostTopic');								
+                //driver.test.assertExists('form#PostTopic');
+		driver.test.assertExists('div.post-body.pull-left');								
 		driver.sendKeys('input[name="subject"]', dataa.title, {reset:true});								
 		driver.withFrame('message_ifr', function() {
 			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			

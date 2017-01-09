@@ -237,6 +237,166 @@ deletePostMethod.profilePostRegister=function(driver , callback) {
 };
 
 
+//*******************************************Delete own topic/post as register user*******************************************
+//"Enable 'delete own post' under the Group permission.
+//(WTB>User>group permission>manage> change permission)
+//Enable  'delete own topic' under the Group permission.
+//(WTB>User>group permission>manage> change permission)"
+
+//"view category
+//delete own topic- disable
+//delete own post-enable "
+deletePostMethod.BackEndSettings=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('delete_posts',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked delete own post','INFO');
+								});
+								//casper.click('button.button.btn-m.btn-blue');
+								utils.enableorDisableCheckbox('delete_threads',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked delete own topic ','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+							}
+						});
+					}	
+				});
+			}
+		});
+	});
+};	
+
+//create topic method only for own topic register user--------------------------------------------------------------------------
+deletePostMethod.createMoreTopic=function(driver , callback) {
+	casper.thenOpen(config.url , function(){
+		casper.echo('-----------New topic created Method called-------------' , 'INFO');
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				casper.waitForSelector('a[href="/categories"]' , function success(){
+					casper.test.assertExists('a[href="/categories"]','Topic found');
+					//casper.click('span.topic-content a');
+					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+						if(isExists) {
+							wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+								if(isExists) {
+									//method to create a new topic
+									uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+										if(!err) {
+											casper.echo('new topic created', 'INFO');
+										}else {
+											casper.echo('Topic not created', 'INFO');
+										}
+									});
+								} else {
+									casper.echo('User icon not found','ERROR');	
+								}
+							});
+						}
+					});
+				},function fail() {
+					casper.echo('Failed block called','INFO');
+					
+				});
+				casper.then(function() {
+					inContextLoginMethod.logoutFromApp(casper, function(err){
+						if (!err)
+							casper.echo('Successfully logout from application', 'INFO');
+					});
+				});	
+			}
+		});
+     	});
+};							
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

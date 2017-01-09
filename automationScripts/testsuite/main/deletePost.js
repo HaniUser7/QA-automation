@@ -35,11 +35,18 @@ deletePost.featureTest = function(casper, test) {
 		//delete post from members profile page register user-13
 		deletePostTests.deletePostProfilePage();*/
 		//delete topic by searching topic-14
-		deletePostTests.deletePostSearchTopic();
+		//deletePostTests.deletePostSearchTopic();
 		//delete post by searching post-15
 		//deletePostTests.deletePostSearchPost();
-
-
+    //********************************Delete own topic using register user***********************************
+		//Verify by delete one own  topic -selecting by check box by register user.
+		//deletePostTests.deleteOwnTopic();
+		//Verify by delete own all topic-selecting by check box using register user
+		//deletePostTests.deleteAllOwnTopic();
+		//verify with delete  own topic-by drop down of the topic
+		//deletePostTests.deleteOwnTopicDropdown();
+		//verify with delete own post-selecting by check box 
+		deletePostTests.deleteOwnPostCheckboxRegister();
 
 
 
