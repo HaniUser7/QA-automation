@@ -7,7 +7,7 @@ var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
 var json = require('../../testdata/inContextLogin.json');
 
 
-//Create a post method --------------------------------------------------------------------------
+//Create a post method  admin--------------------------------------------------------------------------
 deletePostMethod.profilePost=function(driver , callback) {
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -157,10 +157,84 @@ deletePostMethod.createTopic=function(driver , callback) {
      	});
 };							
 
+//search topic for register user
+deletePostMethod.searchlogin=function(driver , callback) {
+	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
+	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+		if(isExists) {
+			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+				}else {
+					casper.echo('Processing to Login on forum.....','INFO');
+					wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
+						if(isExists) {
+							casper.click('input#inline_search_box');
+							casper.fill('form#inlineSearchForm', {
+								'keywords' :'NewTopic'
+							},true);
+							
+						}
+					});
+				}
+			});
+		}
+	});
+};
 
 
-
-
+////Create a post method from register user 
+deletePostMethod.profilePostRegister=function(driver , callback) {
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('***********Method to create post************','INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
+							if(isExists){
+								//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+								//casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								casper.click('form[name="posts"] a.topic-title');
+								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+									if(isExists) {
+										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+										wait.waitForTime(5000 , casper , function(err) {
+											casper.capture('1.png');
+											casper.withFrame('message_ifr', function() {
+												casper.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
+												casper.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', 'dragme');
+											});
+											casper.wait(5000 , function(){
+												casper.test.assertExists('input[name="submitbutton"]','button found');
+                                                                                                casper.click('input[name="submitbutton"]');
+												casper.wait(5000 , function(){
+													casper.capture('34.png');
+													casper.then(function() {
+															inContextLoginMethod.logoutFromApp(casper, function(err){
+														if (!err)
+															casper.echo('Successfully logout from application', 'INFO');
+														});
+													});	
+												});
+											});
+										});
+									}
+									
+								});
+							}
+						});
+					}
+				});
+			}
+		});
+	});
+};
 
 
 

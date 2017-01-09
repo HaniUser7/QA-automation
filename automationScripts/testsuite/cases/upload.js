@@ -2668,15 +2668,60 @@ uploadTests.uploadAdminImageWebaddress=function(){
 //**********************************************sub-category*******************************************8888
 
 //Verify with sub category from forum listing page(Attachement/insert photos)
-/*uploadTests.uploadSubCategory=function(){		
-	//casper.thenOpen(config.backEndUrl , function(){
-		//casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
-		//casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
-		/*uploadMethods.createSubCategory(casper ,function(err){
+uploadTests.uploadSubCategory=function(){		
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
+		casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
+		uploadMethods.createSubCategory(casper ,function(err){
 			if(!err)
 				casper.echo('create subcategory  method called successfully','INFO');
 		});
-		casper.thenOpen(config.url , function(){
+		
+		/*casper.thenOpen(config.url , function(){
+			casper.echo('                   TestCase subcategory method               ' ,'INFO');
+			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+			casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
+			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+				}else {
+					casper.echo('Processing to Login on forum.....','INFO');
+					wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
+						if(isExists){
+							casper.click('a[href="/categories"]');
+							wait.waitForElement('span.forum-title:nth-child(1)' , casper , function(err , isExists){
+								if(isExists) {
+									casper.click('span.forum-title:nth-child(1)');
+									wait.waitForElement('span.forum-title:nth-child(1)' , casper , function(err , isExists) {
+										if(isExists) {
+											casper.click('span.forum-title:nth-child(1)');
+											wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+												if(isExists) {
+													uploadMethods.startTopic(json['subTopic'], casper, function(err) {
+														if(!err) {
+															casper.echo('new topic created', 'INFO');
+														}else {
+															casper.echo('Topic not created', 'INFO');
+														}
+													});
+													casper.then(function(){
+														inContextLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
+														});
+													});
+												}
+											});
+										}
+									});
+								}
+							});
+						}
+					});
+				}
+			});
+		});*/
+		/*casper.thenOpen(config.url , function(){
 			casper.echo('                   TestCase 50                ' ,'INFO');
 			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 			casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
@@ -2691,20 +2736,21 @@ uploadTests.uploadAdminImageWebaddress=function(){
 							wait.waitForElement('span.forum-title:nth-child(1)' , casper , function(err , isExists){
 								if(isExists) {
 									casper.click('span.forum-title:nth-child(1)');
-									wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+									wait.waitForElement('span.forum-title:nth-child(1)' , casper , function(err , isExists) {
 										if(isExists) {
 											casper.click('span.forum-title:nth-child(1)');
-											uploadMethods.createSubTopic(casper , function(err){
-												if(!err)
-													casper.echo('createsubtopic called', 'INFO');
+											wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+												if(isExists) {
+													casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+													casper.click('i.icon.glyphicon-paperclip');
+													casper.then(function(){
+														inContextLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
+														});
+													});
+												}
 											});
-											casper.then(function(){
-												casper.click('i.icon.glyphicon-paperclip');
-												inContextLoginMethod.logoutFromApp(casper, function(err){
-													if (!err)
-														casper.echo('Successfully logout from application', 'INFO');
-												});
-											});	
 										}
 									});
 								}
@@ -2713,19 +2759,18 @@ uploadTests.uploadAdminImageWebaddress=function(){
 					});
 				}
 			});
-		});
+		});*/
 		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
 			wait.waitForTime(1000 , casper , function(err) {
 				casper.capture('1.png');
 			});
 		});
-		
-		
-	//});
+	});
 };
+	
 
 //Verify with sub category from forum listing page camera browse
-uploadTests.uploadSubCategoryCamerabrowse=function(){		
+/*uploadTests.uploadSubCategoryCamerabrowse=function(){		
 	casper.thenOpen(config.url , function(){
 		casper.echo('                   TestCase 51                 ' ,'INFO');	
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');

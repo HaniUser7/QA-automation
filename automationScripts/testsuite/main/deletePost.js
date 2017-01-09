@@ -21,10 +21,23 @@ deletePost.featureTest = function(casper, test) {
 		//deletePostTests.deletePostProfilePage();
 		//Verify by delete multiple post-selecting by check box 
 		//deletePostTests.deleteMultiplePost();
-		//Verify by delete one topic -selecting by check box 
-		deletePostTests.deletePostRegisteruser();
-		//
-
+	//****************************Register user*******************************************************
+		//Verify by delete one topic -selecting by check box-8 
+		/*deletePostTests.deletePostRegisteruser();
+		//Verify by delete all topic -selecting by check box-9 
+		deletePostTests.deleteAllTopicRegisteruser();
+		//verify with delete topic-by drop down of the topic-10
+		deletePostTests.deleteTopicDropDownRegisuser();
+		//verify with delete post-selecting by check box-11
+		deletePostTests.deletePostCheckboxRegister();
+		//verify with delete post-by drop down of the post Register user-12
+		deletePostTests.deletePostDropDownRegister();
+		//delete post from members profile page register user-13
+		deletePostTests.deletePostProfilePage();*/
+		//delete topic by searching topic-14
+		deletePostTests.deletePostSearchTopic();
+		//delete post by searching post-15
+		//deletePostTests.deletePostSearchPost();
 
 
 
