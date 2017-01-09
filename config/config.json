@@ -1,7 +1,7 @@
 {
 	"screenShotsLocation": "../Screenshots/",
-	"url": "http://beta23.websitetoolbox.com/",
-	"backEndUrl": "http://beta23.websitetoolbox.com/tool/members/login",
+	"url": "http://beta25.websitetoolbox.com/",
+	"backEndUrl": "http://beta25.websitetoolbox.com/tool/members/login",
 	"app": {	
 		"verbose" : true,
 	 	"logLevel" : "debug",
@@ -13,7 +13,7 @@
 	},
 
 	"backendCred" : {
-		"uname" : "beta23",
+		"uname" : "beta25",
     		"upass" : "test",
     		"apiKey" : "4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q"
 	},

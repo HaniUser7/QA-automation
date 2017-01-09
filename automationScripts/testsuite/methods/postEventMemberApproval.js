@@ -22,8 +22,8 @@ postEventMemberApprovalMethod.setAdmin = function(driver, test, callback) {
 				if(isExists) {
 					test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
 					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					test.assertExists('a[href^="/tool/members/mb/usergroup"]', 'Group permission is found');
-					driver.click('a[href^="/tool/members/mb/usergroup"]');
+					test.assertExists('div#ddUsers a', 'Group permission is found');
+					driver.click('div#ddUsers a');
 					wait.waitForElement('form#frmChangeUsersGroup', driver, function(err, isExists) {
 						if(isExists) {
 							driver.fill('form#frmChangeUsersGroup', {
@@ -242,9 +242,9 @@ postEventMemberApprovalMethod.getPostId = function(driver, test, callback) {
 					if(isExists) {
 						driver.echo('User has been successfuly login to application with admin user', 'INFO');
 						driver.capture('aftercategory.png');
-						driver.waitForSelector('a[href="/categories"]', function success() {
-							test.assertExists('a[href="/categories"]','Category link found');
-							driver.click('a[href="/categories"]');
+						driver.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
+							test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+							driver.click('ul.nav.nav-tabs li:nth-child(2) a');
 							driver.wait(5000, function() {
 								driver.capture('aftercategory.png');
 							});
@@ -310,20 +310,19 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
 								if(isExists) {
 									casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
+									wait.waitForElement('td.userGroupActions', casper, function(err, isExists) {
 										if(isExists) {
-											//var grpName = 
-											driver.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+											var grpName = casper.evaluate(function(){
+												for(var i=3; i<=7; i++) {
+													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1) li'); // change li
 													if (x1.innerText == 'Registered Users') {
 														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
-														return;
+														return (x1.innerText);
 													}
 												}
 											});
-											//driver.click('a[id="'+grpName+'"]');
-											wait.waitForElement('input#t', driver, function(err, isExists) {
+											casper.echo('a[id="'+grpName,"INFO");
+											wait.waitForElement('input#t', casper, function(err, isExists) {
 												if(isExists) {
 													utils.enableorDisableCheckbox('t', true, casper, function() {
 														casper.echo('checkbox is checked', 'INFO');
@@ -331,8 +330,10 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 													try {
 														casper.test.assertExists('button.button.btn-m.btn-blue');
 														casper.click('button.button.btn-m.btn-blue');
-														casper.waitUntilVisible('div#ajax-msg-top', function() {
-															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+														wait.waitForElement('td.userGroupActions', casper, function(err, isExists) {
+															if(isExists) {
+																casper.echo("Permission changed",'INFO');
+															}
 														});
 													}catch(e) {
 														casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
@@ -369,7 +370,7 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 };
 
 //*************************Method to disable the event approval from backend ************************
-postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callback) {
+postEventMemberApprovalMethod.disableEventApproval = function(driver, test, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
 		if(!err) {
 			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
@@ -389,7 +390,7 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 												for(var i=1; i<=7; i++) {
 													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
 													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
+														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
 														return;
 													}
 												}
@@ -444,60 +445,71 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 //*************************method to compose a event and got id ************************************
 postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 	driver.echo('Inside the composeEvent method','INFO');
-	driver.waitForSelector('ul.nav.pull-right span.caret', function success() {
-		this.click('i.icon.icon-menu');
-		this.capture(screenShotsDir+'cal67.png');
-		test.assertExists('ul#calendars_toggle_link i','calender menu found');
-		this.click('ul#calendars_toggle_link i');
-		this.capture(screenShotsDir+'cal2.png');
-		test.assertExists('a[href^="/calendar/display?from_month=&from_year=&view="]','First calender found');
-		this.click('a[href^="/calendar/display?from_month=&from_year=&view="]');
-		driver.waitForSelector('div.bd-wrapper.calendar-add-event a', function success() {
-			this.click('div.bd-wrapper.calendar-add-event a');
-			driver.then(function() {
-				this.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
-				this.fillSelectors('form#PostCalEvent', {
-						'input#allDay' : 1
-				}, false); 
-				driver.then(function() {
-					driver.waitForSelector('#message_ifr', function success() {
-						test.assertExists('#message_ifr','message-ifr found');
-						driver.withFrame('message_ifr', function() {
-							try{
-								test.assertExists('#tinymce');
-								this.capture(screenShotsDir+'tiny.png');
-								this.sendKeys('#tinymce', "This is a new event");
-							}catch(e) {
-								test.assertDoesntExist('#tinymce');
-							}
+	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		if(!err) {
+			wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+				if(isExists) {
+					casper.click('i.icon.icon-menu');
+					try {
+						casper.test.assertExists('ul#calendars_toggle_link i','calender menu found');
+						casper.click('ul#calendars_toggle_link i');
+						casper.test.assertExists('a[href^="/calendar/display?from_month=&from_year=&view="]','First calender found');
+						casper.click('a[href^="/calendar/display?from_month=&from_year=&view="]');
+					} catch (e) {
+						casper.test.assertExists('li#calenders_show a','calender menu found');
+						casper.click('li#calenders_show a');
+					}
+					casper.waitForSelector('div.bd-wrapper.calendar-add-event a', function success() {
+						casper.click('div.bd-wrapper.calendar-add-event a');
+						casper.then(function() {
+							casper.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
+							casper.fillSelectors('form#PostCalEvent', {
+									'input#allDay' : 1
+							}, false); 
+							casper.then(function() {
+								casper.waitForSelector('#message_ifr', function success() {
+									casper.test.assertExists('#message_ifr','message-ifr found');
+									casper.withFrame('message_ifr', function() {
+										try{
+											casper.test.assertExists('#tinymce');
+											//casper.capture(screenShotsDir+'tiny.png');
+											casper.sendKeys('#tinymce', "This is a new event");
+										}catch(e) {
+											casper.test.assertDoesntExist('#tinymce');
+										}
+									});
+								}, function fail(){
+									casper.echo('message_ifr not found','ERROR');
+								});
+								// code get the id of event
+								driver.then(function() {
+									casper.click('#post_event_buttton');
+									casper.wait(5000, function() {
+										eventId = casper.evaluate( function(a) {
+											var n = a.indexOf('eventid=');
+											var stre='eventid=';
+											var leng=stre.length;
+											var h = n+leng;
+											var stringt=a.substring(h);
+											var t = stringt.indexOf('&');
+											var id = stringt.substring(0,t);
+											return id;
+										}, casper.getCurrentUrl());
+										casper.echo('*******event_id='+eventId,'INFO');
+										casper.capture('event.png');
+										return callback(null, eventId);
+									});
+								});
+							});
 						});
-					}, function fail(){
-						driver.echo('message_ifr not found','ERROR');
 					});
-					// code get the id of event
-					driver.then(function() {
-						this.click('#post_event_buttton');
-						this.wait(5000, function() {
-							eventId = casper.evaluate( function(a) {
-								var n = a.indexOf('eventid=');
-								var stre='eventid=';
-								var leng=stre.length;
-								var h = n+leng;
-								var stringt=a.substring(h);
-								var t = stringt.indexOf('&');
-								var id = stringt.substring(0,t);
-								return id;
-							}, this.getCurrentUrl());
-							this.echo('*******event_id='+eventId,'INFO');
-							this.capture(screenShotsDir+'event.png');
-							return callback(null, eventId);
-						});
-					});
-				});
+				} else {
+					casper.echo('User not logged in','ERROR');	
+				}
 			});
-		});
-	}, function fail() {
-		driver.echo('Main Menu not found','ERROR');
+		}else {
+			casper.echo('Admin user not logged in', 'INFO');
+		}
 	});
 };
 
@@ -506,7 +518,7 @@ postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, cal
 	driver.then(function() {
 		forumLoginMethod.logoutFromApp(casper, function() { });
 	});
-	driver.then(function() {
+	driver.thenOpen(config.url, function() {
 		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +driver.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["AdminUserLogin"].username, json["AdminUserLogin"].password, casper, function(err) {
@@ -515,9 +527,9 @@ postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, cal
 					if(isExists) {
 						driver.echo('User has been successfuly login to application with admin user', 'INFO');
 						driver.capture('aftercategory.png');
-						driver.waitForSelector('a[href="/categories"]', function success() {
-							test.assertExists('a[href="/categories"]','Category link found');
-							driver.click('a[href="/categories"]');
+						driver.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
+							test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+							driver.click('ul.nav.nav-tabs li:nth-child(2) a');
 							driver.wait(5000, function() {
 								driver.capture('aftercategory.png');
 							});

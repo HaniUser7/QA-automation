@@ -3001,9 +3001,18 @@ privateMessageTestcases.verifyAvtar = function() {
 
 // method To verify  send PM conversation to 25 recipient at the same time
 privateMessageTestcases.verifyMaxRecipient = function() {
-	casper.then(function() {
+	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 7','INFO');
 		casper.echo('                     To verify  send PM conversation to 25 recipient at the same time','INFO');
+		privateMessageMethod.disableEmailVerification(casper, function(err) { 
+			if(!err) {
+				casper.echo('Disabled backend setting','INFO');
+			} else {
+				casper.echo('Not Disabled backend setting','ERROR');						
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
 		privateMessageMethod.registerUsers(casper, function(err) {    // disable  Approve New Registrations and  Email Address Verification
 			if(!err) {
 				casper.echo('26 user registered sucessfully','INFO');

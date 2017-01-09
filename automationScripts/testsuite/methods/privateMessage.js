@@ -379,3 +379,108 @@ privateMessageMethod.registerUsers = function(driver, callback) {
 	});
 };
 
+// method to disable Approve New Registration and Email Address Verification from backend
+privateMessageMethod.disableEmailVerification = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('confirm_email', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									utils.enableorDisableCheckbox('reqregapp', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
+										});
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+								} else {
+									casper.echo('Email Address Verification checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
+// method to enable Approve New Registration and Email Address Verification from backend
+privateMessageMethod.enableEmailVerification = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('confirm_email', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									try {
+										casper.test.assertExists('button.button.btn-m.btn-blue');
+										casper.click('button.button.btn-m.btn-blue');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
+										});
+									}catch(e) {
+										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+									}
+								} else {
+									casper.echo('Email Address Verification checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'INFO');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};

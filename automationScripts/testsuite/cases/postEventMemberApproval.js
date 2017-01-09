@@ -735,16 +735,16 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 // method to Approve a pending event -Approval queue button
 postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function() {
 	//Open Back-End URL And Get Title and logout if logged in
-	casper.thenOpen(config.backEndUrl, function() {
+	/*casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                      CASE 1', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
-		casper.echo('*                   Approve a pending post from- Approval queue button             *', 'INFO');
+		casper.echo('*                   Approve a pending Event from- Approval queue button             *', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to enable approve new post** All posts
 		postEventMemberApprovalMethod.enableEventApproval(casper, casper.test, function(err) {
 			if(!err) {
-				casper.echo('Enable Approve New Post functionality method called ','INFO');
+				casper.echo('Enable Approve New Event functionality method called ','INFO');
 			}
 		});
 		casper.then(function() {
@@ -755,7 +755,7 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 				}
 			});
 		});
-	});
+	});*/
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
 		//method to compose a post by register user
@@ -769,7 +769,7 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 							casper.echo('approve tick not found','ERROR');
 						});
 						casper.wait(5000, function() {
-							test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
+							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
 						});
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
