@@ -7,10 +7,6 @@
 	"username": "sangita",
 	"password": "sangita"
 	},
-	"Valid" : {
-	"username": "rajan41",
-	"password": "rajan41"
-	},
 
      "ValidEmail" : {
 	"username": "sangita@websitetoolbox.com",
@@ -43,26 +39,13 @@
 	"ExpectedErrorMessage" : "You must enter your password."
 	},
 	
-	 "Privatemessage" : {
-	"to": "sangita",
-	"subject": "message",
-	"pmessage" : "You must enter your password."
-	},
+	"AdminLogin" : {
+	 "username": "hani",
+	 "password": "hani",
+	 "ExpectedErrorMessage" : "Admin Login successfully." 
 	
-	 "Topicmessage" : {
-	"to": "sangita",
-	"subject": "Hello world, welcome to the universe"
-	},
-	
-	 "topicHindiMessage" : {
-	"to": "sangita",
-	"subject": "राजन"
-	},
-    
-	 "topicMoreMessage" : {
-	"to": "excessMessage",
-	"subject": "dfdf"
-	}
+	}  
+
 	
 
 }

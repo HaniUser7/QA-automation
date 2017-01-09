@@ -1,0 +1,32 @@
+
+{
+    	
+
+    	"InvalidInfo" : [{ 
+        	"email":"website1tsaool@gmail.com",
+		"pass":"123@12345678",
+		"errorType":"InvalidId",
+		"Expected Message":"The Id that you've entered is incorrect."
+		
+	},
+	{
+		"email":"website1tddool@gmail.com",
+		"pass":"123@dsds",
+		"errorType":"InvalidEmailPassword",
+		"Expected Message":"Invalid."
+	},
+	{
+		"email":"website1tool@gmail.com",
+		"pass":"hellowebsitetoolbox123",
+		"errorType":"success",
+		"Expected Message":"Successfully."
+	}]
+	
+	
+	
+	
+	
+	
+	
+	
+}  
