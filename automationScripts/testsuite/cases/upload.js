@@ -2676,8 +2676,7 @@ uploadTests.uploadSubCategory=function(){
 			if(!err)
 				casper.echo('create subcategory  method called successfully','INFO');
 		});
-		
-		/*casper.thenOpen(config.url , function(){
+		casper.thenOpen(config.url , function(){
 			casper.echo('                   TestCase subcategory method               ' ,'INFO');
 			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 			casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
@@ -2720,8 +2719,8 @@ uploadTests.uploadSubCategory=function(){
 					});
 				}
 			});
-		});*/
-		/*casper.thenOpen(config.url , function(){
+		});
+		casper.thenOpen(config.url , function(){
 			casper.echo('                   TestCase 50                ' ,'INFO');
 			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 			casper.echo('**********Verify with sub category from forum listing page(Attachement)***********','INFO');
@@ -2742,7 +2741,11 @@ uploadTests.uploadSubCategory=function(){
 											wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
 												if(isExists) {
 													casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-													casper.click('i.icon.glyphicon-paperclip');
+													wait.waitForTime(2000 , casper , function(err) {
+														casper.click('i.icon.glyphicon-paperclip');
+													
+													});
+													
 													casper.then(function(){
 														inContextLoginMethod.logoutFromApp(casper, function(err){
 															if (!err)
@@ -2759,7 +2762,7 @@ uploadTests.uploadSubCategory=function(){
 					});
 				}
 			});
-		});*/
+		});
 		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
 			wait.waitForTime(1000 , casper , function(err) {
 				casper.capture('1.png');
@@ -2770,7 +2773,7 @@ uploadTests.uploadSubCategory=function(){
 	
 
 //Verify with sub category from forum listing page camera browse
-/*uploadTests.uploadSubCategoryCamerabrowse=function(){		
+uploadTests.uploadSubCategoryCamerabrowse=function(){		
 	casper.thenOpen(config.url , function(){
 		casper.echo('                   TestCase 51                 ' ,'INFO');	
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -2789,25 +2792,28 @@ uploadTests.uploadSubCategory=function(){
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span.forum-title:nth-child(1)');
-										uploadMethods.createSubTopic(casper , function(err){
-											if(!err)
-												casper.echo('createsubtopic called', 'INFO');
+										//casper.then(function(){
+										wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+											if(isExists) {
+												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+												wait.waitForTime(2000 , casper , function(err) {
+													casper.click('i.glyphicon.glyphicon-camera');
+													uploadMethods.Webbrowse(casper , function(err){
+														if(!err) {
+															casper.echo('Webbrowse method called successfully','INFO');
+														}
+													});
+												});
+												casper.then(function(){
+													inContextLoginMethod.logoutFromApp(casper, function(err){
+														if (!err)
+															casper.echo('Successfully logout from application', 'INFO');
+													});
+												});
+													
+										//});	
+											}
 										});
-										casper.then(function(){
-											casper.click('i.glyphicon.glyphicon-camera');
-											uploadMethods.Webbrowse(casper , function(err){
-												if(!err) {
-													casper.echo('Webbrowse method called successfully','INFO');
-													
-													
-												}
-											});
-											inContextLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-													casper.echo('Successfully logout from application', 'INFO');
-											});
-													
-										});	
 									}
 								});
 							}
@@ -2844,23 +2850,27 @@ uploadTests.uploadSubCategoryCameraWebaddress=function(){
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span.forum-title:nth-child(1)');
-										uploadMethods.createSubTopic(casper , function(err){
-											if(!err)
-												casper.echo('createsubtopic called', 'INFO');
+										
+										//casper.then(function(){
+										wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+											if(isExists) {
+												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+												wait.waitForTime(2000 , casper , function(err) {
+													casper.click('i.glyphicon.glyphicon-camera');
+													uploadMethods.Webaddress(casper , function(err){
+														if(!err) {
+															casper.echo('Webbrowse method called successfully','INFO');
+														}
+													});
+													casper.then(function() {
+														inContextLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
+														});
+													});	
+												});
+											}
 										});
-										casper.then(function(){
-											casper.click('i.glyphicon.glyphicon-camera');
-											uploadMethods.Webaddress(casper , function(err){
-												if(!err) {
-													casper.echo('Webbrowse method called successfully','INFO');
-													
-												}
-											});
-											inContextLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-													casper.echo('Successfully logout from application', 'INFO');
-											});
-										});	
 									}
 								});
 							}
@@ -2869,10 +2879,10 @@ uploadTests.uploadSubCategoryCameraWebaddress=function(){
 				});
 			}
 		});
-	});
-	casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
-		wait.waitForTime(1000 , casper , function(err) {
-			casper.capture('1.png');
+		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
+			wait.waitForTime(1000 , casper , function(err) {
+				casper.capture('1.png');
+			});
 		});
 	});
 };
@@ -2897,35 +2907,40 @@ uploadTests.uploadSubCategoryImagebrowse=function(){
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span.forum-title:nth-child(1)');
-										uploadMethods.createSubTopic(casper , function(err){
-											if(!err)
-												casper.echo('createsubtopic called', 'INFO');
-										});
-										casper.then(function(){
-											wait.waitForElement('a#message_imagebutton span' , casper , function(err , isExists) {
-												if(isExists) {
-													casper.click('span.mceIcon.mce_imagebutton');
-													uploadMethods.Webbrowse(casper , function(err){
-														if(!err) {
-															casper.echo('Webbrowse method called successfully','INFO');
+										wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+											if(isExists) {	
+												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+												wait.waitForTime(2000 , casper , function(err , isExists) {
+													if(isExists) {
+														wait.waitForElement('a#message_imagebutton span' , casper , function(err , isExists) {
+															if(isExists) {
+																casper.click('span.mceIcon.mce_imagebutton');
+																uploadMethods.Webbrowse(casper , function(err){
+																if(!err) {
+																	casper.echo('Webbrowse method called successfully','INFO');
 													
+																}
+															});
 														}
 													});
+												}
+											        casper.then(function(){
 													inContextLoginMethod.logoutFromApp(casper, function(err){
 														if (!err)
 														casper.echo('Successfully logout from application', 'INFO');
 													});
-												}	
+												});	
 											});
-										});
-									}
-								});
-							}
-						});
-					}
-				});
-			}
-		});
+										}
+									});
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+	});
 		casper.thenOpen('https://s3.amazonaws.com/betafiles.websitetoolbox.com/117/16748357' , function(){
 			wait.waitForTime(1000 , casper , function(err) {
 				casper.capture('1.png');
@@ -2953,28 +2968,30 @@ uploadTests.uploadSubCategoryImageWebaddress=function(){
 								casper.click('span.forum-title:nth-child(1)');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
 									if(isExists) {
-										
-											casper.click('span.forum-title:nth-child(1)');
-											uploadMethods.createSubTopic(casper , function(err){
-												if(!err)
-													casper.echo('createsubtopic called', 'INFO');
-											});
-											casper.then(function(){
-												wait.waitForElement('a#message_imagebutton span' , casper , function(err , isExists){
+										casper.click('span.forum-title:nth-child(1)');
+										wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary ' , casper , function(err , isExists) {
+											if(isExists) {	
+												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+												wait.waitForTime(2000 , casper , function(err , isExists) {
 													if(isExists) {
-														casper.click('a#message_imagebutton span');
-														uploadMethods.Webaddress(casper , function(err){
-															if(!err) {
-																casper.echo('Webaddress method called successfully','INFO');
-													
-															}
-														});
+														wait.waitForElement('a#message_imagebutton span' , casper , function(err , isExists) {
+															if(isExists) {
+																casper.click('span.mceIcon.mce_imagebutton');
+																uploadMethods.Webaddress(casper , function(err){
+																	if(!err) 
+																		casper.echo('Webbrowse method called successfully','INFO');
+																	});
+																}
+															});
+														}
+													});
+													casper.then(function(){
 														inContextLoginMethod.logoutFromApp(casper, function(err){
 															if (!err)
 																casper.echo('Successfully logout from application', 'INFO');
 														});
-													}
-												});
+													});
+												}
 											});
 										}
 									});
@@ -2990,7 +3007,7 @@ uploadTests.uploadSubCategoryImageWebaddress=function(){
 				});
 			});
 	});
-};*/
+};
 //------------------------------------------------------Approval Section-------------------------------------------
 //Verify with Edit the post from  Approval queue Page
 uploadTests.uploadApprovalqueue=function(){
@@ -3233,7 +3250,18 @@ uploadTests.uploadApprovalImagebrowse=function(){
 														});												
 													});
 													casper.then(function(){
-														inContextLoginMethod.logoutFromApp(casper, function(err){
+														inContextLoginMethod.logoutFromApp(casper, function(err){var grpName = casper.evaluate(function(){
+		for(var i=1; i<=1; i++) {
+			var x1 = document.querySelector('div#sortable ul li:nth-child('+i+')');
+			if (x1.innerText == 'hello subcategory') {
+				var x2 = document.querySelector('ul.ui-sortable li:nth-child('+i+') div a:nth-child(2)');
+				x2.click();
+				var x3 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+				return x3;
+			}
+		}
+	});
+	 casper.echo("message :" +post,'INFO');
 															if (!err)
 																casper.echo('Successfully logout from application', 'INFO');
 														});

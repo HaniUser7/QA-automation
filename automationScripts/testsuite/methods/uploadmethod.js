@@ -533,9 +533,11 @@ uploadMethods.enableApproveAllPost=function(driver , callback) {
 					if(isExists) {
 						casper.click('select#post_approval');
 						casper.sendKeys('select[name="post_approval"] option[value="99"]', 'All posts');
-						casper.click('button.button.btn-m.btn-blue');
+						casper.wait(2000 , function(){ 
+							casper.click('button.button.btn-m.btn-blue');
+						});
 						casper.wait(20000 , function(){
-							casper.capture('1567.png');
+							casper.capture('Enableallpost.png');
 
 						});		
 					}					
@@ -568,33 +570,20 @@ uploadMethods.createSubCategory=function(driver , callback) {
 'input[name="forum_name"]':'hello subcategory',
 'textarea#forum_description':'India',
 },false);
-																			casper.click('input[name="isSubcategory"]');
-																		casper.click('select#parentid')
-var post= casper.evaluate(function(){
-	var aa=document.querySelector('select[name="post_approval"] option[value="0"]');
-  		var a= aa.length;
-    		
-       		var hh=aa[0].getAttribute('option[value="0"]');
-     		
- 		return hh;
- });
- casper.echo("message :" +post,'INFO');
- casper.click('a[href="'+post+'"]');
+casper.click('input[name="isSubcategory"]');
+																			casper.click('select#parentid');
 
-
-
-
-
-																	casper.capture('sub.png');
-																		casper.wait(2000, function(){
-
-casper.click('select#parentid option:nth-child(1)');
-																	casper.capture('sub2.png');
-																		casper.click('form[name="frmOptions"] button');
-																			casper.wait(2000, function(){
-																					casper.capture('buttonsub.png');
-																					});
-																			});
+	var post= casper.evaluate(function(){
+		var aa=document.querySelector('select#parentid option:nth-child(2)').getAttribute('value');
+	  	
+		return aa;
+	 });
+	 casper.echo("message :" +post,'INFO');
+	 casper.sendKeys('select[name="parentid"] option[value="'+post+'"]', 'General');
+	 wait.waitForTime(2000 , casper , function(err){
+	 	casper.click('form[name="frmOptions"] button');
+	});
+																		
 										}							
 									});	
 								}
@@ -615,18 +604,33 @@ uploadMethods.DeleteCategory=function(driver , callback) {
 				if(isExists) {
 					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');	
 					wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
-						if( isExists) {
+						if(isExists) {
 							driver.evaluate(function() {
 								document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
 });
-						wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err  , isExists) {
+							wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err  , isExists) {
 							if(isExists) {	
 								casper.wait(2000 , function(){
 									casper.capture('166.png');
-									casper.click('a.forumName.atree');
+									//casper.click('a.forumName.atree');
 									/*casper.evaluate(function() {
 										document.querySelector('a[data-forumid="199200"]').click();
 									});*/
+									/*var grpName = casper.evaluate(function(){
+		//for(var i=1; i<=1; i++) {
+			var x1 = document.querySelector('div#sortable ul li:nth-child(1)');
+			if (x1.innerText == 'hello subcategory') {
+				var x2 = document.querySelector('ul.ui-sortable li:nth-child('+i+') div a:nth-child(2)');
+				//x2.click();
+				//var x3 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+				return x1;
+			}
+		//}
+	});
+	 casper.echo("message :" +grpName,'INFO');*/
+
+
+
 									casper.capture('188.png');
 									wait.waitForElement('div.tooltipMenu.forumActionbutton a:nth-child(2)' , casper , function(err) {
 										if(isExists) {
@@ -662,12 +666,23 @@ uploadMethods.DeleteCategory=function(driver , callback) {
 							}
 						});
 					}
+						
+					});
+				}
+			});
+			/*casper.then(function(){
+			//delete subcategory method called
+				uploadMethods.deleteSubcategory(casper , function(err){
+					if(!err)
+						casper.echo('subcategory deleted' ,'INFO');
+
 				});
-			}
-     		});
+			});*/
+};
+
 		
      
-};
+
 													
 //**************************Method to Disable Approve new Posts******************************
 
@@ -690,9 +705,12 @@ uploadMethods.disableApproveAllPost=function(driver , callback) {
 					if(isExists) {
 						casper.click('select#post_approval');
 						casper.sendKeys('select[name="post_approval"] option[value="0"]', 'Disabled');
-						casper.click('button.button.btn-m.btn-blue');
-						casper.wait(20000 , function(){
-							casper.capture('67.png');
+						casper.wait(2000 , function(){
+							casper.click('button.button.btn-m.btn-blue');
+						});
+						wait.waitForTime(20000 ,casper , function(err){
+							casper.capture('disableallpost.png');
+							
 
 						});		
 					}					
@@ -851,7 +869,82 @@ uploadMethods.subCategoryTopic = function(dataa,driver,callback) {
 };
 
 
+//delete sub-category
+uploadMethods.deleteSubcategory=function(driver , callback){
+	casper.thenOpen(config.backEndUrl , function(err){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		casper.echo('----------------------------------------Delete sub-category method called------------------------------------' , 'INFO');
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]', casper , function(err , isExists) {
+				if(isExists) {
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');	
+					wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+						if(isExists) {
+							driver.evaluate(function() {
+								document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
+});
+							wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err  , isExists) {
+							if(isExists) {	
+								casper.wait(2000 , function(){
+									casper.capture('166.png');
+									casper.click('a.forumName.atree');
+									/*casper.evaluate(function() {
+										document.querySelector('a[data-forumid="199200"]').click();
+									});*/
+									casper.capture('188.png');
+									wait.waitForElement('div.tooltipMenu.forumActionbutton a:nth-child(2)' , casper , function(err) {
+										if(isExists) {
+											//casper.click('div.tooltipMenu.forumActionbutton a:nth-child(2)');
+											casper.evaluate(function() {
+												document.querySelector('div.tooltipMenu.forumActionbutton a:nth-child(2)').click();
+											});
+											casper.wait(5000 , function(){
 
+												casper.capture('122.png');
+												casper.echo('Subcategory deleted' ,'INFO');
+												casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+												casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+												casper.test.assertExists('div#ddAccount a:nth-child(6)');
+												casper.click('div#ddAccount a:nth-child(6)');	
+												casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+
+
+											});
+											
+											
+											/*wait.waitForElement('input[type="submit"]' , casper , function(err , isExists) {
+												if(isExists) {
+													casper.click('input[type="submit"]');
+													casper.wait(5000 , function(){
+
+														casper.capture('022.png');
+														casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+														casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+														casper.test.assertExists('div#ddAccount a:nth-child(6)');
+														casper.click('div#ddAccount a:nth-child(6)');	
+														casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+														
+
+													});
+												
+												}
+											});*/
+										}
+									});
+								});
+							}
+						});
+					}
+						
+					});
+				}
+			});
+		});
+};
+	
 
 
 
