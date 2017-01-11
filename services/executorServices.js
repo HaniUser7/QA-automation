@@ -125,14 +125,7 @@ executorServices.executeJob = function(commitDetails, callback){
 									createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
 										console.log('state of failure : '+status);
 									});
-									commitDetails['attachments'] = [
-										{   
-									    		path: automationLogFile
-										},
-										{   
-									    		path: failLogFile
-										}
-									];
+									commitDetails['attachments'] = [];
 									fs.readdir(path, function (err, data) {
 										if(err) {
 											console.error(err);
@@ -166,13 +159,12 @@ executorServices.executeJob = function(commitDetails, callback){
 									createStatus.success(commitDetails, function(status) {
 										console.log('state of success : '+status);
 									});
+									//Deleting commit specific log files
+									fs.unlinkSync(automationLogFile);
+									fs.unlinkSync(failLogFile);
+									return callback();
 								}
 								
-								
-								//Deleting commit specific log files
-								fs.unlinkSync(automationLogFile);
-								fs.unlinkSync(failLogFile);
-								return callback();
 							}
 					}else{
 						return callback();
