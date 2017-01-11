@@ -9,7 +9,7 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 			var curPath = path + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
-				attachmentServices.deleteFolderRecursive(curPath);
+				attachmentServices.deleteFolderRecursive(curPath, callback);
 			} else { 
 				// Delete File
 				console.log('deleting file : '+curPath);

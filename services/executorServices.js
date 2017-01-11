@@ -138,7 +138,28 @@ executorServices.executeJob = function(commitDetails, callback){
 											console.error(err);
 										}else {
 											console.log("commitDetails ***************** " +commitDetails);
-											attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {});
+											attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {
+												mailServices.sendMail(commitDetails, function(err){
+													if(err)
+														console.error("error occurred while sending email: "+err);
+													else
+														console.log("Mail sent successfully.");
+													//Deleting Old Directory That Contains Screenshots
+													fs.readdir(path, function (err, data) {
+														if(err) {
+															console.error("Error : "+err);
+														}else {
+															attachmentServices.deleteFolderRecursive(path, function() {
+																//Deleting commit specific log files
+																fs.unlinkSync(automationLogFile);
+																fs.unlinkSync(failLogFile);
+																console.log("Commit specific log files deleted.");
+																return callback();							
+															});
+														}
+													});
+												});
+											});
 										}
 									});
 								} else {
