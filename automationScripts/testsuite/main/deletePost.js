@@ -46,8 +46,65 @@ deletePost.featureTest = function(casper, test) {
 		//verify with delete  own topic-by drop down of the topic
 		//deletePostTests.deleteOwnTopicDropdown();
 		//verify with delete own post-selecting by check box 
-		deletePostTests.deleteOwnPostCheckboxRegister();
-
+		//deletePostTests.deleteOwnPostCheckboxRegister();
+		//delete  own post from own profile page
+		//deletePostTests.deleteOwnProfilePage();
+		//delete  own topic by searching topic
+		//deletePostTests.deleteOwnSearchTopic();
+		//delete  own post by searching post
+		//deletePostTests.deleteOwnSearchPost();
+   //*****************"view category-delete own topic- enable-delete own post-disable******************************
+		//Verify by delete own topic -selecting by check box 
+		//deletePostTests.deleteOwnPostDisable();
+		//Verify by delete all own topic-selecting by check box 
+		//deletePostTests.deleteAllTopicPostDisable();
+		//verify with delete  own topic-by drop down of the topic
+		//deletePostTests.deleteOwnTopicDropdownPostDisable();
+		//verify with delete own post-selecting by check box
+		//deletePostTests.deleteOwnPostCheckboxPostDisable();
+		//verify with delete own post-by drop down of the post
+		//deletePostTests.deleteOwnPostDropDownOwnPostDisable();
+		//delete  own post from own profile page
+		//deletePostTests.deleteOwnProfilePagePostDisable();
+		//delete  own topic by searching topic
+		//deletePostTests.deleteOwnSearchTopicPostDisable();
+		//delete own post by searching post
+		//deletePostTests.deleteOwnSearchPostDisable();
+   //***************************view category-delete own topic-disable-delete own post-disable*************************
+		//Verify by delete own topic -selecting by check box 
+		//deletePostTests.deleteOwnTopicPostDisable();
+		//Verify by delete all own topic-selecting by check box 
+		//deletePostTests.deleteAllTopicsPostDisable();
+		//verify with delete  own topic-by drop down of the topic
+		//deletePostTests.deleteOwnTopicDropdownTopicPostDisable();
+		//verify with delete own post-selecting by check box 
+		//deletePostTests.deleteOwnPostCheckboxTopicPostDisable();
+		//verify with delete own post-by drop down of the post
+		//deletePostTests.deleteOwnPostDropDownOwnTopicPostDisable();
+		//delete  own post from own profile page
+		//deletePostTests.deleteOwnProfilePageTopicPostDisable();
+		//delete  own topic by searching topic
+		//deletePostTests.deleteOwnSearchTopicPostDisable();
+		//delete own post by searching post
+		//deletePostTests.deleteOwnSearchTopicPostDis();
+//*****************************view category-delete own topic-enable-delete own post-enable*******************************
+		//Verify by delete own topic -selecting by check box 
+		deletePostTests.deleteOwnTopicPostEnable();
+		//Verify by delete all own topic-selecting by check box 
+		deletePostTests.deleteAllTopicsPostEnable();
+		//verify with delete  own topic-by drop down of the topic
+		deletePostTests.deleteOwnTopicDropdownTopicPostEnable();
+		//verify with delete own post-selecting by check box 
+		deletePostTests.deleteOwnPostCheckboxTopicPostEnable();
+		//verify with delete own post-by drop down of the post
+		deletePostTests.deleteOwnPostDropDownOwnTopicPostEnable();
+		//delete  own post from own profile page
+		deletePostTests.deleteOwnProfilePageTopicPostEnable();
+		//delete  own topic by searching topic
+		deletePostTests.deleteOwnSearchTopicPostEnable();
+		//delete own post by searching post
+		deletePostTests.deleteOwnSearchTopicPostEnab();
+		
 
 
 

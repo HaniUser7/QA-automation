@@ -182,6 +182,33 @@ deletePostMethod.searchlogin=function(driver , callback) {
 	});
 };
 
+//------------------------------------searchloginOwnpost----------------------------------------------------
+
+deletePostMethod.searchLoginOwn=function(driver , callback) {
+	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
+	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+		if(isExists) {
+			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				if (err) {
+					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+				}else {
+					casper.echo('Processing to Login on forum.....','INFO');
+					wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
+						if(isExists) {
+							casper.click('input#inline_search_box');
+							casper.fill('form#inlineSearchForm', {
+								'keywords' :'dragme'
+							},true);
+							
+						}
+					});
+				}
+			});
+		}
+	});
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------
 
 ////Create a post method from register user 
 deletePostMethod.profilePostRegister=function(driver , callback) {
@@ -344,11 +371,175 @@ deletePostMethod.createMoreTopic=function(driver , callback) {
      	});
 };							
 
+//----------------------------------------------------view category----------------------------------------------
+//----------------------------------------------------delete own topic- enable Method-----------------------------------
+//----------------------------------------------------delete own post-disable" Method-----------------------------------
+deletePostMethod.BackEndSettingsPostDisable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('delete_posts',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked delete own post','INFO');
+								});
+								//casper.click('button.button.btn-m.btn-blue');
+								utils.enableorDisableCheckbox('delete_threads',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked delete own topic ','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+							}
+						});
+					}	
+				});
+			}
+		});
+	});
+};
+//--------------------------------------------------------------------------------------------------------------------------------	
 
+//----------------------------------------------------view category----------------------------------------------
+//----------------------------------------------------delete own topic- disable Method-----------------------------------
+//----------------------------------------------------delete own post-disable" Method-----------------------------------
+deletePostMethod.BackEndSettingsTopicPostDisable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('delete_posts',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully unchecked delete own post','INFO');
+								});
+								//casper.click('button.button.btn-m.btn-blue');
+								utils.enableorDisableCheckbox('delete_threads',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully unchecked delete own topic ','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+							}
+						});
+					}	
+				});
+			}
+		});
+	});
+};	
 
+//----------------------------------------------------view category----------------------------------------------
+//----------------------------------------------------delete own topic- enable Method-----------------------------------
+//----------------------------------------------------delete own post-enable" Method-----------------------------------
 
-
-
+deletePostMethod.BackEndSettingsTopicPostEnable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('delete_posts',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked delete own post','INFO');
+								});
+								//casper.click('button.button.btn-m.btn-blue');
+								utils.enableorDisableCheckbox('delete_threads',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked delete own topic ','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+							}
+						});
+					}	
+				});
+			}
+		});
+	});
+};	
 
 
 
