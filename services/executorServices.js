@@ -61,6 +61,7 @@ executorServices.executeJob = function(commitDetails, callback){
 							if(fileSize != 0) {
 								if(commitDetails.beta == 0) {
 									if(result == 0) {
+										
 										createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
 											console.log('state of failure : '+status);
 										});
@@ -116,7 +117,6 @@ executorServices.executeJob = function(commitDetails, callback){
 								} else {
 									console.log('you are not allowed to set the status of the branch.');
 								}
-							}else{	
 								createStatus.success(commitDetails, function(status) {
 									console.log('state of success : '+status);
 								});

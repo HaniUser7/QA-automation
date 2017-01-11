@@ -9,7 +9,7 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 			var curPath = path + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
-				attachmentServices.deleteFolderRecursive(curPath);
+				attachmentServices.deleteFolderRecursive(curPath, callback);
 			} else { 
 				// Delete File
 				console.log('deleting file : '+curPath);
@@ -31,7 +31,7 @@ attachmentServices.addAttachments = function(dirPath, commitDetails, callback) {
 			var curPath = dirPath + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
-				attachmentServices.addAttachments(curPath);
+				attachmentServices.addAttachments(curPath, commitDetails, callback);
 			} else { 
 				//Adding Files To The Attachments
 				var imagePath = { 
