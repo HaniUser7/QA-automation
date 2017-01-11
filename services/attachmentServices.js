@@ -31,7 +31,7 @@ attachmentServices.addAttachments = function(dirPath, commitDetails, callback) {
 			var curPath = dirPath + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
-				attachmentServices.addAttachments(curPath, commitDetails, function() {});
+				return attachmentServices.addAttachments(curPath, commitDetails, callback);
 			} else { 
 				//Adding Files To The Attachments
 				var imagePath = { 
