@@ -59,6 +59,9 @@ executorServices.executeJob = function(commitDetails, callback){
 						console.log("fail.txt size: "+fileSize);
 						console.log("beta value : "+commitDetails.beta);
 						console.log("branch : "+commitDetails.branchName);
+							if(commitDetails.branchName == 'automation') {
+							
+							
 							if(fileSize != 0) {
 								if(commitDetails.beta == 0) {
 									if(result == 0) {
@@ -130,6 +133,16 @@ executorServices.executeJob = function(commitDetails, callback){
 								return callback();
 								
 							}
+						}else {
+							createStatus.success(commitDetails, function(status) {
+									console.log('state of success : '+status);
+								});
+								
+								//Deleting commit specific log files
+								fs.unlinkSync(automationLogFile);
+								fs.unlinkSync(failLogFile);
+								return callback();
+						}
 					}else{
 						return callback();
 					}

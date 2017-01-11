@@ -25,7 +25,7 @@ forumLoginMethod.loginToApp = function(username, password, driver, callback) {
 	driver.echo("username : " +username+ " & password : " +password);
 	try {
 		driver.test.assertExists('#td_tab_login');
-		driver.click('#td_tab_login');
+		driver.click('#td_tab_login.');
 		driver.fill('form[name="frmLogin"]', {
 			'member': username,
 			'pw' : password
