@@ -125,6 +125,22 @@ executorServices.executeJob = function(commitDetails, callback){
 									createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
 										console.log('state of failure : '+status);
 									});
+									commitDetails['attachments'] = [
+										{   
+									    		path: automationLogFile
+										},
+										{   
+									    		path: failLogFile
+										}
+									];
+									fs.readdir(path, function (err, data) {
+										if(err) {
+											console.error(err);
+										}else {
+											console.log("commitDetails ***************** " +commitDetails);
+											attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {});
+										}
+									});
 								} else {
 									createStatus.success(commitDetails, function(status) {
 										console.log('state of success : '+status);
