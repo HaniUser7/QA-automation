@@ -120,9 +120,17 @@ executorServices.executeJob = function(commitDetails, callback){
 							}else{	
 								console.log('result : ************'+result);
 								console.log('jsErrorCount : !!!!!!!!!!!!!************'+jsErrorCount);
-								createStatus.success(commitDetails, function(status) {
-									console.log('state of success : '+status);
-								});
+								if (commitDetails.branchName == 'automation') {
+									jsErrorCount = 4;
+									createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
+										console.log('state of failure : '+status);
+									});
+								} else {
+									createStatus.success(commitDetails, function(status) {
+										console.log('state of success : '+status);
+									});
+								}
+								
 								
 								//Deleting commit specific log files
 								fs.unlinkSync(automationLogFile);
