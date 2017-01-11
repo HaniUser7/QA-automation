@@ -162,7 +162,7 @@ deletePostMethod.searchlogin=function(driver , callback) {
 	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
 	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 		if(isExists) {
-			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
 				if (err) {
 					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 				}else {
@@ -542,8 +542,103 @@ deletePostMethod.BackEndSettingsTopicPostEnable=function(driver , callback) {
 };	
 
 
-
-
+//-------------------------------------------------------Edit own topic/post as register(edit own topic enable)	Methods---------------------
+deletePostMethod.BackEndSettingsEditOwnTopicEnable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('edit_posts',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked edit own post','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+							}
+						});
+					}	
+				});
+			}
+		});
+	});		
+};	
+	
+//-----------------------------------------Edit own topic/post as register(edit own post disable) Method---------------------------------	
+deletePostMethod.BackEndSettingsEditOwnTopicEnable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('edit_posts',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully unchecked edit own post','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+							}
+						});
+					}	
+				});
+			}
+		});
+	});		
+};
 
 
 
