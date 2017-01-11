@@ -9,18 +9,15 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 			var curPath = path + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
+				fs.isEmptyDir(curPath, function() {
+					console.log('deleting directory : '+path);
+					fs.rmdirSync(path);
+				})
 				attachmentServices.deleteFolderRecursive(curPath, callback);
 			} else { 
 				// Delete File
 				console.log('deleting file : '+curPath);
 				fs.unlinkSync(curPath);
-			}
-			console.log('deleting directory : '+path);
-			//fs.rmdirSync(path);
-			var isDir = fs.statSync(path).isDirectory();
-			console.log('isDir : '+isDir);
-			if (isDir) {
-				fs.rmdirSync(path);
 			}
 		});
 	}
