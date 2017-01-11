@@ -15,10 +15,10 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 				console.log('deleting file : '+curPath);
 				fs.unlinkSync(curPath);
 			}
+			console.log('deleting directory : '+path);
+			fs.rmdirSync(path);
 		});
 	}
-	console.log('deleting directories');
-	fs.rmdirSync('/var/tmp/failedScreenshots');
 	return callback();
 };
 
