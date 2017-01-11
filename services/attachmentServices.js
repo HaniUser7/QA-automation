@@ -16,7 +16,12 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 				fs.unlinkSync(curPath);
 			}
 			console.log('deleting directory : '+path);
-			fs.rmdirSync(path);
+			//fs.rmdirSync(path);
+			var isDir = fs.statSync(path).isDirectory();
+			console.log('isDir : '+isDir);
+			if (isDir) {
+				fs.rmdirSync(path);
+			}
 		});
 	}
 	return callback();
