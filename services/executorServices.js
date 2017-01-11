@@ -118,6 +118,8 @@ executorServices.executeJob = function(commitDetails, callback){
 									console.log('you are not allowed to set the status of the branch.');
 								}
 							}else{	
+								console.log('result : ************'+result);
+								console.log('jsErrorCount : !!!!!!!!!!!!!************'+jsErrorCount);
 								createStatus.success(commitDetails, function(status) {
 									console.log('state of success : '+status);
 								});
