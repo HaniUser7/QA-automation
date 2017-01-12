@@ -47,22 +47,8 @@
 	"to": "sangita",
 	"subject": "message",
 	"pmessage" : "You must enter your password."
-	},
-	
-	 "Topicmessage" : {
-	"to": "sangita",
-	"subject": "Hello world, welcome to the universe"
-	},
-	
-	 "topicHindiMessage" : {
-	"to": "sangita",
-	"subject": "राजन"
-	},
-    
-	 "topicMoreMessage" : {
-	"to": "excessMessage",
-	"subject": "dfdf"
 	}
 	
+
 
 }
