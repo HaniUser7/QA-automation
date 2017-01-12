@@ -27,9 +27,7 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 //Method to Add Attachments
 attachmentServices.addAttachments = function(dirPath, commitDetails, callback) {
 	if( fs.existsSync(dirPath) ) {
-		console.log('directory path "'+dirPath+'" exists');
-		console.log('commitDetails : '+JSON.stringify(commitDetails));
-		fs.readdirSync(dirPath).forEach(function(file,index){
+		fs.readdirSync(dirPath).forEach(function(file, index){
 			var curPath = dirPath + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
@@ -42,6 +40,7 @@ attachmentServices.addAttachments = function(dirPath, commitDetails, callback) {
 					path: curPath
 				};
 				commitDetails.attachments.push(imagePath);
+				console.log(curPath+' attached to the attachments');
 			}
 		});
 	}

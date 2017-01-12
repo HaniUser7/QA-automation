@@ -5,8 +5,6 @@ var wait=require('../wait.js');
 var config = require('../../../config/config.json');
 forumLoginMethod.jsErrors = [];
 var errorMessage = "";
-var count = 1;
-var failedScreenshotsLocation = config.failedScreenShotsLocation+'login/';
 
 //Method To Verify JS Errors
 casper.on("page.error", function(msg, trace) {
@@ -19,7 +17,7 @@ forumLoginMethod.loginToApp = function(username, password, driver, callback) {
 	driver.echo("username : " +username+ " & password : " +password);
 	try {
 		driver.test.assertExists('#td_tab_login');
-		driver.click('#td_tab_login.');
+		driver.click('#td_tab_login');
 		driver.fill('form[name="frmLogin"]', {
 			'member': username,
 			'pw' : password

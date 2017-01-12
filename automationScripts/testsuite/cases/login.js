@@ -10,7 +10,7 @@ var failedScreenshotsLocation = config.failedScreenShotsLocation+'login/';
 
 //Method To capture Screenshots If Any Test Case Failed
 casper.test.on('fail', function(failure) {
-	casper.capture(failedScreenshotsLocation+'loginCasesError'+count+'.png');
+	casper.capture(failedScreenshotsLocation+'loginError'+count+'.png');
 	count++;
 });
 

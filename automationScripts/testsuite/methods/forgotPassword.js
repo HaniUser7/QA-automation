@@ -4,8 +4,6 @@ var forumLoginMethod = require('./login.js');
 var config = require('../../../config/config.json');
 var forgotPasswordMethod = module.exports = {};
 forgotPasswordMethod.jsErrors = [];
-var count = 1;
-var failedScreenshotsLocation = config.failedScreenShotsLocation+'forgotPassword/';
  
 //Method To Verify JS Errors
 casper.on("page.error", function(msg, trace) {

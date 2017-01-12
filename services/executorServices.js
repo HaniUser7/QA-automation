@@ -59,89 +59,76 @@ executorServices.executeJob = function(commitDetails, callback){
 						console.log("fail.txt size: "+fileSize);
 						console.log("beta value : "+commitDetails.beta);
 						console.log("branch : "+commitDetails.branchName);
-							if(commitDetails.branchName == 'automation') {
-							
-							
-							if(fileSize != 0) {
-								if(commitDetails.beta == 0) {
-									if(result == 0) {
-										createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
-											console.log('state of failure : '+status);
-										});
-									
-									}else {
-										createStatus.failure(commitDetails, 'Failed '+result+' automation test cases.', function(status) {
-											console.log('state of failure : '+status);
-										});
+						if(fileSize != 0) {
+							if(commitDetails.beta == 0) {
+								if(result == 0) {
+									createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
+										console.log('state of failure : '+status);
+									});
+								
+								}else {
+									createStatus.failure(commitDetails, 'Failed '+result+' automation test cases.', function(status) {
+										console.log('state of failure : '+status);
+									});
+								}
+								
+								//Adding test result with commit details
+								commitDetails['testResult'] = testResult;
+								//Addling log files as attachments
+								commitDetails['attachments'] = [
+									{   
+								    		path: automationLogFile
+									},
+									{   
+								    		path: failLogFile
 									}
-									
-									//Adding test result with commit details
-									commitDetails['testResult'] = testResult;
-									//Addling log files as attachments
-									commitDetails['attachments'] = [
-										{   
-									    		path: automationLogFile
-										},
-										{   
-									    		path: failLogFile
-										}
-									];
-									
-									//Sending Mail To The Committer After Adding Attachments
-									fs.readdir(path, function (err, data) {
-										if(err) {
-											console.error(err);
-										}else {
-											attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {
-												console.log('attachments added successfully');
-												//initiating mail sending to committer
-												mailServices.sendMail(commitDetails, function(err){
-													if(err)
-														console.error("error occurred while sending email: "+err);
-													else
-														console.log("Mail sent successfully.");
-													//Deleting Old Directory That Contains Screenshots
-													fs.readdir(path, function (err, data) {
-														if(err) {
-															console.error("Error : "+err);
-														}else {
-															//Deleting Old Directory That Contains Screenshots
-															attachmentServices.deleteFolderRecursive(path, function() {
-																//Deleting commit specific log files
-																fs.unlinkSync(automationLogFile);
-																fs.unlinkSync(failLogFile);
-																console.log("Commit specific log files deleted.");
-																return callback();							
-															});
-														}
-													});
+								];
+								
+								//Sending Mail To The Committer After Adding Attachments
+								fs.readdir(path, function (err, data) {
+									if(err) {
+										console.error(err);
+									}else {
+										attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {
+											console.log('attachments added successfully');
+											//initiating mail sending to committer
+											mailServices.sendMail(commitDetails, function(err){
+												if(err)
+													console.error("error occurred while sending email: "+err);
+												else
+													console.log("Mail sent successfully.");
+												//Deleting Old Directory That Contains Screenshots
+												fs.readdir(path, function (err, data) {
+													if(err) {
+														console.error("Error : "+err);
+													}else {
+														//Deleting Old Directory That Contains Screenshots
+														attachmentServices.deleteFolderRecursive(path, function() {
+															//Deleting commit specific log files
+															fs.unlinkSync(automationLogFile);
+															fs.unlinkSync(failLogFile);
+															console.log("Commit specific log files deleted.");
+															return callback();							
+														});
+													}
 												});
 											});
-										}
-									});
-								} else {
-									console.log('you are not allowed to set the status of the branch.');
-								}
-							}else{	
-								createStatus.success(commitDetails, function(status) {
-									console.log('state of success : '+status);
+										});
+									}
 								});
-								
-								//Deleting commit specific log files
-								fs.unlinkSync(automationLogFile);
-								fs.unlinkSync(failLogFile);
-								return callback();
-								
+							} else {
+								console.log('you are not allowed to set the status of the branch.');
 							}
-						}else {
+						}else{	
 							createStatus.success(commitDetails, function(status) {
-									console.log('state of success : '+status);
-								});
-								
-								//Deleting commit specific log files
-								fs.unlinkSync(automationLogFile);
-								fs.unlinkSync(failLogFile);
-								return callback();
+								console.log('state of success : '+status);
+							});
+							
+							//Deleting commit specific log files
+							fs.unlinkSync(automationLogFile);
+							fs.unlinkSync(failLogFile);
+							return callback();
+							
 						}
 					}else{
 						return callback();
