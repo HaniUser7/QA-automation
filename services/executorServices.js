@@ -34,6 +34,7 @@ executorServices.executeJob = function(commitDetails, callback){
 			if(stdout) {
 				var descriptionRes = 0;
 				var jsErrorCount = 0;
+				var description = '';
 				var failTestResult = stdout.split(' ');
 				var jsErrors = fs.readFileSync(failLogFile).toString().split(' ');
 				for(var i=0; i<failTestResult.length;i++) {
@@ -62,14 +63,10 @@ executorServices.executeJob = function(commitDetails, callback){
 						if(fileSize != 0) {
 							if(commitDetails.beta == 0) {
 								if(result == 0) {
-									createStatus.failure(commitDetails, jsErrorCount+' javaScript errors found.', function(status) {
-										console.log('state of failure : '+status);
-									});
+									description = jsErrorCount+' javaScript errors found.';
 								
 								}else {
-									createStatus.failure(commitDetails, 'Failed '+result+' automation test cases.', function(status) {
-										console.log('state of failure : '+status);
-									});
+									description = 'Failed '+result+' automation test cases.';
 								}
 								
 								//Adding test result with commit details
@@ -84,37 +81,41 @@ executorServices.executeJob = function(commitDetails, callback){
 									}
 								];
 								
-								//Sending Mail To The Committer After Adding Attachments
-								fs.readdir(path, function (err, data) {
-									if(err) {
-										console.error(err);
-									}else {
-										attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {
-											console.log('attachments added successfully');
-											//initiating mail sending to committer
-											mailServices.sendMail(commitDetails, function(err){
-												if(err)
-													console.error("error occurred while sending email: "+err);
-												else
-													console.log("Mail sent successfully.");
-												//Deleting Old Directory That Contains Screenshots
-												fs.readdir(path, function (err, data) {
-													if(err) {
-														console.error("Error : "+err);
-													}else {
-														//Deleting Old Directory That Contains Screenshots
-														attachmentServices.deleteFolderRecursive(path, function() {
-															//Deleting commit specific log files
-															fs.unlinkSync(automationLogFile);
-															fs.unlinkSync(failLogFile);
-															console.log("Commit specific log files deleted.");
-															return callback();							
-														});
-													}
+								createStatus.failure(commitDetails, description, function(status) {
+									console.log('state of failure : '+status);
+									
+									//Sending Mail To The Committer After Adding Attachments
+									fs.readdir(path, function (err, data) {
+										if(err) {
+											console.error(err);
+										}else {
+											attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {
+												console.log('attachments added successfully');
+												//initiating mail sending to committer
+												mailServices.sendMail(commitDetails, function(err){
+													if(err)
+														console.error("error occurred while sending email: "+err);
+													else
+														console.log("Mail sent successfully.");
+													//Deleting Old Directory That Contains Screenshots
+													fs.readdir(path, function (err, data) {
+														if(err) {
+															console.error("Error : "+err);
+														}else {
+															//Deleting Old Directory That Contains Screenshots
+															attachmentServices.deleteFolderRecursive(path, function() {
+																//Deleting commit specific log files
+																fs.unlinkSync(automationLogFile);
+																fs.unlinkSync(failLogFile);
+																console.log("Commit specific log files deleted.");
+																return callback();							
+															});
+														}
+													});
 												});
 											});
-										});
-									}
+										}
+									});
 								});
 							} else {
 								console.log('you are not allowed to set the status of the branch.');
