@@ -9,17 +9,17 @@ attachmentServices.deleteFolderRecursive = function(path, callback) {
 			var curPath = path + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
-				fs.isEmptyDir(curPath, function() {
-					console.log('deleting directory : '+path);
-					fs.rmdirSync(path);
-				})
-				attachmentServices.deleteFolderRecursive(curPath, callback);
+				attachmentServices.deleteFolderRecursive(curPath, function() {
+					return;
+				});
 			} else { 
 				// Delete File
 				console.log('deleting file : '+curPath);
 				fs.unlinkSync(curPath);
 			}
 		});
+		console.log('deleting directory : '+path);
+		fs.rmdirSync(path);
 	}
 	return callback();
 };
@@ -33,7 +33,9 @@ attachmentServices.addAttachments = function(dirPath, commitDetails, callback) {
 			var curPath = dirPath + "/" + file;
 			if(fs.lstatSync(curPath).isDirectory()) { 
 				// recurse
-				return attachmentServices.addAttachments(curPath, commitDetails, callback);
+				attachmentServices.addAttachments(curPath, commitDetails, function(commitDetails) {
+					return;
+				});
 			} else { 
 				//Adding Files To The Attachments
 				var imagePath = { 
