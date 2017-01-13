@@ -24,7 +24,6 @@ forumLoginMethod.loginToApp = function(username, password, driver, callback) {
 		}
 	} catch(e) {
 		driver.echo("The user is already logged-in.", 'INFO');
-		driver.capture("3223.png");
 	}	 
 	return callback(null);
 };

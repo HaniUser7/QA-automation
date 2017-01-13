@@ -587,7 +587,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 /**************  4.Making enable registration user as admin or register user  ******************/
 
 //10.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
-composeTopicMethod.enableUser= function(username,id,casper,test,callback) {	
+ composeTopicMethod.enableUserRegister= function(username,casper,test) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
 			if(!err){
@@ -600,16 +600,38 @@ composeTopicMethod.enableUser= function(username,id,casper,test,callback) {
 								casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 								casper.test.assertExists('div#ddUsers a[href="/tool/members/mb/addusers"]');
 								casper.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
-								wait.waitForElement('form#frmForumSettings', casper, function(err, isExists) {
-									casper.test.assertExists('input#autosuggest');
-									casper.sendKeys('input#autosuggest',username);
-									wait.waitForTime(2000 , casper , function(err) {
-										casper.test.assertExists('div#tab_wrapper');
-										casper.click('div#tab_wrapper');
-										wait.waitForTime(2000 , casper , function(err) {
-											casper.test.assertExists('form#frmChangeUsersGroupFinal');
-											casper.sendKeys(id,true);
+								wait.waitForElement('input#autosuggest', casper, function(err, isExists) {
+									casper.test.assertExists('#autosuggest');
+									casper.sendKeys('#autosuggest',username, {keepFocus: true});
+									casper.click('#autosuggest');
+									casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+									casper.waitForSelector('form[name="ugfrm"]', function success(){
+									    var grpName = casper.evaluate(function(){
+										    for(var i=2;i<6;i++){
+												var x1 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') label');
+												if (x1.innerText == 'Registered Users') {
+													var x3 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') input').getAttribute('value');
+													return x3;
+												}
+											}
 										});
+										casper.echo(+grpName,'INFO');
+											wait.waitForTime(3000, casper, function() { 
+												casper.fillSelectors('form[name="ugfrm"]', {
+													'input[type="checkbox"]' :grpName
+												}, true);
+												casper.test.assertExists('button[title="Close"]');
+												casper.click('button[title="Close"]');
+												wait.waitForTime(4000, casper, function() { 
+												    composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
+														if(!err){
+															casper.echo('backend logout sucessful');
+														}
+													});	
+												});
+											});
+									},function fail(){
+										casper.echo('');
 									});
 								});
 							} else {
@@ -619,7 +641,66 @@ composeTopicMethod.enableUser= function(username,id,casper,test,callback) {
 					}
 				});
 			}
-		});	
+		});
 	});
-
 }
+
+//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+ composeTopicMethod.enableUserAdmin= function(username,casper,test) {	
+	casper.thenOpen(config.backEndUrl, function() {
+		composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
+			if(!err){
+				registerMethod.loginToForumBackEnd(casper, test, function(err) {
+					 if(!err){
+						casper.echo('Logged-in successfully from back-end', 'INFO');
+						wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+							if(isExists) {
+								casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+								casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+								casper.test.assertExists('div#ddUsers a[href="/tool/members/mb/addusers"]');
+								casper.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+								wait.waitForElement('input#autosuggest', casper, function(err, isExists) {
+									casper.test.assertExists('#autosuggest');
+									casper.sendKeys('#autosuggest',username, {keepFocus: true});
+									casper.click('#autosuggest');
+									casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+									casper.waitForSelector('form[name="ugfrm"]', function success(){
+									    var grpName = casper.evaluate(function(){
+										    for(var i=2;i<6;i++){
+												var x1 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') label');
+												if (x1.innerText == 'Administrators') {
+													var x3 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') input').getAttribute('value');
+													return x3;
+												}
+											}
+										});
+										casper.echo(+grpName,'INFO');
+											wait.waitForTime(3000, casper, function() { 
+												casper.fillSelectors('form[name="ugfrm"]', {
+													'input[type="checkbox"]' :grpName
+												}, true);
+												casper.test.assertExists('button[title="Close"]');
+												casper.click('button[title="Close"]');
+												wait.waitForTime(4000, casper, function() { 
+												    composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
+														if(!err){
+															casper.echo('backend logout sucessful');
+														}
+													});	
+												});
+											});
+									},function fail(){
+										casper.echo('');
+									});
+								});
+							} else {
+								casper.echo('Backend Menu not found', 'ERROR');
+							}
+						});
+					}
+				});
+			}
+		});
+	});
+}
+

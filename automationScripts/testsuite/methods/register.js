@@ -1,8 +1,8 @@
 'use strict';
 var forumLoginMethod = require('../methods/login.js');
-
-
+var json = require('../../testdata/registerData.json');
 var wait = require('../wait.js');
+var utils = require('../utils.js');
 var registerMethod=module.exports = {};
 
 /************************************PRIVATE METHODS***********************************/
@@ -84,7 +84,7 @@ registerMethod.registerToApp = function(data, driver, callback) {
 	} catch(e) {
 		driver.test.assertDoesntExist('form[name="PostTopic"] input[name="birthDatepicker"]');
 	}
-	/*
+	
 	try {
 		driver.test.assertExists('form[name="PostTopic"] input[name="rules_checkbox"]');
 		utils.enableorDisableCheckbox('rules_checkbox', true, driver, function() {
@@ -93,14 +93,15 @@ registerMethod.registerToApp = function(data, driver, callback) {
 	} catch(e) {
 		driver.test.assertDoesntExist('form[name="PostTopic"] input[name="rules_checkbox"]');
 	}
-	*/
+	/*
 	var actionValue = driver.evaluate(function() {   
 		document.querySelector('form[name="PostTopic"]').setAttribute('action', '/register/create_account?apikey=4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q&type=json');
 		return document.querySelector('form[name="PostTopic"]').getAttribute('action');     
 	});
-	
+	*/
 	driver.test.assertExists('form[name="PostTopic"] button');
 	driver.click('form[name="PostTopic"] button');
+        driver.capture('3434.png');
 	return callback(null);		
 };
 

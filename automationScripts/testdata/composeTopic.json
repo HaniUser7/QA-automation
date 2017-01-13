@@ -1,4 +1,28 @@
 {
+    
+    "validInfoAdmin" : {
+    	"uname" : "sangita",
+        "uemail" : "sangita41@wt.com",
+        "upass" : "sangita",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
+    },
+	  
+    "validInfoRegister" : {
+    	"uname" : "rajan41",
+        "uemail" : "rajan414@gmail.com",
+        "upass" : "rajan41",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
+    },
 
 	 "Topicmessage" : {
 	"to": "sangita",

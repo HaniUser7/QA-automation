@@ -12,10 +12,18 @@ composeTopic.featureTest = function(casper, test) {
 
 		this.echo('Title Of The Page :' +this.getTitle(), 'INFO');
 
-         composeTopicTest.add()		  
+		
 		  
+		/************************   .Create User   ****************************/
+		
+		//1.Test case for create registeruser
+         composeTopicTest.createRegisterUser();
+		 
+        //1.Test case for Asreate adminuser
+         composeTopicTest.createAdminUser();		 
+		 
 		/************************   1.Add New Topic   ****************************/
-    /*   		
+      		
 		//1.Test case for Add New Topic with selecting category and verify message
 		//composeTopicTest.addNewTopicSelectingCategory();
 
@@ -30,9 +38,9 @@ composeTopic.featureTest = function(casper, test) {
 		
 		//5.test case for Verify Error message after entering message more than 65000 charecters while adding new Topic
 		//composeTopicTest.errorMessageMoreCharecters();
-	   */
+	  
 		/************************   2.Compost Topic (Make sure 'Post approval' is disabled)    ****************************/
-	/*
+	
 		//6.Test case for Verify Compost Topic on Category Listing Page(For Guest/Registered User/Admin)
 		composeTopicTest.compostTopicCategoryListingPage();
 
@@ -52,15 +60,15 @@ composeTopic.featureTest = function(casper, test) {
 		composeTopicTest.previewPostComposeTopicMessage();
 	
 		//12.Verify Compose Topic without selecting any category(For Guest/Registered User/Admin)
-		//composeTopicTest.composeTopicWithoutSelectingAnyCategory();
-    */
+		composeTopicTest.composeTopicWithoutSelectingAnyCategory();
+   
 	    /******************************  3.Compose Topic Options   ******************************************/
-	/*	
+		
 		//13.Test case for Verify Compose Post Options(For Guest/Registered User/Admin)
 		composeTopicTest.composePostOptions();
-     */   
+       
 		/**************  4.Compose Topic Permission(Make sure 'Post approval' is disabled)  ******************/
-	/*
+	
 		//14.Verify Compose Topic on Category/topic Listing Page(if start new topic permission is disabled)(For Guest User)
 		composeTopicTest.startNewTopicPermissionDisabled();
       
@@ -78,9 +86,9 @@ composeTopic.featureTest = function(casper, test) {
 	   
 	    //19.Verify Dropdown of Compose Topic on Category/Latest topic page(if start new topic permission is disabled of one cateogry)(For Register User)
 		composeTopicTest.previewPostDropdownTopicMessage();
-		*/
+	
 	   /**************  5.Compose Topic With Attach, Insert and Follow Option  ******************/
-	 /*
+	 
 	   //20.Verify Compose Topic with un-follow option(For Register user/Admin)
 		composeTopicTest.composeTopicUnFollowOption();
 		
@@ -98,7 +106,7 @@ composeTopic.featureTest = function(casper, test) {
 	   
 	    //25.Verify Compose Topic with Lock option(Admin)
 		composeTopicTest.composeTopicLockOption();
-	*/
+
 	});
 
 };
