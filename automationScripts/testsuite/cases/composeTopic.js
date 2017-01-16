@@ -56,12 +56,13 @@ composeTopicTest.createAdminUser= function() {
        
 	   casper.then(function(){  
 		
-         //1.test case for register user
+		//1.test case for register user
+		casper.then(function(){  
 			casper.thenOpen(config.url, function() {
-				 casper.echo('1.Admin user', 'INFO');
-				 casper.echo('******************************', 'INFO');
-				 wait.waitForTime(2000,casper,function(err){
-				 
+				casper.echo('1.Admin user', 'INFO');
+				casper.echo('******************************', 'INFO');
+				wait.waitForTime(2000,casper,function(err){
+
 					casper.test.assertExists('a[href="/register/register"]');
 					casper.click('a[href="/register/register"]');
 					casper.echo('Successfully open register form.....', 'INFO');
@@ -71,7 +72,7 @@ composeTopicTest.createAdminUser= function() {
 								casper.echo('Processing to registration on forum.....', 'INFO');
 								registerMethod.redirectToLogout(casper, casper.test, function(err) {
 									if(!err) {
-										casper.echo('User logout successfully', 'INFO');
+									     casper.echo('User logout successfully', 'INFO');
 									}
 								});
 							}
@@ -79,6 +80,7 @@ composeTopicTest.createAdminUser= function() {
 					});
 				});
 			});
+		});
 		
 		 //2.Test case for backend setting admin user 
 		casper.then(function(){
@@ -2044,7 +2046,8 @@ composeTopicTest.previewPostComposeTopic = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-						wait.waitForTime(2000, casper, function() {
+						wait.waitForTime(3000, casper, function() {
+                                                        
 							casper.test.assertExists('div#topics ul li:nth-child(2) a');
 							casper.click('div#topics ul li:nth-child(2) a');
 							wait.waitForElement('ul li[id^="forum_"]:nth-child(1) span span:nth-child(1) a', casper, function(err, isExist) {
