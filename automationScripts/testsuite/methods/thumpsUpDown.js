@@ -396,20 +396,16 @@ thumpsUpDownMethod.enableUserAccount = function(driver, callback) {
 									utils.enableorDisableCheckbox('REQreg', true, casper, function() {
 										casper.echo('checkbox is checked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#loading_msg', function() {
-											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-											}, function fail() { 
-												casper.echo('User account not enabled', 'ERROR');
-											});
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#loading_msg', function() {
+										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('User account not enabled', 'ERROR');
 										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									});
 								} else {
 									casper.echo('User Account checkbox not found', 'ERROR');
 								}

@@ -5,7 +5,7 @@ var registerMethod = require('./register.js');
 var config = require('../../../config/config.json');
 var utils = require('./utils.js');
 var wait = require('../wait.js');
-var json = require('../../testdata/forgotpasswordData.json');
+var json = require('../../testdata/privateMessage.json');
 var forumLoginMethod = require('../methods/login.js');
 var backEndForumRegisterMethod = require('./backEndRegistration.js');
 var privateMessageMethod = module.exports = {};
@@ -27,17 +27,13 @@ privateMessageMethod.enableMessage = function(driver, callback) {
 									utils.enableorDisableCheckbox('allow_pm', true, casper, function() {
 										casper.echo('checkbox is checked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-										}, function fail() { 
-											casper.echo('Saved not found', 'ERROR');
-										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+									}, function fail() { 
+										casper.echo('Saved not found', 'ERROR');
+									});
 								} else {
 									casper.echo('Message checkbox not found', 'ERROR');
 								}
@@ -51,7 +47,7 @@ privateMessageMethod.enableMessage = function(driver, callback) {
 				}
 			});
 		}else {
-			casper.echo('Error ', 'INFO');
+			casper.echo('Error ', 'ERROR');
 		}
 	});
 	casper.then(function() {
@@ -77,17 +73,13 @@ privateMessageMethod.disableMessage = function(driver, callback) {
 									utils.enableorDisableCheckbox('allow_pm', false, casper, function() {
 										casper.echo('checkbox is unchecked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-										}, function fail() { 
-											casper.echo('Saved not found', 'ERROR');
-										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+									}, function fail() { 
+										casper.echo('Saved not found', 'ERROR');
+									});
 								} else {
 									casper.echo('Message checkbox not found', 'ERROR');
 								}
@@ -101,7 +93,7 @@ privateMessageMethod.disableMessage = function(driver, callback) {
 				}
 			});
 		}else {
-			casper.echo('Error ', 'INFO');
+			casper.echo('Error ', 'ERROR');
 		}
 	});
 	casper.then(function() {
@@ -127,17 +119,13 @@ privateMessageMethod.enableAttachments = function(driver, callback) {
 									utils.enableorDisableCheckbox('FU', true, casper, function() {
 										casper.echo('checkbox is checked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-										}, function fail() { 
-											casper.echo('Saved not found', 'ERROR');
-										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+									}, function fail() { 
+										casper.echo('Saved not found', 'ERROR');
+									});
 								} else {
 									casper.echo('Message checkbox not found', 'ERROR');
 								}
@@ -151,7 +139,7 @@ privateMessageMethod.enableAttachments = function(driver, callback) {
 				}
 			});
 		}else {
-			casper.echo('Error ', 'INFO');
+			casper.echo('Error ', 'ERROR');
 		}
 	});
 	casper.then(function() {
@@ -177,17 +165,13 @@ privateMessageMethod.disableAttachments = function(driver, callback) {
 									utils.enableorDisableCheckbox('FU', false, casper, function() {
 										casper.echo('checkbox is unchecked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-										}, function fail() { 
-											casper.echo('Saved not found', 'ERROR');
-										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+									}, function fail() { 
+										casper.echo('Saved not found', 'ERROR');
+									});
 								} else {
 									casper.echo('Message checkbox not found', 'ERROR');
 								}
@@ -201,7 +185,7 @@ privateMessageMethod.disableAttachments = function(driver, callback) {
 				}
 			});
 		}else {
-			casper.echo('Error ', 'INFO');
+			casper.echo('Error ', 'ERROR');
 		}
 	});
 	casper.then(function() {
@@ -228,7 +212,7 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
 	}, function fail() {
-		driver.echo('Message iframe not fount', 'INFO')
+		driver.echo('Message iframe not fount', 'ERROR')
 	});
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
@@ -238,7 +222,7 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 			driver.waitUntilVisible('div#ajax-msg-top', function success() {
 				driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
 			}, function fail() {
-				driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
+				driver.echo(casper.fetchText('div#pm_error_msg'), 'ERROR');
 			});	
 			driver.then(function() {
 				return callback(null);
@@ -251,7 +235,7 @@ privateMessageMethod.createMessage = function(data, driver, callback) {
 privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {		
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', data.to, {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
-	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',json["RegisteredUserLogin"].username2, {keepFocus:true});
+	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',json["registeredUserLogin"].username2, {keepFocus:true});
 	driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter, {keepFocus:true} );
 	driver.sendKeys('input[id="pm_subject"]', data.subject, {keepFocus:true});		
 	driver.test.assertExists('textarea#pmessage_new');
@@ -265,7 +249,7 @@ privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
 	}, function fail() {
-		driver.echo('Message iframe not fount', 'INFO')
+		driver.echo('Message iframe not fount', 'ERROR')
 	});
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
@@ -275,7 +259,7 @@ privateMessageMethod.sendMessageToManyUser = function(data, driver, callback) {
 			driver.waitUntilVisible('div#ajax-msg-top', function success() {
 				driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
 			}, function fail() {
-				driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
+				driver.echo(casper.fetchText('div#pm_error_msg'), 'ERROR');
 			});
 			driver.then(function() {
 				return callback(null);
@@ -307,7 +291,7 @@ privateMessageMethod.sendMessageToMaxLimitUser = function(data, driver, callback
 				driver.sendKeys('#tinymce', "Message Send to 25 user at same time");
 			});
 		}, function fail() {
-			driver.echo('Message iframe not fount', 'INFO')
+			driver.echo('Message iframe not fount', 'ERROR')
 		});
 		driver.then(function() {
 			driver.test.assertExists('a#send_pmsg_button');
@@ -317,7 +301,7 @@ privateMessageMethod.sendMessageToMaxLimitUser = function(data, driver, callback
 				driver.waitUntilVisible('div#ajax-msg-top', function success() {
 					driver.echo(driver.fetchText('div#ajax-msg-top p'),'INFO');
 				}, function fail() {
-					driver.echo(casper.fetchText('div#pm_error_msg'), 'INFO');
+					driver.echo(casper.fetchText('div#pm_error_msg'), 'ERROR');
 				});	
 				driver.then(function() {
 					return callback(null);
@@ -398,22 +382,18 @@ privateMessageMethod.disableEmailVerification = function(driver, callback) {
 									utils.enableorDisableCheckbox('reqregapp', false, casper, function() {
 										casper.echo('checkbox is unchecked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#loading_msg', function success() {
-											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-											}, function fail() { 
-												casper.echo('Saved not found', 'ERROR');
-											});
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#loading_msg', function success() {
+										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 										}, function fail() { 
-											casper.echo('Loading... found', 'ERROR');
+											casper.echo('Saved not found', 'ERROR');
 										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									}, function fail() { 
+										casper.echo('Loading... found', 'ERROR');
+									});
 								} else {
 									casper.echo('Email Address Verification checkbox not found', 'ERROR');
 								}
@@ -427,7 +407,7 @@ privateMessageMethod.disableEmailVerification = function(driver, callback) {
 				}
 			});
 		}else {
-			casper.echo('Error ', 'INFO');
+			casper.echo('Error ', 'ERROR');
 		}
 	});
 	casper.then(function() {
@@ -456,17 +436,13 @@ privateMessageMethod.enableEmailVerification = function(driver, callback) {
 									utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
 										casper.echo('checkbox is unchecked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-										}, function fail() { 
-											casper.echo('Saved not found', 'ERROR');
-										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+									}, function fail() { 
+										casper.echo('Saved not found', 'ERROR');
+									});
 								} else {
 									casper.echo('Email Address Verification checkbox not found', 'ERROR');
 								}
@@ -480,7 +456,7 @@ privateMessageMethod.enableEmailVerification = function(driver, callback) {
 				}
 			});
 		}else {
-			casper.echo('Error ', 'INFO');
+			casper.echo('Error ', 'ERROR');
 		}
 	});
 	casper.then(function() {
@@ -489,3 +465,56 @@ privateMessageMethod.enableEmailVerification = function(driver, callback) {
 		return callback(null);
 	});
 };
+
+// method to disable all extra fields on registration page
+privateMessageMethod.disableFields = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+					driver.test.assertExists('div#ddUsers a[href="/tool/members/mb/fields?action=default_registration_option"]');
+					driver.click('div#ddUsers a[href="/tool/members/mb/fields?action=default_registration_option"]');
+					wait.waitForElement('div.heading', casper, function(err, isExist) {
+						if(!err){
+							if(isExist) {
+								driver.fill('form[name="posts"]', {
+									'required_name' : 'No',
+									'required_imType' : 'No',
+									'required_dob' : 'No',
+									'required_signature' : 'No',
+									'required_avatar' : 'No'
+								}, true);
+								driver.click('form[name="posts"] button');
+								wait.waitForElement('font[color="red"]', casper, function(err, isExist) {
+									if(!err){
+										if(isExist) {
+											var successMsg = casper.fetchText('font[color="red"]');
+											driver.echo('success message : '+successMsg, 'INFO');
+											driver.echo('success message is verified', 'INFO');
+										}else{
+											driver.echo('Message is not generated Found', 'ERROR');
+										}
+									}
+								});
+							}else{
+								driver.echo('Default_registration_option Link Not Found', 'ERROR');
+							}
+						}
+					});				
+				} else {
+					driver.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'ERROR');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
