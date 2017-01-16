@@ -401,10 +401,15 @@ privateMessageMethod.disableEmailVerification = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
-											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										casper.waitUntilVisible('div#loading_msg', function success() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
 										}, function fail() { 
-											casper.echo('Saved not found', 'ERROR');
+											casper.echo('Loading... found', 'ERROR');
 										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
