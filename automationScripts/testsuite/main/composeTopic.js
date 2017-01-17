@@ -10,22 +10,19 @@ composeTopic.featureTest = function(casper, test) {
 
 	casper.start(config.backEndUrl, function() {
 
-		this.echo('Title Of The Page :' +this.getTitle(), 'INFO');
-
-
 
 		/************************   .Create User   ****************************/
 
-		//1.Test case for create registeruser
+		//Test case for create registeruser
 		composeTopicTest.createRegisterUser();
 
-		//1.Test case for Asreate adminuser
+		//Test case for create adminuser
 		composeTopicTest.createAdminUser();		 
 
 		/************************   1.Add New Topic   ****************************/
 
 		//1.Test case for Add New Topic with selecting category and verify message
-		//composeTopicTest.addNewTopicSelectingCategory();
+		composeTopicTest.addNewTopicSelectingCategory();
 
 		//2.test case for Add New Topic with hindi text and verify message
 		composeTopicTest.addNewTopicHindiText();
