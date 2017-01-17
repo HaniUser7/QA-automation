@@ -41,7 +41,6 @@ var fillDataToLogin = function(data, driver, callback) {
 
 
 //Method For Filling Data In Registration Form
-
 registerMethod.registerToApp = function(data, driver, callback) {
 	driver.fill('form[name="PostTopic"]', {
 		'member' : data.uname,
@@ -129,7 +128,6 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
 		driver.echo('Successfully done registration on forum.....', 'INFO');
 
-		
 		//Clicking On 'Back To Category' Link 
 		wait.waitForElement('a[href="/categories"]', casper, function(err, isExist) {
 			if(isExist) {
@@ -148,7 +146,6 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 			var expectedErrorMsg = "It looks like you already have a forum account!";
 			driver.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
 			driver.echo('USER ALREADY REGISTERED ON FORUM.....', 'INFO');
-			
 			return callback(null);
 		} catch(e1) {
 			driver.echo('Successfully done registration on forum.....', 'INFO');

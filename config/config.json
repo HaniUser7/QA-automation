@@ -1,7 +1,9 @@
 {
 	"screenShotsLocation": "../Screenshots/",
-	"url": "http://beta24.websitetoolbox.com/",
-	"backEndUrl": "http://beta24.websitetoolbox.com/tool/members/login",
+	"failedScreenShotsLocation": "/var/tmp/failedScreenshots/",
+	"url": "http://beta12.websitetoolbox.com/",
+	"backEndUrl": "https://beta12.websitetoolbox.com/tool/members/login",
+	
 	"app": {	
 		"verbose" : true,
 	 	"logLevel" : "debug",
@@ -13,7 +15,7 @@
 	},
 
 	"backendCred" : {
-		"uname" : "beta24",
+		"uname" : "beta12",
     		"upass" : "test",
     		"apiKey" : "4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q"
 	},
@@ -28,5 +30,6 @@
 		"port" : 6379
 	},
 	
-	"permissionSettingMsg" : "Your user group settings have been updated."
+	"permissionSettingMsg" : "Your user group settings have been updated.",
+	"beta" : 0
 }
