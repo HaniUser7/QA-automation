@@ -382,6 +382,9 @@ privateMessageMethod.disableEmailVerification = function(driver, callback) {
 									utils.enableorDisableCheckbox('reqregapp', false, casper, function() {
 										casper.echo('checkbox is unchecked', 'INFO');
 									});
+									utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
 									casper.test.assertExists('button.button.btn-m.btn-blue');
 									casper.click('button.button.btn-m.btn-blue');
 									casper.waitUntilVisible('div#loading_msg', function success() {

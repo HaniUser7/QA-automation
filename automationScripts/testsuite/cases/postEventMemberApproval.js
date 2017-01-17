@@ -723,8 +723,8 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 	//Open Back-End URL And Get Title and logout if logged in
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		//method to enable approve new post** All posts
-		postEventMemberApprovalMethod.enableApproveNewPost(casper, casper.test, function(err) {
+		//method to disable approve new post** All posts
+		postEventMemberApprovalMethod.disableApproveNewPost(casper, casper.test, function(err) {
 			if(!err) {
 				casper.echo('Enable Approve New Post functionality method called ','INFO');
 			}
@@ -732,6 +732,7 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 	});
 };
 
+// Test cases for event approval 
 // method to Approve a pending event -Approval queue button
 postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function() {
 	//Open Back-End URL And Get Title and logout if logged in
@@ -764,7 +765,7 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
-						this.click('a#approveEvent_'+eventId+' i');
+						casper.click('a#approveEvent_'+eventId+' i');
 						}, function fail() {
 							casper.echo('approve tick not found','ERROR');
 						});
@@ -780,33 +781,30 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 			}
 		});
 	});
-	//Open Back-End URL And Get Title and logout if logged in
-	casper.thenOpen(config.backEndUrl, function() {
-		//method to enable approve new post** All posts
-		postEventMemberApprovalMethod.disableEventApproval(casper, casper.test, function(err) {
-			if(!err) {
-				casper.echo('Enable Approve New Event functionality method called ','INFO');
-			}
-		});
-	});
 };
 
-// method to Approve a pending event -By clicking on topic
+// method to Approve a pending event -By clicking on event
 postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 2', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                   Approve a pending event -By clicking on event                  *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('form#approveMembers span.post-body-author a', function success() {
-							this.click('form#approveMembers span.post-body-author a');
+							casper.click('span[data-eventid="'+eventId+'"] a');
 							casper.waitForSelector('div.cleared.event-footer strong', function success(){
-								test.assertExists('div.cleared.event-footer strong','Event found');
-								this.echo(this.fetchText('div.cleared.event-footer strong'),'INFO');
-								this.echo('*****************************************','INFO');
-								this.capture('OnEventClick.png');
+								casper.test.assertExists('div.cleared.event-footer strong','Event found');
+								casper.echo(casper.fetchText('div.cleared.event-footer strong'),'INFO');
+								casper.echo('*****************************************','INFO');
+								casper.test.assertDoesntExist('a#deleteEvent_'+eventId+' i','Delete button is not available','INFO');
+								casper.capture('OnEventClick.png');
 							}, function fail() {
 								casper.echo('Event alert not found','ERROR');
 							});
@@ -824,25 +822,30 @@ postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent = function() {
 	});
 };
 		
-// method to Approve a pending event byselect the pending event by  check box
+// method to Approve a pending event by select the pending event by  check box
 postEventMemberApprovalTestcases.eventApprovalByCheckBox = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 3', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*           Approve a pending event by select the pending event by  check box       *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown input.entry-checkbox', function success(){
-							this.click('input#eventaction_'+event_id);
-							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
-							test.assertExists('div#pending-menu span.dropdown a.text-success i', 'approve tick on the floating menu******************');
-							this.click('div#pending-menu span.dropdown a.text-success i');
+							casper.click('input#eventaction_'+eventId);
+							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
+							casper.test.assertExists('i#approvePending', 'approve tick on the floating menu******************');
+							casper.click('i#approvePending');
 						},function fail(){
 							casper.echo('Checkbox not Found','INFO');
 						});
 						casper.wait(5000, function() {
-							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page by clicking on checkbox','INFO');
+							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page by clicking on checkbox','INFO');
 						});  
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
@@ -859,19 +862,27 @@ postEventMemberApprovalTestcases.eventApprovalByCheckBox = function() {
 postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 4', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*           Approve a pending event by select all pending event by  check box      *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
-						casper.waitForSelector('div.subheading input#select_all_pending_events', function success() {
-							this.click('div.subheading input#select_all_pending_events');
-							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
-							test.assertExists('div#pending-menu span.dropdown a.text-success i', 'APPROVE TICK ON THE FLOATING MENU');
+						casper.waitForSelector('input#select_all_pending_events', function success() {
+							casper.click('input#select_all_pending_events');
+							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
 							casper.waitForSelector('div#pending-menu',function success(){
-								this.click('div#pending-menu span.dropdown a.text-success i');
-								this.echo('                       ***********TEXT FETCHED***********','INFO');
-								this.echo(this.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
+								casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
+								casper.test.assertExists('i#approvePending', 'APPROVE TICK ON THE FLOATING MENU');
+								casper.click('i#approvePending');
+								casper.wait(5000, function() {
+									casper.echo(' ***********TEXT FETCHED***********','INFO');
+									casper.echo(casper.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
+								});
 							}, function fail(){
 								casper.echo('Floating Menu not Found','INFO');
 							});
@@ -893,18 +904,23 @@ postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll = function() {
 postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 5', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                Delete a pending event from- Approval queue button                *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
-							this.click('a#deleteEvent_'+event_id+' i');
+							casper.click('a#deleteEvent_'+eventId+' i');
 						}, function fail() {
 							casper.echo('approve tick not found','ERROR');
 						});
 						casper.wait(5000, function() {
-							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page','INFO');
+							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
 						});  
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
@@ -921,18 +937,24 @@ postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton = function() {
 postEventMemberApprovalTestcases.eventdeleteByClickingEvent = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 6', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                   Delete a pending event -By clicking on it                      *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('form#approveMembers span.post-body-author a', function success() {
-							this.click('form#approveMembers span.post-body-author a');
+							casper.click('span[data-eventid="'+eventId+'"] a');
 							casper.waitForSelector('div.cleared.event-footer strong', function success(){
-								test.assertExists('div.cleared.event-footer strong','Event found');
-								this.echo(this.fetchText('div.cleared.event-footer strong'),'INFO');
+								casper.test.assertExists('div.cleared.event-footer strong','Event found');
+								casper.echo(casper.fetchText('div.cleared.event-footer strong'),'INFO');
 								this.echo('*****************************************','INFO');
-								this.capture(screenShotsDir+'DeleteOnEventClick.png');
+								casper.test.assertDoesntExist('a#deleteEvent_'+eventId+' i','Delete button is not available','INFO');
+								this.capture('DeleteOnEventClick.png');
 							}, function fail() {
 								casper.echo('Event alert not found','ERROR');
 							});
@@ -954,21 +976,26 @@ postEventMemberApprovalTestcases.eventdeleteByClickingEvent = function() {
 postEventMemberApprovalTestcases.eventdeleteByCheckBox = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 7', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*         Delete a pending event by select the pending post by  check box          *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown input.entry-checkbox', function success(){
-							this.click('input#eventaction_'+event_id);
-							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
-							test.assertExists('div#pending-menu span.dropdown a.text-danger i', 'Delete tick on the floating menu******************');
-							this.click('div#pending-menu span.dropdown a.text-danger i');
+							casper.click('input#eventaction_'+eventId);
+							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
+							casper.test.assertExists('i#decline_pending', 'Delete tick on the floating menu******************');
+							casper.click('i#decline_pending');
 						},function fail(){
 							casper.echo('Checkbox not Found','INFO');
 						});
 						casper.wait(5000, function() {
-							test.assertDoesntExist('div#event_'+event_id ,'event is deleted from the page by clicking on checkbox','INFO');
+							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page by clicking on checkbox','INFO');
 						});  
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
@@ -985,19 +1012,26 @@ postEventMemberApprovalTestcases.eventdeleteByCheckBox = function() {
 postEventMemberApprovalTestcases.eventdeleteByAllCheckBox = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 8', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*           Delete a pending event by select all pending post by  check box        *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
-						casper.waitForSelector('div.subheading input#select_all_pending_events', function success() {
-							this.click('div.subheading input#select_all_pending_events');
-							test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
-							test.assertExists('div#pending-menu span.dropdown a.text-danger i', 'Delete TICK ON THE FLOATING MENU');
+						casper.waitForSelector('input#select_all_pending_events', function success() {
+							casper.click('input#select_all_pending_events');
+							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
 							casper.waitForSelector('div#pending-menu',function success(){
-								this.click('div#pending-menu span.dropdown a.text-danger i');
-								this.echo('                       ***********TEXT FETCHED***********','INFO');
-								this.echo(this.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
+								casper.test.assertExists('i#decline_pending', 'Delete TICK ON THE FLOATING MENU');
+								casper.click('i#decline_pending');
+								casper.wait(5000, function() {
+									casper.echo(' ***********TEXT FETCHED***********','INFO');
+									casper.echo(casper.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
+								});
 							}, function fail(){
 								casper.echo('Floating Menu not Found','INFO');
 							});
@@ -1019,22 +1053,29 @@ postEventMemberApprovalTestcases.eventdeleteByAllCheckBox = function() {
 postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 9', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                         edit a pending event by clicking on it                   *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to compose a post by register user
 		postEventMemberApprovalMethod.composeEvent(casper, casper.test, function(err,eventId) {
 			if(!err) {
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
-						this.click('a#edit_'+event_id+' i');
+						casper.click('a#edit_'+eventId+' i');
 							casper.waitForSelector('div.editable-input textarea', function success() {
 								var text = this.fetchText('div.editable-input textarea');
-								this.echo('The text of the event is--'+text,'INFO');
-								this.sendKeys('div.editable-input textarea', 'Event is edited');
-								this.wait(5000,function () {
+								casper.echo('The text of the event is--'+text,'INFO');
+								casper.sendKeys('div.editable-input textarea', 'Event is edited');
+								casper.wait(5000,function () {
+									var text2 = this.fetchText('div.editable-input textarea');
+									casper.echo('The text of the event is--'+text2,'INFO');
 									this.capture('editEvent.png');
 								});
-								this.click('div.editable-buttons i.glyphicon.glyphicon-ok');
-								this.click('div.editable-buttons i.glyphicon.glyphicon-ok');
+								casper.click('div.editable-buttons i.glyphicon.glyphicon-ok');
+								casper.click('div.editable-buttons i.glyphicon.glyphicon-ok');
 							}, function fail(){
 								casper.echo('Text Area not found','ERROR');
 							});
@@ -1047,6 +1088,15 @@ postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 				});
 			} else {
 				casper.echo('Not called compose event method','INFO');
+			}
+		});
+	});
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		//method to disable approve new post** All posts
+		postEventMemberApprovalMethod.disableEventApproval(casper, casper.test, function(err) {
+			if(!err) {
+				casper.echo('Disable Approve New Event functionality method called ','INFO');
 			}
 		});
 	});

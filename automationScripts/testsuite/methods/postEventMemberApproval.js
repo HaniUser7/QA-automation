@@ -128,17 +128,13 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 									driver.fillSelectors('form[name="posts"]', {
 		    								'select[name="post_approval"]': '0'
 									}, true);
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#loading_msg', function success() {
-											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-										}, function fail() {
-											casper.echo('Loading... not found', 'INFO');
-										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#loading_msg', function success() {
+										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+									}, function fail() {
+										casper.echo('Loading... not found', 'INFO');
+									});
 								} else {
 									casper.echo('approve new post checkbox not found', 'ERROR');
 								}
@@ -451,71 +447,80 @@ postEventMemberApprovalMethod.disableEventApproval = function(driver, test, call
 //*************************method to compose a event and got id ************************************
 postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 	driver.echo('Inside the composeEvent method','INFO');
-	forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
-		if(!err) {
-			wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-				if(isExists) {
-					casper.click('i.icon.icon-menu');
-					try {
-						casper.test.assertExists('ul#calendars_toggle_link i','calender menu found');
-						casper.click('ul#calendars_toggle_link i');
-						casper.test.assertExists('a[href^="/calendar/display?from_month=&from_year=&view="]','First calender found');
-						casper.click('a[href^="/calendar/display?from_month=&from_year=&view="]');
-					} catch (e) {
-						casper.test.assertExists('li#calenders_show a','calender menu found');
-						casper.click('li#calenders_show a');
-					}
-					casper.waitForSelector('div.bd-wrapper.calendar-add-event a', function success() {
-						casper.click('div.bd-wrapper.calendar-add-event a');
-						casper.then(function() {
-							casper.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
-							casper.fillSelectors('form#PostCalEvent', {
-									'input#allDay' : 1
-							}, false); 
+	try {
+		driver.test.assertExists('ul.nav.pull-right span.caret');
+		driver.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	} catch (e) {
+		driver.echo('No user logged in','INFO');
+	}
+	casper.then(function() {
+		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+			if(!err) {
+				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+					if(isExists) {
+						casper.click('i.icon.icon-menu');
+						try {
+							casper.test.assertExists('ul#calendars_toggle_link i','calender menu found');
+							casper.click('ul#calendars_toggle_link i');
+							casper.test.assertExists('a[href^="/calendar/display?from_month=&from_year=&view="]','First calender found');
+							casper.click('a[href^="/calendar/display?from_month=&from_year=&view="]');
+						} catch (e) {
+							casper.test.assertExists('li#calenders_show a','calender menu found');
+							casper.click('li#calenders_show a');
+						}
+						casper.waitForSelector('div.bd-wrapper.calendar-add-event a', function success() {
+							casper.click('div.bd-wrapper.calendar-add-event a');
 							casper.then(function() {
-								casper.waitForSelector('#message_ifr', function success() {
-									casper.test.assertExists('#message_ifr','message-ifr found');
-									casper.withFrame('message_ifr', function() {
-										try{
-											casper.test.assertExists('#tinymce');
-											//casper.capture(screenShotsDir+'tiny.png');
-											casper.sendKeys('#tinymce', "This is a new event");
-										}catch(e) {
-											casper.test.assertDoesntExist('#tinymce');
-										}
+								casper.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
+								casper.fillSelectors('form#PostCalEvent', {
+										'input#allDay' : 1
+								}, false); 
+								casper.then(function() {
+									casper.waitForSelector('#message_ifr', function success() {
+										casper.test.assertExists('#message_ifr','message-ifr found');
+										casper.withFrame('message_ifr', function() {
+											try{
+												casper.test.assertExists('#tinymce');
+												casper.sendKeys('#tinymce', "This is a new event");
+											}catch(e) {
+												casper.test.assertDoesntExist('#tinymce');
+											}
+										});
+									}, function fail(){
+										casper.echo('message_ifr not found','ERROR');
 									});
-								}, function fail(){
-									casper.echo('message_ifr not found','ERROR');
-								});
-								// code get the id of event
-								driver.then(function() {
-									casper.click('#post_event_buttton');
-									casper.wait(5000, function() {
-										eventId = casper.evaluate( function(a) {
-											var n = a.indexOf('eventid=');
-											var stre='eventid=';
-											var leng=stre.length;
-											var h = n+leng;
-											var stringt=a.substring(h);
-											var t = stringt.indexOf('&');
-											var id = stringt.substring(0,t);
-											return id;
-										}, casper.getCurrentUrl());
-										casper.echo('*******event_id='+eventId,'INFO');
-										casper.capture('event.png');
-										return callback(null, eventId);
+									// code get the id of event
+									driver.then(function() {
+										casper.click('#post_event_buttton');
+										casper.wait(5000, function() {
+											eventId = casper.evaluate( function(a) {
+												var n = a.indexOf('eventid=');
+												var stre='eventid=';
+												var leng=stre.length;
+												var h = n+leng;
+												var stringt=a.substring(h);
+												var t = stringt.indexOf('&');
+												var id = stringt.substring(0,t);
+												return id;
+											}, casper.getCurrentUrl());
+											casper.echo('*******event_id='+eventId,'INFO');
+											casper.capture('event.png');
+											return callback(null, eventId);
+										});
 									});
 								});
 							});
 						});
-					});
-				} else {
-					casper.echo('User not logged in','ERROR');	
-				}
-			});
-		}else {
-			casper.echo('Admin user not logged in', 'INFO');
-		}
+					} else {
+						casper.echo('User not logged in','ERROR');	
+					}
+				});
+			}else {
+				casper.echo('Admin user not logged in', 'INFO');
+			}
+		});
 	});
 };
 
