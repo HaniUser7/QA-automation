@@ -31,11 +31,11 @@ privateMessageTestcases.createPrivateMessage = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1201,11 +1201,11 @@ privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1428,11 +1428,11 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 												}
 											});
 										} else {
-											driver.echo('Message pop up not found','ERROR');
+											casper.echo('Message pop up not found','ERROR');
 										}
 									});
 								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
+									casper.echo('Send a New Messag Pop not found','ERROR');
 								}
 							});
 						}else {
@@ -1464,11 +1464,11 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 												}
 											});
 										} else {
-											driver.echo('Message pop up not found','ERROR');
+											casper.echo('Message pop up not found','ERROR');
 										}
 									});
 								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
+									casper.echo('Send a New Messag Pop not found','ERROR');
 								}
 							});
 						}else {
@@ -1500,11 +1500,11 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 											}
 										});
 										} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 									});
 								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
+									casper.echo('Send a New Messag Pop not found','ERROR');
 								}
 							});
 						}else {
@@ -1577,11 +1577,11 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1748,11 +1748,11 @@ privateMessageTestcases.invalidRecipientsName = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1794,11 +1794,11 @@ privateMessageTestcases.blankRecipientsName = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1836,11 +1836,11 @@ privateMessageTestcases.blankSubject = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1882,11 +1882,11 @@ privateMessageTestcases.blankMessageBody = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1918,14 +1918,14 @@ privateMessageTestcases.autoDropdown = function() {
 								casper.click('a.send_new_pmsg');
 								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
 									if(isExists) {
-										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
-										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
+										casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
+										casper.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -1967,11 +1967,11 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = functio
 										casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
 										casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');		
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -2013,11 +2013,11 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function
 										casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
 										casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -2064,7 +2064,7 @@ privateMessageTestcases.leaveSingleConversation = function() {
 											casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
 											casper.echo('left message verified', 'INFO');
 										}, function fail() {
-											driver.echo('message after leave not found', 'ERROR')
+											casper.echo('message after leave not found', 'ERROR')
 										});
 										casper.then(function() {
 											casper.then(function() {
@@ -2154,7 +2154,7 @@ privateMessageTestcases.leaveMultipleConversation = function() {
 											casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
 											casper.echo('left message verified', 'INFO');
 										}, function fail() {
-											driver.echo('message after leave not found', 'ERROR')
+											casper.echo('message after leave not found', 'ERROR')
 										});
 										casper.then(function() {
 											casper.then(function() {
@@ -2241,7 +2241,7 @@ privateMessageTestcases.leaveAllConversation = function() {
 											//casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
 											casper.echo('left message verified', 'INFO');
 										}, function fail() {
-											driver.echo('message after leave not found', 'ERROR')
+											casper.echo('message after leave not found', 'ERROR')
 										});
 										casper.then(function() {
 											casper.then(function() {
@@ -2388,11 +2388,11 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -2472,11 +2472,11 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -2594,11 +2594,11 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -2741,11 +2741,11 @@ privateMessageTestcases.verifyAvtar = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {
@@ -2850,11 +2850,11 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 												}
 											});
 										} else {
-											driver.echo('Message pop up not found','ERROR');
+											casper.echo('Message pop up not found','ERROR');
 										}
 									});
 								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
+									casper.echo('Send a New Messag Pop not found','ERROR');
 								}
 							});
 						}else {
@@ -2893,11 +2893,11 @@ privateMessageTestcases.verifyMorethanMaxRecipient = function() {
 											}
 										});
 									} else {
-										driver.echo('Message pop up not found','ERROR');
+										casper.echo('Message pop up not found','ERROR');
 									}
 								});
 							} else {
-								driver.echo('Send a New Messag Pop not found','ERROR');
+								casper.echo('Send a New Messag Pop not found','ERROR');
 							}
 						});
 					}else {

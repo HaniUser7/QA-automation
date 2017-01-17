@@ -1031,7 +1031,7 @@ postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 								this.echo('The text of the event is--'+text,'INFO');
 								this.sendKeys('div.editable-input textarea', 'Event is edited');
 								this.wait(5000,function () {
-									this.capture(screenShotsDir+'editEvent.png');
+									this.capture('editEvent.png');
 								});
 								this.click('div.editable-buttons i.glyphicon.glyphicon-ok');
 								this.click('div.editable-buttons i.glyphicon.glyphicon-ok');

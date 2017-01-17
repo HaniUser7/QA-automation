@@ -17,34 +17,34 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		postEventMemberApprovalTestcases.approvalQueueButton();
 		
 		// method to Approve a pending post -By clicking on topic
-		//postEventMemberApprovalTestcases.byClickingOnTopic();
+		postEventMemberApprovalTestcases.byClickingOnTopic();
 		
 		// method to Approve a pending post byselect the pending post by  check box
-		//postEventMemberApprovalTestcases.byCheckBox();
+		postEventMemberApprovalTestcases.byCheckBox();
 		
 		// method to Approve a pending post by select all pending post by  check box
-		//postEventMemberApprovalTestcases.byCheckBoxAll();
+		postEventMemberApprovalTestcases.byCheckBoxAll();
 		
 		// method to Delete a pending post from- Approval queue button 
-		//postEventMemberApprovalTestcases.deleteApprovalQueueButton();
+		postEventMemberApprovalTestcases.deleteApprovalQueueButton();
 		
 		// method to Delete a pending post -By clicking on  post 
-		//postEventMemberApprovalTestcases.deleteClickingPost();
+		postEventMemberApprovalTestcases.deleteClickingPost();
 		
 		// method to Delete a pending post by select the pending post by  check box
-		//postEventMemberApprovalTestcases.deleteByCheckBox();
+		postEventMemberApprovalTestcases.deleteByCheckBox();
 		
 		// method to Delete a pending post by select all pending post by  check box
-		//postEventMemberApprovalTestcases.deleteByAllCheckBox();
+		postEventMemberApprovalTestcases.deleteByAllCheckBox();
 		
 		// method to edit a pending post from- Approval queue button 
-		//postEventMemberApprovalTestcases.editApprovalQueueButton();
+		postEventMemberApprovalTestcases.editApprovalQueueButton();
 		
 		// method to edit a pending post by clicking on it
-		//postEventMemberApprovalTestcases.editByClickingPost();
+		postEventMemberApprovalTestcases.editByClickingPost();
 
 		// method to check the functionality of approve post for guest user
-		//postEventMemberApprovalTestcases.unregisterUserApprovePost();
+		postEventMemberApprovalTestcases.unregisterUserApprovePost();
 		
 		// method to Approve a pending event -Approval queue button
 		//postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
@@ -62,7 +62,7 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton();
 		
 		// method to Delete a pending event -By clicking on  post 
-		//postEventMemberApprovalTestcases.eventdeleteByClickingPost();
+		//postEventMemberApprovalTestcases.eventdeleteByClickingEvent();
 		
 		// method to Delete a pending event by select the pending post by  check box
 		//postEventMemberApprovalTestcases.eventdeleteByCheckBox();

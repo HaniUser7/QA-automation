@@ -237,7 +237,7 @@ postEventMemberApprovalMethod.getPostId = function(driver, test, callback) {
 	driver.then(function() {
 		forumLoginMethod.logoutFromApp(casper, function() { });
 	});
-	driver.then(function() {
+	driver.thenOpen(config.url, function() {
 		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +driver.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["AdminUserLogin"].username, json["AdminUserLogin"].password, casper, function(err) {
