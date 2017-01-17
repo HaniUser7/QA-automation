@@ -735,7 +735,7 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 // method to Approve a pending event -Approval queue button
 postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function() {
 	//Open Back-End URL And Get Title and logout if logged in
-	/*casper.thenOpen(config.backEndUrl, function() {
+	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                      CASE 1', 'INFO');
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('*                   Approve a pending Event from- Approval queue button             *', 'INFO');
@@ -755,7 +755,7 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 				}
 			});
 		});
-	});*/
+	});
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
 		//method to compose a post by register user
@@ -780,6 +780,15 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 			}
 		});
 	});
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		//method to enable approve new post** All posts
+		postEventMemberApprovalMethod.disableEventApproval(casper, casper.test, function(err) {
+			if(!err) {
+				casper.echo('Enable Approve New Event functionality method called ','INFO');
+			}
+		});
+	});
 };
 
 // method to Approve a pending event -By clicking on topic
@@ -797,7 +806,7 @@ postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent = function() {
 								test.assertExists('div.cleared.event-footer strong','Event found');
 								this.echo(this.fetchText('div.cleared.event-footer strong'),'INFO');
 								this.echo('*****************************************','INFO');
-								this.capture(screenShotsDir+'OnEventClick.png');
+								this.capture('OnEventClick.png');
 							}, function fail() {
 								casper.echo('Event alert not found','ERROR');
 							});

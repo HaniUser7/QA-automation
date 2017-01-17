@@ -11,10 +11,10 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		this.echo("Title of the page :"+this.getTitle(),'INFO');
 		
 		// method to create a topic 
-		//postEventMemberApprovalTestcases.createTopic();
+		postEventMemberApprovalTestcases.createTopic();
 		
 		// method to Approve a pending post from- Approval queue button 
-		//postEventMemberApprovalTestcases.approvalQueueButton();
+		postEventMemberApprovalTestcases.approvalQueueButton();
 		
 		// method to Approve a pending post -By clicking on topic
 		//postEventMemberApprovalTestcases.byClickingOnTopic();
@@ -47,7 +47,7 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.unregisterUserApprovePost();
 		
 		// method to Approve a pending event -Approval queue button
-		postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
+		//postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
 	
 		// method to Approve a pending event -By clicking on topic
 		//postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent();

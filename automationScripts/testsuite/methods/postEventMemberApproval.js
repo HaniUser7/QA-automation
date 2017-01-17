@@ -74,17 +74,21 @@ postEventMemberApprovalMethod.enableApproveNewPost = function(driver, test, call
 									driver.fillSelectors('form[name="posts"]', {
 		    								'select[name="post_approval"]': '99'
 									}, true);
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.waitUntilVisible('div#loading_msg', function success() {
-											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-										}, function fail() {
-											casper.echo('Loading... not found', 'INFO');
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									//casper.waitUntilVisible('div#loading_msg', function success() {
+										//casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('Saved not found', 'ERROR');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											});
 										});
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									//}, function fail() {
+										//casper.echo('Loading... not found', 'INFO');
+									//});
 								} else {
 									casper.echo('approve new post dropDown not found', 'ERROR');
 								}
@@ -309,42 +313,60 @@ postEventMemberApprovalMethod.enableEventApproval = function(driver, test, callb
 							casper.click('div#ddContent a:nth-child(2)');
 							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
 								if(isExists) {
-									casper.click('li.inactive_tab a');
-									wait.waitForElement('td.userGroupActions', casper, function(err, isExists) {
+									casper.click('tr:nth-child(2) td:nth-child(3) a');
+									wait.waitForElement('a.menuOpened', casper, function(err, isExists) {
 										if(isExists) {
-											var grpName = casper.evaluate(function(){
-												for(var i=3; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1) li'); // change li
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
-														return (x1.innerText);
-													}
-												}
-											});
-											casper.echo('a[id="'+grpName,"INFO");
-											wait.waitForElement('input#t', casper, function(err, isExists) {
+											casper.click('div[id^="calendarAction"] a');
+											wait.waitForElement('input#f', casper, function(err, isExists) {
 												if(isExists) {
-													utils.enableorDisableCheckbox('t', true, casper, function() {
+													utils.enableorDisableCheckbox('f', true, casper, function() {
 														casper.echo('checkbox is checked', 'INFO');
 													});
-													try {
+												}
+												casper.test.assertExists('button.button.btn-m.btn-blue');
+												casper.click('button.button.btn-m.btn-blue');
+												wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													if(isExists) {
+														casper.echo("Permission changed",'INFO');
+													}
+												});
+											});
+										}
+									});
+									casper.then(function() {
+										casper.click('li.inactive_tab a');
+										wait.waitForElement('td.userGroupActions', casper, function(err, isExists) {
+											if(isExists) {
+												var grpName = casper.evaluate(function(){
+													for(var i=3; i<=7; i++) {
+														var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1) li'); // change li
+														if (x1.innerText == 'Registered Users') {
+															document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
+															return (x1.innerText);
+														}
+													}
+												});
+												casper.echo('a[id="'+grpName,"INFO");
+												wait.waitForElement('input#t', casper, function(err, isExists) {
+													if(isExists) {
+														utils.enableorDisableCheckbox('t', true, casper, function() {
+															casper.echo('checkbox is checked', 'INFO');
+														});
 														casper.test.assertExists('button.button.btn-m.btn-blue');
 														casper.click('button.button.btn-m.btn-blue');
-														wait.waitForElement('td.userGroupActions', casper, function(err, isExists) {
+														wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 															if(isExists) {
 																casper.echo("Permission changed",'INFO');
 															}
 														});
-													}catch(e) {
-														casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
+													} else {
+														driver.echo(' Require event approval checkbox not found', 'ERROR');
 													}
-												} else {
-													driver.echo(' Require event approval checkbox not found', 'ERROR');
-												}
-											});
-										} else {
-											driver.echo('Table not found', 'ERROR');
-										}
+												});
+											} else {
+												driver.echo('Table not found', 'ERROR');
+											}
+										});
 									});
 								} else {
 									casper.echo('Calendar Permissions tab not found', 'ERROR');
@@ -385,33 +407,17 @@ postEventMemberApprovalMethod.disableEventApproval = function(driver, test, call
 									casper.click('li.inactive_tab a');
 									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
 										if(isExists) {
-											//var grpName = 
-											driver.evaluate(function(){
+											casper.evaluate(function(){
 												for(var i=1; i<=7; i++) {
 													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
 													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														return;
+														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
 													}
 												}
 											});
-											//driver.click('a[id="'+grpName+'"]');
-											wait.waitForElement('input#t', driver, function(err, isExists) {
+											wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 												if(isExists) {
-													utils.enableorDisableCheckbox('t', false, casper, function() {
-														casper.echo('checkbox is unchecked', 'INFO');
-													});
-													try {
-														casper.test.assertExists('button.button.btn-m.btn-blue');
-														casper.click('button.button.btn-m.btn-blue');
-														casper.waitUntilVisible('div#ajax-msg-top', function() {
-															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-														});
-													}catch(e) {
-														casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-													}
-												} else {
-													driver.echo(' Require event approval checkbox not found', 'ERROR');
+													casper.echo("Permission unchanged",'INFO');
 												}
 											});
 										} else {
@@ -431,7 +437,7 @@ postEventMemberApprovalMethod.disableEventApproval = function(driver, test, call
 				}
 			});
 		}else {
-			casper.echo('Error : '+err, 'INFO');
+			casper.echo('Error : ', 'ERROR');
 		}
 	});
 	casper.then(function() {
