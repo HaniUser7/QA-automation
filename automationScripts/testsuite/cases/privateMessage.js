@@ -19,29 +19,25 @@ privateMessageTestcases.createPrivateMessage = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) { //changed
-											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) { //changed
+										privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -65,43 +61,39 @@ privateMessageTestcases.deleteConversation = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
+										});
+										casper.echo('The conversation id is - '+converastion_id, 'INFO');
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing input.entry-checkbox.pull-left:nth-child(1)').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
+											casper.click('a#delete_conversation i');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
+												casper.echo('The topmost message is deleted','INFO');
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.echo('The conversation id is - '+converastion_id, 'INFO');
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing input.entry-checkbox.pull-left:nth-child(1)').click();
-											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
-												casper.click('a#delete_conversation i');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
-													casper.echo('The topmost message is deleted','INFO');
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -125,44 +117,40 @@ privateMessageTestcases.deleteMultipleConversation = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
+										});
+										casper.echo('The conversation id is - '+converastion_id, 'INFO');
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
+											document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
+											casper.click('a#delete_conversation i');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
+												casper.echo('The topmost messages are deleted','INFO');
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.echo('The conversation id is - '+converastion_id, 'INFO');
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-												document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
-											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
-												casper.click('a#delete_conversation i');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
-													casper.echo('The topmost messages are deleted','INFO');
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -186,41 +174,37 @@ privateMessageTestcases.deleteAllConversation = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
+										});
+										casper.echo('The conversation id is - '+converastion_id, 'INFO');
+										casper.click('input#select_allbox');
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
+											casper.click('a#delete_conversation i');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
+												casper.echo('All messages are deleted','INFO');
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.echo('The conversation id is - '+converastion_id, 'INFO');
-											casper.click('input#select_allbox');
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('a#delete_conversation i', 'Delete tab on the floating menu******************');
-												casper.click('a#delete_conversation i');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function success() {
-													casper.echo('All messages are deleted','INFO');
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -244,34 +228,30 @@ privateMessageTestcases.deleteFromConversationPage = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
-											});
-											casper.echo('The conversation id is - '+converastion_id, 'INFO');
-											casper.click('a#delete_curr_conversation i');
-											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-												casper.echo('The message from conversation page is deleted','INFO');
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
+										});
+										casper.echo('The conversation id is - '+converastion_id, 'INFO');
+										casper.click('a#delete_curr_conversation i');
+										casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+											casper.echo('The message from conversation page is deleted','INFO');
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -295,49 +275,45 @@ privateMessageTestcases.unreadCheckbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing input[data-pms_new_status="0"]').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing input[data-pms_new_status="0"]').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
+											casper.click('div#messages-menu a.dropdown-toggle');
+											casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
+											casper.click('li#markunread_msg_btn a');
+											casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
+												var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
+												
+												var expectedErrorMsg = "The conversation has been marked as unread";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('unread verified', 'INFO');
+												try {
+													casper.test.assertExists('span.badge.blue', 'Count Found');
+												} catch (e) {
+													casper.echo('Count not found','ERROR');
+												}
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
-												casper.click('div#messages-menu a.dropdown-toggle');
-												casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
-												casper.click('li#markunread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
-													var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
-													
-													var expectedErrorMsg = "The conversation has been marked as unread";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('unread verified', 'INFO');
-													try {
-														casper.test.assertExists('span.badge.blue', 'Count Found');
-													} catch (e) {
-														casper.echo('Count not found','ERROR');
-													}
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -361,50 +337,46 @@ privateMessageTestcases.unreadMultipleCheckbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)  input[data-pms_new_status="0"]').click();
-												document.querySelector('ul#pmsg_inbox_listing li:nth-child(2)  input[data-pms_new_status="0"]').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)  input[data-pms_new_status="0"]').click();
+											document.querySelector('ul#pmsg_inbox_listing li:nth-child(2)  input[data-pms_new_status="0"]').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
+											casper.click('div#messages-menu a.dropdown-toggle');
+											casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
+											casper.click('li#markunread_msg_btn a');
+											casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
+												var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
+												
+												var expectedErrorMsg = "2 conversations have been marked as unread";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('unread verified', 'INFO');
+												try {
+													casper.test.assertExists('span.badge.blue', 'Count Found');
+												} catch (e) {
+													casper.echo('Count not found','ERROR');
+												}
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
-												casper.click('div#messages-menu a.dropdown-toggle');
-												casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
-												casper.click('li#markunread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
-													var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
-													
-													var expectedErrorMsg = "2 conversations have been marked as unread";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('unread verified', 'INFO');
-													try {
-														casper.test.assertExists('span.badge.blue', 'Count Found');
-													} catch (e) {
-														casper.echo('Count not found','ERROR');
-													}
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -428,47 +400,43 @@ privateMessageTestcases.unreadAllCheckbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('input#select_allbox');
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
-												casper.click('div#messages-menu a.dropdown-toggle');
-												casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
-												casper.click('li#markunread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
-													var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
-													
-													var expectedErrorMsg = " conversations have been marked as unread";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('unread verified', 'INFO');
-													try {
-														casper.test.assertExists('span.badge.blue', 'Count Found');
-													} catch (e) {
-														casper.echo('Count not found','ERROR');
-													}
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('input#select_allbox');
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
+											casper.click('div#messages-menu a.dropdown-toggle');
+											casper.test.assertExists('li#markunread_msg_btn a', 'Mark as Uread tab Found');
+											casper.click('li#markunread_msg_btn a');
+											casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
+												var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
+												
+												var expectedErrorMsg = " conversations have been marked as unread";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('unread verified', 'INFO');
+												try {
+													casper.test.assertExists('span.badge.blue', 'Count Found');
+												} catch (e) {
+													casper.echo('Count not found','ERROR');
+												}
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -492,44 +460,40 @@ privateMessageTestcases.readCheckbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing input[data-pms_new_status="1"]').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing input[data-pms_new_status="1"]').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
+											casper.click('div#messages-menu a.dropdown-toggle');
+											casper.test.assertExists('li#markread_msg_btn a', 'Mark as Read tab Found');
+											casper.click('li#markread_msg_btn a');
+											casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
+												var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
+												
+												var expectedErrorMsg = "The conversation has been marked as read";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('read verified', 'INFO');
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
-												casper.click('div#messages-menu a.dropdown-toggle');
-												casper.test.assertExists('li#markread_msg_btn a', 'Mark as Read tab Found');
-												casper.click('li#markread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
-													var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
-													
-													var expectedErrorMsg = "The conversation has been marked as read";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('read verified', 'INFO');
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -553,44 +517,40 @@ privateMessageTestcases.readMultipleCheckbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing input[data-pms_new_status="1"]').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing input[data-pms_new_status="1"]').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
+											casper.click('div#messages-menu a.dropdown-toggle');
+											casper.test.assertExists('li#markread_msg_btn a', 'Mark as Read tab Found');
+											casper.click('li#markread_msg_btn a');
+											casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
+												var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
+												
+												var expectedErrorMsg = " conversation has been marked as read";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('read verified', 'INFO');
+											}, function fail() {
+												casper.echo('message not found', 'ERROR')
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
-												casper.click('div#messages-menu a.dropdown-toggle');
-												casper.test.assertExists('li#markread_msg_btn a', 'Mark as Read tab Found');
-												casper.click('li#markread_msg_btn a');
-												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
-													var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
-													
-													var expectedErrorMsg = " conversation has been marked as read";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('read verified', 'INFO');
-												}, function fail() {
-													casper.echo('message not found', 'ERROR')
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -614,46 +574,42 @@ privateMessageTestcases.readAllCheckbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('input#select_allbox');
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
-												casper.click('div#messages-menu a.dropdown-toggle');
-												try {
-													casper.test.assertExists('li#markread_msg_btn a', 'Mark as Uread tab Found');
-													casper.click('li#markread_msg_btn a');
-													casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
-														var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
-													
-														var expectedErrorMsg = " conversations have been marked as read";
-														casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-														casper.echo('read verified', 'INFO');
-													}, function fail() {
-														casper.echo('message not found', 'ERROR')
-													});
-												} catch(e) {
-													casper.echo('All mesages already marked as read');
-												}
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('input#select_allbox');
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('div#messages-menu a.dropdown-toggle', 'Perform action tab on the floating menu******************');
+											casper.click('div#messages-menu a.dropdown-toggle');
+											try {
+												casper.test.assertExists('li#markread_msg_btn a', 'Mark as Uread tab Found');
+												casper.click('li#markread_msg_btn a');
+												casper.waitUntilVisible('div.scrollable-area-body div.alert.alert-success.text-center', function success() {
+													var errorMessage = casper.fetchText('div.scrollable-area-body div.alert.alert-success.text-center');
+												
+													var expectedErrorMsg = " conversations have been marked as read";
+													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+													casper.echo('read verified', 'INFO');
+												}, function fail() {
+													casper.echo('message not found', 'ERROR')
+												});
+											} catch(e) {
+												casper.echo('All mesages already marked as read');
+											}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -677,34 +633,30 @@ privateMessageTestcases.readFromConversationPage = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('a#mark_all_pmread');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												var errorMessage = casper.fetchText('div#ajax-msg-top p');
-												var expectedErrorMsg = "All private messages have been marked as read.";
-												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-												casper.echo('read verified', 'INFO');
-											}, function fail() {
-												casper.echo('message not found', 'ERROR')
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('a#mark_all_pmread');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											var errorMessage = casper.fetchText('div#ajax-msg-top p');
+											var expectedErrorMsg = "All private messages have been marked as read.";
+											casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+											casper.echo('read verified', 'INFO');
+										}, function fail() {
+											casper.echo('message not found', 'ERROR')
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -729,43 +681,39 @@ privateMessageTestcases.moveSingleToArchieve = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
+										});
+										casper.echo('The conversation id is - '+converastion_id, 'INFO');
+										casper.evaluate(function() {
+											document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
+											casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
+											casper.test.assertExists('li#move_to_saved_btn a', 'Archive conversation tab Found');
+											casper.click('li#move_to_saved_btn a');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.echo('The topmost post is moved to Archive','INFO');
 											});
-											casper.echo('The conversation id is - '+converastion_id, 'INFO');
-											casper.evaluate(function() {
-												document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
-												casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
-												casper.test.assertExists('li#move_to_saved_btn a', 'Archive conversation tab Found');
-												casper.click('li#move_to_saved_btn a');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('The topmost post is moved to Archive','INFO');
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -789,43 +737,39 @@ privateMessageTestcases.moveMultipleToArchieve = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
-											});
-											casper.evaluate(function() {
-											document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-											document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
 										});
-										casper.waitUntilVisible('#messages-menu', function() {
-											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-											casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
-											casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
-											casper.test.assertExists('li#move_to_saved_btn a', 'Archive conversation tab Found');
-											casper.click('li#move_to_saved_btn a');
-											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-												casper.echo('The messages are moved to Archive','INFO');
-											});
-										});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
+										casper.evaluate(function() {
+										document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
+										document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
 									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+									casper.waitUntilVisible('#messages-menu', function() {
+										casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+										casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
+										casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
+										casper.test.assertExists('li#move_to_saved_btn a', 'Archive conversation tab Found');
+										casper.click('li#move_to_saved_btn a');
+										casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+											casper.echo('The messages are moved to Archive','INFO');
+										});
+									});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -849,40 +793,36 @@ privateMessageTestcases.moveAllToArchieve = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var converastion_id = casper.evaluate(function() {
-												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-												return id;
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var converastion_id = casper.evaluate(function() {
+											var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+											return id;
+										});
+										casper.click('input#select_allbox');
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
+											casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
+											casper.test.assertExists('li#move_to_saved_btn a', 'Archive conversation tab Found');
+											casper.click('li#move_to_saved_btn a');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.echo('All messages are moved to Archive','INFO');
 											});
-											casper.click('input#select_allbox');
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
-												casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
-												casper.test.assertExists('li#move_to_saved_btn a', 'Archive conversation tab Found');
-												casper.click('li#move_to_saved_btn a');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('All messages are moved to Archive','INFO');
-												});
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -907,46 +847,42 @@ privateMessageTestcases.moveSingleToInbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('form#pmsg_list a.profile-active.dropdown-toggle span');
-											casper.click('div.dropdown.open ul.dropdown-menu.left.check-select li:nth-child(2) a');
-											casper.wait(2000, function() {
-												converastion_id = casper.evaluate(function() {
-													var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-													return id;
-												});
-												casper.evaluate(function() {
-													document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-												});
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('form#pmsg_list a.profile-active.dropdown-toggle span');
+										casper.click('div.dropdown.open ul.dropdown-menu.left.check-select li:nth-child(2) a');
+										casper.wait(2000, function() {
+											converastion_id = casper.evaluate(function() {
+												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+												return id;
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
-												casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
-												casper.test.assertExists('li#move_to_inbox_btn a', 'Move to Inbox tab Found');
-												casper.click('li#move_to_inbox_btn a');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('The topmost post is moved to Inbox','INFO');
-												});
+											casper.evaluate(function() {
+												document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
 											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
+											casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
+											casper.test.assertExists('li#move_to_inbox_btn a', 'Move to Inbox tab Found');
+											casper.click('li#move_to_inbox_btn a');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.echo('The topmost post is moved to Inbox','INFO');
+											});
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -971,47 +907,43 @@ privateMessageTestcases.moveMultipleToInbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('form#pmsg_list a.profile-active.dropdown-toggle span');
-											casper.click('div.dropdown.open ul.dropdown-menu.left.check-select li:nth-child(2) a');
-											casper.wait(2000, function() {
-												converastion_id = casper.evaluate(function() {
-														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-														return id;
-													});
-												casper.evaluate(function() {
-													document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-													document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('form#pmsg_list a.profile-active.dropdown-toggle span');
+										casper.click('div.dropdown.open ul.dropdown-menu.left.check-select li:nth-child(2) a');
+										casper.wait(2000, function() {
+											converastion_id = casper.evaluate(function() {
+													var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+													return id;
 												});
+											casper.evaluate(function() {
+												document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
+												document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
-												casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
-												casper.test.assertExists('li#move_to_inbox_btn a', 'Move to Inbox tab Found');
-												casper.click('li#move_to_inbox_btn a');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('The messages are moved to Inbox','INFO');
-												});
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
+											casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
+											casper.test.assertExists('li#move_to_inbox_btn a', 'Move to Inbox tab Found');
+											casper.click('li#move_to_inbox_btn a');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.echo('The messages are moved to Inbox','INFO');
 											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1036,44 +968,40 @@ privateMessageTestcases.moveAllToInbox = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('form#pmsg_list a.profile-active.dropdown-toggle span');
-											casper.click('div.dropdown.open ul.dropdown-menu.left.check-select li:nth-child(2) a');
-											casper.wait(2000, function() {
-												converastion_id = casper.evaluate(function() {
-													var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-													return id;
-												});
-												casper.click('input#select_allbox');
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('form#pmsg_list a.profile-active.dropdown-toggle span');
+										casper.click('div.dropdown.open ul.dropdown-menu.left.check-select li:nth-child(2) a');
+										casper.wait(2000, function() {
+											converastion_id = casper.evaluate(function() {
+												var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+												return id;
 											});
-											casper.waitUntilVisible('#messages-menu', function() {
-												casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-												casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
-												casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
-												casper.test.assertExists('li#move_to_inbox_btn a', 'Move to Inbox tab Found');
-												casper.click('li#move_to_inbox_btn a');
-												casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
-													casper.echo('All messages are moved to Inbox','INFO');
-												});
+											casper.click('input#select_allbox');
+										});
+										casper.waitUntilVisible('#messages-menu', function() {
+											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+											casper.test.assertExists('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow', 'Move tab on the floating menu******************');
+											casper.click('span#move_conversation_dropdown a i.glyphicon.glyphicon-right-arrow');
+											casper.test.assertExists('li#move_to_inbox_btn a', 'Move to Inbox tab Found');
+											casper.click('li#move_to_inbox_btn a');
+											casper.waitWhileVisible('li[data-conversation_id="'+converastion_id+'"]', function() {
+												casper.echo('All messages are moved to Inbox','INFO');
 											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1098,39 +1026,35 @@ privateMessageTestcases.ignoreUser = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('a[data-original-title="Ignored Users"]');
-											casper.waitForSelector('div#ignore-box', function() {
-												casper.sendKeys('input[id="ignore_user_field-tokenfield"]', json["registeredUserLogin"].username1, {keepFocus:true});
-												casper.sendKeys('input[id="ignore_user_field-tokenfield"]', casper.page.event.key.Enter , {keepFocus: true});
-												casper.click('div#ignore-box input[name="save"]');
-												casper.wait(2000, function() {
-													try {
-														casper.test.assertExists('div.alert.alert-danger.text-center','User already ignored');
-														casper.echo(casper.fetchText('div.alert.alert-danger.text-center'), 'INFO');
-													} catch (e) {
-														casper.echo('user ignored','ERROR');
-													}
-												});
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('a[data-original-title="Ignored Users"]');
+										casper.waitForSelector('div#ignore-box', function() {
+											casper.sendKeys('input[id="ignore_user_field-tokenfield"]', json["registeredUserLogin"].username1, {keepFocus:true});
+											casper.sendKeys('input[id="ignore_user_field-tokenfield"]', casper.page.event.key.Enter , {keepFocus: true});
+											casper.click('div#ignore-box input[name="save"]');
+											casper.wait(2000, function() {
+												try {
+													casper.test.assertExists('div.alert.alert-danger.text-center','User already ignored');
+													casper.echo(casper.fetchText('div.alert.alert-danger.text-center'), 'INFO');
+												} catch (e) {
+													casper.echo('user ignored','ERROR');
+												}
 											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1155,37 +1079,33 @@ privateMessageTestcases.unignoreUser = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('a[data-original-title="Ignored Users"]');
-												casper.waitForSelector('div#ignore-box', function() {
-													try {
-														casper.test.assertExists('input[id^="ignoreUsers_"]');
-														casper.click('input[id^="ignoreUsers_"]');
-														casper.waitUntilVisible('div#ignore-menu', function() {
-															casper.click('a#unignoreUser');
-														});
-													} catch (e) {
-														casper.test.assertDoesntExist('input[id^="ignoreUsers_"]','No user in the ignored list');
-													}
-												});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('a[data-original-title="Ignored Users"]');
+											casper.waitForSelector('div#ignore-box', function() {
+												try {
+													casper.test.assertExists('input[id^="ignoreUsers_"]');
+													casper.click('input[id^="ignoreUsers_"]');
+													casper.waitUntilVisible('div#ignore-menu', function() {
+														casper.click('a#unignoreUser');
+													});
+												} catch (e) {
+													casper.test.assertDoesntExist('input[id^="ignoreUsers_"]','No user in the ignored list');
+												}
+											});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1209,47 +1129,43 @@ privateMessageTestcases.replyOnPreviousMessageAfterIgnoring = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-												document.querySelector('textarea#pmessage_reply').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('textarea#pmessage_reply').click();
+										});
+										casper.waitForSelector('iframe#pmessage_reply_ifr', function() {
+											casper.withFrame('pmessage_reply_ifr', function() {
+												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
+												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', 'Reply from ignored user on earlier conversation');
 											});
-											casper.waitForSelector('iframe#pmessage_reply_ifr', function() {
-												casper.withFrame('pmessage_reply_ifr', function() {
-													casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
-													casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-													casper.sendKeys('#tinymce', 'Reply from ignored user on earlier conversation');
+											casper.then(function() {
+												this.evaluate(function() {
+													$('div#message_options').show();
 												});
-												casper.then(function() {
-													this.evaluate(function() {
-														$('div#message_options').show();
-													});
-													casper.click('a#reply_msg_button');
-													casper.waitUntilVisible('div#loading_msg', function success() {
-														casper.echo(casper.fetchText('div#loading_msg p'), 'INFO');
-														casper.echo('message replied','INFO');
-													}, function fail() {
-														casper.echo('Loading not found', 'ERROR')
-													});
-												});	
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+												casper.click('a#reply_msg_button');
+												casper.waitUntilVisible('div#loading_msg', function success() {
+													casper.echo(casper.fetchText('div#loading_msg p'), 'INFO');
+													casper.echo('message replied','INFO');
+												}, function fail() {
+													casper.echo('Loading not found', 'ERROR')
+												});
+											});	
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1273,29 +1189,25 @@ privateMessageTestcases.sendMessageWhoIgnoredYou = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.ignoredByUser, casper, function(err) {
-												if(!err) {
-													casper.echo('send message called...', 'INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.ignoredByUser, casper, function(err) {
+											if(!err) {
+												casper.echo('send message called...', 'INFO');
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1320,33 +1232,29 @@ privateMessageTestcases.verifyProfileLinkOnUserName = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('div#current_msg_details a#display_user');
-											wait.waitForElement('div#UserProfile', casper, function(err, isExists) {
-												if(isExists) {
-													casper.echo('Redirect to profile page','INFO');
-												} else {
-													casper.echo('User profile page not found','ERROR');
-												}
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('div#current_msg_details a#display_user');
+										wait.waitForElement('div#UserProfile', casper, function(err, isExists) {
+											if(isExists) {
+												casper.echo('Redirect to profile page','INFO');
+											} else {
+												casper.echo('User profile page not found','ERROR');
+											}
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1370,39 +1278,35 @@ privateMessageTestcases.verifyHoverCardOnUserName = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
-										if(isExists) {
-											casper.mouse.move('div#current_msg_details a#display_user');
-											//wait.waitForVisible('div[style="display: block;"]', casper, function(err, isExists) {
-											/*wait.waitUntilVisible('div.popover.hovercard.fade.bottom.in', casper, function(err, isExists) {
-												casper.capture('1.png');
-												if(isExists) {
-													casper.echo('Showing hover card when user user hovering mouse on the user name ','INFO');
-													casper.capture('pd.png');
-												} else {
-													casper.echo('User profile page not found','ERROR');
-												}
-											});*/
-											/*casper.wait(5000, function() {
-												casper.capture('1.png');
-											});*/
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('div#show_current_conversation', casper, function(err, isExists) {
+									if(isExists) {
+										casper.mouse.move('div#current_msg_details a#display_user');
+										//wait.waitForVisible('div[style="display: block;"]', casper, function(err, isExists) {
+										/*wait.waitUntilVisible('div.popover.hovercard.fade.bottom.in', casper, function(err, isExists) {
+											casper.capture('1.png');
+											if(isExists) {
+												casper.echo('Showing hover card when user user hovering mouse on the user name ','INFO');
+												casper.capture('pd.png');
+											} else {
+												casper.echo('User profile page not found','ERROR');
+											}
+										});*/
+										/*casper.wait(5000, function() {
+											casper.capture('1.png');
+										});*/
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1426,40 +1330,36 @@ privateMessageTestcases.verifySeeAll = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown li.user-nav-list-all', casper, function(err, isExists) {
-								if(isExists) {
-									try {
-										casper.test.assertDoesntExist('li[id^="pm_notification_list"]');
-										var text = casper.fetchText('ul#private_message_dropdown li.user-nav-list-all a');
-										var string = text.toString();
-										casper.echo('***************'+string,'INFO');
-										var expectedText = 'Go to inbox';
-										if(string==expectedText){
-											casper.echo('see all link is convert to Go to inbox link verified','INFO');
-										} else {
-											casper.echo('not verified','ERROR');
-										}	
-									} catch (e) {
-										casper.test.assertExists('li[id^="pm_notification_list"]');
-										var text = casper.fetchText('ul#private_message_dropdown li.user-nav-list-all a');
-										var string = text.toString();
-										var expectedText = 'See all';
-										if(string==expectedText){
-											casper.echo('conversation present so See all verified', 'INFO');
-										} else {
-											casper.echo('conversation present so See all not verified','ERROR');
-										}	
-									}
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown li.user-nav-list-all', casper, function(err, isExists) {
+							if(isExists) {
+								try {
+									casper.test.assertDoesntExist('li[id^="pm_notification_list"]');
+									var text = casper.fetchText('ul#private_message_dropdown li.user-nav-list-all a');
+									var string = text.toString();
+									casper.echo('***************'+string,'INFO');
+									var expectedText = 'Go to inbox';
+									if(string==expectedText){
+										casper.echo('see all link is convert to Go to inbox link verified','INFO');
+									} else {
+										casper.echo('not verified','ERROR');
+									}	
+								} catch (e) {
+									casper.test.assertExists('li[id^="pm_notification_list"]');
+									var text = casper.fetchText('ul#private_message_dropdown li.user-nav-list-all a');
+									var string = text.toString();
+									var expectedText = 'See all';
+									if(string==expectedText){
+										casper.echo('conversation present so See all verified', 'INFO');
+									} else {
+										casper.echo('conversation present so See all not verified','ERROR');
+									}	
 								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1516,29 +1416,25 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
-							try {	
-								casper.click('i#private_message_notification');
-								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-									if(isExists) {
-										casper.click('a.send_new_pmsg');
-										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-											if(isExists) {
-												privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-													if(!err) {
-														casper.echo('Message sent called successfully..','INFO');
-													}
-												});
-											} else {
-												driver.echo('Message pop up not found','ERROR');
-											}
-										});
-									} else {
-										driver.echo('Send a New Messag Pop not found','ERROR');
-									}
-								});
-							} catch (e) {
-								casper.echo('Message not sent..','ERROR');
-							}
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
 						}else {
 							casper.echo('User not logged in', 'ERROR');
 						}
@@ -1556,29 +1452,25 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
-							try {	
-								casper.click('i#private_message_notification');
-								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-									if(isExists) {
-										casper.click('a.send_new_pmsg');
-										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-											if(isExists) {
-												privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-													if(!err) {
-														casper.echo('Message sent called successfully..','INFO');
-													}
-												});
-											} else {
-												driver.echo('Message pop up not found','ERROR');
-											}
-										});
-									} else {
-										driver.echo('Send a New Messag Pop not found','ERROR');
-									}
-								});
-							} catch (e) {
-								casper.echo('Message not sent..','ERROR');
-							}
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent called successfully..','INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
 						}else {
 							casper.echo('User not logged in', 'ERROR');
 						}
@@ -1596,29 +1488,25 @@ privateMessageTestcases.verifyMessageIconCountCaseTwo = function() {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
-							try {	
-								casper.click('i#private_message_notification');
-								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
 									if(isExists) {
-										casper.click('a.send_new_pmsg');
-										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-												}
-											});
-											} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
+										privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+											}
 										});
-									} else {
-										driver.echo('Send a New Messag Pop not found','ERROR');
+										} else {
+										driver.echo('Message pop up not found','ERROR');
 									}
-								});
-							} catch (e) {
-								casper.echo('Message not sent..','ERROR');
-							}
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
 						}else {
 							casper.echo('User not logged in', 'ERROR');
 						}
@@ -1665,41 +1553,37 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-													casper.thenOpen(config.url+'pm', function() {
-														imageUrl = casper.evaluate(function() {
-															var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
-															return id;
-														});
-														casper.echo('The Url of the image is - '+imageUrl, 'INFO');
-														if(imageUrl==json.defaultAvtar) {
-															casper.echo('Sender found his avatar on conversation','INFO');
-														} else {
-															casper.echo('Sender not found his avatar on conversation','ERROR');
-														}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+												casper.thenOpen(config.url+'pm', function() {
+													imageUrl = casper.evaluate(function() {
+														var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
+														return id;
 													});
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+													casper.echo('The Url of the image is - '+imageUrl, 'INFO');
+													if(imageUrl==json.defaultAvtar) {
+														casper.echo('Sender found his avatar on conversation','INFO');
+													} else {
+														casper.echo('Sender not found his avatar on conversation','ERROR');
+													}
+												});
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1717,34 +1601,30 @@ privateMessageTestcases.verifyDefaultAvtar = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var recieverImageUrl = casper.evaluate(function() {
-												var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
-												return id;
-											});
-											casper.echo('The Url of the image is - '+recieverImageUrl, 'INFO');
-											if(imageUrl==recieverImageUrl) {
-												casper.echo('Reciever found senders avatar in the conversation','INFO');
-											} else {
-												casper.echo('Reciever not found senders avatar in the conversation','ERROR');
-											}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var recieverImageUrl = casper.evaluate(function() {
+											var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('class');
+											return id;
+										});
+										casper.echo('The Url of the image is - '+recieverImageUrl, 'INFO');
+										if(imageUrl==recieverImageUrl) {
+											casper.echo('Reciever found senders avatar in the conversation','INFO');
 										} else {
-											casper.echo('Inbox not found','ERROR');
+											casper.echo('Reciever not found senders avatar in the conversation','ERROR');
 										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1769,34 +1649,30 @@ privateMessageTestcases.composeScenarioSecond = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.mouse.move('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
-											casper.click('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
-											casper.waitForSelector('div[class="modal fade in"]', function() {
-												privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-													if(!err) {
-														casper.echo('Message sent..','INFO');
-													}
-												});	
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.mouse.move('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
+										casper.click('form#pmsg_list a.pull-right.btn-primary.send_new_pmsg small');
+										casper.waitForSelector('div[class="modal fade in"]', function() {
+											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent..','INFO');
+												}
+											});	
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1856,33 +1732,29 @@ privateMessageTestcases.invalidRecipientsName = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.invalidRecipientsName, casper, function(err) {
-												if(!err) {
-													var errorMessage = casper.fetchText('div#pm_error_msg');
-													
-													var expectedErrorMsg = 'The member "gfgh" was not found';
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('Invalid recipient verified', 'INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.invalidRecipientsName, casper, function(err) {
+											if(!err) {
+												var errorMessage = casper.fetchText('div#pm_error_msg');
+												
+												var expectedErrorMsg = 'The member "gfgh" was not found';
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('Invalid recipient verified', 'INFO');
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1905,34 +1777,30 @@ privateMessageTestcases.blankRecipientsName = function() {
 		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.blankRecipientsName, casper, function(err) {
-												if(!err) {
-													var errorMessage = casper.fetchText('div#pm_error_msg');
-													
-													var expectedErrorMsg = "Please specify a recipient";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('Blank recipient verified', 'INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+					if(isExists) {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.blankRecipientsName, casper, function(err) {
+											if(!err) {
+												var errorMessage = casper.fetchText('div#pm_error_msg');
+												
+												var expectedErrorMsg = "Please specify a recipient";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('Blank recipient verified', 'INFO');
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -1956,29 +1824,25 @@ privateMessageTestcases.blankSubject = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.blankSubject, casper, function(err) {
-												if(!err) {
-													
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.blankSubject, casper, function(err) {
+											if(!err) {
+												
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2002,33 +1866,29 @@ privateMessageTestcases.blankMessageBody = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.blankMessageBody, casper, function(err) {
-												if(!err) {
-													var errorMessage = casper.fetchText('div#pm_error_msg');
-													
-													var expectedErrorMsg = "Please enter your message";
-													casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-													casper.echo('Blank body verified', 'INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.blankMessageBody, casper, function(err) {
+											if(!err) {
+												var errorMessage = casper.fetchText('div#pm_error_msg');
+												
+												var expectedErrorMsg = "Please enter your message";
+												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+												casper.echo('Blank body verified', 'INFO');
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2051,27 +1911,23 @@ privateMessageTestcases.autoDropdown = function() {
 		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
-											driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+					if(isExists) {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]',"h" );
+										driver.sendKeys('input[id="tokenfield_typeahead-tokenfield"]', casper.page.event.key.Enter );
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2101,27 +1957,23 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenDisable = functio
 		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
-											casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');		
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+					if(isExists) {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										casper.test.assertDoesntExist('a#fancy_attach_pmsDialog i', 'Attach file link not found when disable from backend');
+										casper.test.assertDoesntExist('a#insert_image_dialog_pmsDialog', 'Insert link not found when disable from backend');		
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2152,30 +2004,22 @@ privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable = function
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											try {
-												casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
-												casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
-											} catch (e) {
-												casper.echo('Attach file link and Insert link not found ','ERROR');
-											}
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										casper.test.assertExists('a#fancy_attach_pmsDialog i', 'Attach file link found when enable from backend');
+										casper.test.assertExists('a#insert_image_dialog_pmsDialog', 'Insert link found when enable from backend');
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2200,80 +2044,72 @@ privateMessageTestcases.leaveSingleConversation = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-											document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-										});
-										casper.waitForSelector('#messages-menu', function() {
-											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-											casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
-											casper.click('a#leave_conversation i');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												var errorMessage = casper.fetchText('div#ajax-msg-top p');
-												var expectedErrorMsg = "You have left the conversation.";
-												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-												casper.echo('left message verified', 'INFO');
-											}, function fail() {
-												driver.echo('message after leave not found', 'ERROR')
-											});
-											casper.then(function() {
-												casper.then(function() {
-													forumLoginMethod.logoutFromApp(casper, function() { });
-												});
-												casper.thenOpen(config.url, function() {
-													forumLoginMethod.loginToApp(json["registeredUserLogin"].username1, json["registeredUserLogin"].password1, casper, function(err) {
-														if(!err) {
-															wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-																if(isExists) {
-																	try {
-																		casper.test.assertExists('i#private_message_notification');
-																		casper.click('i#private_message_notification');
-																		wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-																			if(isExists) {
-																				casper.click('ul#private_message_dropdown a.pull-left');
-																				wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-																				if(isExists) {
-		casper.echo(casper.fetchText('div#show_current_conversation div.alert.alert-info.cleared'),'INFO');												
-																				} else {
-																					casper.echo('Inbox not found','ERROR');
-																				}
-																			});
-																		} else {
-																			casper.echo('Inbox at popup not found','ERROR');
-																		}
-																	});
-																} catch (e) {
-																	casper.echo('Private message tab not found','ERROR');
-																}
-															}else {
-																casper.echo('User not logged in', 'ERROR');
-															}
-														});
-													} else {
-														casper.echo('User not logged','ERROR');						
-													}
-												});
-												});						
-											});
-										});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+										document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
 									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+									casper.waitForSelector('#messages-menu', function() {
+										casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+										casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
+										casper.click('a#leave_conversation i');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											var errorMessage = casper.fetchText('div#ajax-msg-top p');
+											var expectedErrorMsg = "You have left the conversation.";
+											casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+											casper.echo('left message verified', 'INFO');
+										}, function fail() {
+											driver.echo('message after leave not found', 'ERROR')
+										});
+										casper.then(function() {
+											casper.then(function() {
+												forumLoginMethod.logoutFromApp(casper, function() { });
+											});
+											casper.thenOpen(config.url, function() {
+												forumLoginMethod.loginToApp(json["registeredUserLogin"].username1, json["registeredUserLogin"].password1, casper, function(err) {
+													if(!err) {
+														wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+															if(isExists) {
+																	casper.test.assertExists('i#private_message_notification');
+																	casper.click('i#private_message_notification');
+																	wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+																		if(isExists) {
+																			casper.click('ul#private_message_dropdown a.pull-left');
+																			wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+																			if(isExists) {
+	casper.echo(casper.fetchText('div#show_current_conversation div.alert.alert-info.cleared'),'INFO');												
+																			} else {
+																				casper.echo('Inbox not found','ERROR');
+																			}
+																		});
+																	} else {
+																		casper.echo('Inbox at popup not found','ERROR');
+																	}
+																});
+														}else {
+															casper.echo('User not logged in', 'ERROR');
+														}
+													});
+												} else {
+													casper.echo('User not logged','ERROR');						
+												}
+											});
+											});						
+										});
+									});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2297,81 +2133,73 @@ privateMessageTestcases.leaveMultipleConversation = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-											document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
-											document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
-										});
-										casper.waitForSelector('#messages-menu', function() {
-											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-											casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
-											casper.click('a#leave_conversation i');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												var errorMessage = casper.fetchText('div#ajax-msg-top p');
-												var expectedErrorMsg = "You have left the 2 selected conversations.";
-												casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-												casper.echo('left message verified', 'INFO');
-											}, function fail() {
-												driver.echo('message after leave not found', 'ERROR')
-											});
-											casper.then(function() {
-												casper.then(function() {
-													forumLoginMethod.logoutFromApp(casper, function() { });
-												});
-												casper.thenOpen(config.url, function() {
-													forumLoginMethod.loginToApp(json["registeredUserLogin"].username1, json["registeredUserLogin"].password1, casper, function(err) {
-														if(!err) {
-															wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-																if(isExists) {
-																	try {
-																		casper.test.assertExists('i#private_message_notification');
-																		casper.click('i#private_message_notification');
-																		wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-																			if(isExists) {
-																				casper.click('ul#private_message_dropdown a.pull-left');
-																				wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-																				if(isExists) {
-		casper.echo(casper.fetchText('div#show_current_conversation div.alert.alert-info.cleared'),'INFO');												
-																				} else {
-																					casper.echo('Inbox not found','ERROR');
-																				}
-																			});
-																		} else {
-																			casper.echo('Inbox at popup not found','ERROR');
-																		}
-																	});
-																} catch (e) {
-																	casper.echo('Private message tab not found','ERROR');
-																}
-															}else {
-																casper.echo('User not logged in', 'ERROR');
-															}
-														});
-													} else {
-														casper.echo('User not logged','ERROR');						
-													}
-												});
-												});						
-											});
-										});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+										document.querySelector('ul#pmsg_inbox_listing li:nth-child(1) input').click();
+										document.querySelector('ul#pmsg_inbox_listing li:nth-child(2) input').click();
 									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+									casper.waitForSelector('#messages-menu', function() {
+										casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+										casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
+										casper.click('a#leave_conversation i');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											var errorMessage = casper.fetchText('div#ajax-msg-top p');
+											var expectedErrorMsg = "You have left the 2 selected conversations.";
+											casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+											casper.echo('left message verified', 'INFO');
+										}, function fail() {
+											driver.echo('message after leave not found', 'ERROR')
+										});
+										casper.then(function() {
+											casper.then(function() {
+												forumLoginMethod.logoutFromApp(casper, function() { });
+											});
+											casper.thenOpen(config.url, function() {
+												forumLoginMethod.loginToApp(json["registeredUserLogin"].username1, json["registeredUserLogin"].password1, casper, function(err) {
+													if(!err) {
+														wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+															if(isExists) {
+																	casper.test.assertExists('i#private_message_notification');
+																	casper.click('i#private_message_notification');
+																	wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+																		if(isExists) {
+																			casper.click('ul#private_message_dropdown a.pull-left');
+																			wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+																			if(isExists) {
+	casper.echo(casper.fetchText('div#show_current_conversation div.alert.alert-info.cleared'),'INFO');												
+																			} else {
+																				casper.echo('Inbox not found','ERROR');
+																			}
+																		});
+																	} else {
+																		casper.echo('Inbox at popup not found','ERROR');
+																	}
+																});
+														}else {
+															casper.echo('User not logged in', 'ERROR');
+														}
+													});
+												} else {
+													casper.echo('User not logged','ERROR');						
+												}
+											});
+											});						
+										});
+									});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2395,78 +2223,70 @@ privateMessageTestcases.leaveAllConversation = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('input#select_allbox');
-											casper.waitForSelector('#messages-menu', function() {
-											casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
-											casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
-											casper.click('a#leave_conversation i');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												var errorMessage = casper.fetchText('div#ajax-msg-top p');
-												var expectedErrorMsg = "You have left the  selected conversations.";
-												//casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-												casper.echo('left message verified', 'INFO');
-											}, function fail() {
-												driver.echo('message after leave not found', 'ERROR')
-											});
-											casper.then(function() {
-												casper.then(function() {
-													forumLoginMethod.logoutFromApp(casper, function() { });
-												});
-												casper.thenOpen(config.url, function() {
-													forumLoginMethod.loginToApp(json["registeredUserLogin"].username1, json["registeredUserLogin"].password1, casper, function(err) {
-														if(!err) {
-															wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-																if(isExists) {
-																	try {
-																		casper.test.assertExists('i#private_message_notification');
-																		casper.click('i#private_message_notification');
-																		wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-																			if(isExists) {
-																				casper.click('ul#private_message_dropdown a.pull-left');
-																				wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-																				if(isExists) {
-		casper.echo(casper.fetchText('div#show_current_conversation div.alert.alert-info.cleared'),'INFO');												
-																				} else {
-																					casper.echo('Inbox not found','ERROR');
-																				}
-																			});
-																		} else {
-																			casper.echo('Inbox at popup not found','ERROR');
-																		}
-																	});
-																} catch (e) {
-																	casper.echo('Private message tab not found','ERROR');
-																}
-															}else {
-																casper.echo('User not logged in', 'ERROR');
-															}
-														});
-													} else {
-														casper.echo('User not logged','ERROR');						
-													}
-												});
-												});						
-											});
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('input#select_allbox');
+										casper.waitForSelector('#messages-menu', function() {
+										casper.test.assertExists('#messages-menu','floating menu is appear on bottom of the page');
+										casper.test.assertExists('a#leave_conversation i', 'Leave Conversation tab on the floating menu******************');
+										casper.click('a#leave_conversation i');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											var errorMessage = casper.fetchText('div#ajax-msg-top p');
+											var expectedErrorMsg = "You have left the  selected conversations.";
+											//casper.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+											casper.echo('left message verified', 'INFO');
+										}, function fail() {
+											driver.echo('message after leave not found', 'ERROR')
 										});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
+										casper.then(function() {
+											casper.then(function() {
+												forumLoginMethod.logoutFromApp(casper, function() { });
+											});
+											casper.thenOpen(config.url, function() {
+												forumLoginMethod.loginToApp(json["registeredUserLogin"].username1, json["registeredUserLogin"].password1, casper, function(err) {
+													if(!err) {
+														wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
+															if(isExists) {
+																	casper.test.assertExists('i#private_message_notification');
+																	casper.click('i#private_message_notification');
+																	wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+																		if(isExists) {
+																			casper.click('ul#private_message_dropdown a.pull-left');
+																			wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+																			if(isExists) {
+	casper.echo(casper.fetchText('div#show_current_conversation div.alert.alert-info.cleared'),'INFO');												
+																			} else {
+																				casper.echo('Inbox not found','ERROR');
+																			}
+																		});
+																	} else {
+																		casper.echo('Inbox at popup not found','ERROR');
+																	}
+																});
+														}else {
+															casper.echo('User not logged in', 'ERROR');
+														}
+													});
+												} else {
+													casper.echo('User not logged','ERROR');						
+												}
+											});
+											});						
+										});
 									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2491,44 +2311,40 @@ privateMessageTestcases.verifyReplyOption = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {
-							casper.test.assertExists('i#private_message_notification');
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											casper.evaluate(function() {
-												document.querySelector('textarea#pmessage_reply').click();
+						casper.test.assertExists('i#private_message_notification');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('textarea#pmessage_reply').click();
+										});
+										casper.waitForSelector('iframe#pmessage_reply_ifr', function() {
+											casper.withFrame('pmessage_reply_ifr', function() {
+												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
+												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', 'Reply from neha');
 											});
-											casper.waitForSelector('iframe#pmessage_reply_ifr', function() {
-												casper.withFrame('pmessage_reply_ifr', function() {
-													casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
-													casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-													casper.sendKeys('#tinymce', 'Reply from neha');
+											casper.then(function() {
+												this.evaluate(function() {
+													$('div#message_options').show();
 												});
-												casper.then(function() {
-													this.evaluate(function() {
-														$('div#message_options').show();
-													});
-													casper.click('a#reply_msg_button');
-													casper.waitUntilVisible('div.message-entry.sent', function() {
-														casper.echo('message replied','INFO');
-													});
-												});	
-											});
-										} else {
-											casper.echo('Inbox not found','ERROR');
-										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Private message tab not found','ERROR');
-						}
+												casper.click('a#reply_msg_button');
+												casper.waitUntilVisible('div.message-entry.sent', function() {
+													casper.echo('message replied','INFO');
+												});
+											});	
+										});
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2552,37 +2368,33 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
-					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-													casper.thenOpen(config.url+'pm', function() {
-														converastion_id = casper.evaluate(function() {
-															var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-															return id;
-														});
-														casper.echo('The conversation id is - '+converastion_id, 'INFO');
+					if(isExists) {	
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+												casper.thenOpen(config.url+'pm', function() {
+													converastion_id = casper.evaluate(function() {
+														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+														return id;
 													});
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+													casper.echo('The conversation id is - '+converastion_id, 'INFO');
+												});
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2598,27 +2410,23 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndReciever = function() {
 					if(!err) {
 						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 							if(isExists) {
-								try {
-									casper.test.assertExists('i#private_message_notification');
-									casper.click('i#private_message_notification');
-									wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('ul#private_message_dropdown a.pull-left');
-											wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-												if(isExists) {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('User find the related message','INFO');
-												} else {
-													casper.echo('Inbox not found','ERROR');
-												}
-											});
-										} else {
-											casper.echo('Inbox at popup not found','ERROR');
-										}
-									});
-								} catch (e) {
-									casper.echo('Private message tab not found','ERROR');
-								}
+								casper.test.assertExists('i#private_message_notification');
+								casper.click('i#private_message_notification');
+								wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('ul#private_message_dropdown a.pull-left');
+										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+											if(isExists) {
+												casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+												casper.echo('User find the related message','INFO');
+											} else {
+												casper.echo('Inbox not found','ERROR');
+											}
+										});
+									} else {
+										casper.echo('Inbox at popup not found','ERROR');
+									}
+								});
 							}else {
 								casper.echo('User not logged in', 'ERROR');
 							}
@@ -2645,36 +2453,32 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.sendMessageToManyUser(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-													casper.thenOpen(config.url+'pm', function() {
-														converastion_id = casper.evaluate(function() {
-															var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-															return id;
-														});
-														casper.echo('The conversation id is - '+converastion_id, 'INFO');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.sendMessageToManyUser(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+												casper.thenOpen(config.url+'pm', function() {
+													converastion_id = casper.evaluate(function() {
+														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+														return id;
 													});
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+													casper.echo('The conversation id is - '+converastion_id, 'INFO');
+												});
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2690,27 +2494,23 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 					if(!err) {
 						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 							if(isExists) {
-								try {
-									casper.test.assertExists('i#private_message_notification');
-									casper.click('i#private_message_notification');
-									wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('ul#private_message_dropdown a.pull-left');
-											wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-												if(isExists) {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('First User find the related message','INFO');
-												} else {
-													casper.echo('Inbox not found','ERROR');
-												}
-											});
-										} else {
-											casper.echo('Inbox at popup not found','ERROR');
-										}
-									});
-								} catch (e) {
-									casper.echo('Private message tab not found','ERROR');
-								}
+								casper.test.assertExists('i#private_message_notification');
+								casper.click('i#private_message_notification');
+								wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('ul#private_message_dropdown a.pull-left');
+										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+											if(isExists) {
+												casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+												casper.echo('First User find the related message','INFO');
+											} else {
+												casper.echo('Inbox not found','ERROR');
+											}
+										});
+									} else {
+										casper.echo('Inbox at popup not found','ERROR');
+									}
+								});
 							}else {
 								casper.echo('User not logged in', 'ERROR');
 							}
@@ -2729,31 +2529,27 @@ privateMessageTestcases.verifyOneToOneSingleSenderAndMultipleReciever = function
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
-							try {
-								casper.test.assertExists('i#private_message_notification');
-								casper.click('i#private_message_notification');
-								wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-									if(isExists) {
-										casper.click('ul#private_message_dropdown a.pull-left');
-										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-											if(isExists) {
-												try {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('Second User also find the related message','INFO');
-												} catch (e) {
-													casper.echo('Second User not find the related message','ERROR');
-												}
-											} else {
-												casper.echo('Inbox not found','ERROR');
+							casper.test.assertExists('i#private_message_notification');
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('ul#private_message_dropdown a.pull-left');
+									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+										if(isExists) {
+											try {
+												casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+												casper.echo('Second User also find the related message','INFO');
+											} catch (e) {
+												casper.echo('Second User not find the related message','ERROR');
 											}
-										});
-									} else {
-										casper.echo('Inbox at popup not found','ERROR');
-									}
-								});
-							} catch (e) {
-								casper.echo('Private message tab not found','ERROR');
-							}
+										} else {
+											casper.echo('Inbox not found','ERROR');
+										}
+									});
+								} else {
+									casper.echo('Inbox at popup not found','ERROR');
+								}
+							});
 						}else {
 							casper.echo('User not logged in', 'ERROR');
 						}
@@ -2779,36 +2575,32 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.sendMessageToManyUser(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-													casper.thenOpen(config.url+'pm', function() {
-														converastion_id = casper.evaluate(function() {
-															var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
-															return id;
-														});
-														casper.echo('The conversation id is - '+converastion_id, 'INFO');
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.sendMessageToManyUser(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+												casper.thenOpen(config.url+'pm', function() {
+													converastion_id = casper.evaluate(function() {
+														var id = document.querySelector('ul#pmsg_inbox_listing li:nth-child(1)').getAttribute('data-conversation_id');
+														return id;
 													});
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+													casper.echo('The conversation id is - '+converastion_id, 'INFO');
+												});
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2824,27 +2616,23 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 					if(!err) {
 						wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 							if(isExists) {
-								try {
-									casper.test.assertExists('i#private_message_notification');
-									casper.click('i#private_message_notification');
-									wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-										if(isExists) {
-											casper.click('ul#private_message_dropdown a.pull-left');
-											wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-												if(isExists) {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('First User find the related message','INFO');
-												} else {
-													casper.echo('Inbox not found','ERROR');
-												}
-											});
-										} else {
-											casper.echo('Inbox at popup not found','ERROR');
-										}
-									});
-								} catch (e) {
-									casper.echo('Private message tab not found','ERROR');
-								}
+								casper.test.assertExists('i#private_message_notification');
+								casper.click('i#private_message_notification');
+								wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('ul#private_message_dropdown a.pull-left');
+										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+											if(isExists) {
+												casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+												casper.echo('First User find the related message','INFO');
+											} else {
+												casper.echo('Inbox not found','ERROR');
+											}
+										});
+									} else {
+										casper.echo('Inbox at popup not found','ERROR');
+									}
+								});
 							}else {
 								casper.echo('User not logged in', 'ERROR');
 							}
@@ -2863,50 +2651,46 @@ privateMessageTestcases.verifyMultipleRecieverAndReplyByOne = function() {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
-							try {
-								casper.test.assertExists('i#private_message_notification');
-								casper.click('i#private_message_notification');
-								wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-									if(isExists) {
-										casper.click('ul#private_message_dropdown a.pull-left');
-										wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-											if(isExists) {
-												try {
-													casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
-													casper.echo('Second User also find the related message','INFO');
-												} catch (e) {
-													casper.echo('Second User not find the related message','ERROR');
-												}
-												casper.evaluate(function() {
-													document.querySelector('textarea#pmessage_reply').click();
-												});
-												casper.waitForSelector('iframe#pmessage_reply_ifr', function() {
-													casper.withFrame('pmessage_reply_ifr', function() {
-														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
-														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-														casper.sendKeys('#tinymce', 'Reply from neha');
-													});
-													casper.then(function() {
-														this.evaluate(function() {
-															$('div#message_options').show();
-														});
-														casper.click('a#reply_msg_button');
-														casper.waitUntilVisible('div.message-entry.sent', function() {
-															casper.echo('message replied By Second user','INFO');
-														});
-													});	
-												});	
-											} else {
-												casper.echo('Inbox not found','ERROR');
+							casper.test.assertExists('i#private_message_notification');
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('ul#private_message_dropdown a.pull-left');
+									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+										if(isExists) {
+											try {
+												casper.test.assertExists('li[data-conversation_id="'+converastion_id+'"]');
+												casper.echo('Second User also find the related message','INFO');
+											} catch (e) {
+												casper.echo('Second User not find the related message','ERROR');
 											}
-										});
-									} else {
-										casper.echo('Inbox at popup not found','ERROR');
-									}
-								});
-							} catch (e) {
-								casper.echo('Private message tab not found','ERROR');
-							}
+											casper.evaluate(function() {
+												document.querySelector('textarea#pmessage_reply').click();
+											});
+											casper.waitForSelector('iframe#pmessage_reply_ifr', function() {
+												casper.withFrame('pmessage_reply_ifr', function() {
+													casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A,{keepFocus: true});		
+													casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+													casper.sendKeys('#tinymce', 'Reply from neha');
+												});
+												casper.then(function() {
+													this.evaluate(function() {
+														$('div#message_options').show();
+													});
+													casper.click('a#reply_msg_button');
+													casper.waitUntilVisible('div.message-entry.sent', function() {
+														casper.echo('message replied By Second user','INFO');
+													});
+												});	
+											});	
+										} else {
+											casper.echo('Inbox not found','ERROR');
+										}
+									});
+								} else {
+									casper.echo('Inbox at popup not found','ERROR');
+								}
+							});
 						}else {
 							casper.echo('User not logged in', 'ERROR');
 						}
@@ -2933,41 +2717,37 @@ privateMessageTestcases.verifyAvtar = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent called successfully..','INFO');
-													casper.thenOpen(config.url+'pm', function() {
-														imageUrl = casper.evaluate(function() {
-															var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
-															return id;
-														});
-														casper.echo('The Url of the image is - '+imageUrl, 'INFO');
-														if(imageUrl==json.nehaImageUrl) {
-															casper.echo('Sender found his avatar on conversation','INFO');
-														} else {
-															casper.echo('Sender not found his avatar on conversation','ERROR');
-														}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent called successfully..','INFO');
+												casper.thenOpen(config.url+'pm', function() {
+													imageUrl = casper.evaluate(function() {
+														var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
+														return id;
 													});
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+													casper.echo('The Url of the image is - '+imageUrl, 'INFO');
+													if(imageUrl==json.nehaImageUrl) {
+														casper.echo('Sender found his avatar on conversation','INFO');
+													} else {
+														casper.echo('Sender not found his avatar on conversation','ERROR');
+													}
+												});
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -2985,34 +2765,30 @@ privateMessageTestcases.verifyAvtar = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('ul#private_message_dropdown a.pull-left');
-									wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
-										if(isExists) {
-											var recieverImageUrl = casper.evaluate(function() {
-												var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
-												return id;
-											});
-											casper.echo('The Url of the image is - '+recieverImageUrl, 'INFO');
-											if(imageUrl==recieverImageUrl) {
-												casper.echo('Reciever found senders avatar in the conversation','INFO');
-											} else {
-												casper.echo('Reciever not found senders avatar in the conversation','ERROR');
-											}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown a.pull-left', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('ul#private_message_dropdown a.pull-left');
+								wait.waitForElement('form#pmsg_list', casper, function(err, isExists) {
+									if(isExists) {
+										var recieverImageUrl = casper.evaluate(function() {
+											var id = document.querySelector('div#feed-main span.image-wrapper.normal a').getAttribute('style');
+											return id;
+										});
+										casper.echo('The Url of the image is - '+recieverImageUrl, 'INFO');
+										if(imageUrl==recieverImageUrl) {
+											casper.echo('Reciever found senders avatar in the conversation','INFO');
 										} else {
-											casper.echo('Inbox not found','ERROR');
+											casper.echo('Reciever not found senders avatar in the conversation','ERROR');
 										}
-									});
-								} else {
-									casper.echo('Inbox at popup not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+									} else {
+										casper.echo('Inbox not found','ERROR');
+									}
+								});
+							} else {
+								casper.echo('Inbox at popup not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
@@ -3062,29 +2838,25 @@ privateMessageTestcases.verifyMaxRecipient = function() {
 				if(!err) {
 					wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 						if(isExists) {
-							try {	
-								casper.click('i#private_message_notification');
-								wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-									if(isExists) {
-										casper.click('a.send_new_pmsg');
-										wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-											if(isExists) {
-												privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
-													if(!err) {
-														casper.echo('Message sent to 25 user successfully..','INFO');
-													}
-												});
-											} else {
-												driver.echo('Message pop up not found','ERROR');
-											}
-										});
-									} else {
-										driver.echo('Send a New Messag Pop not found','ERROR');
-									}
-								});
-							} catch (e) {
-								casper.echo('Message not sent..','ERROR');
-							}
+							casper.click('i#private_message_notification');
+							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+								if(isExists) {
+									casper.click('a.send_new_pmsg');
+									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+										if(isExists) {
+											privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageReceipent, casper, function(err) {
+												if(!err) {
+													casper.echo('Message sent to 25 user successfully..','INFO');
+												}
+											});
+										} else {
+											driver.echo('Message pop up not found','ERROR');
+										}
+									});
+								} else {
+									driver.echo('Send a New Messag Pop not found','ERROR');
+								}
+							});
 						}else {
 							casper.echo('User not logged in', 'ERROR');
 						}
@@ -3109,29 +2881,25 @@ privateMessageTestcases.verifyMorethanMaxRecipient = function() {
 			if(!err) {
 				wait.waitForElement('i#private_message_notification', casper,function(err, isExists) {
 					if(isExists) {
-						try {	
-							casper.click('i#private_message_notification');
-							wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a.send_new_pmsg');
-									wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
-										if(isExists) {
-											privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageToMoreThanMaxLimit, casper, function(err) {
-												if(!err) {
-													casper.echo('Message sent to only 25 user not for 26th','INFO');
-												}
-											});
-										} else {
-											driver.echo('Message pop up not found','ERROR');
-										}
-									});
-								} else {
-									driver.echo('Send a New Messag Pop not found','ERROR');
-								}
-							});
-						} catch (e) {
-							casper.echo('Message not sent..','ERROR');
-						}
+						casper.click('i#private_message_notification');
+						wait.waitForElement('ul#private_message_dropdown span.pull-right', casper, function(err, isExists) {
+							if(isExists) {
+								casper.click('a.send_new_pmsg');
+								wait.waitForElement('div[class="modal fade in"]', casper,function(err, isExists) {
+									if(isExists) {
+										privateMessageMethod.sendMessageToMaxLimitUser(json.privateMessageToMoreThanMaxLimit, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent to only 25 user not for 26th','INFO');
+											}
+										});
+									} else {
+										driver.echo('Message pop up not found','ERROR');
+									}
+								});
+							} else {
+								driver.echo('Send a New Messag Pop not found','ERROR');
+							}
+						});
 					}else {
 						casper.echo('User not logged in', 'ERROR');
 					}
