@@ -7,8 +7,9 @@
 	"username": "sangita",
 	"password": "sangita"
 	},
+
     
-		"ValidUser" : {
+	"ValidUser" : {
 	"username": "rajan41",
 	"password": "rajan41"
 	},
@@ -44,13 +45,12 @@
 	"ExpectedErrorMessage" : "You must enter your password."
 	},
 	
-	"AdminLogin" : {
-	 "username": "hani",
-	 "password": "hani",
-	 "ExpectedErrorMessage" : "Admin Login successfully." 
+	 "Privatemessage" : {
+	"to": "sangita",
+	"subject": "message",
+	"pmessage" : "You must enter your password."
+	}
 	
-	}  
 
-	
 
 }
