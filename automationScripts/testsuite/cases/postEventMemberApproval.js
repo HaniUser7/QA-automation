@@ -765,13 +765,18 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 				postEventMemberApprovalMethod.goToApprovalQueuePage(casper, casper.test, function(err) {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
-						casper.click('a#approveEvent_'+eventId+' i');
+							casper.click('a#approveEvent_'+eventId+' i');
+							casper.waitWhileVisible('div#event_'+eventId , function success() {
+								casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
+							}, function fail() { 
+								casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+							});
 						}, function fail() {
 							casper.echo('approve tick not found','ERROR');
 						});
-						casper.wait(5000, function() {
+						/*casper.wait(5000, function() {
 							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
-						});
+						});*/
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
 					}
@@ -841,12 +846,17 @@ postEventMemberApprovalTestcases.eventApprovalByCheckBox = function() {
 							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
 							casper.test.assertExists('i#approvePending', 'approve tick on the floating menu******************');
 							casper.click('i#approvePending');
+							casper.waitWhileVisible('div#event_'+eventId , function success() {
+								casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
+							}, function fail() { 
+								casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+							});
 						},function fail(){
 							casper.echo('Checkbox not Found','INFO');
 						});
-						casper.wait(5000, function() {
+						/*casper.wait(5000, function() {
 							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page by clicking on checkbox','INFO');
-						});  
+						});*/  
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
 					}
@@ -875,14 +885,21 @@ postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll = function() {
 						casper.waitForSelector('input#select_all_pending_events', function success() {
 							casper.click('input#select_all_pending_events');
 							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
-							casper.waitForSelector('div#pending-menu',function success(){
+							casper.waitForSelector('div#pending-menu',function success() {
 								casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
 								casper.test.assertExists('i#approvePending', 'APPROVE TICK ON THE FLOATING MENU');
 								casper.click('i#approvePending');
-								casper.wait(5000, function() {
+								casper.waitUntilVisible('form[name="posts"] div.alert.alert-info.text-center', function success() {
+									var actualText = casper.fetchText('form[name="posts"] div.alert.alert-info.text-center');
+									var expectedText = "There's currently nothing that needs your approval.";	
+									casper.test.assert(actualText.indexOf(expectedText) > -1);
+								}, function fail() { 
+									casper.echo('events not deleted from the page','INFO');
+								});
+								/*casper.wait(5000, function() {
 									casper.echo(' ***********TEXT FETCHED***********','INFO');
 									casper.echo(casper.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
-								});
+								});*/
 							}, function fail(){
 								casper.echo('Floating Menu not Found','INFO');
 							});
@@ -916,12 +933,17 @@ postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton = function() {
 					if(!err) {
 						casper.waitForSelector('div.post-edit.pull-right.dropdown', function success() {
 							casper.click('a#deleteEvent_'+eventId+' i');
+							casper.waitWhileVisible('div#event_'+eventId , function success() {
+								casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
+							}, function fail() { 
+								casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+							});
 						}, function fail() {
 							casper.echo('approve tick not found','ERROR');
 						});
-						casper.wait(5000, function() {
+						/*casper.wait(5000, function() {
 							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
-						});  
+						});*/  
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
 					}
@@ -991,12 +1013,17 @@ postEventMemberApprovalTestcases.eventdeleteByCheckBox = function() {
 							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page','INFO');
 							casper.test.assertExists('i#decline_pending', 'Delete tick on the floating menu******************');
 							casper.click('i#decline_pending');
+							casper.waitWhileVisible('div#event_'+eventId , function success() {
+								casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
+							}, function fail() { 
+								casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+							});
 						},function fail(){
 							casper.echo('Checkbox not Found','INFO');
 						});
-						casper.wait(5000, function() {
+						/*casper.wait(5000, function() {
 							casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page by clicking on checkbox','INFO');
-						});  
+						});*/  
 					} else {
 						casper.echo('Not called goToApprovalQueuePage method','INFO');
 					}
@@ -1025,13 +1052,20 @@ postEventMemberApprovalTestcases.eventdeleteByAllCheckBox = function() {
 						casper.waitForSelector('input#select_all_pending_events', function success() {
 							casper.click('input#select_all_pending_events');
 							casper.test.assertExists('div#pending-menu','floating menu is appear on bottom of the page');
-							casper.waitForSelector('div#pending-menu',function success(){
+							casper.waitForSelector('div#pending-menu',function success() {
 								casper.test.assertExists('i#decline_pending', 'Delete TICK ON THE FLOATING MENU');
 								casper.click('i#decline_pending');
-								casper.wait(5000, function() {
+								casper.waitUntilVisible('form[name="posts"] div.alert.alert-info.text-center', function success() {
+									var actualText = casper.fetchText('form[name="posts"] div.alert.alert-info.text-center');
+									var expectedText = "There's currently nothing that needs your approval.";	
+									casper.test.assert(actualText.indexOf(expectedText) > -1);
+								}, function fail() { 
+									casper.echo('events not deleted from the page','INFO');
+								});
+								/*casper.wait(5000, function() {
 									casper.echo(' ***********TEXT FETCHED***********','INFO');
 									casper.echo(casper.fetchText('form[name="posts"] div.alert.alert-info.text-center'),'INFO');	
-								});
+								});*/
 							}, function fail(){
 								casper.echo('Floating Menu not Found','INFO');
 							});
@@ -1070,9 +1104,14 @@ postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 								casper.echo('The text of the event is--'+text,'INFO');
 								casper.sendKeys('div.editable-input textarea', 'Event is edited');
 								casper.wait(5000,function () {
+									casper.click('a#edit_'+eventId+' i');
 									var text2 = this.fetchText('div.editable-input textarea');
 									casper.echo('The text of the event is--'+text2,'INFO');
-									this.capture('editEvent.png');
+									if(text2!=text){
+										casper.echo('Event edited','INFO');
+									} else {
+										casper.echo('Event not edited','INFO');
+									}
 								});
 								casper.click('div.editable-buttons i.glyphicon.glyphicon-ok');
 								casper.click('div.editable-buttons i.glyphicon.glyphicon-ok');
