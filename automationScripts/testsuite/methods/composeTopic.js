@@ -704,3 +704,61 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
+//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+ composeTopicMethod.captchaRegistration= function(casper,test,callback) {	
+	casper.thenOpen(config.backEndUrl, function() {
+		composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
+			if(!err){
+				registerMethod.loginToForumBackEnd(casper, test, function(err) {
+					 if(!err){
+						wait.waitForElement('div#my_account_forum_menu',casper, function(err, isExists) {
+							if(isExists) {
+								casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+								casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+								wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+									if(isExists) {
+										casper.click('div#ddSettings a:nth-child(3)');
+										wait.waitForElement('input#captcha_registration', casper, function(err, isExists) {
+											if(isExists) {
+												utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
+													casper.echo('checkbox is checked', 'INFO');
+													casper.capture('erre.png');
+												});
+												
+												casper.test.assertExists('button.button.btn-m.btn-blue');
+												casper.click('button.button.btn-m.btn-blue');
+												casper.waitUntilVisible('div#ajax-msg-top', function success() {
+													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													wait.waitForTime(4000, casper, function() { 
+														composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
+															if(!err){
+																casper.echo('backend logout sucessful');
+                                                                       return callback(null);
+															}
+														});	
+													});
+												}, function fail() { 
+													casper.echo('Saved not found', 'ERROR');
+												});
+											} else {
+												casper.echo('Image Verification checkbox not found', 'ERROR');
+											}
+										});
+									} else {
+										casper.echo('Setting  tooltip menu not found', 'ERROR');
+									}
+								});
+							} else {
+								casper.echo('Backend Menu not found', 'ERROR');
+							}
+						});
+					}else {
+						casper.echo('Error ', 'ERROR');
+					}
+				});
+	
+                         }
+                });
+		
+	});
+}

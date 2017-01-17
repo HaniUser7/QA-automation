@@ -17,11 +17,23 @@ composeTopicTest.createRegisterUser= function() {
        
 	casper.then(function(){  
 		
+		//backend setting in registration for disable
+		casper.then(function(){
+			casper.echo(' **** 6. BackendSetting(captcha Registration disable)  ****   ', 'INFO');
+			composeTopicMethod.captchaRegistration(casper, casper.test, function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'ERROR');
+				}
+			});
+		});
+		
 		//backend setting in registration
 		casper.then(function(){
 			registerTests.userAccountsEnable();
 		});
-
+                
 		//1.1 Test case for create registration for register user
 		casper.then(function(){
 			casper.echo('************************************************', 'INFO');
