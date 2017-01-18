@@ -9,6 +9,9 @@ privateMessage.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		this.echo("Title of the page :"+this.getTitle(),'INFO');
 		
+		// method To verify  send PM conversation to 25 recipient at the same time
+		privateMessageTestcases.verifyMaxRecipient();	
+		
 		// method to create a message by scenario 1
 		privateMessageTestcases.createPrivateMessage();
 		
@@ -53,9 +56,6 @@ privateMessage.featureTest = function(casper, test) {
 		
 		// method To verify Avtar
 		privateMessageTestcases.verifyAvtar();
-		
-		// method To verify  send PM conversation to 25 recipient at the same time
-		privateMessageTestcases.verifyMaxRecipient();
 		
 		// method To verify  send PM conversation to 26 recipient at the same time
 		privateMessageTestcases.verifyMorethanMaxRecipient();

@@ -105,8 +105,8 @@ switch (feature) {
 		casper.echo("register");
 		casper.echo("inContextLogin");
         	casper.echo("thumpsUpDown");
-        	casper.echo("postEventMemberApproval");
         	casper.echo("privateMessage");
+        	casper.echo("postEventMemberApproval");
 		casper.exit();
 };
 

@@ -43,11 +43,22 @@ thumpsUpDownMethod.postTopicpage = function(data, driver, callback) {
 		this.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
  		this.sendKeys('#tinymce', data.content);
 	});	
-		/*driver.click('#all_forums_dropdown');
-		driver.fill('form[name="PostTopic"]',{
-			'forum' : data.category
-		},false);*/
-	
+	driver.waitForSelector('#all_forums_dropdown', function success() {
+			driver.click('#all_forums_dropdown');
+			driver.fill('form[name="PostTopic"]',{
+				'forum' : data.category
+			},false);
+			driver.then(function() {
+				driver.click('#post_submit');
+			});
+	}, function fail() {
+		driver.waitForSelector('#post_submit',function success() {							
+			driver.test.assertExists('#post_submit');
+			driver.click('#post_submit');
+		},function fail() {
+			driver.echo('Unable to submit form','ERROR');
+		});
+	});
 	driver.then(function() {
 		driver.click('#post_submit');
 	});
@@ -70,12 +81,12 @@ thumpsUpDownMethod.viewChangePermission = function(driver, callback) {
 							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
 							if (x1.innerText == 'Registered Users') {
 								document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-								var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+								var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
 								return x2;
 							}
 						}
 					});
-					driver.click('a[href="'+grpName+'"]');
+					driver.click('a[id="'+grpName+'"]');
 					return callback(null);
 				} else {
 					driver.echo('Table not found', 'ERROR');
@@ -226,12 +237,19 @@ thumpsUpDownMethod.disableReputation = function(driver, callback) {
 							wait.waitForElement('input#reputation', casper, function(err, isExists) {
 								if(isExists) {
 									utils.enableorDisableCheckbox('reputation', false, casper, function() {
-										casper.echo('checkbox is uncheckedchecked', 'INFO');
+										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -276,7 +294,14 @@ thumpsUpDownMethod.enableReputation = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -316,13 +341,20 @@ thumpsUpDownMethod.disableUserAccount = function(driver, callback) {
 							wait.waitForElement('input#REQreg', casper, function(err, isExists) {
 								if(isExists) {
 									utils.enableorDisableCheckbox('REQreg', false, casper, function() {
-										casper.echo('checkbox is uncheckedchecked', 'INFO');
+										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									casper.click('div.ui-dialog-buttonset button');
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -364,13 +396,16 @@ thumpsUpDownMethod.enableUserAccount = function(driver, callback) {
 									utils.enableorDisableCheckbox('REQreg', true, casper, function() {
 										casper.echo('checkbox is checked', 'INFO');
 									});
-									try {
-										casper.test.assertExists('button.button.btn-m.btn-blue');
-										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
-									}catch(e) {
-										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
-									}
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#loading_msg', function() {
+										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+										}, function fail() { 
+											casper.echo('User account not enabled', 'ERROR');
+										});
+									});
 								} else {
 									casper.echo('User Account checkbox not found', 'ERROR');
 								}
@@ -407,12 +442,19 @@ thumpsUpDownMethod.disableNewRegistration = function(driver, callback) {
 							wait.waitForElement('input#new_user_registration', casper, function(err, isExists) {
 								if(isExists) {
 									utils.enableorDisableCheckbox('new_user_registration', false, casper, function() {
-										casper.echo('checkbox is checked', 'INFO');
+										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -457,7 +499,14 @@ thumpsUpDownMethod.enableNewRegistration = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -502,7 +551,14 @@ thumpsUpDownMethod.enableFacebookLogin = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
@@ -547,7 +603,14 @@ thumpsUpDownMethod.disableFacebookLogin = function(driver, callback) {
 									try {
 										casper.test.assertExists('button.button.btn-m.btn-blue');
 										casper.click('button.button.btn-m.btn-blue');
-										casper.wait(2000);
+										casper.waitUntilVisible('div#loading_msg', function() {
+											casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
 									}catch(e) {
 										casper.test.assertDoesntExist('button.button.btn-m.btn-blue');
 									}
