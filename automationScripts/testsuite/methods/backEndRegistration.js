@@ -22,17 +22,21 @@ backEndForumRegisterMethod.registerToBackEnd = function(data, driver, callback) 
 //Logout To Forum Back End
 
 backEndForumRegisterMethod.redirectToBackEndLogout = function(driver, test, callback) {
-	try {
-		test.assertExists('div.ui-dialog');
-		var errorMessage = driver.fetchText('div.ui-dialog div[id^="ui-id-"]');
-		var expectedErrorMsg = "There is already a user registered with the username ";
-		test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
-	} catch(e) {
-		test.assertDoesntExist('div.ui-dialog');
-		test.assertDoesntExist('.tooltip p');
-		driver.click('a[href="/tool/members/login?action=logout"]');
-	}
-	return callback(null);
+	casper.test.assertExists('a[data-tooltip-elm="ddAccount"]');
+	casper.click('a[data-tooltip-elm="ddAccount"]');
+	casper.test.assertExists('a[href="/tool/members/login?action=logout"]');
+	casper.click('a[href="/tool/members/login?action=logout"]');
+	wait.waitForElement('form[name="frmLogin"]', casper, function(err, isExists) {	
+		if(!err){
+			if(isExists) {
+				casper.echo('Logout Succesfully......','INFO');
+				return callback(null);
+			} else {
+				casper.echo('Unable to logout successfully', 'ERROR');
+				return callback(null);
+			}	
+		}
+	});
 };
 
 //Method For Verifying Error Message On Registration Form After Submitting Form.

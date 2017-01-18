@@ -1,0 +1,29 @@
+{
+	"RegisteredUserLogin" : {
+		"username": "neha",
+		"password": "123"
+	},
+	
+	"newTopic" : {
+		"title" : "New Topic",
+		"content" : "hellloooooo!!!!!!!!!",
+		"category" : "General"
+	},
+	
+	"AdminUserLogin" : {
+		"username": "isneha",
+		"password": "1234"
+	},
+	
+	"infoToRegisterUser" : [{
+		"username" : "neha",
+		"password" : "123",
+		"email" : "neha@gmail.com"
+	},
+	
+	{
+		"username" : "isneha",
+		"password" : "1234",
+		"email" : "isneha@gmail.com"
+	}]
+}
