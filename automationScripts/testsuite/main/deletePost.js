@@ -45,7 +45,7 @@ deletePost.featureTest = function(casper, test) {
 		deletePostTests.deletePostSearchPost();
     //********************************Delete own topic using delete own topic- disable ,delete own post-enable ***********************************
 		//Verify by delete one own  topic -selecting by check box by register user.
-		/*deletePostTests.deleteOwnTopic();
+		deletePostTests.deleteOwnTopic();
 		//Verify by delete own all topic-selecting by check box using register user
 		deletePostTests.deleteAllOwnTopic();
 		//verify with delete  own topic-by drop down of the topic
@@ -57,10 +57,10 @@ deletePost.featureTest = function(casper, test) {
 		//delete  own topic by searching topic
 		deletePostTests.deleteOwnSearchTopic();
 		//delete  own post by searching post
-		deletePostTests.deleteOwnSearchPost();*/
+		deletePostTests.deleteOwnSearchPost();
    //*****************"view category-delete own topic- enable-delete own post-disable******************************
 		//Verify by delete own topic -selecting by check box 
-		/*deletePostTests.deleteOwnTopicPostDisable();
+		deletePostTests.deleteOwnTopicPostDisable();
 		//Verify by delete all own topic-selecting by check box 
 		deletePostTests.deleteAllTopicPostDisable();
 		//verify with delete  own topic-by drop down of the topic
@@ -111,7 +111,7 @@ deletePost.featureTest = function(casper, test) {
 		deletePostTests.deleteOwnSearchTopicPostEnab();
  //*******************************Edit others topic/post as Admin**********************************************************
 		//verify with edit topic(Post listing  page)
-		deletePostTests.editTopicAdmin();
+		/*deletePostTests.editTopicAdmin();
 		//verify with edit post(Post listing  page)
 		deletePostTests.editPostAdmin();		
 		//verify with edit post on profile page

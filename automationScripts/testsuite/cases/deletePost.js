@@ -1721,6 +1721,16 @@ deletePostTests.deleteOwnProfilePage=function(){
 
 //delete  own topic by searching topic
 deletePostTests.deleteOwnSearchTopic=function(){
+
+	deletePostMethod.BackEndSettings(casper , function(err) {
+		if(isExists) {
+			casper.echo('Backend settings  successfully','INFO')
+		}
+
+
+
+	});
+
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
@@ -1840,6 +1850,12 @@ deletePostTests.deleteOwnSearchPost=function(){
 			}
 		});
      	});
+	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+	});
+
+
+	
 	casper.then(function(){
 		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
      		deletePostMethod.profilePostRegister(casper , function(err) {
@@ -1847,18 +1863,35 @@ deletePostTests.deleteOwnSearchPost=function(){
 				casper.echo('post have been created' ,'INFO');
     		});
     	});
-	deletePostMethod.searchLoginOwn(casper , function(err) {
-		if(!err)
-			casper.echo('search methyod called successfully' ,'INFO');
+
+	casper.then(function(){
+		casper.echo('----------------------------2nd New post created---------------------------------------------------' ,'INFO');
+     		deletePostMethod.profilePostRegister(casper , function(err) {
+			if(!err)
+				casper.echo('post have been created' ,'INFO');
+    		});
+    	});
+
+	
+
+	casper.then(function(){
+		deletePostMethod.searchLoginOwn(casper , function(err) {
+			if(!err)
+				casper.echo('search methyod called successfully' ,'INFO');
+		});
 	});
 	casper.then(function(){
 		casper.echo('                         Testcase 24                                 ' ,'INFO');
 		casper.echo('-----------------------------------delete topic by searching post when delete own topic- disable delete own post-enable ------------------------------' ,'INFO');
-		try {
-			casper.test.assertExists('a#anchor_tab_show_posts' ,'Found Element');
-			wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
+		//try {
+			//casper.test.assertExists('a#anchor_tab_show_posts' ,'Found Element');
+			wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
 				if(isExists) {
+					casper.wait(2000 , function(){
+						casper.capture('c.png');
+					});
 					casper.click('a#anchor_tab_show_posts');
+
 					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
 						if(isExists) {
 							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
@@ -1870,7 +1903,7 @@ deletePostTests.deleteOwnSearchPost=function(){
 							});
 							casper.echo("message :" +post,'INFO');
 							casper.click('a[href="'+post+'"]');
-							casper.click('input#deleteposts');
+							
 						}
 					});
 				}
@@ -1881,7 +1914,7 @@ deletePostTests.deleteOwnSearchPost=function(){
 						casper.echo('Successfully logout from application', 'INFO');
 				});	
 			});
-		} catch(e) {
+		/*} catch(e) {
 			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
 			casper.then(function() {
 				inContextLoginMethod.logoutFromApp(casper, function(err){
@@ -1889,7 +1922,7 @@ deletePostTests.deleteOwnSearchPost=function(){
 						casper.echo('Successfully logout from application', 'INFO');
 				});	
 			});
-		}
+		}*/
 		
 	});
 };
@@ -2396,6 +2429,13 @@ deletePostTests.deleteOwnProfilePagePostDisable=function(){
 
 //delete  own topic by searching topic
 deletePostTests.deleteSearchPostDisable=function(){
+	deletePostMethod.BackEndSettingsPostDisable(casper , function(err) {
+		if(isExists) {
+			casper.echo('delete own topic and post checked','INFO')
+		}
+	});	
+
+
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
@@ -2446,38 +2486,18 @@ deletePostTests.deleteSearchPostDisable=function(){
 	casper.then(function(){
 		casper.echo('                         Testcase 31                                ' ,'INFO');
 		casper.echo('------------------delete topic by searching topic when delete own topic- enable ,delete own post-disable--------------------------' ,'INFO');
-		wait.waitForTime(2000 , casper , function(err) {
-			casper.capture('search.png');
-			try {
-				casper.test.assertExists('a#anchor_tab_show_threads' ,'INFO');
-				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
-					if(isExists) {
-						casper.click('div.post-body.pull-left span:nth-child(2) a');
-						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
-							if(isExists){
-							//casper.click('i.glyphicon.glyphicon-chevron-down');
-								casper.click('input[name="pid"]');
-								casper.click('input[type="button"]');	
+		wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
+			if(isExists) {
+				casper.click('input[name="id"]');
+				casper.click('i.glyphicon.glyphicon-trash');	
 															
-							}
-							casper.then(function() {
-								inContextLoginMethod.logoutFromApp(casper, function(err){
-									if (!err)
-										casper.echo('Successfully logout from application', 'INFO');
-								});	
-							});
-						});
-					}
-				});
-		    }catch(e){
-				casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});	
-				});
 			}
+		});				
+		casper.then(function() {
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
+			});	
 		});
 	});
 };
@@ -2541,43 +2561,24 @@ deletePostTests.deleteOwnSearPostDisable=function(){
 		casper.echo('                         Testcase 32                                 ' ,'INFO');
 		casper.echo('-----------------------------------delete topic by searching topic when delete own topic- enable ,delete own post-disable------------------------------' ,'INFO');
 
-		try {
-			casper.test.assertExists('a#anchor_tab_show_threads' ,'Found Element');
-			wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
-				if(isExists) {
-				//casper.click('div.post-body.pull-left span:nth-child(2) a');
-				//wait.waitForElement('' , casper , function(err , isExists) {
-					//if(isExists){
-						casper.click('i.glyphicon.glyphicon-chevron-down');
-						var post= casper.evaluate(function(){
-   							var aa=document.querySelectorAll('a#search_delete_post');
-     								var a= aa.length;
-    								var hh=aa[1].getAttribute('href');
-     							return hh;
-						});
-						casper.echo("message :" +post,'INFO');
-						casper.click('a[href="'+post+'"]');
-						casper.click('input#deleteposts');
-					//}
-					casper.then(function(){
-						inContextLoginMethod.logoutFromApp(casper, function(err){
-							if (!err)
-								casper.echo('Successfully logout from application', 'INFO');
-						});	
-					});
-					//});
-				}
+		wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
+			if(isExists) {
+				casper.click('a#anchor_tab_show_posts');
+				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
+					if(isExists) {
+							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+					}
+				});
+			}
+		});
+		casper.then(function() {
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
 			});
-		}catch(e) {
-			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		}
+		});
 	});
+		
 };
 
 
@@ -3081,6 +3082,15 @@ deletePostTests.deleteOwnProfilePageTopicPostDisable=function(){
 
 //delete  own topic by searching topic
 deletePostTests.deleteOwnSearchTopicPostDisable=function(){
+	deletePostMethod.BackEndSettingsTopicPostDisable(casper , function(err) {
+		if(isExists) {
+			casper.echo('Backend settings  successfully','INFO')
+		}
+	});
+
+	
+
+
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
@@ -3123,46 +3133,34 @@ deletePostTests.deleteOwnSearchTopicPostDisable=function(){
 			}
 		});
      	});
-	deletePostMethod.searchlogin(casper , function(err) {
-		if(!err)
-			casper.echo('search method called successfully' ,'INFO');
+	
+	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+	});
+
+
+	
+	casper.then(function(){
+		deletePostMethod.searchlogin(casper , function(err) {
+			if(!err)
+				casper.echo('search method called successfully' ,'INFO');
+		});
 	});
 	//Result found delete option is unavaialble
 	casper.then(function(){
 		casper.echo('                         Testcase 39                                ' ,'INFO');
 		casper.echo('-----------------------------------delete topic by searching topic when delete own topic- disable ,delete own post-disable------------------------------' ,'INFO');
-		try {
-			casper.test.assertExists('div.post-body.pull-left span:nth-child(2) a' ,'Found Element');
-			wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
-				if(isExists) {
-					casper.click('div.post-body.pull-left span:nth-child(2) a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
-						if(isExists){
-							//casper.click('i.glyphicon.glyphicon-chevron-down');
-							//casper.click('input[name="pid"]');
-							//casper.click('input[type="button"]');	
-															
-						}
-						
-					});
-				}
-			});
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		} catch(e) {
-			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		}
-		
+		wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
+			if(isExists) {
+				casper.echo('Topic is disable so cannot be deleted successfull' ,'INFO');									
+			}
+		});
+		casper.then(function() {
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
+			});	
+		});
 	});
 };
 
@@ -3210,6 +3208,15 @@ deletePostTests.deleteOwnSearchTopicPostDis=function(){
 			}
 		});
      	});
+	
+	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+	});
+
+
+
+
+
 	casper.then(function(){
 		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
      		deletePostMethod.profilePostRegister(casper , function(err) {
@@ -3224,38 +3231,26 @@ deletePostTests.deleteOwnSearchTopicPostDis=function(){
 	casper.then(function(){
 		casper.echo('                         Testcase 40                                 ' ,'INFO');
 		casper.echo('-----------------------------------delete post by searching post when delete own topic- disable ,delete own post-disable------------------------------' ,'INFO');
-		try {
 		
-			casper.test.assertExists('div.post-body.pull-left span:nth-child(2) a' ,'Found Element');
-			wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
-				if(isExists) {
-					casper.click('i.glyphicon.glyphicon-chevron-down');
-					var post= casper.evaluate(function(){
-   						var aa=document.querySelectorAll('a#search_delete_post');
-     						var a= aa.length;
-    						var hh=aa[1].getAttribute('href');
-     						return hh;
-					});
-					casper.echo("message :" +post,'INFO');
-					casper.click('a[href="'+post+'"]');
-					casper.click('input#deleteposts');
-				}
+		wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
+			if(isExists) {
+				casper.click('a#anchor_tab_show_posts');
+				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
+					if(isExists) {
+							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+							casper.echo('post cannot be deleted successfull' ,'INFO');
+					}
+				});
+			}
+		});
+		casper.then(function() {
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
 			});
-			casper.then(function(){
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		} catch(e) {
-			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		}
+		});
+			
+		
 	});
 };
 //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3775,6 +3770,16 @@ deletePostTests.deleteOwnProfilePageTopicPostEnable=function(){
 
 //delete  own topic by searching topic
 deletePostTests.deleteOwnSearchTopicPostEnable=function(){
+	deletePostMethod.BackEndSettingsTopicPostEnable(casper , function(err) {
+		if(isExists) {
+			casper.echo('delete own topic and post checked','INFO')
+		}
+	});
+
+
+
+
+
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
@@ -3817,9 +3822,17 @@ deletePostTests.deleteOwnSearchTopicPostEnable=function(){
 			}
 		});
      	});
-	deletePostMethod.searchlogin(casper , function(err) {
-		if(!err)
-			casper.echo('search method called successfully' ,'INFO');
+	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+	});
+
+
+
+	casper.then(function(){
+		deletePostMethod.searchlogin(casper , function(err) {
+			if(!err)
+				casper.echo('search method called successfully' ,'INFO');
+		});
 	});
 	//Result found delete option is unavaialble
 	casper.then(function(){
@@ -3828,19 +3841,15 @@ deletePostTests.deleteOwnSearchTopicPostEnable=function(){
 		wait.waitForTime(2000 , casper , function(err) {
 			casper.capture('search.png');
 			casper.waitForSelector('div.post-body.pull-left span:nth-child(2) a' ,  function success(){
-				casper.click('div.post-body.pull-left span:nth-child(2) a');
-				wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
-					if(isExists){
-						casper.click('input[name="pid"]');
-						casper.click('input[type="button"]');	
-					}
-					casper.then(function() {
-						inContextLoginMethod.logoutFromApp(casper, function(err){
-							if (!err)
-								casper.echo('Successfully logout from application', 'INFO');
-						});	
-					});
+				casper.click('input[name="id"]');
+				casper.click('input[type="button"]');	
+				casper.then(function() {
+					inContextLoginMethod.logoutFromApp(casper, function(err){
+						if (!err)
+							casper.echo('Successfully logout from application', 'INFO');
+					});	
 				});
+				
 			},function fail(){
 				casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a ' ,'ERROR');
 				casper.then(function() {
@@ -3898,6 +3907,11 @@ deletePostTests.deleteOwnSearchTopicPostEnab=function(){
 			}
 		});
      	});
+	
+	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+	});
+
 	casper.then(function(){
 		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
      		deletePostMethod.profilePostRegister(casper , function(err) {
@@ -3905,33 +3919,53 @@ deletePostTests.deleteOwnSearchTopicPostEnab=function(){
 				casper.echo('post have been created' ,'INFO');
     		});
     	});
-	deletePostMethod.searchLoginOwn(casper , function(err) {
-		if(!err)
-			casper.echo('search methyod called successfully' ,'INFO');
+
+	casper.then(function(){
+		casper.echo('----------------------------- 2nd New post created---------------------------------------------------' ,'INFO');
+     		deletePostMethod.profilePostRegister(casper , function(err) {
+			if(!err)
+				casper.echo('post have been created' ,'INFO');
+    		});
+   	});
+
+	casper.then(function(){
+		deletePostMethod.searchLoginOwn(casper , function(err) {
+			if(!err)
+				casper.echo('search methyod called successfully' ,'INFO');
+		});
 	});
 	casper.then(function(){
 		casper.echo('                         Testcase 48                                 ' ,'INFO');
 		casper.echo('-----------------------------------delete topic by searching post when-delete own topic- enable ,delete own post-enable------------------------------' ,'INFO');
-		casper.waitForSelector('div.post-body.pull-left span:nth-child(2) a' , function success(){
+		wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
 			if(isExists) {
-				casper.click('i.glyphicon.glyphicon-chevron-down');
-				var post= casper.evaluate(function(){
-   					var aa=document.querySelectorAll('a#search_delete_post');
-     					var a= aa.length;
-    					var hh=aa[1].getAttribute('href');
-     					return hh;
-				});
-				casper.echo("message :" +post,'INFO');
-				casper.click('a[href="'+post+'"]');
-				casper.click('input#deleteposts');
-				casper.then(function(){
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});	
+				casper.click('a#anchor_tab_show_posts');
+				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
+					if(isExists) {
+						casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+							
+							var post= casper.evaluate(function(){
+   								var aa=document.querySelectorAll('a#search_delete_post');
+     								var a= aa.length;
+    								var hh=aa[1].getAttribute('href');
+     								return hh;
+							});
+							casper.echo("message :" +post,'INFO');
+							casper.click('a[href="'+post+'"]');
+						}
 				});
 			}
-		}, function fail() {
+		});
+		casper.then(function() {
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
+			});
+		});	
+
+
+
+		/*}, function fail() {
 			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
 			casper.then(function() {
 				inContextLoginMethod.logoutFromApp(casper, function(err){
@@ -3941,7 +3975,7 @@ deletePostTests.deleteOwnSearchTopicPostEnab=function(){
 			});
 			
 
-		});
+		});*/
 	});
 };
 //-----------------------------------------------------------------------------------------------------------------
@@ -4247,10 +4281,14 @@ deletePostTests.editTopicSearchAdmin=function(){
 				});	
 			}
 		});
-     	});		
-	deletePostMethod.searchlogin(casper , function(err) {
-		if(!err)
-			casper.echo('search method called successfully' ,'INFO');
+     	});
+	
+
+	casper.then(function(){	
+		deletePostMethod.searchlogin(casper , function(err) {
+			if(!err)
+				casper.echo('search method called successfully' ,'INFO');
+		});
 	});		
 	casper.then(function(){
 		casper.echo('                         Testcase 52                                 ' ,'INFO');

@@ -190,25 +190,27 @@ deletePostMethod.searchlogin=function(driver , callback) {
 
 deletePostMethod.searchLoginOwn=function(driver , callback) {
 	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
-	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
-		if(isExists) {
-			inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
-				if (err) {
-					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-				}else {
-					casper.echo('Processing to Login on forum.....','INFO');
-					wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
-						if(isExists) {
-							casper.click('input#inline_search_box');
-							casper.fill('form#inlineSearchForm', {
-								'keywords' :'dragme'
-							},true);
-							
-						}
-					});
-				}
-			});
-		}
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.click('input#inline_search_box');
+								casper.fill('form#inlineSearchForm', {
+									'keywords' :'dragme'
+								},true);
+							}
+						});
+					}
+				});
+			}
+		});
 	});
 };
 
