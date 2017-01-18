@@ -4,6 +4,7 @@ var utils=require('../utils.js');
 var uploadMethods=require('../methods/uploadmethod.js');
 var inContextLoginMethod = require('../methods/inContextLogin.js');
 var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
+var registerMethod=require('../methods/register.js');
 var json = require('../../testdata/inContextLogin.json');
 
 
@@ -160,25 +161,28 @@ deletePostMethod.createTopic=function(driver , callback) {
 //search topic for register user
 deletePostMethod.searchlogin=function(driver , callback) {
 	//casper.echo('***********Verify with Edit the Post from Search result page camera webaddress************','INFO');
-	wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
-		if(isExists) {
-			inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-				if (err) {
-					casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-				}else {
-					casper.echo('Processing to Login on forum.....','INFO');
-					wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
-						if(isExists) {
-							casper.click('input#inline_search_box');
-							casper.fill('form#inlineSearchForm', {
-								'keywords' :'NewTopic'
-							},true);
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('input#inline_search_box' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.click('input#inline_search_box');
+								casper.fill('form#inlineSearchForm', {
+									'keywords' :'NewTopic'
+								},true);
 							
-						}
-					});
-				}
-			});
-		}
+							}
+						});
+					}
+				});
+			}
+		});
 	});
 };
 
@@ -264,15 +268,15 @@ deletePostMethod.profilePostRegister=function(driver , callback) {
 };
 
 
-//*******************************************Delete own topic/post as register user*******************************************
+//*******************************************Delete own topic/post as *******************************************
 //"Enable 'delete own post' under the Group permission.
 //(WTB>User>group permission>manage> change permission)
 //Enable  'delete own topic' under the Group permission.
 //(WTB>User>group permission>manage> change permission)"
 
 //"view category
-//delete own topic- disable
-//delete own post-enable "
+//---------------------------------------------------------------------------delete own topic- disable
+//---------------------------------------------------------------------------delete own post-enable "
 deletePostMethod.BackEndSettings=function(driver , callback) {
 	casper.thenOpen(config.backEndUrl , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -314,7 +318,7 @@ deletePostMethod.BackEndSettings=function(driver , callback) {
 								//casper.click('button.button.btn-m.btn-blue');
 								utils.enableorDisableCheckbox('delete_threads',false, casper, function(err) {
 									if(!err)
-										driver.echo('Successfully checked delete own topic ','INFO');
+										driver.echo('Successfully unchecked delete own topic ','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
 							}
@@ -592,7 +596,7 @@ deletePostMethod.BackEndSettingsEditOwnTopicEnable=function(driver , callback) {
 };	
 	
 //-----------------------------------------Edit own topic/post as register(edit own post disable) Method---------------------------------	
-deletePostMethod.BackEndSettingsEditOwnTopicEnable=function(driver , callback) {
+deletePostMethod.BackEndSettingsEditOwnTopicDisable=function(driver , callback) {
 	casper.thenOpen(config.backEndUrl , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
@@ -640,7 +644,134 @@ deletePostMethod.BackEndSettingsEditOwnTopicEnable=function(driver , callback) {
 	});		
 };
 
+//-------------------------------------------------create topic method called----------------------------------
+deletePostMethod.topicCreate=function(driver , callback){
 
+	casper.thenOpen(config.url , function(){
+		casper.echo('-----------New topic created Method called-------------' , 'INFO');
+			
+		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+			if (err) {
+				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+			}else {
+				casper.echo('Processing to Login on forum.....','INFO');
+				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
+					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+					casper.click('span.topic-content a');
+					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+						}
+					});						
+				},function fail() {
+					casper.echo('Failed block called','INFO');
+					casper.wait(2000 , function(){
+						casper.capture('a.png');
+
+					});
+					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+						if(isExists) {
+							//method to create a new topic
+							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+								if(!err) {
+									casper.echo('new topic created', 'INFO');
+								}else {
+									casper.echo('Topic not created', 'INFO');
+								}
+							});
+						} else {
+							casper.echo('User icon not found','ERROR');	
+						}
+					});
+				});
+				casper.then(function() {
+					inContextLoginMethod.logoutFromApp(casper, function(err){
+						if (!err)
+							casper.echo('Successfully logout from application', 'INFO');
+					});
+				});	
+			}
+		});
+     	});
+
+};
+
+//-----------------------------------------------Register a user-----------------------------------------------------------
+ deletePostMethod.enableUserRegister= function(username,casper,test) {	
+	casper.thenOpen(config.backEndUrl, function() {
+		//registerMethod.logoutFromApp(casper, casper.test, function(err) {
+			//if(!err){
+				registerMethod.loginToForumBackEnd(casper, test, function(err) {
+					 if(!err){
+						casper.echo('Logged-in successfully from back-end', 'INFO');
+						wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+							if(isExists) {
+								casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+								casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+								casper.test.assertExists('div#ddUsers a[href="/tool/members/mb/addusers"]');
+								casper.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
+								wait.waitForElement('input#autosuggest', casper, function(err, isExists) {
+									casper.test.assertExists('#autosuggest');
+									casper.sendKeys('#autosuggest',username, {keepFocus: true});
+									casper.click('#autosuggest');
+									casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+									casper.waitForSelector('form[name="ugfrm"]', function success(){
+									    var grpName = casper.evaluate(function(){
+										    for(var i=2;i<6;i++){
+												var x1 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') label');
+												if (x1.innerText == 'Administrators') {
+													var x3 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') input').getAttribute('value');
+													return x3;
+												}
+											}
+										});
+										casper.echo(+grpName,'INFO');
+											wait.waitForTime(3000, casper, function() { 
+												casper.fillSelectors('form[name="ugfrm"]', {
+													'input[type="checkbox"]' :grpName
+												}, true);
+												casper.wait(2000 , function(){
+													casper.capture('66.png');
+
+												});
+												casper.test.assertExists('button[title="Close"]');
+												casper.click('button[title="Close"]');
+												wait.waitForTime(4000, casper, function() {
+													casper.capture('555.png'); 
+												    /*registerMethod.logoutFromApp(casper, casper.test, function(err) {
+														if(!err){
+															casper.echo('backend logout sucessful');
+														}
+													});*/
+													casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+														casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+														casper.test.assertExists('div#ddAccount a:nth-child(6)');
+														casper.click('div#ddAccount a:nth-child(6)');	
+														casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+
+
+
+
+
+
+	
+												});
+											});
+									},function fail(){
+										casper.echo('');
+									});
+								});
+							} else {
+								casper.echo('Backend Menu not found', 'ERROR');
+							}
+						});
+					}
+				});
+			//}
+		//});
+	});
+   
+};
 
 
 
