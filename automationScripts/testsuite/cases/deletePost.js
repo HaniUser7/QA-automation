@@ -778,7 +778,8 @@ deletePostTests.deleteAllTopicRegisteruser=function(){
 										});
 									}
 
-								});
+							
+	});
 								
 							}
 
@@ -1097,37 +1098,19 @@ deletePostTests.deletePostSearchTopic=function(){
 		casper.then(function(){
 			casper.echo('                         Testcase 15                                  ' ,'INFO');
 			casper.echo('-----------------------------------delete topic by searching topic by Register user------------------------------' ,'INFO');
-			try {
-				casper.test.assertExists('div.post-body.pull-left span:nth-child(2) a' ,'Element found');
-				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
-					if(isExists) {
-						casper.capture('a.png');
-						casper.click('input[name="id"]');
-						casper.click('input[type="button"]');	
-					}
-					casper.then(function() {
-						inContextLoginMethod.logoutFromApp(casper, function(err){
-							if (!err)
-								casper.echo('Successfully logout from application', 'INFO');
-						});	
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});
-			}catch(e) {
-				casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});	
+			wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
+				if(isExists) {
+					casper.capture('a.png');
+					casper.click('input[name="id"]');
+					casper.click('input[type="button"]');	
+				}
+			});
+			casper.then(function() {
+				inContextLoginMethod.logoutFromApp(casper, function(err){
+					if (!err)
+						casper.echo('Successfully logout from application', 'INFO');
 				});	
-			}
-		
+			});
 		});
 };
 
@@ -1175,6 +1158,11 @@ deletePostTests.deletePostSearchPost=function(){
 			}
 		});
      	});
+	
+	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+	});
+
 	casper.then(function(){
 		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
      		deletePostMethod.profilePostRegister(casper , function(err) {
@@ -1182,21 +1170,30 @@ deletePostTests.deletePostSearchPost=function(){
 				casper.echo('post have been created' ,'INFO');
     		});
     	});
-	deletePostMethod.searchlogin(casper , function(err) {
-		if(!err)
-			casper.echo('search methyod called successfully' ,'INFO');
+
+	casper.then(function(){
+		casper.echo('----------------------------- 2nd New post created---------------------------------------------------' ,'INFO');
+     		deletePostMethod.profilePostRegister(casper , function(err) {
+			if(!err)
+				casper.echo('post have been created' ,'INFO');
+    		});
+    	});
+	casper.then(function(){
+		deletePostMethod.searchlogin(casper , function(err) {
+			if(!err)
+				casper.echo('search method called successfully' ,'INFO');
+		});
 	});
 	casper.then(function(){
 		casper.echo('                         Testcase 16                                 ' ,'INFO');
 		casper.echo('-----------------------------------delete topic by searching post by Register user------------------------------' ,'INFO');
-		try {
-			casper.test.assertExists('a#anchor_tab_show_posts' ,'Found Element');
-			wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
-				if(isExists) {
-					casper.click('a#anchor_tab_show_posts');
-					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
-						if(isExists) {
-							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+		wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
+			if(isExists) {
+				casper.click('a#anchor_tab_show_posts');
+				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
+					if(isExists) {
+						casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+							
 							var post= casper.evaluate(function(){
    								var aa=document.querySelectorAll('a#search_delete_post');
      								var a= aa.length;
@@ -1205,26 +1202,17 @@ deletePostTests.deletePostSearchPost=function(){
 							});
 							casper.echo("message :" +post,'INFO');
 							casper.click('a[href="'+post+'"]');
-							casper.click('input#deleteposts');
 						}
-					});
-				}
-			});
-			casper.then(function(){
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		} catch(e) {
-			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		}
+				});
+			}
+		});
+		casper.then(function(){
+			inContextLoginMethod.logoutFromApp(casper, function(err){
+				if (!err)
+					casper.echo('Successfully logout from application', 'INFO');
+			});	
+		});
+		
 	});
 };
 
