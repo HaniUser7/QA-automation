@@ -56,7 +56,7 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.eventApprovalByCheckBox();
 		
 		// method to Approve a pending event by select all pending post by  check box
-		postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll();
+		//postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll();
 		
 		// method to Delete a pending event from- Approval queue button 
 		//postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton();
@@ -72,5 +72,26 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		
 		// method to edit a pending event by clicking on it
 		//postEventMemberApprovalTestcases.eventEditByClickingOnIt();
+		
+		// method to Approve a pending user from- Approval queue button 
+		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButton();
+		
+		// method to Approve a pending user -By clicking on  user name 
+		//postEventMemberApprovalTestcases.memberApprovalByClickingOnUsername();
+
+		// method to Approve a pending user-by  Searching pending User  
+		//postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUser();
+		
+		// method to Approve a single user by selecting a checkbox 
+		//postEventMemberApprovalTestcases.memberApprovalBySelectingCheckbox();
+		
+		// method to Approve All user by selecting the checkbox appearing on the top right corner 
+		//postEventMemberApprovalTestcases.memberApprovalBySelectingRightCornerCheckbox();
+		
+		// method to Approve pending member by searching it from advance search 
+		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearch();
+		
+		// method to Approve a pending user from- Approval queue button for backend setting two 
+		postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingTwo();
 	});
 };

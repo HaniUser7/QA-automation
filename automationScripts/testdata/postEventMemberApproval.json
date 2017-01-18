@@ -25,5 +25,11 @@
 		"username" : "isneha",
 		"password" : "1234",
 		"email" : "isneha@gmail.com"
-	}]
+	}],
+	
+	"memberInfo" : {
+		"username": "vishal",
+		"password": "1234",
+		"email" : "vishal@gmail.com"
+	}
 }

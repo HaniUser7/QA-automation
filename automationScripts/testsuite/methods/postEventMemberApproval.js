@@ -4,7 +4,7 @@
 var registerMethod = require('./register.js');
 var utils = require('./utils.js');
 var wait = require('../wait.js');
-var json = require('../../testdata/forgotpasswordData.json');
+var json = require('../../testdata/postEventMemberApproval.json');
 var forumLoginMethod = require('../methods/login.js');
 var backEndForumRegisterMethod = require('./backEndRegistration.js');
 var postEventMemberApprovalMethod = module.exports = {};
@@ -12,6 +12,7 @@ var currentUrl;
 var topic;
 var postId;
 var eventId;
+var memberId;
 //*************************************************PRIVATE METHODS***********************************************
 
 //method to set the user permission to Administration 
@@ -526,9 +527,14 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 
 // method to go to approval queue page
 postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, callback) {
-	driver.then(function() {
-		forumLoginMethod.logoutFromApp(casper, function() { });
-	});
+	try {
+		driver.test.assertExists('ul.nav.pull-right span.caret');
+		driver.then(function() {
+			forumLoginMethod.logoutFromApp(casper, function() { });
+		});
+	} catch (e) {
+		driver.echo('No user logged in','INFO');
+	}
 	driver.thenOpen(config.url, function() {
 		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +driver.getTitle(), 'INFO');
@@ -537,18 +543,16 @@ postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, cal
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
 						driver.echo('User has been successfuly login to application with admin user', 'INFO');
-						driver.capture('aftercategory.png');
 						driver.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
 							test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
 							driver.click('ul.nav.nav-tabs li:nth-child(2) a');
-							driver.wait(5000, function() {
+							/*driver.wait(5000, function() {
 								driver.capture('aftercategory.png');
-							});
-							driver.waitForSelector('li#approvalQueue a', function success() {
+							});*/
+							driver.waitForSelector('li[id^="forum_"]', function success() {
 								test.assertExists('li#approvalQueue a','Approval Queue found');
 								driver.click('li#approvalQueue a');
-								driver.wait(3000, function() {
-									
+								driver.waitForSelector('form#approveMembers', function() { // changed wait of 3000
 									return callback(null);
 								});
 							},function fail(){
@@ -568,4 +572,334 @@ postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, cal
 	});
 };
 
+//*************************Method for Member functionality ***************************************
 
+//*************************Method to Enable - Approve New Registrations And Disable - Email verification" ************************
+postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('confirm_email', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									casper.then(function() {
+										utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
+											casper.echo('checkbox is checked', 'INFO');
+										});
+										casper.then(function() {
+											utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
+												casper.echo('checkbox is unchecked', 'INFO');
+											});
+											casper.test.assertExists('button.button.btn-m.btn-blue');
+											casper.click('button.button.btn-m.btn-blue');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
+									});
+								} else {
+									casper.echo('Email Address Verification checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'ERROR');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
+//*************************Method to Disable - Approve New Registrations And Enable - Email verification" ************************
+postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('confirm_email', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									casper.then(function() {
+										utils.enableorDisableCheckbox('reqregapp', false, casper, function() {
+											casper.echo('checkbox is unchecked', 'INFO');
+										});
+										casper.then(function() {
+											utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
+												casper.echo('checkbox is unchecked', 'INFO');
+											});
+											casper.test.assertExists('button.button.btn-m.btn-blue');
+											casper.click('button.button.btn-m.btn-blue');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
+									});
+								} else {
+									casper.echo('Email Address Verification checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'ERROR');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
+//*************************Method to Enable - Approve New Registrations And Enable - Email verification" ************************
+postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('confirm_email', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									casper.then(function() {
+										utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
+											casper.echo('checkbox is checked', 'INFO');
+										});
+										casper.then(function() {
+											utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
+												casper.echo('checkbox is unchecked', 'INFO');
+											});
+											casper.test.assertExists('button.button.btn-m.btn-blue');
+											casper.click('button.button.btn-m.btn-blue');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
+									});
+								} else {
+									casper.echo('Email Address Verification checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'ERROR');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
+//*************************Method to Disable - Approve New Registrations And Disable - Email verification" ************************
+postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(3)');
+							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('confirm_email', false, casper, function() {
+										casper.echo('checkbox is unchecked', 'INFO');
+									});
+									casper.then(function() {
+										utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
+											casper.echo('checkbox is checked', 'INFO');
+										});
+										casper.then(function() {
+											utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
+												casper.echo('checkbox is unchecked', 'INFO');
+											});
+											casper.test.assertExists('button.button.btn-m.btn-blue');
+											casper.click('button.button.btn-m.btn-blue');
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() { 
+												casper.echo('Saved not found', 'ERROR');
+											});
+										});
+									});
+								} else {
+									casper.echo('Email Address Verification checkbox not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Setting  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+		}else {
+			casper.echo('Error ', 'ERROR');
+		}
+	});
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
+	});
+};
+
+//*************************Method to Register member ************************
+postEventMemberApprovalMethod.registerMember = function(data, driver, callback) {
+	driver.thenOpen(config.url, function() {
+		driver.echo('Title of the page :' +this.getTitle(), 'INFO');
+		wait.waitForElement('li.pull-right a[href="/register/register"]', casper, function(err, isExist) {
+			if(!err){
+				if(isExist) {
+					driver.test.assertExists('li.pull-right a[href="/register/register"]');
+					driver.click('li.pull-right a[href="/register/register"]');
+					wait.waitForElement('form[name="PostTopic"] input[name="member"]', casper, function(err, isExist){ 
+						 if(isExist) {
+							driver.echo('Successfully open register form.....', 'INFO');
+							driver.then(function() {
+								registerMethod.registerToApp(data, casper, function(err) {
+									if(!err) {
+										casper.echo('Processing to registration on forum.....', 'INFO');
+										wait.waitForElement('div.panel-body.table-responsive', casper, function(err, isExist) {
+											if(isExist) {
+												casper.then(function() {
+													registerMethod.redirectToLogout(casper, casper.test, function(err) {
+														if(!err) {
+															casper.echo('User logout successfully', 'INFO');
+														}
+													});
+												});
+											} else {
+												casper.echo('Message Not Found', 'ERROR');
+											}
+										});
+									}
+								});
+							});
+						} else {
+							casper.echo('postTopic form  Not Found', 'ERROR');
+						}
+					});
+				} else {
+					driver.echo("User didn't not found any register link", 'ERROR');
+				}
+			}
+		});
+	});
+	driver.then(function() {
+		return callback(null);
+	});
+};
+
+//******************method to find the id of member*******************************************
+postEventMemberApprovalMethod.memberId = function(driver, callback) {
+	driver.waitForSelector('div#pendingMembers', function success()	{
+		var member_id = casper.evaluate(function() {
+			var element=document.querySelectorAll("li[id^='member_']");
+			var id = element[element.length-1].id;
+			return id;	
+		});
+		memberId = member_id.split("_");
+		driver.echo('Member id is = '+memberId[1], 'INFO');
+		return callback(null, memberId);
+	}, function fail() {
+		driver.echo('pending member not found','ERROR');
+	});
+};
+
+//****************** method to delete the Register user after approval*************************
+postEventMemberApprovalMethod.deleteMember = function(driver, callback) {
+	driver.thenOpen(config.backEndUrl,function() {
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					if(isExists) {
+						driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
+						driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+						driver.test.assertExists('div#ddUsers a', '*****Group permission is found****');
+						driver.click('div#ddUsers a');
+						driver.waitForSelector('form#frmChangeUsersGroup', function success() {
+							driver.fill('form#frmChangeUsersGroup', {
+								'member' : 'vishal'
+							}, true);
+							driver.waitForSelector('form[name="ugfrm"]', function success() {
+								driver.test.assertExists('a#delete_user', '******Delete user button found ******');
+								driver.click('a#delete_user');
+								driver.waitWhileVisible('div#dlgChangeUsersGroup', function() {
+									driver.echo('Successfully deleted user', 'INFO');
+								});
+							}, function fail(){
+								driver.echo('Delete user button not found','ERROR');	
+							});
+						},function fail(){
+							driver.echo('Change user group permission not found','ERROR');
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error ', 'ERROR');
+			}
+		});
+		casper.then(function() {
+			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+			});
+			return callback(null);
+		});
+	});
+};
