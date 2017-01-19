@@ -64,6 +64,16 @@ switch (feature) {
 		});
 	break;	
 		
+	case "deletePost" :
+		casper.test.begin('******Verify by Delete others topic/post as admin**********' , function(test) {
+			var deletePost=require("../testsuite/main/deletePost.js");
+			deletePost.featureTest(casper,casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});
+	break;	
+		
 
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
