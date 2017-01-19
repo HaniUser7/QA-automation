@@ -52,6 +52,12 @@
 	"title":"subTopic",
 	"content":"helloooooo!! subcategory",
 	"category":"hello subcategory"
+	},
+
+ "privateMessage" : {
+	"to" : "hani",
+	"subject" : "test message",
+	"pmessage" : "Hiiiiiiiiiiii"
 	}
 
 
