@@ -128,7 +128,7 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		//var expectedSuccessMsg = json['validInfo'].expectedSuccessMsg;
 		//driver.test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
 		driver.echo('Successfully done registration on forum.....', 'INFO');
-		driver.echo('try1........'+message, 'ERROR');
+		//driver.echo('try1........', 'ERROR');
 		
 		//Clicking On 'Back To Category' Link 
 		wait.waitForElement('small a[href="/categories"]', casper, function(err, isExist) {

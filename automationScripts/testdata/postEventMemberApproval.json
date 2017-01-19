@@ -31,5 +31,8 @@
 		"username": "vishal",
 		"password": "1234",
 		"email" : "vishal@gmail.com"
-	}
+	},
+	
+	"userToDelete" : "vishal"
+	
 }

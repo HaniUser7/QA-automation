@@ -92,6 +92,33 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearch();
 		
 		// method to Approve a pending user from- Approval queue button for backend setting two 
-		postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingTwo();
+		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingTwo();
+		
+		// method to Approve pending member by searching it from advance search for backend setting two 
+		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingTwo();
+		
+		// method to Approve a pending user from- Approval queue button for backend setting three 
+		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingThree();
+
+		// method to Approve pending member by searching it from advance search for backend setting three 
+		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingThree();
+		
+		// method to Approve a pending user from- Approval queue button for backend setting Four 
+		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingFour();
+		
+		// method to Approve pending member by searching it from advance search for backend setting Four 
+		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingFour();
+		
+		// method to Approve a pending user from- From Default User Groups (by check box) 
+		//postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByCheckbox();
+		
+		// method to Approve a pending user From Default User Groups (by buttons) 
+		//postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByButtons();
+		
+		// method to Approve a pending user from Change a User's User Group(approve button) 
+		//postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupApproveButton();
+		
+		// method to Approve a pending user from Change a User's User Group(change group) 
+		postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroup();		
 	});
 };

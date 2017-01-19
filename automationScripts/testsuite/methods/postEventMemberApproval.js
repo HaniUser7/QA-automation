@@ -546,9 +546,6 @@ postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, cal
 						driver.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
 							test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
 							driver.click('ul.nav.nav-tabs li:nth-child(2) a');
-							/*driver.wait(5000, function() {
-								driver.capture('aftercategory.png');
-							});*/
 							driver.waitForSelector('li[id^="forum_"]', function success() {
 								test.assertExists('li#approvalQueue a','Approval Queue found');
 								driver.click('li#approvalQueue a');
@@ -603,7 +600,11 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
-												casper.echo('Saved not found', 'ERROR');
+												casper.waitUntilVisible('div#ajax-msg-top', function success() {
+													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+												}, function fail() { 
+													casper.echo('Saved not found', 'ERROR');
+												});
 											});
 										});
 									});
@@ -659,7 +660,11 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
-												casper.echo('Saved not found', 'ERROR');
+												casper.waitUntilVisible('div#ajax-msg-top', function success() {
+													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+												}, function fail() { 
+													casper.echo('Saved not found', 'ERROR');
+												});
 											});
 										});
 									});
@@ -699,8 +704,8 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 							casper.click('div#ddSettings a:nth-child(3)');
 							wait.waitForElement('input#confirm_email', casper, function(err, isExists) {
 								if(isExists) {
-									utils.enableorDisableCheckbox('confirm_email', false, casper, function() {
-										casper.echo('checkbox is unchecked', 'INFO');
+									utils.enableorDisableCheckbox('confirm_email', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
 									});
 									casper.then(function() {
 										utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
@@ -715,7 +720,11 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
-												casper.echo('Saved not found', 'ERROR');
+												casper.waitUntilVisible('div#ajax-msg-top', function success() {
+													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+												}, function fail() { 
+													casper.echo('Saved not found', 'ERROR');
+												});
 											});
 										});
 									});
@@ -759,8 +768,8 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 										casper.echo('checkbox is unchecked', 'INFO');
 									});
 									casper.then(function() {
-										utils.enableorDisableCheckbox('reqregapp', true, casper, function() {
-											casper.echo('checkbox is checked', 'INFO');
+										utils.enableorDisableCheckbox('reqregapp', false, casper, function() {
+											casper.echo('checkbox is unchecked', 'INFO');
 										});
 										casper.then(function() {
 											utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
@@ -771,7 +780,11 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
-												casper.echo('Saved not found', 'ERROR');
+												casper.waitUntilVisible('div#ajax-msg-top', function success() {
+													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+												}, function fail() { 
+													casper.echo('Saved not found', 'ERROR');
+												});
 											});
 										});
 									});
@@ -801,6 +814,14 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 //*************************Method to Register member ************************
 postEventMemberApprovalMethod.registerMember = function(data, driver, callback) {
 	driver.thenOpen(config.url, function() {
+		try {
+			driver.test.assertExists('ul.nav.pull-right span.caret');
+			driver.then(function() {
+				forumLoginMethod.logoutFromApp(casper, function() { });
+			});
+		} catch (e) {
+			driver.echo('No user logged in','INFO');
+		}
 		driver.echo('Title of the page :' +this.getTitle(), 'INFO');
 		wait.waitForElement('li.pull-right a[href="/register/register"]', casper, function(err, isExist) {
 			if(!err){
@@ -874,7 +895,7 @@ postEventMemberApprovalMethod.deleteMember = function(driver, callback) {
 						driver.click('div#ddUsers a');
 						driver.waitForSelector('form#frmChangeUsersGroup', function success() {
 							driver.fill('form#frmChangeUsersGroup', {
-								'member' : 'vishal'
+								'member' : json.userToDelete
 							}, true);
 							driver.waitForSelector('form[name="ugfrm"]', function success() {
 								driver.test.assertExists('a#delete_user', '******Delete user button found ******');
