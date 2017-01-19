@@ -47,7 +47,17 @@ profilePageTests.profilePageMessageButton=function(){
 											wait.waitForElement('a#send_message', casper , function(err ,isExists) {
 												if(isExists) {
 													casper.click('a#send_message');
-													casper.wait(1000,function(){
+													
+
+
+
+
+
+
+
+
+
+													/*casper.wait(1000,function(){
 
 														casper.capture('sit.png');
 
@@ -70,7 +80,7 @@ profilePageTests.profilePageMessageButton=function(){
 
 															});												
 														}
-													});
+													});*/
 												}
 											});
 										}							
