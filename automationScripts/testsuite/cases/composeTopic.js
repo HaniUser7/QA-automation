@@ -17,10 +17,24 @@ composeTopicTest.createRegisterUser= function() {
        
 	casper.then(function(){  
 		
-		//backend setting in registration for disable
+		//backend setting in createCategories 
 		casper.then(function(){
-			casper.echo(' **** 6. BackendSetting(captcha Registration disable)  ****   ', 'INFO');
-			composeTopicMethod.captchaRegistration(casper, casper.test, function(err) {
+			casper.echo(' ****   1.Method createCategories              ', 'INFO');
+			casper.echo('************************************************', 'INFO');
+			 composeTopicMethod.createCategories(casper, casper.test, function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'ERROR');
+				}
+			});
+		});
+		
+		//backend setting in captchaRegistration
+		casper.then(function(){
+			casper.echo(' ****   1.Method captchaRegistration            ', 'INFO');
+			casper.echo('************************************************', 'INFO');
+			 composeTopicMethod.captchaRegistration(casper, casper.test, function(err) {
 				if(!err){
 					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
 				}else {
@@ -76,40 +90,42 @@ composeTopicTest.createAdminUser= function() {
 	casper.then(function(){  
 
 		//2.1 Test case for create registration for Admin user
-		casper.thenOpen(config.url, function() {
-			casper.echo('*******************************************', 'INFO');
-			casper.echo('2.1 Admin user(registration for Admin user)', 'INFO');
-			casper.echo('*******************************************', 'INFO');
-			wait.waitForTime(2000,casper,function(){
-				wait.waitForElement('a[href="/register/register"]', casper, function(err, isExist) {
-					if(!err){
-						if(isExist) {
-							casper.test.assertExists('a[href="/register/register"]');
-							casper.click('a[href="/register/register"]');
-							casper.echo('Successfully open register form.....', 'INFO');
-							wait.waitForTime(3000,casper,function(){
-								registerMethod.registerToApp(data['validInfoAdmin'], casper, function(err) {
-									if(!err) {
-										casper.echo('Processing to registration on forum.....', 'INFO');
-										registerMethod.redirectToLogout(casper, casper.test, function(err) {
-											if(!err) {
-												casper.echo('User logout successfully', 'INFO');
-											}else {
-												casper.echo('Error : '+err, 'ERROR');
-											}
-										});
-									}else {
-										casper.echo('Error : '+err, 'ERROR');
-									}
+                casper.then(function(){  
+			casper.thenOpen(config.url, function() {
+				casper.echo('*******************************************', 'INFO');
+				casper.echo('2.1 Admin user(registration for Admin user)', 'INFO');
+				casper.echo('*******************************************', 'INFO');
+				wait.waitForTime(2000,casper,function(){
+					wait.waitForElement('a[href="/register/register"]', casper, function(err, isExist) {
+						if(!err){
+							if(isExist) {
+								casper.test.assertExists('a[href="/register/register"]');
+								casper.click('a[href="/register/register"]');
+								casper.echo('Successfully open register form.....', 'INFO');
+								wait.waitForTime(3000,casper,function(){
+									registerMethod.registerToApp(data['validInfoAdmin'], casper, function(err) {
+										if(!err) {
+											casper.echo('Processing to registration on forum.....', 'INFO');
+											registerMethod.redirectToLogout(casper, casper.test, function(err) {
+												if(!err) {
+													casper.echo('User logout successfully', 'INFO');
+												}else {
+													casper.echo('Error : '+err, 'ERROR');
+												}
+											});
+										}else {
+											casper.echo('Error : '+err, 'ERROR');
+										}
+									});
 								});
-							});
-						}else {
-							casper.echo('registration link not found','ERROR');
+							}else {
+								casper.echo('registration link not found','ERROR');
+							}
 						}
-					}
-				});	
+					});	
+				});
 			});
-		});
+                });
 
 		//2.2 Test case for backend setting  for enable user as  Admin user
 		casper.then(function(){
@@ -266,6 +282,15 @@ composeTopicTest.postPreviewEnteredMessage= function() {
 												return element.innerHTML;
 											});
 											casper.echo('post_message :' +res,'INFO');
+                                                                                        wait.waitForTime(3000 , casper , function(err) {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'ERROR');
+													}else {
+													        casper.echo('Error : '+err, 'ERROR');
+													}
+												});
+                                                                                        });
 										});
 									}, function fail() {
 										casper.waitForSelector('#previewpost_sbt',function success() {							
@@ -287,15 +312,7 @@ composeTopicTest.postPreviewEnteredMessage= function() {
 					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
-			casper.then(function(){
-			 	forumLoginMethod.logoutFromApp(casper, function(err){
-					if (!err){
-					    casper.echo('Successfully logout from application', 'ERROR');
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
-					}
-				});
-			});
+			
 		});
 	});
 }
@@ -427,8 +444,8 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
    
    casper.then(function(){	
      
-	  //Test case for Verify Compost Topic on Category Listing Page(BackendSetting)
-	    casper.then(function(){
+		//Test case for Verify Compost Topic on Category Listing Page(BackendSetting)
+		casper.then(function(){
 		    casper.echo(' **** 6. BackendSetting(Make sure Post approval is disabled)  ****   ', 'INFO');
 			composeTopicMethod.backendSettingCompostTopic(casper, casper.test, function(err) {
 				if(!err){
@@ -569,13 +586,15 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 		});
 		
 		//Test case for Verify Compost Topic on Category Listing Page(BackendSetting)
-	    casper.then(function(){
-		    casper.echo('                 6--  **BackendSetting**           ', 'INFO');
+		casper.then(function(){
+			
+			casper.echo('********   6.Method topicViewSetting ****** ', 'INFO');
+			casper.echo('********************************************', 'INFO');
 			composeTopicMethod.topicViewSetting(casper, casper.test, function(err) {
 				if(!err){
-				   casper.echo('topicViewSetting working', 'INFO');
+					casper.echo('topicViewSetting working', 'INFO');
 				}else {
-					casper.echo('Error : '+err, 'ERROR');
+				        casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -1647,7 +1666,7 @@ composeTopicTest.composePostOptions= function() {
 									casper.test.assertDoesntExist('#fancy_attach_');
 									casper.test.assertDoesntExist('#insert_image_dialog_');
 								}
-								casper.then(function(){
+								wait.waitForTime(3000 , casper , function() {
 									forumLoginMethod.logoutFromApp(casper, function(err){
 										if (!err)
 										casper.echo('Successfully logout from application', 'INFO');
@@ -1931,7 +1950,7 @@ composeTopicTest.dropdownDisabledOneCateogry = function() {
 									'name' : 'darpan',
 									'email' : 'sahil@gmail.com',
 									'subject':'topic-data',
-									'forum' : 'News'
+									'forum' : 'Newss'
 								},false);
 								casper.then(function() {
 								     
@@ -2048,16 +2067,17 @@ composeTopicTest.composePostRegisterUser = function() {
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
 						wait.waitForTime(2000, casper, function() {
-            
 							var grpName = casper.evaluate(function() {
 								var id = document.querySelector('a.pull-right.btn.btn-uppercase.btn-primary ').getAttribute('data-original-title');
 								return id;
 							});
-                            casper.echo('message :'+grpName ,'INFO');
-							forumLoginMethod.logoutFromApp(casper, function(err){
-								if (!err)
-								casper.echo('Successfully logout from application', 'INFO');
-							});
+							casper.echo('message :'+grpName ,'INFO');
+                                                        wait.waitForTime(2000, casper, function() {
+								forumLoginMethod.logoutFromApp(casper, function(err){
+									if (!err)
+									         casper.echo('Successfully logout from application', 'INFO');
+								});
+                                                        });
 					    });			  
 					}else {
 						casper.echo('Error : '+err, 'ERROR');
@@ -2136,6 +2156,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
 						wait.waitForTime(2000, casper, function() {
+                                       
 							casper.test.assertExists('div#topics ul li:nth-child(2) a');
 							casper.click('div#topics ul li:nth-child(2) a');
 							wait.waitForElement('ul li[id^="forum_"]:nth-child(1) span span:nth-child(1) a', casper, function(err, isExist) {
@@ -2150,10 +2171,12 @@ composeTopicTest.previewPostComposeTopic = function() {
 												return id;
 											});
 											casper.echo('message :'+grpName ,'INFO');
-											forumLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-												casper.echo('Successfully logout from application', 'ERROR');
-											});					   
+	                                            wait.waitForTime(2000, casper, function() {
+													forumLoginMethod.logoutFromApp(casper, function(err){
+														if (!err)
+														casper.echo('Successfully logout from application', 'ERROR');
+													});
+                                                });					   
 										});						   
 									}else{
 										 casper.echo('Default_registration_option Link Not Found', 'ERROR');
@@ -2178,7 +2201,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					    wait.waitForTime(2000 , casper , function(err) {
+					        wait.waitForTime(2000 , casper , function(err) {
 							casper.test.assertExists('div#topics ul li:nth-child(2) a');
 							casper.click('div#topics ul li:nth-child(2) a');
 							wait.waitForElement('ul li[id^="forum_"]:nth-child(2) span span:nth-child(1) a', casper, function(err, isExist) {
@@ -2280,7 +2303,7 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 											casper.sendKeys('#tinymce','Dropdown disable Category');
 										});
 										casper.fill('form[name="PostTopic"]',{
-											'forum' : 'News'
+											'forum' : 'Newss'
 										},false);
 										casper.then(function() {
 											 casper.click('#post_submit');
@@ -2318,7 +2341,7 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					    wait.waitForTime(2000 , casper , function(err) {
+					        wait.waitForTime(2000 , casper , function(err) {
 							wait.waitForElement('div#topics ul li:nth-child(2) a', casper, function(err, isExist) {
 								if(!err){
 									if(isExist) {
@@ -2344,12 +2367,13 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 																			}catch(e){
 																				casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
 																			}
-																			
-																			forumLoginMethod.logoutFromApp(casper, function(err){
-																				if (!err){
-																				casper.echo('Successfully logout from application', 'INFO');
-																				}
-																			});
+																		       wait.waitForTime(2000 , casper , function(err) {
+																				forumLoginMethod.logoutFromApp(casper, function(err){
+																					if (!err){
+																					casper.echo('Successfully logout from application', 'INFO');
+																					}
+																				});
+                                                                                                                                                        });
 																		});
 																	}else {
 																		casper.echo('Error : '+err, 'ERROR');
@@ -3078,51 +3102,64 @@ composeTopicTest.composeTopicPinOption= function() {
 
 //25.Verify Compose Topic with Lock option(Admin)
 composeTopicTest.composeTopicLockOption= function() {
-	casper.then(function(){
-		casper.thenOpen(config.url, function() {
-			casper.echo('                case-25               ', 'INFO');
-			casper.echo('Verify Compose Topic with Lock option(Admin)', 'INFO');
-			casper.echo('********************************************', 'INFO');
-			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-			forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
-				if(!err) {
-					casper.echo('login by valid username and password and verify error message', 'INFO');
-					wait.waitForElement('div#topics ul li:nth-child(1) a', casper, function(err, isExist) {
-						if(!err){
-							if(isExist) {
-							    casper.click('div#topics ul li:nth-child(1) a');
-								composeTopicMethod.startTopic(false,false,true,data['Topicmessage'],casper,function(err){
-									if(!err){
-										  wait.waitForTime(2000 , casper , function(err) {
-											    try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
+	casper.then(function(){	
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-25               ', 'INFO');
+				casper.echo('Verify Compose Topic with Lock option(Admin)', 'INFO');
+				casper.echo('********************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics ul li:nth-child(1) a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								    casper.click('div#topics ul li:nth-child(1) a');
+									composeTopicMethod.startTopic(false,false,true,data['Topicmessage'],casper,function(err){
+										if(!err){
+											  wait.waitForTime(2000 , casper , function(err) {
+												    try{
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+													}catch(e){
+														casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
+													}
 											
-											forumLoginMethod.logoutFromApp(casper, function(err){
-												if (!err){
-												casper.echo('Successfully logout from application', 'INFO');
-												}
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+													casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
 											});
-										});
-									}else {
-										casper.echo('Error : '+err, 'ERROR');
-									}
-								});						   
-							}else{
-								 casper.echo('Topic Link Not Found', 'ERROR');
+										}else {
+											casper.echo('Error : '+err, 'ERROR');
+										}
+									});						   
+								}else{
+									 casper.echo('Topic Link Not Found', 'ERROR');
+								}
 							}
-						}
-					});		  
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
-				}
+						});		  
+					}else {
+						casper.echo('Error : '+err, 'ERROR');
+					}
+				});
 			});
 		});
+        
+	casper.then(function(){
+		composeTopicMethod.deleteTopic(casper,function(err){
+			if (!err){
+				casper.echo('deleteTopic working', 'INFO');
+			}else {
+			        casper.echo('Error : '+err, 'ERROR');
+			}
+		});
 	});
+});
+
 }
 
 

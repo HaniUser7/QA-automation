@@ -17,7 +17,7 @@ composeTopic.featureTest = function(casper, test) {
 		composeTopicTest.createRegisterUser();
 
 		//Test case for create adminuser
-		composeTopicTest.createAdminUser();		 
+	  	composeTopicTest.createAdminUser();		 
 
 		/************************   1.Add New Topic   ****************************/
 

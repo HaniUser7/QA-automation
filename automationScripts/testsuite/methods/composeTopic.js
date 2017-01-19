@@ -423,20 +423,22 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 									casper.click('div#ddContent a[href="/tool/members/mb/forums"]');
 				     				wait.waitForTime(2000, casper, function() { 
 										var grpName = casper.evaluate(function(){
-										
-												var x1 = document.querySelector('div#sortable ul li:nth-child(1) div:nth-child(1) a');
-												if (x1.innerText == 'News') {
-												    var x2 = document.querySelector('div#sortable ul li:nth-child(1) a:nth-child(2)');
-												    x2.click();
-													var x3 = document.querySelector('div.tooltipMenu.forumActionbutton a:nth-child(3)').getAttribute('data-url');
+										    for(var i=1; i<=7; i++) {
+												var x1 = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
+												if (x1.innerText == 'Newss') {
+														var x2 = document.querySelector('div#sortable ul li:nth-child(1) a:nth-child(2)');
+														x2.click();
+														var x3 = document.querySelector('div.tooltipMenu.forumActionbutton a:nth-child(3)').getAttribute('data-url');
 													return x3;
-												}    
+													
+												}  
+                                            }												
 											
 										});
-										
+										casper.echo(grpName);
 										casper.click('a[data-url="'+grpName+'"]');
 										wait.waitForTime(2000, casper, function() { 
-										   
+										  
 											wait.waitForElement('#list_usergroup', casper, function(err, isExist) {
 												if(!err){
 													if(isExist) {
@@ -704,7 +706,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
-//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+//12.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
  composeTopicMethod.captchaRegistration= function(casper,test,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
@@ -722,7 +724,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 											if(isExists) {
 												utils.enableorDisableCheckbox('captcha_registration', false, casper, function() {
 													casper.echo('checkbox is checked', 'INFO');
-													casper.capture('erre.png');
+											
 												});
 												
 												casper.test.assertExists('button.button.btn-m.btn-blue');
@@ -762,3 +764,53 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 		
 	});
 }
+
+//13.Method for Backend Setting(create Categories)
+ composeTopicMethod.createCategories= function(casper,test,callback) {	
+	casper.thenOpen(config.backEndUrl, function() {
+		composeTopicMethod.logoutFromApp(casper, casper.test, function(err) {
+			if(!err){
+				registerMethod.loginToForumBackEnd(casper, test, function(err) {
+					 if(!err){
+						wait.waitForElement('div#my_account_forum_menu',casper, function(err, isExists) {
+							if(isExists) {
+		                        wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]' , casper , function(err , isExists) {
+									if(isExists) {
+										casper.evaluate(function() {
+											document.querySelector('div.tooltipMenu.text a[title="Organize discussions into categories"]').click();
+										});
+										wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err , isExists) {	
+											if(isExists) {
+												casper.click('div#forum-manager-heading-actions a');
+												wait.waitForElement('input#isSubcategory' , casper , function(err , isExists){	
+													if(isExists) {	
+														casper.fillSelectors('form#edit_forum_form',{	
+															'input[name="forum_name"]':'Newss',
+															'textarea#forum_description':'Indiaa',
+														},false);
+											
+														casper.wait(2000, function(){
+															//casper.sendKeys('select[name="parentid"] option[value="190578"]', 'General');
+																
+																casper.click('form[name="frmOptions"] button');
+																casper.wait(2000, function(){
+																	
+																});
+														});
+													}
+												});	
+											}
+										});
+									}
+							    });
+							}
+						});
+					}else {
+						casper.echo('Error ', 'ERROR');
+					}
+				});
+			}
+		});
+	});
+}
+
