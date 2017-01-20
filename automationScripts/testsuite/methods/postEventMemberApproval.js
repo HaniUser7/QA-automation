@@ -624,6 +624,46 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 			casper.echo('Error ', 'ERROR');
 		}
 	});
+	casper.thenOpen(config.backEndUrl, function() {
+		wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
+				casper.click('div#ddUsers a');
+				casper.waitForSelector('table.text.fullborder', function success() {
+					var text = casper.evaluate(function() {
+								var x1, x2;
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Approval') {
+										x1=x.innerText;
+										break;	
+									}	
+								}
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Email Verification') {
+										x2 = x.innerText;
+										break;
+									}	
+								}
+								if(x1 == 'Pending Approval' && x2 !== 'Pending Email Verification'){
+									return "On Default User Groups Pending Email Verification-disappear Pending Approval-appear";
+								}
+								else {
+								return "Error";
+								}
+							});	
+					casper.echo(text,'INFO');
+				},function fail(){
+					casper.echo('User table not found','ERROR');
+				});
+			} else {
+				casper.echo('Backend Menu not found', 'ERROR');
+			}
+		});
+	});
 	casper.then(function() {
 		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 		});
@@ -683,6 +723,46 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 		}else {
 			casper.echo('Error ', 'ERROR');
 		}
+	});
+	casper.thenOpen(config.backEndUrl, function() {
+		wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
+				casper.click('div#ddUsers a');
+				casper.waitForSelector('table.text.fullborder', function success() {
+					var text = casper.evaluate(function() {
+								var x1, x2;
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Approval') {
+										x1=x.innerText;
+										break;	
+									}	
+								}
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Email Verification') {
+										x2 = x.innerText;
+										break;
+									}	
+								}
+								if(x1 !== 'Pending Approval' && x2 == 'Pending Email Verification'){
+									return "On Default User Groups Pending Email Verification-appear Pending Approval-disappear";
+								}
+								else {
+								return "Error";
+								}
+							});	
+					casper.echo(text,'INFO');
+				},function fail(){
+					casper.echo('User table not found','ERROR');
+				});
+			} else {
+				casper.echo('Backend Menu not found', 'ERROR');
+			}
+		});
 	});
 	casper.then(function() {
 		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
@@ -744,6 +824,46 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 			casper.echo('Error ', 'ERROR');
 		}
 	});
+	casper.thenOpen(config.backEndUrl, function() {
+		wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
+				casper.click('div#ddUsers a');
+				casper.waitForSelector('table.text.fullborder', function success() {
+					var text = casper.evaluate(function() {
+								var x1, x2;
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Approval') {
+										x1=x.innerText;
+										break;	
+									}	
+								}
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Email Verification') {
+										x2 = x.innerText;
+										break;
+									}	
+								}
+								if(x1 == 'Pending Approval' && x2 == 'Pending Email Verification'){
+									return "On Default User Groups Pending Email Verification-- appear Pending Approval-- appear";
+								}
+								else {
+								return "Error";
+								}
+							});	
+					casper.echo(text,'INFO');
+				},function fail(){
+					casper.echo('User table not found','ERROR');
+				});
+			} else {
+				casper.echo('Backend Menu not found', 'ERROR');
+			}
+		});
+	});
 	casper.then(function() {
 		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 		});
@@ -803,6 +923,46 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 		}else {
 			casper.echo('Error ', 'ERROR');
 		}
+	});
+	casper.thenOpen(config.backEndUrl, function() {
+		wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
+				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
+				casper.click('div#ddUsers a');
+				casper.waitForSelector('table.text.fullborder', function success() {
+					var text = casper.evaluate(function() {
+								var x1, x2;
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Approval') {
+										x1=x.innerText;
+										break;	
+									}	
+								}
+								for(var i=1; i<=7; i++) {
+									var x = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+									if (x.innerText == 'Pending Email Verification') {
+										x2 = x.innerText;
+										break;
+									}	
+								}
+								if(x1 !== 'Pending Approval' && x2 !== 'Pending Email Verification') {
+									return "On Default User Groups Pending Email Verification-- disappear Pending Approval-- disappear";
+								}
+								else {
+								return "Error";
+								}
+							});	
+					casper.echo(text,'INFO');
+				},function fail(){
+					casper.echo('User table not found','ERROR');
+				});
+			} else {
+				casper.echo('Backend Menu not found', 'ERROR');
+			}
+		});
 	});
 	casper.then(function() {
 		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
@@ -921,6 +1081,54 @@ postEventMemberApprovalMethod.deleteMember = function(driver, callback) {
 			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 			});
 			return callback(null);
+		});
+	});
+};
+
+//****************** method to check pending user moved to Register user after approval*************************
+postEventMemberApprovalMethod.checkPendingUser = function(driver, callback) {
+	driver.thenOpen(config.backEndUrl,function() { // code to verify  user moved to Registered group
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]', 'Users Link Found'); 
+						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
+						casper.click('div#ddUsers a');
+						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
+							casper.fill('form#frmChangeUsersGroup', {
+								'member' : json.userToDelete
+							}, true);
+							casper.waitForSelector('form[name="ugfrm"]', function success() {
+								var checked = casper.evaluate(function() {
+									var element = document.getElementById(20237761).checked;
+									return element;
+								});
+								casper.echo('the value of checked = '+checked,'INFO');
+								if(checked == true) {
+									casper.echo('The pending user is moved to Register user, Verified','INFO');
+								}
+								else {
+									casper.echo('The pending user is not moved to Register user, Verified','INFO');
+								}
+							}, function fail() {
+								casper.echo('changer user group form not found','ERROR');	
+							});
+						},function fail() {
+							casper.echo('Change user group permission not found','ERROR');
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error ', 'ERROR');
+			}
+		});
+		driver.then(function() {
+			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+			});
 		});
 	});
 };

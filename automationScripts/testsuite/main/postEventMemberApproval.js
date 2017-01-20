@@ -119,6 +119,36 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupApproveButton();
 		
 		// method to Approve a pending user from Change a User's User Group(change group) 
-		postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroup();		
+		//postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroup();
+		
+		// method to Approve a pending user from- From Default User Groups (by check box) for backend setting two
+		//postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByCheckboxSettingTwo();
+		
+		// method to Approve a pending user from Change a User's User Group(change group) for setting two
+		//postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroupSettingTwo();
+		
+		// method to Approve a pending user from- From Default User Groups (by check box) for backend setting three
+		//postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByCheckboxSettingThree();
+		
+		// method to Approve a pending user from Change a User's User Group(change group) for setting three
+		//postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroupSettingThree();
+		
+		// method to Approve a pending user from Change a User's User Group(change group) for setting four
+		//postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroupSettingFour();
+		
+		// method to Delete a pending user from- Approval queue button 
+		//postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButton();
+		
+		// method to Delete a pending user -By clicking on  user name 
+		//postEventMemberApprovalTestcases.deleteMemberByClickingOnUsername();
+		
+		// method to Delete a pending user-by  Searching pending User  
+		//postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUser();
+		
+		// method to Delete a single user by selecting a checkbox 
+		//postEventMemberApprovalTestcases.deleteMemberBySelectingCheckbox();
+		
+		// method to Delete All user by selecting the checkbox appearing on the top right corner 
+		postEventMemberApprovalTestcases.deleteMemberBySelectingRightCornerCheckbox();		
 	});
 };
