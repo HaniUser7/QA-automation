@@ -149,6 +149,58 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.deleteMemberBySelectingCheckbox();
 		
 		// method to Delete All user by selecting the checkbox appearing on the top right corner 
-		postEventMemberApprovalTestcases.deleteMemberBySelectingRightCornerCheckbox();		
+		//postEventMemberApprovalTestcases.deleteMemberBySelectingRightCornerCheckbox();
+		
+		// method to Delete a pending user from- Approval queue button for backend setting two 
+		//postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingTwo();	
+		
+		// method to Delete a pending user-by  Searching pending User for backend setting two 
+		//postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingTwo();
+		
+		// method to Delete a pending user from- Approval queue button for backend setting three 
+		//postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingThree();
+		
+		// method to Delete a pending user-by  Searching pending User for backend setting three 
+		//postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingThree();
+		
+		// method to Delete a pending user from- Approval queue button for backend setting four 
+		//postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingFour();
+		
+		// method to Delete a pending user-by  Searching pending User for backend setting four 
+		//postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingFour();
+		
+		// method to Delete a pending user from- From Default User Groups (by check box) 
+		//postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByCheckbox();
+		
+		// method to Delete a pending user From Default User Groups (by buttons) 
+		//postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByButtons();
+		
+		// method to Delete a pending user from Change a User's User Group(Delete button) 
+		//postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButton();
+
+		// method to Delete a pending user from- From Default User Groups (by check box) for backend setting two
+		//postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByCheckboxSettingTwo();
+		
+		// method to Delete a pending user from Change a User's User Group(delete button) for setting two
+		//postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButtonSettingTwo();
+		
+		// method to Delete a pending user From Default User Groups (by buttons) for setting two
+		//postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByButtonsSettingTwo();
+		
+		// method to Delete a pending user from- From Default User Groups (by check box) for backend setting three
+		//postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByCheckboxSettingThree();
+		
+		// method to Delete a pending user From Default User Groups (by buttons) for setting three
+		//postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByButtonsSettingThree();
+		
+		// method to Delete a pending user from Change a User's User Group(change group) for setting three
+		//postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupChangeGroupSettingThree();
+		
+		// method to Delete a pending user from Change a User's User Group(delete button) for setting three
+		//postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButtonSettingThree();
+		
+		// method to Delete a pending user for setting four
+		postEventMemberApprovalTestcases.deleteMemberSettingFour();
+			
 	});
 };
