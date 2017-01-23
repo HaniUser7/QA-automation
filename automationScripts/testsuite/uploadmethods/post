@@ -1,0 +1,65 @@
+var password = this.evaluate(function() {
+var id = document.querySelector('input.form-control.input-error.error-tooltip').getAttribute('data-original-title');
+return id;
+});
+
+
+
+ wait.waitForElement('.panel-heading li:nth-child(1).active', driver, function(err, isExists) {	
+if(!err){
+	if(isExists) {
+		try{
+											driver.test.assertExists('span.topic-content a');
+											return callback(null);	
+										}catch(e){
+											driver.test.assertDoesntExist('span.topic-content a');
+											backArrowMethods.startTopic(data, driver, function(err){
+												if(!err){
+													driver.test.assertExists('#backArrowPost');
+													driver.click('#backArrowPost');
+													wait.waitForElement('#back_arrow_topic', driver, function(err, isExists) {	
+														if(!err){
+															if(isExists) {
+																return callback(null);															
+															} else {
+																driver.echo('Back arrow does not appears in 5 seconds ', 'ERROR');
+															}	
+														}
+													});												}
+											});							
+										}
+											
+									} else {
+										driver.echo('latest topic is not appeared in 5 seconds ', 'ERROR');
+									}	
+								}
+							});
+
+//getting ID of a post
+
+
+
+var post_id = casper.evaluate(function() {
+	var element=document.querySelectorAll("div[id^='post_message_']");
+	var id = element[element.length-1].id;
+	return id;	
+});
+postId = post_id.split("_");
+driver.echo('post id ; '+postId[2], 'INFO');
+return callback(null, postId[2]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

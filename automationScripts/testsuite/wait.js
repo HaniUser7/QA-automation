@@ -28,3 +28,4 @@ wait.waitForVisible = function(element, driver, callback){
 		return callback(null, false);	
 	});
 };
+

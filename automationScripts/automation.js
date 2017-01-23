@@ -71,7 +71,7 @@ switch (feature) {
 	break;
 	
 	case "inContextLogin":
-		casper.test.begin('Verify inContext Login functionlity',function(test){
+		casper.test.begin('Verify inContext Login functionlity', function(test) {
 			var inContextLogin=require("./testsuite/main/inContextLogin.js");
 			inContextLogin.featureTest(casper,casper.test);
 			casper.run(function(){
@@ -79,44 +79,48 @@ switch (feature) {
 			});
 		});
 	break;
-	
-	case "thumpsUpDown":
-		casper.test.begin('Verify thumps up and down functionality from home page with all valid and invalid scenarios ', function(test) {
-			var thumpsUpDown = require("./testsuite/main/thumpsUpDown.js");
-			thumpsUpDown.featureTest(casper, casper.test);
-			casper.run(function(){
-				test.done();
-			});
-		});
-	break;
-     
-	case "postEventMemberApproval":
-		casper.test.begin('Verify post, Event and Member Approval functionality from home page with all valid and invalid scenarios ', function(test) {
-			var postEventMemberApproval = require("./testsuite/main/postEventMemberApproval.js");
-			postEventMemberApproval.featureTest(casper, casper.test);
+
+	case "loginByPrivacyOption":
+		casper.test.begin('Verify Login page on Forum by enabling Privacy Private  option from backend' , function(test) {
+			var loginByPrivacyOption=require("../testsuite/main/loginByPrivacyOption.js");
+			loginByPrivacyOption.featureTest(casper,casper.test);
 			casper.run(function(){
 				test.done();
 			});
 		});
 	break;
 	
-	case "privateMessage":
-		casper.test.begin('Verify privateMessage functionality from home page with all valid and invalid scenarios ', function(test) {
-			var privateMessage = require("./testsuite/main/privateMessage.js");
-			privateMessage.featureTest(casper, casper.test);
+	case "profilePage":
+		casper.test.begin('Verify profile page Message button for own profile page ' , function(test) {
+			var profilePage=require("../testsuite/main/profilePage.js");
+			profilePage.featureTest(casper,casper.test);
 			casper.run(function(){
-				if(privateMessage.errors.length) {
-					casper.echo(privateMessage.errors.length+' errors found', 'ERROR');
-					jsErrorCount = jsErrorCount + privateMessage.errors.length;
-				}else {
-					casper.echo(privateMessage.errors.length+' javascript errors found', 'INFO');
-				}
 				test.done();
 			});
-			
 		});
 	break;
-	
+
+	case "upload" :
+		casper.test.begin('******Verify upload Image**********' , function(test) {
+			var upload=require("../testsuite/main/upload.js");
+			upload.featureTest(casper,casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});
+	break;	
+		
+	case "deletePost" :
+		casper.test.begin('******Verify by Delete others topic/post as admin**********' , function(test) {
+			var deletePost=require("../testsuite/main/deletePost.js");
+			deletePost.featureTest(casper,casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});
+	break;	
+		
+
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
         	casper.echo("Options:");
@@ -125,9 +129,7 @@ switch (feature) {
         	casper.echo("backEndRegistration");
 		casper.echo("register");
 		casper.echo("inContextLogin");
-        	casper.echo("thumpsUpDown");
-        	casper.echo("privateMessage");
-        	casper.echo("postEventMemberApproval");
+		casper.echo("loginByPrivacyOption");
 		casper.exit();
 };
 

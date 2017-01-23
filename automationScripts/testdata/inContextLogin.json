@@ -21,6 +21,52 @@
     	"username" : "rajatk2",
         "password" : "rk@123",
         "expectedSuccessMsg" : ""
-    }
-    
+    },
+
+    "validInfos" : {
+	"username" : "hani",
+        "password" : "hani",
+        "expectedSuccessMsg" : ""
+   },
+
+   "validInfose" : {
+	"username" : "hani12",
+	"password" :"hani12",
+	"expectedSuccessMsg" :""
+  },
+
+  "validInfosef" : {
+	"username" : "hani123",
+	"password" :"hani123",
+	"expectedSuccessMsg" :""
+  },
+
+  "newTopic" : {
+	"title" : "NewTopic",
+	"content" : "hellloooooo!!!hani",
+	"category" : "General"
+
+	},
+
+ "subTopic" : {
+	"title":"subTopic",
+	"content":"helloooooo!! subcategory",
+	"category":"hello subcategory"
+	}
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+

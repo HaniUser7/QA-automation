@@ -137,10 +137,10 @@
         "expectedErrorMsg" : "You entered an invalid email address." 
     },
     
-    "validInfo" : {
-    	"uname" : "801",
-        "uemail" : "801@wt.com",
-        "upass" : "1234",
+    "validInfoRegister" : {
+    	"uname" : "hani",
+        "uemail" : "hani@wt.com",
+        "upass" : "hani",
         "fullName" : "18",
         "imID" : "18",
         "birthday" : "04/12/1991",
@@ -148,17 +148,20 @@
         "namePrivate" : true,
         "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
     },
-	"validregister" : {
-        "uname" : "rajan41",
-        "uemail" : "frajan4178dsd@gmail.com",
-        "upass" : "rajan41",
-        "usignature" : "This is my signature blank uname",
-		 "newmodule" : "This is my signature blank uname",
+
+ "validInfoAdmin" : {
+    	"uname" : "hani12",
+        "uemail" : "hani12@wt.com",
+        "upass" : "hani12",
+        "fullName" : "19",
+        "imID" : "19",
+        "birthday" : "04/12/1992",
+        "usignature" : "This is my signature 19",
         "namePrivate" : true,
-        "expectedErrorMsg" : "not register." 
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
     },
-    
-    "setValueOnRegister" : [{
+
+ "setValueOnRegister" : [{
     	"required" : "1",
     	"visibility" : "1"
     }, 
