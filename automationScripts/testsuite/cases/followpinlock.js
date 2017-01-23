@@ -37,7 +37,7 @@ followpinlockTest.enableFollowCheckbox= function() {
 			casper.echo(' Add New topic by enable Follow check box and verify unfollow topic option on forum listing page', 'INFO');
 			casper.echo('************************************************************************************************', 'INFO');
 			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
-		    forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+		        forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 				if(!err) {
 					casper.echo('login by valid username and password and verify error message', 'INFO');
 					wait.waitForElement('div#topics ', casper, function(err, isExist) {
