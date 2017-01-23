@@ -204,25 +204,17 @@ composeTopicMethod.deleteTopic = function(driver,callback) {
 			forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 				if(!err) {
 					casper.echo('login by valid username and password and verify error message', 'INFO');
-					wait.waitForTime(2000 , casper , function(err) {
+					wait.waitForTime(3000 , casper , function(err) {
 						 try{
-							casper.test.assertExists('span.mod.icons.pull-right input[name="allbox"]');
-							casper.click('span.mod.icons.pull-right input[name="allbox"]');
+							casper.test.assertExists('div#topics div div div form div div:nth-child(2) span input[name="allbox"]');
+							casper.click('div#topics div div div form div div:nth-child(2) span input[name="allbox"]');
+							wait.waitForTime(3000 , casper , function(err) {
 								 casper.test.assertExists('a#delete');
 								 casper.click('a#delete');
+							});
 						
 						}catch(e){
-							casper.test.assertDoesntExist('span.mod.icons.pull-right input[name="allbox"]');
-							try{
-								casper.test.assertExists('form div div:nth-child(3) ul li:nth-child(1) span');
-								var noTopic = casper.evaluate(function(){
-									var x3 = document.querySelector('form div div:nth-child(3) ul li:nth-child(1) span');
-									return x3.innerHTML;
-								});
-								casper.echo('subject :'+noTopic,'INFO');
-							}catch(e){
-								casper.test.assertDoesntExist('form div div:nth-child(3) ul li:nth-child(1) span');
-							}
+							casper.test.assertDoesntExist('div#topics div div div form div div:nth-child(2) span input[name="allbox"]');
 						}
 						wait.waitForTime(2000 , casper , function(err) {
 							forumLoginMethod.logoutFromApp(casper, function(err){

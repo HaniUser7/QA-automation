@@ -12,7 +12,21 @@ var errorMessage = "";
 //create admin,register,unregister user
 //backend setting for enable start new topic
 
-/**************************** Test case for composeTopic *********************/
+
+//3.test case for Add New topic by disabling Follow check box and verify follow topic option on Post page
+followpinlockTest.deleteTopic= function(){
+	composeTopicMethod.deleteTopic(casper,function(err){
+		if (!err){
+			 casper.echo('deleteTopic working', 'INFO');
+		}else {
+			casper.echo('Error : '+err, 'INFO');
+		}
+	});
+}
+
+
+
+/**************************** 1. Test case for composeTopic *********************/
 
 
 //1.Test case for Add New topic by enable Follow check box and verify unfollow topic option on forum listing page
@@ -21,7 +35,7 @@ followpinlockTest.enableFollowCheckbox= function() {
 		casper.thenOpen(config.url, function() {
 			casper.echo('                   case-1                    ', 'INFO');
 			casper.echo(' Add New topic by enable Follow check box and verify unfollow topic option on forum listing page', 'INFO');
-			casper.echo('********************************************', 'INFO');
+			casper.echo('************************************************************************************************', 'INFO');
 			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 		    forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 				if(!err) {
@@ -58,7 +72,6 @@ followpinlockTest.enableFollowCheckbox= function() {
 		});
 	});
 }
-
 
 //2.test case for Add New topic by disabling Follow check box and verify follow topic option on Post page
 followpinlockTest.disablingFollowCheckbox= function() {
@@ -104,19 +117,6 @@ followpinlockTest.disablingFollowCheckbox= function() {
 		});
 	});
 }
-
-
-//3.test case for Add New topic by disabling Follow check box and verify follow topic option on Post page
-followpinlockTest.deleteTopic= function(){
-	composeTopicMethod.deleteTopic(casper,function(err){
-		if (!err){
-			 casper.echo('deleteTopic working', 'INFO');
-		}else {
-			casper.echo('Error : '+err, 'INFO');
-		}
-	});
-}
-
 
 //3. test case for Follow any topic and verify followed topic in Followed Content page
 followpinlockTest.followedTopicContentPage= function() {  
@@ -192,7 +192,6 @@ followpinlockTest.followedTopicContentPage= function() {
 	});
 }
 
-
 //4.test case for unFollow any topic and verify unfollowed topic in Followed Content page
 followpinlockTest.unfollowedTopicContentPage= function() {  
 	casper.then(function(){
@@ -266,7 +265,6 @@ followpinlockTest.unfollowedTopicContentPage= function() {
 		});  
 	});
 }
-
 
 //5.test case for Unfollow Topic from followed content page and verify that topic on the page
 followpinlockTest.unfollowTopicFollowed= function() {
@@ -352,7 +350,6 @@ followpinlockTest.unfollowTopicFollowed= function() {
 	});
 		
 }
-
 
 //6.Test case for Verify message in Topic list content on Followed Content page if there is no any followed topic in the list
 followpinlockTest.compostTopicCategoryListingPage= function() {
@@ -444,7 +441,6 @@ followpinlockTest.compostTopicCategoryListingPage= function() {
 	});
 		
 }
-
 
 //7.test case for Follow any category and verify that topic in category lis on Followed Content page
  followpinlockTest.followAnyCategory = function() {
@@ -552,7 +548,6 @@ followpinlockTest.compostTopicCategoryListingPage= function() {
 		});
 	});
 }
-
 
 //8.test case for UnFollow category from followed content list and verify visibility of that category in the list
  followpinlockTest.unfollowAnyCategory= function() {
@@ -668,9 +663,8 @@ followpinlockTest.compostTopicCategoryListingPage= function() {
 	});
 }
 
-
 //9.test case Add New topic by enable Follow check box and verify unfollow topic option on latest topic page
-followpinlockTest.enableFollowCheckboxLatestAddNewTopic= function() {
+followpinlockTest.enableFollowCheckboxAddNewTopic= function() {
 	casper.then(function(){
 		casper.thenOpen(config.url, function() {
 			casper.echo('                   case-9                    ', 'INFO');
@@ -721,7 +715,6 @@ followpinlockTest.enableFollowCheckboxLatestAddNewTopic= function() {
 		});
 	});
 }
-
 
 //10.test case Add New topic by disabling Follow check box and verify unfollow topic option on latest topic page
 followpinlockTest.disablingFollowCheckboxLatestAddNewTopic= function() {
@@ -775,7 +768,6 @@ followpinlockTest.disablingFollowCheckboxLatestAddNewTopic= function() {
 		});
 	});
 }
-
 
 //11.Add New topic by disabling Follow check box and verify follow topic option on topic listing page
 followpinlockTest.disablingFollowCheckboxLatestTopicPage= function() {
@@ -845,7 +837,6 @@ followpinlockTest.disablingFollowCheckboxLatestTopicPage= function() {
 	});
 }
 
-
 //12.Add New topic by enable Follow check box and verify unfollow topic option on topic listing page
 followpinlockTest.enableFollowCheckboxLatestTopicPage= function() {
 	casper.then(function(){
@@ -913,7 +904,6 @@ followpinlockTest.enableFollowCheckboxLatestTopicPage= function() {
 		});
 	});
 }
-
 
 //13.Add New topic by enable Follow check box and verify unfollow topic option on topic listing page for sub category topic
 followpinlockTest.enableFollowCheckboxSubCategoryTopic= function() {
@@ -992,7 +982,6 @@ followpinlockTest.enableFollowCheckboxSubCategoryTopic= function() {
 		});
 	});
 }
-
 
 //14.Verify the follow option visibility on latest topic page by the guest user/unregistered user.
 followpinlockTest.optionVisibilityLatestTopicPage= function() {
@@ -1166,7 +1155,6 @@ followpinlockTest.optionVisibilityLatestTopicPage= function() {
 	});
 }
 
-
 //15.Verify the follow option visibility on topic listing page by the guest user/unregistered user.
 followpinlockTest.optionVisibilityTopicListingPage= function() {
 	casper.then(function(){
@@ -1321,11 +1309,10 @@ followpinlockTest.optionVisibilityTopicListingPage= function() {
 	});
 }
 
-
 //16.Verify the follow option visibility on post listing page by the guest user/unregistered user.
 followpinlockTest.optionVisibilityPostListingPage= function() {
 	casper.then(function(){
-	  /*  
+	   
 		casper.then(function(){
 			composeTopicMethod.deleteTopic(casper,function(err){
 				if (!err){
@@ -1437,7 +1424,7 @@ followpinlockTest.optionVisibilityPostListingPage= function() {
 				});	
 			});
 		});
-		*/
+	
 		//16.Verify the follow option visibility on topic listing page by the unregistered user.
 		casper.then(function(){
 			casper.thenOpen(config.url, function() {
@@ -1457,39 +1444,48 @@ followpinlockTest.optionVisibilityPostListingPage= function() {
 											if(!err){
 												if(isExist) {
 													casper.click('ul#forums_toggle_link li a');
-													var grpName = casper.evaluate(function(){
-														for(var i=3; i<=7; i++) {
-															var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
-															if (x1.innerText == 'General') {
-																var x3 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a').getAttribute('href');
-																return x3;
-															}
-														}
-													});
-													casper.click('a[href="'+grpName+'"]');
 													wait.waitForTime(3000 , casper , function() {
-														try{
-															casper.test.assertExists('form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a ');
-															var topic = casper.evaluate(function(){
-																var x3 = document.querySelector('form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
-																return x3.innerHTML;
-															});
-															casper.echo('subject :'+topic,'INFO');
-														}catch(e){
-															casper.test.assertDoesntExist('form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a ');
-															 try{
-																casper.test.assertExists('form div div:nth-child(3) ul li:nth-child(1) span');
-																var noTopic = casper.evaluate(function(){
-																	var x3 = document.querySelector('form div div:nth-child(3) ul li:nth-child(1) span');
+													    casper.capture('232.png');
+														var grpName = casper.evaluate(function(){
+															for(var i=3; i<=7; i++) {
+																var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
+																if (x1.innerText == 'General') {
+																	var x3 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a').getAttribute('href');
+																	return x3;
+																}
+															}
+														});
+														casper.click('a[href="'+grpName+'"]');
+														wait.waitForTime(3000 , casper , function() {
+															try{
+																casper.test.assertExists('form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a ');
+																var topic = casper.evaluate(function(){
+																	var x3 = document.querySelector('form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
 																	return x3.innerHTML;
 																});
-																casper.echo('subject :'+noTopic,'INFO');
+																casper.echo('subject :'+topic,'INFO');
 															}catch(e){
-																casper.test.assertDoesntExist('form div div:nth-child(3) ul li:nth-child(1) span');
+																casper.test.assertDoesntExist('form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a ');
+																 try{
+																	casper.test.assertExists('form div div:nth-child(3) ul li:nth-child(1) span');
+																	var noTopic = casper.evaluate(function(){
+																		var x3 = document.querySelector('form div div:nth-child(3) ul li:nth-child(1) span');
+																		return x3.innerHTML;
+																	});
+																	casper.echo('subject :'+noTopic,'INFO');
+																}catch(e){
+																	casper.test.assertDoesntExist('form div div:nth-child(3) ul li:nth-child(1) span');
+																}
 															}
-														}
-														
-													});				   
+															wait.waitForTime(2000 , casper , function() {
+																forumLoginMethod.logoutFromApp(casper, function(err){
+																	if (!err){
+																		casper.echo('Successfully logout from application', 'INFO');
+																	}
+																});
+															});
+														});	
+                                                    });													
 												}else {
 													casper.echo('Categories link not found', 'INFO');
 												}
@@ -1512,5 +1508,1817 @@ followpinlockTest.optionVisibilityPostListingPage= function() {
 
 
 
+	/************************   2.Lock-unLock Topic  ****************************/
+	
+
+//17.Lock any topic and Verify Lock option of topic listing page[Home page]
+followpinlockTest.lockAnyTopic= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//17.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-17-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//17.Verify the follow option visibility on topic listing page by the guest user.
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-17-b                            ', 'INFO');
+				casper.echo(' Lock any topic and Verify Lock option of topic listing page.', 'INFO');
+				casper.echo('*************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						wait.waitForElement('div#topics ul li:nth-child(1) a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								   casper.click('div#topics ul li:nth-child(1) a');
+								   wait.waitForElement('div#topics div div div form div div:nth-child(2) ul li:nth-child(1) a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('div#topics div div div form div div:nth-child(2) ul li:nth-child(1) a');		
+												wait.waitForTime(3000 , casper , function() {
+													casper.capture('17(b)1.png');
+													try{
+														casper.test.assertExists('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														casper.click('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														wait.waitForTime(3000 , casper , function() {
+															casper.test.assertExists('div#topics-menu span:nth-child(2) a');
+															casper.click('div#topics-menu span:nth-child(2) a');
+															casper.test.assertExists('a#lock');
+															casper.click('a#lock');
+															   try{
+																	casper.test.assertExists('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon found','INFO');
+																}
+																catch(e){
+																	casper.test.assertDoesntExist('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon not found','ERROR');
+																}
+														});
+													}catch(e){
+														casper.test.assertDoesntExist('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+													}
+													wait.waitForTime(3000 , casper , function() {
+														casper.capture('17(b)2.png');
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													});
+												});				   						   
+											}else {
+												casper.echo(' Latest link not found in Topic page', 'INFO');
+											}
+										}
+									});						   
+								}else {
+									casper.echo('Topic link not found', 'INFO');
+								}
+							}
+						});
+				    }else {
+						casper.echo('Error','ERROR');
+					}
+				});
+			});
+		});
+	});
+}
+
+//18.un-Lock any topic and Verify Lock optipon of topic listing page[Home page]
+followpinlockTest.unlockAnyTopic= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//18.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-18-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//18.Verify the follow option visibility on topic listing page by the guest user.
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-18-b                            ', 'INFO');
+				casper.echo(' un-Lock any topic and Verify Lock optipon of topic listing page[Home page].', 'INFO');
+				casper.echo('****************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						wait.waitForElement('div#topics ul li:nth-child(1) a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								   casper.click('div#topics ul li:nth-child(1) a');
+								   wait.waitForElement('div#topics div div div form div div:nth-child(2) ul li:nth-child(1) a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('div#topics div div div form div div:nth-child(2) ul li:nth-child(1) a');		
+												wait.waitForTime(3000 , casper , function() {
+													try{
+														casper.test.assertExists('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														casper.click('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														wait.waitForTime(3000 , casper , function() {
+															casper.test.assertExists('div#topics-menu span:nth-child(2) a');
+															casper.click('div#topics-menu span:nth-child(2) a');
+															casper.test.assertExists('a#unlock');
+															casper.click('a#unlock');
+												            wait.waitForTime(3000 , casper , function() {
+																    try{
+																		casper.test.assertExists('i.glyphicon.glyphicon-lock');
+																		casper.echo('lock icon found','INFO');
+																	}
+																	catch(e){
+																		casper.test.assertDoesntExist('i.glyphicon.glyphicon-lock');
+																		casper.echo('lock icon not found','ERROR');
+																	}
+																  /*  var grpName = casper.evaluate(function(){
+																		var x3 = document.querySelector('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) i').getAttribute('class');
+																			return x3;
+																	});
+																	casper.click(''+grpName+'','INFO');
+																	});
+															       */
+														    });
+														});
+													}catch(e){
+														casper.test.assertDoesntExist('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+													}
+													wait.waitForTime(3000 , casper , function() {
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													});
+												});				   						   
+											}else {
+												casper.echo(' Latest link not found in Topic page', 'INFO');
+											}
+										}
+									});						   
+								}else {
+									casper.echo('Topic link not found', 'INFO');
+								}
+							}
+						});
+				    }else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	});
+}
+
+//19.Lock any topic and Verify Lock option of forum listing page[Home page]
+followpinlockTest.lockAnyTopicForumListingPage= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//19.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-19-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//19.Lock any topic and Verify Lock option of forum listing page[Home page]
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-19-b                            ', 'INFO');
+				casper.echo('Lock any topic and Verify Lock option of forum listing page[Home page].', 'INFO');
+				casper.echo('*************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						wait.waitForElement('div#topics ul li:nth-child(2) a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								   casper.click('div#topics ul li:nth-child(2) a');
+								   wait.waitForElement('div#topics ul li:nth-child(1)', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('div#topics ul li:nth-child(1)');		
+												wait.waitForTime(3000 , casper , function() {
+													casper.capture('17(b)1.png');
+													try{
+														casper.test.assertExists('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														casper.click('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														wait.waitForTime(3000 , casper , function() {
+															casper.test.assertExists('div#topics-menu span:nth-child(2) a');
+															casper.click('div#topics-menu span:nth-child(2) a');
+															casper.test.assertExists('a#lock');
+															casper.click('a#lock');
+															   try{
+																	casper.test.assertExists('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon found','INFO');
+																}
+																catch(e){
+																	casper.test.assertDoesntExist('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon not found','ERROR');
+																}
+														});
+													}catch(e){
+														casper.test.assertDoesntExist('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+													}
+													wait.waitForTime(3000 , casper , function() {
+														casper.capture('17(b)2.png');
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													});
+												});				   						   
+											}else {
+												casper.echo(' Latest link not found in Topic page', 'INFO');
+											}
+										}
+									});						   
+								}else {
+									casper.echo('Topic link not found', 'INFO');
+								}
+							}
+						});
+				    }else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	});
+}
+
+//20.Un-Lock any topic and Verify Lock option of forum listing page[Home page]
+followpinlockTest.unlockAnyTopicForumListingPage= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//20.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-18-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//20.Un-Lock any topic and Verify Lock option of forum listing page[Home page]
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-20-b                            ', 'INFO');
+				casper.echo(' Un-Lock any topic and Verify Lock option of forum listing page[Home page].', 'INFO');
+				casper.echo('****************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						wait.waitForElement('div#topics ul li:nth-child(1) a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								   casper.click('div#topics ul li:nth-child(1) a');
+								   wait.waitForElement('div#topics div div div form div div:nth-child(2) ul li:nth-child(1) a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('div#topics div div div form div div:nth-child(2) ul li:nth-child(1) a');		
+												wait.waitForTime(3000 , casper , function() {
+													try{
+														casper.test.assertExists('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														casper.click('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														wait.waitForTime(3000 , casper , function() {
+															casper.test.assertExists('div#topics-menu span:nth-child(2) a');
+															casper.click('div#topics-menu span:nth-child(2) a');
+															casper.test.assertExists('a#unlock');
+															casper.click('a#unlock');
+												            wait.waitForTime(3000 , casper , function() {
+																    try{
+																		casper.test.assertExists('i.glyphicon.glyphicon-lock');
+																		casper.echo('lock icon found','INFO');
+																	}
+																	catch(e){
+																		casper.test.assertDoesntExist('i.glyphicon.glyphicon-lock');
+																		casper.echo('lock icon not found','ERROR');
+																	}
+																  /*  var grpName = casper.evaluate(function(){
+																		var x3 = document.querySelector('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) i').getAttribute('class');
+																			return x3;
+																	});
+																	casper.click(''+grpName+'','INFO');
+																	});
+															       */
+														    });
+														});
+													}catch(e){
+														casper.test.assertDoesntExist('div#topics div div div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+													}
+													wait.waitForTime(3000 , casper , function() {
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													});
+												});				   						   
+											}else {
+												casper.echo(' Latest link not found in Topic page', 'INFO');
+											}
+										}
+									});						   
+								}else {
+									casper.echo('Topic link not found', 'INFO');
+								}
+							}
+						});
+				    }else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	});
+}
+
+//21.Add New topic by enable lock check box and verify lock topic  on forum listing page
+followpinlockTest.enableLockCheckBoxForumListingPage= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//21.Add New topic by enable lock check box and verify lock topic  on forum listing page
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-21-a              ', 'INFO');
+				casper.echo('Add New topic by enable lock check box and verify lock topic  on forum listing page', 'INFO');
+				casper.echo('***********************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,true,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+											casper.capture('lockmassage.png');
+											    try{
+													casper.test.assertExists('div.alert.alert-warning.text-center');
+													//var lockmassage=casper.fetch('div.alert.alert-warning text-center');
+													//casper.echo(''+lockmassage+'','INFO');
+													var grpName = casper.evaluate(function(){
+														var x3 = document.querySelector('div.alert.alert-warning.text-center')
+														return x3.innerHTML;
+													});
+													casper.echo('subject :'+grpName,'INFO');
+												}
+												catch(e){
+												    casper.test.assertDoesntExist('div.alert.alert-warning.text-center');
+												}
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		
+	});
+}
+
+//22.Add New topic by disabling Follow check box and verify follow topic option on Post page
+followpinlockTest.disablingFollowCheckBoxForumListingPage= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//22.Add New topic by disabling Follow check box and verify follow topic option on Post page
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-22-a              ', 'INFO');
+				casper.echo('Add New topic by enable lock check box and verify lock topic  on forum listing page', 'INFO');
+				casper.echo('***********************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+											casper.capture('lockmassage.png');
+											    try{
+													casper.test.assertExists('div.alert.alert-warning text-center');
+													var lockmassage=casper.fetch('div.alert.alert-warning text-center');
+													casper.echo(''+lockmassage+'','INFO');
+												}
+												catch(e){
+												    casper.test.assertDoesntExist('div.alert.alert-warning text-center');
+													casper.echo('lock message not be generated','INFO');
+												}
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		
+	});
+}
+
+//23.Add New topic by enable lock check box and verify unlock topic option on latest topic page
+followpinlockTest.enableLockCheckBoxLatestTopicPage= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//23.Add New topic by enable lock check box and verify unlock topic option on latest topic page
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-23-a              ', 'INFO');
+				casper.echo('Add New topic by enable lock check box and verify unlock topic option on latest topic page', 'INFO');
+				casper.echo('***********************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,true,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+											casper.capture('lockmassage.png');
+											    try{
+													casper.test.assertExists('div.alert.alert-warning.text-center');
+													//var lockmassage=casper.fetch('div.alert.alert-warning text-center');
+													//casper.echo(''+lockmassage+'','INFO');
+													var grpName = casper.evaluate(function(){
+														var x3 = document.querySelector('div.alert.alert-warning.text-center')
+														return x3.innerHTML;
+													});
+													casper.echo('subject :'+grpName,'INFO');
+												}
+												catch(e){
+												    casper.test.assertDoesntExist('div.alert.alert-warning.text-center');
+												}
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		
+	});
+}
+
+//24.Add New topic by disabling lock check box and verify lock topic option on latest topic page
+followpinlockTest.disablingLockCheckBoxLatestTopicPage= function() {
+	casper.then(function(){
+	  
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//24.Add New topic by disabling lock check box and verify lock topic option on latest topic page
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-24-a              ', 'INFO');
+				casper.echo('Add New topic by disabling lock check box and verify lock topic option on latest topic page', 'INFO');
+				casper.echo('***********************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+											casper.capture('lockmassage.png');
+											    try{
+													casper.test.assertExists('div.alert.alert-warning text-center');
+													var lockmassage=casper.fetch('div.alert.alert-warning text-center');
+													casper.echo(''+lockmassage+'','INFO');
+												}
+												catch(e){
+												    casper.test.assertDoesntExist('div.alert.alert-warning text-center');
+													casper.echo('lock message not be generated','INFO');
+												}
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		
+	});
+}
+
+//25.Lock any topic and Verify Lock optipon of post listing page under category
+followpinlockTest.lockAnyTopicVerifyPostListingPage= function() {
+	casper.then(function(){
+	   
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//25.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-25-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//25.Verify the follow option visibility on topic listing page by the guest user.
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-25-b                        ', 'INFO');
+				casper.echo(' Verify the follow option visibility on topic listing page by the guest user.', 'INFO');
+				casper.echo('****************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('a#links-nav i', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('a#links-nav i');
+									wait.waitForElement('ul#forums_toggle_link li a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('ul#forums_toggle_link li a');
+												wait.waitForTime(3000 , casper , function() {
+													var grpName = casper.evaluate(function(){
+														for(var i=3; i<=7; i++) {
+															var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
+															if (x1.innerText == 'General') {
+																var x3 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a').getAttribute('href');
+																return x3;
+															}
+														}
+													});
+													casper.echo('a[href="'+grpName+'"]');
+													casper.click('a[href="'+grpName+'"]');
+													wait.waitForTime(3000 , casper , function() {
+													
+														casper.test.assertExists('div#topics div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														casper.click('div#topics div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														wait.waitForTime(3000 , casper , function() {
+															casper.test.assertExists('div#topics-menu span:nth-child(2) a');
+															casper.click('div#topics-menu span:nth-child(2) a');
+															casper.test.assertExists('a#lock');
+															casper.click('a#lock');
+															   try{
+																	casper.test.assertExists('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon found','INFO');
+																}
+																catch(e){
+																	casper.test.assertDoesntExist('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon not found','ERROR');
+																}
+														});
+														wait.waitForTime(3000 , casper , function() {
+															casper.capture('17(b)2.png');
+															forumLoginMethod.logoutFromApp(casper, function(err){
+																if (!err){
+																	casper.echo('Successfully logout from application', 'INFO');
+																}
+															});
+														});
+													});		
+												});				   
+											}else {
+												casper.echo('Categories link not found', 'INFO');
+											}
+										}
+									});					   
+								}else {
+									casper.echo('Menu link not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	
+	});
+}
+
+//26.un-Lock any topic and Verify Lock optipon of post listing page under category
+followpinlockTest.unlockAnyTopicVerifyPostListingPage= function() {
+	casper.then(function(){
+	   
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//26.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-26-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		
+		//26.un-Lock any topic and Verify Lock optipon of post listing page under category
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-26-b                        ', 'INFO');
+				casper.echo('un-Lock any topic and Verify Lock optipon of post listing page under category.', 'INFO');
+				casper.echo('****************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('a#links-nav i', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('a#links-nav i');
+									wait.waitForElement('ul#forums_toggle_link li a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('ul#forums_toggle_link li a');
+												wait.waitForTime(3000 , casper , function() {
+													var grpName = casper.evaluate(function(){
+														for(var i=3; i<=7; i++) {
+															var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
+															if (x1.innerText == 'General') {
+																var x3 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a').getAttribute('href');
+																return x3;
+															}
+														}
+													});
+													casper.echo('a[href="'+grpName+'"]');
+													casper.click('a[href="'+grpName+'"]');
+													wait.waitForTime(3000 , casper , function() {
+														casper.test.assertExists('div#topics div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														casper.click('div#topics div form div div:nth-child(3) ul li span:nth-child(2) span:nth-child(1) input');
+														wait.waitForTime(3000 , casper , function() {
+															casper.test.assertExists('div#topics-menu span:nth-child(2) a');
+															casper.click('div#topics-menu span:nth-child(2) a');
+															casper.test.assertExists('a#unlock');
+															casper.click('a#unlock');
+															   try{
+																	casper.test.assertExists('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon found','INFO');
+																}
+																catch(e){
+																	casper.test.assertDoesntExist('i.glyphicon.glyphicon-lock');
+																	casper.echo('lock icon not found','ERROR');
+																}
+														});
+														wait.waitForTime(3000 , casper , function() {
+															casper.capture('17(b)2.png');
+															forumLoginMethod.logoutFromApp(casper, function(err){
+																if (!err){
+																	casper.echo('Successfully logout from application', 'INFO');
+																}
+															});
+														});
+													});		
+												});				   
+											}else {
+												casper.echo('Categories link not found', 'INFO');
+											}
+										}
+									});					   
+								}else {
+									casper.echo('Menu link not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	
+	});
+}
+
+//27.Lock topic from Profile page and verify locked topic
+followpinlockTest.lockTopicProfilePage= function() {
+    casper.then(function(){
+	    
+	    casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+	    
+	
+		//27.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-27-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//27.Lock topic from Profile page and verify locked topic
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-27-b                    ', 'INFO');
+				casper.echo('Lock topic from Profile page and verify locked topic.', 'INFO');
+				casper.echo('*****************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('header#forum_header_fixed div:nth-child(1) ul li:nth-child(1) button', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('header#forum_header_fixed div:nth-child(1) ul li:nth-child(1) button');
+									wait.waitForElement('a#user-nav-panel-profile', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('a#user-nav-panel-profile');
+													wait.waitForElement('a#Topics_Started', casper, function(err, isExist) {
+														if(!err){
+															if(isExist) {
+																casper.click('a#Topics_Started');
+																wait.waitForTime(3000 , casper , function() {
+																	casper.test.assertExists('div#feed-main div div div div:nth-child(1) div input');
+																	casper.click('div#feed-main div div div div:nth-child(1) div input');
+																	wait.waitForTime(3000 , casper , function() {
+																		casper.test.assertExists('div#topics-menu span:nth-child(4) a i:nth-child(2)');
+																		casper.click('div#topics-menu span:nth-child(4) a i:nth-child(2)');
+																		casper.test.assertExists('a#lock');
+																		casper.click('a#lock');
+																		wait.waitForTime(3000 , casper , function() {
+																		casper.capture('17(b)3.png');
+																			try{
+																				casper.test.assertExists('div#feed-main div:nth-child(1) div div span:nth-child(2) span i');
+																				casper.echo('lock icon found','INFO');
+																				/*  var grpName = casper.evaluate(function(){
+																					var x3 = document.querySelector('div#feed-main div:nth-child(1) div div span:nth-child(2) span i').getAttribute('data-original-title');
+																						return x3;
+																				});
+																				casper.click(''+grpName+'','INFO');
+																				*/
+																			}
+																			catch(e){
+																				casper.test.assertDoesntExist('div#feed-main div:nth-child(1) div div span:nth-child(2) span i');
+																				casper.echo('lock icon not found','ERROR');
+																			}
+																			wait.waitForTime(3000 , casper , function() {
+																				casper.capture('17(b)2.png');
+																				forumLoginMethod.logoutFromApp(casper, function(err){
+																					if (!err){
+																						casper.echo('Successfully logout from application', 'INFO');
+																					}
+																				});
+																			});
+																		});
+																	});	
+                                                                });																
+															}else {
+																casper.echo('Topic Started link not found', 'INFO');
+															}
+														}
+													});	   
+											}else {
+												casper.echo('Profile link not found', 'INFO');
+											}
+										}
+									});					   
+								}else {
+									casper.echo('dropdown-toggle button not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	});
+}
+
+//28.un-Lock topic from Profile page and verify unlocked topic
+followpinlockTest.unlockTopicProfilePage= function() {
+    casper.then(function(){
+	    
+	    casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+	    
+	
+		//28.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-27-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//28.un-Lock topic from Profile page and verify unlocked topic
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-28-b                    ', 'INFO');
+				casper.echo('un-Lock topic from Profile page and verify unlocked topic', 'INFO');
+				casper.echo('*****************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('header#forum_header_fixed div:nth-child(1) ul li:nth-child(1) button', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('header#forum_header_fixed div:nth-child(1) ul li:nth-child(1) button');
+									wait.waitForElement('a#user-nav-panel-profile', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('a#user-nav-panel-profile');
+													wait.waitForElement('a#Topics_Started', casper, function(err, isExist) {
+														if(!err){
+															if(isExist) {
+																casper.click('a#Topics_Started');
+																wait.waitForTime(3000 , casper , function() {
+																	casper.test.assertExists('div#feed-main div div div div:nth-child(1) div input');
+																	casper.click('div#feed-main div div div div:nth-child(1) div input');
+																	wait.waitForTime(3000 , casper , function() {
+																		casper.test.assertExists('div#topics-menu span:nth-child(4) a i:nth-child(2)');
+																		casper.click('div#topics-menu span:nth-child(4) a i:nth-child(2)');
+																		casper.test.assertExists('a#unlock');
+																		casper.click('a#unlock');
+																		wait.waitForTime(3000 , casper , function() {
+																		casper.capture('17(b)3.png');
+																			try{
+																				casper.test.assertExists('div#feed-main div:nth-child(1) div div span:nth-child(2) span i');
+																				casper.echo('lock icon found','INFO');
+																				/*  var grpName = casper.evaluate(function(){
+																					var x3 = document.querySelector('div#feed-main div:nth-child(1) div div span:nth-child(2) span i').getAttribute('data-original-title');
+																						return x3;
+																				});
+																				casper.click(''+grpName+'','INFO');
+																				*/
+																			}
+																			catch(e){
+																				casper.test.assertDoesntExist('div#feed-main div:nth-child(1) div div span:nth-child(2) span i');
+																				casper.echo('lock icon not found','ERROR');
+																			}
+																			wait.waitForTime(3000 , casper , function() {
+																				casper.capture('17(b)2.png');
+																				forumLoginMethod.logoutFromApp(casper, function(err){
+																					if (!err){
+																						casper.echo('Successfully logout from application', 'INFO');
+																					}
+																				});
+																			});
+																		});
+																	});	
+                                                                });																
+															}else {
+																casper.echo('Topic Started link not found', 'INFO');
+															}
+														}
+													});	   
+											}else {
+												casper.echo('Profile link not found', 'INFO');
+											}
+										}
+									});					   
+								}else {
+									casper.echo('dropdown-toggle button not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	});
+}
+
+//29.Lock any topic from post page and verify locked message
+followpinlockTest.lockTopicPostPage= function() {
+	casper.then(function(){
+	   
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//29.test case for create topic 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-29-a              ', 'INFO');
+				casper.echo(' test case for create topic              ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		
+		//29.Lock any topic from post page and verify locked message
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-29-b                       ', 'INFO');
+				casper.echo('Lock any topic from post page and verify locked message.', 'INFO');
+				casper.echo('********************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('a#links-nav i', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('a#links-nav i');
+									wait.waitForElement('ul#forums_toggle_link li a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('ul#forums_toggle_link li a');
+												wait.waitForTime(3000 , casper , function() {
+													var grpName = casper.evaluate(function(){
+														for(var i=3; i<=7; i++) {
+															var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
+															if (x1.innerText == 'General') {
+																var x3 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a').getAttribute('href');
+																return x3;
+															}
+														}
+													});
+													casper.echo('subject :'+grpName,'INFO');
+													casper.click('a[href="'+grpName+'"]');
+													wait.waitForElement('div#topics div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
+														if(!err){
+															if(isExist) {
+																casper.test.assertExists('div#topics div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
+																casper.click('div#topics div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
+																wait.waitForElement('div#body-wrapper div:nth-child(3) div a', casper, function(err, isExist) {
+																	if(!err){
+																		if(isExist) {
+																			    casper.test.assertExists('div#body-wrapper div:nth-child(3) div a ');
+																				casper.click('div#body-wrapper div:nth-child(3) div a ');
+																				casper.test.assertExists('div#body-wrapper div:nth-child(3) div  ul li:nth-child(1) a');
+																				casper.click('div#body-wrapper div:nth-child(3) div  ul li:nth-child(1) a');
+																				wait.waitForTime(3000 , casper , function() {
+																					casper.capture('17(b)46.png');
+																				   try{
+																						casper.test.assertExists('div.alert.alert-warning.text-center');
+																							var grpName = casper.evaluate(function(){
+																							var x1 = document.querySelector('div.alert.alert-warning.text-center');
+																							return x1.innerHTML;
+																					});
+																						 casper.echo('subject :'+grpName,'INFO');
+																					}
+																					catch(e){
+																						casper.test.assertDoesntExist('div.alert.alert-warning.text-center');
+																					}
+																					wait.waitForTime(3000 , casper , function() {
+																						casper.capture('17(b)2.png');
+																						forumLoginMethod.logoutFromApp(casper, function(err){
+																							if (!err){
+																								casper.echo('Successfully logout from application', 'INFO');
+																							}
+																						});
+																					});
+																				});
+																	
+																			}else {
+																			 casper.echo('Moderate topic link not found', 'INFO');
+																		}
+																	}
+																});
+															}else {
+															     casper.echo('no topic found in topic listing page under the Categories ', 'INFO');
+															}
+														}
+													});	
+												});				   
+											}else {
+												casper.echo('Categories link not found', 'INFO');
+											}
+										}
+									});					   
+								}else {
+									casper.echo('Menu link not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	
+	});
+}
+
+//30.UnLock any locked  topic from post page and verify that the locked message should be disappeared 
+followpinlockTest.unlockTopicPostPage= function() {
+	casper.then(function(){
+	    
+		//29.Lock any topic from post page and verify locked message
+		casper.then(function(){
+			followpinlockTest.lockTopicPostPage();
+		});
+		
+		//30.UnLock any locked  topic from post page and verify that the locked message should be disappeared 
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-29-b                       ', 'INFO');
+				casper.echo('Lock any topic from post page and verify locked message.', 'INFO');
+				casper.echo('********************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('a#links-nav i', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('a#links-nav i');
+									wait.waitForElement('ul#forums_toggle_link li a', casper, function(err, isExist) {
+										if(!err){
+											if(isExist) {
+												casper.click('ul#forums_toggle_link li a');
+												wait.waitForTime(3000 , casper , function() {
+													var grpName = casper.evaluate(function(){
+														for(var i=3; i<=7; i++) {
+															var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
+															if (x1.innerText == 'General') {
+																var x3 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a').getAttribute('href');
+																return x3;
+															}
+														}
+													});
+													casper.echo('subject :'+grpName,'INFO');
+													casper.click('a[href="'+grpName+'"]');
+													wait.waitForElement('div#topics div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a', casper, function(err, isExist) {
+														if(!err){
+															if(isExist) {
+																casper.test.assertExists('div#topics div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
+																casper.click('div#topics div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
+																wait.waitForElement('div#body-wrapper div:nth-child(3) div a', casper, function(err, isExist) {
+																	if(!err){
+																		if(isExist) {
+																			    casper.test.assertExists('div#body-wrapper div:nth-child(3) div a ');
+																				casper.click('div#body-wrapper div:nth-child(3) div a ');
+																				casper.test.assertExists('div#body-wrapper div:nth-child(3) div  ul li:nth-child(1) a');
+																				casper.click('div#body-wrapper div:nth-child(3) div  ul li:nth-child(1) a');
+																				wait.waitForTime(3000 , casper , function() {
+																					casper.capture('17(b)46.png');
+																				   try{
+																						casper.test.assertExists('div.alert.alert-warning.text-center');
+																							var grpName = casper.evaluate(function(){
+																							var x1 = document.querySelector('div.alert.alert-warning.text-center');
+																							return x1.innerHTML;
+																					});
+																						 casper.echo('subject :'+grpName,'INFO');
+																					}
+																					catch(e){
+																						casper.test.assertDoesntExist('div.alert.alert-warning.text-center');
+																						casper.echo('unlock sucessful','INFO');
+																					}
+																					wait.waitForTime(3000 , casper , function() {
+																						casper.capture('17(b)2.png');
+																						forumLoginMethod.logoutFromApp(casper, function(err){
+																							if (!err){
+																								casper.echo('Successfully logout from application', 'INFO');
+																							}
+																						});
+																					});
+																				});
+																	
+																			}else {
+																			 casper.echo('Moderate topic link not found', 'INFO');
+																		}
+																	}
+																});
+															}else {
+															     casper.echo('no topic found in topic listing page under the Categories ', 'INFO');
+															}
+														}
+													});	
+												});				   
+											}else {
+												casper.echo('Categories link not found', 'INFO');
+											}
+										}
+									});					   
+								}else {
+									casper.echo('Menu link not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	
+	});
+}
+
+//31.Verify Reply a Post option angainst locked topic on post page for registered user
+followpinlockTest.ReplyPostOptionAngainstLockedTopic= function() {
+	casper.then(function(){
+	   
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//31.test case for create topic (lock)
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-31-a              ', 'INFO');
+				casper.echo(' test case for create topic (lock)       ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									composeTopicMethod.startTopic(true,false,true,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+	
+		//31.Verify Reply a Post option angainst locked topic on post page for registered user
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-31-b                       ', 'INFO');
+				casper.echo('Verify Reply a Post option angainst locked topic on post page for registered user.', 'INFO');
+				casper.echo('**********************************************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('a#links-nav i', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								    casper.test.assertExists('div#topics div div div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a ');
+									casper.click('div#topics div div div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
+									wait.waitForTime(3000 , casper , function() {
+										try{
+											 casper.test.assertExists('#message');
+											 casper.echo('reply text exist','INFO');
+										}catch(e){
+											 casper.test.assertDoesntExist('#message');
+											 casper.echo('reply text doesnot exist','INFO');
+										}
+										forumLoginMethod.logoutFromApp(casper, function(err){
+											if (!err){
+												casper.echo('Successfully logout from application', 'INFO');
+											}
+										});
+									});					   
+								}else {
+									casper.echo('Menu link not found', 'INFO');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error', 'ERROR');
+					}
+				});
+			});
+		});
+	
+	});
+}
+
+//32.Verify Vote option against locked topic on post page
+followpinlockTest.voteOptionAgainstLockedTopic= function() {
+	casper.then(function(){
+	   
+		casper.then(function(){
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+		
+		//31.test case for create topic (lock with poll)
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                case-31-a              ', 'INFO');
+				casper.echo(' test case for create topic (lock with poll)       ', 'INFO');
+				casper.echo('*****************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('div#topics a', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+									casper.click('div#topics a');
+									followpinlockMethod.startTopic(true,false,true,data['Topicmessage'],casper,function(err){
+										if(!err){
+											wait.waitForTime(2000 , casper , function() {
+												forumLoginMethod.logoutFromApp(casper, function(err){
+													if (!err){
+														casper.echo('Successfully logout from application', 'INFO');
+													}
+												});
+											});
+										}else {
+											casper.echo('Error : '+err, 'INFO');
+										}
+									});						   
+								}else {
+									casper.echo('Start New Topic link not found', 'INFO');
+								}
+							}
+						});					   		  
+					}else {
+						casper.echo('Error : '+err, 'INFO');
+					}
+				});
+			});
+		});
+		
+		//32.Verify Vote option against locked topic on post page
+		casper.then(function(){
+			casper.thenOpen(config.url, function() {
+				casper.echo('                        case-32-b                    ', 'INFO');
+				casper.echo('Verify Vote option against locked topic on post page.', 'INFO');
+				casper.echo('*****************************************************', 'INFO');
+				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
+					if(!err) {
+						casper.echo('login by valid username and password and verify error message', 'INFO');
+						wait.waitForElement('a#links-nav i', casper, function(err, isExist) {
+							if(!err){
+								if(isExist) {
+								    casper.test.assertExists('div#topics div div div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a ');
+									casper.click('div#topics div div div form div div:nth-child(3) ul li:nth-child(1) span:nth-child(1) span:nth-child(2) h4 a');
+									wait.waitForTime(3000 , casper , function() {
+										try{
+											 casper.test.assertExists('div.poll-vote input:nth-child(5)');
+											 casper.click('div.poll-vote input:nth-child(5)');
+											 var grpName = casper.evaluate(function(){
+												var x3 = document.querySelector('div.poll-vote input:nth-child(5)').getAttribute('data-original-title');
+												return x3;
+											});
+										     casper.echo('subject :'+grpName,'INFO');
+										}catch(e){
+											 casper.test.assertDoesntExist('div.poll-vote  input:nth-child(5)');
+											 casper.echo('reply text doesnot exist','INFO');
+										}
+										forumLoginMethod.logoutFromApp(casper, function(err){
+											if (!err){
+												casper.echo('Successfully logout from application', 'INFO');
+											}
+										});
+									});					   
+								}else {
+									casper.echo('Menu link not found', 'ERROR');
+								}
+							}
+						});	
+					}else {
+						casper.echo('Error', 'ERROR');
+					}
+				});
+			});
+		});
+	
+	});
+}
 
 
+
+	/***************************   3.Pin-unPin Topic  ****************************/
+	
+
+//33.Pin any topic and Verify Pin icon of topic listing page[Home page]
+followpinlockTest.PinIconTopicListingPage= function() {
+	casper.then(function(){
+		casper.thenOpen(config.url, function() {
+			casper.echo('                   case-1                    ', 'INFO');
+			casper.echo(' Pin any topic and Verify Pin icon of topic listing page[Home page]', 'INFO');
+			casper.echo('*******************************************************************', 'INFO');
+			casper.echo('Title of the page :' +this.getTitle(), 'INFO');
+		    forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
+				if(!err) {
+					casper.echo('login by valid username and password and verify error message', 'INFO');
+					wait.waitForElement('div#topics ', casper, function(err, isExist) {
+						if(!err){
+							if(isExist) {
+							  casper.click('div#topics ul li:nth-child(1) a');
+								composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
+									if(!err){
+										  wait.waitForTime(2000 , casper , function(err) {
+											var grpName = casper.evaluate(function(){
+												var x3 = document.querySelector('a#submenu_unfollow_topic i').getAttribute('data-original-title');
+												return x3;
+											});
+										    casper.echo('subject :'+grpName,'INFO');
+											forumLoginMethod.logoutFromApp(casper, function(err){
+												if (!err){
+												casper.echo('Successfully logout from application', 'INFO');
+												}
+											});
+										});
+									}else {
+										casper.echo('Error : '+err, 'INFO');
+									}
+								});						   
+							}
+						}
+					});		  
+				}else {
+					casper.echo('Error : '+err, 'INFO');
+				}
+			});
+		});
+	});
+}
+
+
+
+	
+	
+	
