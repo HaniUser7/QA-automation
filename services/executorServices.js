@@ -35,11 +35,10 @@ executorServices.executeJob = function(commitDetails, callback){
 				var descriptionRes = 0;
 				var jsErrorCount = 0;
 				var description = '';
-				var failTestResult = stdout.split(' ');
 				var jsErrors = fs.readFileSync(failLogFile).toString().split(' ');
-				for(var i=0; i<failTestResult.length;i++) {
-					if(failTestResult[i+1]=='tests'  && failTestResult[i+7]!=0) {
-						descriptionRes = parseInt(descriptionRes)+parseInt(failTestResult[i+7]);
+				for(var i=0; i<jsErrors.length;i++) {
+					if(jsErrors[i+1]=='tests'  && jsErrors[i+7]!=0) {
+						descriptionRes = parseInt(descriptionRes)+parseInt(jsErrors[i+7]);
 					}
 					if(jsErrors[i] == 'TypeError:') {
 						jsErrorCount = jsErrorCount+1;
