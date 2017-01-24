@@ -1711,15 +1711,19 @@ privateMessageTestcases.composeMessageScenarioThird = function() {
 						casper.click('ul.nav.pull-right span.caret');
 						casper.test.assertExists('a#user-nav-panel-profile');
 						casper.click('a#user-nav-panel-profile');
-						casper.waitForSelector('div.pull-left.profile-menu a#send_message', function() {
-							casper.click('div.pull-left.profile-menu a#send_message');
-							casper.waitForSelector('div[class="modal fade in"]', function() {
-								privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
-									if(!err) {
-										casper.echo('Message sent..','INFO');
+						wait.waitForElement('div.pull-left.profile-menu a#send_message', casper, function(err, isExists) {
+							if(isExists) {	
+								casper.click('div.pull-left.profile-menu a#send_message');
+								wait.waitForElement('div[class="modal fade in"]', casper, function(err, isExists) {
+									if(isExists) {	
+										privateMessageMethod.createMessage(json.privateMessage, casper, function(err) {
+											if(!err) {
+												casper.echo('Message sent..','INFO');
+											}
+										});
 									}
 								});
-							});
+							}
 						});
 					} else {
 						casper.echo('User not logged in','ERROR');
