@@ -45,7 +45,7 @@ privateMessage.featureTest = function(casper, test) {
 		privateMessageTestcases.verifyAttachementAndInsertPhotoLinkWhenEnable();
 		
 		// method to verify with reply option
-		privateMessageTestcases.verifyReplyOption();
+		/*privateMessageTestcases.verifyReplyOption();
 		
 		// method To verify one to one conversation between sender and and single recipient
 		privateMessageTestcases.verifyOneToOneSingleSenderAndReciever();
@@ -150,6 +150,6 @@ privateMessage.featureTest = function(casper, test) {
 		privateMessageTestcases.deleteFromConversationPage();
 		
 		// method To verify delete all Conversation
-		privateMessageTestcases.deleteAllConversation();
+		privateMessageTestcases.deleteAllConversation();*/
 	});
 };
