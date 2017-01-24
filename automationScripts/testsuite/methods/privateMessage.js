@@ -43,18 +43,20 @@ privateMessageMethod.enableMessage = function(driver, callback) {
 							casper.echo('Setting  tooltip menu not found', 'ERROR');
 						}
 					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
+					});
 				} else {
 					casper.echo('Backend Menu not found', 'ERROR');
+					return callback(null);
 				}
 			});
 		}else {
 			casper.echo('Error ', 'ERROR');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -89,18 +91,20 @@ privateMessageMethod.disableMessage = function(driver, callback) {
 							casper.echo('Setting  tooltip menu not found', 'ERROR');
 						}
 					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
+					});
 				} else {
 					casper.echo('Backend Menu not found', 'ERROR');
+					return callback(null);
 				}
 			});
 		}else {
 			casper.echo('Error ', 'ERROR');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -135,18 +139,20 @@ privateMessageMethod.enableAttachments = function(driver, callback) {
 							casper.echo('Setting  tooltip menu not found', 'ERROR');
 						}
 					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
+					});
 				} else {
 					casper.echo('Backend Menu not found', 'ERROR');
+					return callback(null);
 				}
 			});
 		}else {
 			casper.echo('Error ', 'ERROR');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -181,6 +187,11 @@ privateMessageMethod.disableAttachments = function(driver, callback) {
 							casper.echo('Setting  tooltip menu not found', 'ERROR');
 						}
 					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
+					});
 				} else {
 					casper.echo('Backend Menu not found', 'ERROR');
 				}
@@ -188,11 +199,6 @@ privateMessageMethod.disableAttachments = function(driver, callback) {
 		}else {
 			casper.echo('Error ', 'ERROR');
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -406,18 +412,20 @@ privateMessageMethod.disableEmailVerification = function(driver, callback) {
 							casper.echo('Setting  tooltip menu not found', 'ERROR');
 						}
 					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
+					});
 				} else {
 					casper.echo('Backend Menu not found', 'ERROR');
+					return callback(null);
 				}
 			});
 		}else {
 			casper.echo('Error ', 'ERROR');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -455,18 +463,20 @@ privateMessageMethod.enableEmailVerification = function(driver, callback) {
 							casper.echo('Setting  tooltip menu not found', 'ERROR');
 						}
 					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
+					});
 				} else {
 					casper.echo('Backend Menu not found', 'ERROR');
+					return callback(null);
 				}
 			});
 		}else {
 			casper.echo('Error ', 'ERROR');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -506,19 +516,22 @@ privateMessageMethod.disableFields = function(driver, callback) {
 								driver.echo('Default_registration_option Link Not Found', 'ERROR');
 							}
 						}
+					});
+					casper.then(function() {
+						backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+						});
+						return callback(null);
 					});				
 				} else {
 					driver.echo('Backend Menu not found', 'ERROR');
+					return callback(null);
 				}
 			});
 		}else {
 			casper.echo('Error ', 'ERROR');
+			return callback(null);
 		}
 	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
-	});
+	
 };
 
