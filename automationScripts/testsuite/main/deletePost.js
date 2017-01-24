@@ -111,7 +111,7 @@ deletePost.featureTest = function(casper, test) {
 		deletePostTests.deleteOwnSearchTopicPostEnab();
  //*******************************Edit others topic/post as Admin**********************************************************
 		//verify with edit topic(Post listing  page)
-		/*deletePostTests.editTopicAdmin();
+		deletePostTests.editTopicAdmin();
 		//verify with edit post(Post listing  page)
 		deletePostTests.editPostAdmin();		
 		//verify with edit post on profile page
@@ -137,15 +137,17 @@ deletePost.featureTest = function(casper, test) {
 		deletePostTests.editSearchPeoplePostedRegister();	
 //*****************************Edit own topic/post as register(edit own topic disable)**************************************
 		//verify with edit own  topic(Post listing  page)
-		deletePostTests.editTopicPostDisable();
+		/*deletePostTests.editTopicPostDisable();
 		//verify with edit own  post(Post listing  page)
 		deletePostTests.editPostDisable();
 		//verify with edit own  post on profile page
 		deletePostTests.editProfilePagePostDisable();
 		//edit topic by searching own topic
 		deletePostTests.editSearchTopicPostDisable();
+		//edit post by searching own post
+		//deletePostTests.editSearchTopicPostDisa();
 		//edit on search listing page by people who posted
-		deletePostTests.editSearchPeoplePostedEditPostDisable();*/
+		//deletePostTests.editSearchPeoplePostedEditPostDisable();*/
 		
 
 

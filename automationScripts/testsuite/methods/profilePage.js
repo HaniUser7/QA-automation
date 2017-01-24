@@ -179,10 +179,11 @@ profilePageMethod.messageButtonDisable= function(driver , callback){
 profilePageMethod.profilePost=function(driver , callback) {
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------------------------post method called-------------------------------------------','INFO');
 		casper.echo('***********Method to create post************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -227,6 +228,366 @@ profilePageMethod.profilePost=function(driver , callback) {
 		});
 	});
 };
+
+
+//------------------------------------------BackEndSettings For reputation Disable-----------------------------------------------
+profilePageMethod.reputationDisable= function(driver , callback){
+	casper.thenOpen(config.backEndUrl,function(){	
+		casper.echo('****************verify with reputation link after disable the permissions*****************','INFO');
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+ 		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {
+ 			if (!err)
+ 				casper.echo('LoggedIn to forum backend....', 'INFO');
+ 		});					
+ 		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]' , casper , function(err ,isExists) {
+ 			if(isExists) {
+ 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');	
+ 				casper.click('div#ddSettings  div a:nth-child(2)');
+ 				wait.waitForElement('div#ddSettings' , casper ,function(err , isExists) {
+ 					if(isExists) {
+ 						//casper.click('div#ddSettings a:nth-child(2)');
+ 						utils.enableorDisableCheckbox('reputation',false , casper, function() {
+ 							casper.echo('successfully unchecked', 'INFO');
+ 						});
+						casper.click('button.button.btn-m.btn-blue');
+						wait.waitForTime(10000 , casper , function(err) {
+							casper.capture('reputationunchecked.png');
+						});
+					}
+				});
+			}
+		});
+	});
+};
+ 		
+//------------------------------------------BackEndSettings For reputation Enable-----------------------------------------------
+profilePageMethod.reputationEnable= function(driver , callback){
+	casper.thenOpen(config.backEndUrl,function(){	
+		casper.echo('****************verify with reputation link after disable the permissions*****************','INFO');
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+ 		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {
+ 			if (!err)
+ 				casper.echo('LoggedIn to forum backend....', 'INFO');
+ 		});					
+ 		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]' , casper , function(err ,isExists) {
+ 			if(isExists) {
+ 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');	
+ 				casper.click('div#ddSettings  div a:nth-child(2)');
+ 				wait.waitForElement('div#ddSettings' , casper ,function(err , isExists) {
+ 					if(isExists) {
+ 						//casper.click('div#ddSettings a:nth-child(2)');
+ 						utils.enableorDisableCheckbox('reputation',true , casper, function() {
+ 							casper.echo('successfully checked', 'INFO');
+ 						});
+						casper.click('button.button.btn-m.btn-blue');
+						wait.waitForTime(15000 , casper , function(err) {
+							casper.capture('reputationunchecked.png');
+						});
+					}
+				});
+			}
+		});
+	});
+};
+ 	
+//------------------------------------------disable signature permissions for register user Method------------------------------------------
+
+profilePageMethod.BackEndSettingsSignatureDisable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('allow_signature',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully unchecked edit own post','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+								wait.waitForTime(10000, casper , function(){
+
+									casper.capture('signature.png');
+								});
+							}
+						});
+					}	
+				});
+			}
+		});
+	});		
+};
+
+
+//------------------------------------------Enable signature permissions for register user Method------------------------------------------
+
+profilePageMethod.BackEndSettingsSignatureEnable=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('allow_signature',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully unchecked edit own post','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+								wait.waitForTime(10000, casper , function(){
+
+									casper.capture('signature.png');
+								});
+							}
+						});
+					}	
+				});
+			}
+		});
+	});		
+};
+
+
+//-------------------------------Fill data into signature-----------------------------------------------------------------------
+profilePageMethod.fillDataSignature=function(data ,driver , callback) {
+	casper.echo('signature method called' ,'INFO');
+	driver.waitForSelector('button[type="submit"]',function success() {								
+		driver.sendKeys('input[id="imID"]', data.Instantmessage, {reset:true});	
+		driver.sendKeys('input[id="birthDatepicker"]', data.birthday, {reset:true});
+                try {
+				driver.echo('try block called' ,'INFO');
+				driver.test.assertExists('a#edit_signature small.text-muted.glyphicon.glyphicon-pencil');
+                        	driver.click('a#edit_signature small.text-muted.glyphicon.glyphicon-pencil');
+				wait.waitForTime(5000 , casper , function(){
+
+					driver.capture('pic1.png');
+				});
+                       		driver.withFrame('signature_ifr', function() {
+					driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
+					driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+					driver.sendKeys('#tinymce',data.signature);
+				});
+			}catch(e){
+				casper.click('a#signature');
+				driver.withFrame('signature_ifr', function() {
+					driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
+					driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+					driver.sendKeys('#tinymce',data.signature);
+				});
+			}
+			wait.waitForTime(5000 , casper , function(err) {
+				casper.capture('pic.png');
+                      		casper.click('button[type="submit"]');
+		      		wait.waitForElement('div.alert.alert-danger.text-center' , casper , function(err , isExists) {
+		      			if(isExists) {
+						casper.capture('8.png');
+						var successMessage = casper.fetchText('div.alert.alert-danger.text-center');
+						casper.echo('success message'+successMessage ,'INFO');
+							
+					}
+				});
+			});
+		},function fail(){
+			driver.echo('Unable to fill data in signature','ERROR');
+		});
+		driver.then(function() {
+			return callback(null);
+		});
+};
+
+//-------------------------------------------Disable Custom Title--------------------------------------------------------
+//Verify updation message after saving permissions
+profilePageMethod.BackEndSettingsDisableCustomTitle=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('allow_customtitle',false, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully unchecked custom Title','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+								wait.waitForTime(10000, casper , function(){
+
+									casper.capture('signature.png');
+								});
+							}
+						});
+					}	
+				});
+			}
+		});
+	});		
+};
+
+
+//--------------------------------------Enable custom title-------------------------------------------
+profilePageMethod.BackEndSettingsEnableCustomTitle=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Assign permissions to user groups"]', casper , function(err , isExists) {
+					if( isExists) {
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Assign permissions to user groups"]').click();
+						});
+						driver.wait(1000, function(){
+							var grpName = casper.evaluate(function(){
+ 	       							for(var i=1; i<=7; i++) {
+ 	        							var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+ 									if (x1.innerText == 'Registered Users') {
+ 										document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+ 										var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('href');
+ 										return x2;
+									}
+ 								}
+ 							});
+							driver.echo("message : "+grpName, 'INFO');
+ 							driver.click('div.tooltipMenu a[href="'+grpName+'"]');
+						});
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								utils.enableorDisableCheckbox('allow_customtitle',true, casper, function(err) {
+									if(!err)
+										driver.echo('Successfully checked custom Title','INFO');
+								});
+								casper.click('button.button.btn-m.btn-blue');
+								wait.waitForTime(10000, casper , function(){
+
+									casper.capture('signature.png');
+								});
+							}
+						});
+					}	
+				});
+			}
+		});
+	});		
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
