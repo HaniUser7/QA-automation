@@ -88,10 +88,9 @@ executorServices.executeJob = function(commitDetails, callback){
 									console.log('state of failure : '+status);
 									
 									//Sending Mail To The Committer After Adding Attachments
-									fs.readdir(path, function (err, data) {
-										if(err) {
-											console.error(err);
-										}else {
+									
+									fs.exists(path, function(exists) {
+										if(exists){
 											attachmentServices.addAttachments(path, commitDetails, function(commitDetails) {
 												console.log('attachments added successfully');
 												//initiating mail sending to committer
@@ -116,6 +115,19 @@ executorServices.executeJob = function(commitDetails, callback){
 														}
 													});
 												});
+											});
+										}else{
+											//initiating mail sending to committer
+											mailServices.sendMail(commitDetails, function(err){
+												if(err)
+													console.error("error occurred while sending email: "+err);
+												else
+													console.log("Mail sent successfully.");
+												//Deleting commit specific log files
+												fs.unlinkSync(automationLogFile);
+												fs.unlinkSync(failLogFile);
+												console.log("Commit specific log files deleted.");
+												return callback();
 											});
 										}
 									});
