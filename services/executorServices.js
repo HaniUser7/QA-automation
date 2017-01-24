@@ -66,7 +66,11 @@ executorServices.executeJob = function(commitDetails, callback){
 									description = jsErrorCount+' javaScript errors found.';
 								
 								}else {
-									description = 'Failed '+result+' automation test cases.';
+									if(jsErrorCount == 0) {
+										description = 'Failed '+result+' automation test cases.';
+									}else {
+										description = 'Failed '+result+' automation test cases and '+jsErrorCount+' javaScript errors found';
+									}
 								}
 								
 								//Adding test result with commit details
