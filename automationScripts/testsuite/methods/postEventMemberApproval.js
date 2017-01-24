@@ -77,16 +77,18 @@ postEventMemberApprovalMethod.enableApproveNewPost = function(driver, test, call
 									}, true);
 									casper.test.assertExists('button.button.btn-m.btn-blue');
 									casper.click('button.button.btn-m.btn-blue');
+									casper.wait(20000, function() {
+											});
 									//casper.waitUntilVisible('div#loading_msg', function success() {
 										//casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-										casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
 											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 										}, function fail() { 
 											casper.echo('Saved not found', 'ERROR');
 											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											});
-										});
+										});*/
 									//}, function fail() {
 										//casper.echo('Loading... not found', 'INFO');
 									//});
@@ -131,11 +133,13 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 									}, true);
 									casper.test.assertExists('button.button.btn-m.btn-blue');
 									casper.click('button.button.btn-m.btn-blue');
-									casper.waitUntilVisible('div#loading_msg', function success() {
+									casper.wait(20000, function() {
+											});
+									/*casper.waitUntilVisible('div#loading_msg', function success() {
 										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
 									}, function fail() {
 										casper.echo('Loading... not found', 'INFO');
-									});
+									});*/
 								} else {
 									casper.echo('approve new post checkbox not found', 'ERROR');
 								}
@@ -162,37 +166,43 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 //method to create a new topic
 postEventMemberApprovalMethod.startTopic = function(data,driver,callback) {
 	driver.click('a.pull-right.btn.btn-uppercase.btn-primary ');
-	driver.waitForSelector('div.post-body.pull-left',function success() {								
-		driver.sendKeys('input[name="subject"]', data.title, {reset:true});								
-		driver.withFrame('message_ifr', function() {
-			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
-			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
-			driver.sendKeys('#tinymce',data.content);
-		});
-		driver.waitForSelector('#all_forums_dropdown', function success() {
-			driver.click('#all_forums_dropdown');
-			driver.fill('form[name="PostTopic"]',{
-				'forum' : data.category
-			},false);
-			driver.then(function() {
-				driver.click('#post_submit');
-				driver.waitForSelector('div#posts-list', function() {
-					driver.echo('New topic Created','INFO');
-				});
+	wait.waitForElement('div.post-body.pull-left', driver, function(err, isExists) {
+		if(isExists) {								
+			driver.sendKeys('input[name="subject"]', data.title, {reset:true});								
+			driver.withFrame('message_ifr', function() {
+				driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
+				driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+				driver.sendKeys('#tinymce',data.content);
 			});
-		}, function fail() {
-			driver.waitForSelector('#post_submit',function success() {							
-				driver.test.assertExists('#post_submit');
-				driver.click('#post_submit');
-				driver.waitForSelector('div#posts-list', function() {
-					driver.echo('New topic Created','INFO');
-				});
-			},function fail() {
-				driver.echo('Unable to submit form','ERROR');
+			wait.waitForElement('#all_forums_dropdown', driver, function(err, isExists) {
+				if(isExists) {
+					driver.click('#all_forums_dropdown');
+					driver.fill('form[name="PostTopic"]',{
+						'forum' : data.category
+					},false);
+					driver.then(function() {
+						driver.click('#post_submit');
+						wait.waitForElement('div#posts-list', driver, function(err, isExists) {
+							if(isExists) {
+								driver.echo('New topic Created','INFO');
+							}
+						});
+					});
+				} else {
+					wait.waitForElement('#post_submit', driver, function(err, isExists) {
+						if(isExists) {							
+							driver.test.assertExists('#post_submit');
+							driver.click('#post_submit');
+							wait.waitForElement('div#posts-list', driver, function(err, isExists) {
+								if(isExists) {
+									driver.echo('New topic Created','INFO');
+								}
+							});
+						}
+					});
+				}
 			});
-		});
-	},function fail(){
-		driver.echo('Unable to Open Form To Start Topic','ERROR');
+		}
 	});
 	driver.then(function() {
 		return callback(null);
@@ -210,22 +220,26 @@ postEventMemberApprovalMethod.composePost = function(driver, test, callback) {
 	driver.echo('*           The name of the topic is-'+topic+        '*','INFO');
 	driver.echo('*******************************************************','INFO');
 	driver.click('div.panel-body.table-responsive ul li span span:nth-child(2) a');
-	driver.waitForSelector('form[name="PostTopic"]',function success(){
-		currentUrl = driver.getCurrentUrl();
-		driver.fill('form[name="PostTopic"]',{
-			'message': "Hello I am Register user"
-		},false);
-		driver.waitForSelector('#reply_submit',function success() {
-			driver.test.assertExists('#reply_submit');
-			driver.click('#reply_submit');
-			driver.wait(2000,function() {
-				return callback(null);
+	wait.waitForElement('form[name="PostTopic"]', driver, function(err, isExists) {
+		if(isExists) {
+			currentUrl = driver.getCurrentUrl();
+			driver.fill('form[name="PostTopic"]',{
+				'message': "Hello I am Register user"
+			},false);
+			wait.waitForElement('#reply_submit', driver, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('#reply_submit');
+					driver.click('#reply_submit');
+					driver.wait(2000,function() {
+						return callback(null);
+					});
+				}else {
+					driver.echo('Reply Submit button not found', 'ERROR');
+				}
 			});
-		},function fail(){
-			driver.echo('Reply Submit button not found', 'ERROR');
-		});
-	},function fail(){
-		driver.echo('Reply Post Compose form Doesnot visible', 'ERROR');
+		}else {
+			driver.echo('Reply Post Compose form Doesnot visible', 'ERROR');
+		}
 	});
 };
 
@@ -242,31 +256,33 @@ postEventMemberApprovalMethod.getPostId = function(driver, test, callback) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
 						driver.echo('User has been successfuly login to application with admin user', 'INFO');
-						driver.capture('aftercategory.png');
-						driver.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
-							test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
-							driver.click('ul.nav.nav-tabs li:nth-child(2) a');
-							driver.wait(5000, function() {
-								driver.capture('aftercategory.png');
-							});
-							driver.waitForSelector('li#approvalQueue a', function success() {
-								test.assertExists('li#approvalQueue a','Approval Queue found');
-								driver.click('li#approvalQueue a');
-								driver.wait(3000, function() {
-									var post_id = casper.evaluate(function() {
-										var element=document.querySelectorAll("div[id^='post_message_']");
-										var id = element[element.length-1].id;
-										return id;	
+						wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', driver, function(err, isExists) {
+							if(isExists) {
+								test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+								driver.click('ul.nav.nav-tabs li:nth-child(2) a');
+								wait.waitForElement('li[id^="forum_"]', driver, function(err, isExists) {
+									if(isExists) {
+										test.assertExists('li#approvalQueue a','Approval Queue found');
+										driver.click('li#approvalQueue a');
+										wait.waitForElement('form#approveMembers', driver, function(err, isExists) {
+												if(isExists) {
+												var post_id = casper.evaluate(function() {
+													var element=document.querySelectorAll("div[id^='post_message_']");
+													var id = element[element.length-1].id;
+													return id;	
+													});
+												postId = post_id.split("_");
+												driver.echo('post id ; '+postId[2], 'INFO');
+												return callback(null, postId[2]);
+											}
 										});
-									postId = post_id.split("_");
-									driver.echo('post id ; '+postId[2], 'INFO');
-									return callback(null, postId[2]);
-								});
-							},function fail(){
-								driver.echo('Approval Queue not Found','INFO');
-							});        
-						},function fail(){
-							driver.echo('Categories not Found','ERROR');
+									}else {
+										driver.echo('Approval Queue not Found','INFO');
+									}
+								});      
+							}else{
+								driver.echo('Categories not Found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('User not logged in','ERROR');	
@@ -285,12 +301,13 @@ postEventMemberApprovalMethod.deletePost = function(driver, test, callback) {
 		casper.echo('Inside the deletePost method','INFO');
 		driver.test.assertExists('form[name="posts"] div#post_list_'+postId[2] + ' input');
 		driver.click('form[name="posts"] div#post_list_'+postId[2] + ' input');
-		driver.waitForSelector('input#deleteposts', function() {
-			driver.click('input#deleteposts');
-			driver.wait(5000,function() {
-				driver.capture('approveddelete.png');
-				return callback(null);
-			});
+		wait.waitForElement('input#deleteposts', driver, function(err, isExists) {
+			if(isExists) {
+				driver.click('input#deleteposts');
+				driver.wait(2000,function() {
+					return callback(null);
+				});
+			}
 		});
 	});
 };
@@ -471,48 +488,55 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 							casper.test.assertExists('li#calenders_show a','calender menu found');
 							casper.click('li#calenders_show a');
 						}
-						casper.waitForSelector('div.bd-wrapper.calendar-add-event a', function success() {
-							casper.click('div.bd-wrapper.calendar-add-event a');
-							casper.then(function() {
-								casper.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
-								casper.fillSelectors('form#PostCalEvent', {
-										'input#allDay' : 1
-								}, false); 
+						wait.waitForElement('div.bd-wrapper.calendar-add-event a', driver, function(err, isExists) {
+							if(isExists) {
+								casper.click('div.bd-wrapper.calendar-add-event a');
 								casper.then(function() {
-									casper.waitForSelector('#message_ifr', function success() {
-										casper.test.assertExists('#message_ifr','message-ifr found');
-										casper.withFrame('message_ifr', function() {
-											try{
-												casper.test.assertExists('#tinymce');
-												casper.sendKeys('#tinymce', "This is a new event");
-											}catch(e) {
-												casper.test.assertDoesntExist('#tinymce');
+									casper.sendKeys('form#PostCalEvent input[name="event_title"]', 'New event');
+									casper.fillSelectors('form#PostCalEvent', {
+											'input#allDay' : 1
+									}, false); 
+									casper.then(function() {
+										wait.waitForElement('#message_ifr', driver, function(err, isExists) {
+											if(isExists) {
+												casper.test.assertExists('#message_ifr','message-ifr found');
+												casper.withFrame('message_ifr', function() {
+													try{
+														casper.test.assertExists('#tinymce');
+														casper.sendKeys('#tinymce', "This is a new event");
+													}catch(e) {
+														casper.test.assertDoesntExist('#tinymce');
+													}
+												});
+										
+												// code get the id of event
+												driver.then(function() {
+													casper.click('#post_event_buttton');
+													casper.wait(5000, function() {
+														eventId = casper.evaluate( function(a) {
+															var n = a.indexOf('eventid=');
+															var stre='eventid=';
+															var leng=stre.length;
+															var h = n+leng;
+															var stringt=a.substring(h);
+															var t = stringt.indexOf('&');
+															var id = stringt.substring(0,t);
+															return id;
+														}, casper.getCurrentUrl());
+														casper.echo('*******event_id='+eventId,'INFO');
+														casper.capture('event.png');
+														return callback(null, eventId);
+													});
+												});
+											}else{
+												casper.echo('message_ifr not found','ERROR');
 											}
-										});
-									}, function fail(){
-										casper.echo('message_ifr not found','ERROR');
-									});
-									// code get the id of event
-									driver.then(function() {
-										casper.click('#post_event_buttton');
-										casper.wait(5000, function() {
-											eventId = casper.evaluate( function(a) {
-												var n = a.indexOf('eventid=');
-												var stre='eventid=';
-												var leng=stre.length;
-												var h = n+leng;
-												var stringt=a.substring(h);
-												var t = stringt.indexOf('&');
-												var id = stringt.substring(0,t);
-												return id;
-											}, casper.getCurrentUrl());
-											casper.echo('*******event_id='+eventId,'INFO');
-											casper.capture('event.png');
-											return callback(null, eventId);
 										});
 									});
 								});
-							});
+							} else {
+								casper.echo('Calendar tab not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('User not logged in','ERROR');	
@@ -543,20 +567,26 @@ postEventMemberApprovalMethod.goToApprovalQueuePage = function(driver, test, cal
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
 						driver.echo('User has been successfuly login to application with admin user', 'INFO');
-						driver.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
-							test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
-							driver.click('ul.nav.nav-tabs li:nth-child(2) a');
-							driver.waitForSelector('li[id^="forum_"]', function success() {
-								test.assertExists('li#approvalQueue a','Approval Queue found');
-								driver.click('li#approvalQueue a');
-								driver.waitForSelector('form#approveMembers', function() { // changed wait of 3000
-									return callback(null);
-								});
-							},function fail(){
-								driver.echo('Approval Queue not Found','INFO');
-							});        
-						},function fail(){
-							driver.echo('Categories not Found','ERROR');
+						wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', driver, function(err, isExists) {
+							if(isExists) {
+								test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+								driver.click('ul.nav.nav-tabs li:nth-child(2) a');
+								wait.waitForElement('li[id^="forum_"]', driver, function(err, isExists) {
+									if(isExists) {
+										test.assertExists('li#approvalQueue a','Approval Queue found');
+										driver.click('li#approvalQueue a');
+										wait.waitForElement('form#approveMembers', driver, function(err, isExists) {
+											if(isExists) {
+												return callback(null);
+											}
+										});
+									}else{
+										driver.echo('Approval Queue not Found','INFO');
+									}
+								});        
+							}else {
+								driver.echo('Categories not Found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('User not logged in','ERROR');	
@@ -597,7 +627,9 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.wait(7000, function() {
+											});
+											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -605,7 +637,7 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});
+											});*/
 										});
 									});
 								} else {
@@ -631,6 +663,8 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 				casper.click('div#ddUsers a');
+				//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 				casper.waitForSelector('table.text.fullborder', function success() {
 					var text = casper.evaluate(function() {
 								var x1, x2;
@@ -697,7 +731,9 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.wait(7000, function() {
+											});
+											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -705,7 +741,7 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});
+											});*/
 										});
 									});
 								} else {
@@ -731,6 +767,8 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 				casper.click('div#ddUsers a');
+				//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 				casper.waitForSelector('table.text.fullborder', function success() {
 					var text = casper.evaluate(function() {
 								var x1, x2;
@@ -797,7 +835,8 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											
+											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -805,7 +844,7 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});
+											});*/
 										});
 									});
 								} else {
@@ -831,6 +870,8 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 				casper.click('div#ddUsers a');
+				//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 				casper.waitForSelector('table.text.fullborder', function success() {
 					var text = casper.evaluate(function() {
 								var x1, x2;
@@ -897,7 +938,9 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											casper.wait(7000, function() {
+											});
+											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -905,7 +948,7 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});
+											});*/
 										});
 									});
 								} else {
@@ -931,6 +974,8 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 				casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 				casper.click('div#ddUsers a');
+				//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 				casper.waitForSelector('table.text.fullborder', function success() {
 					var text = casper.evaluate(function() {
 								var x1, x2;
@@ -1028,6 +1073,8 @@ postEventMemberApprovalMethod.registerMember = function(data, driver, callback) 
 
 //******************method to find the id of member*******************************************
 postEventMemberApprovalMethod.memberId = function(driver, callback) {
+	//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 	driver.waitForSelector('div#pendingMembers', function success()	{
 		var member_id = casper.evaluate(function() {
 			var element=document.querySelectorAll("li[id^='member_']");
@@ -1053,10 +1100,14 @@ postEventMemberApprovalMethod.deleteMember = function(driver, callback) {
 						driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						driver.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						driver.click('div#ddUsers a');
+						//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 						driver.waitForSelector('form#frmChangeUsersGroup', function success() {
 							driver.fill('form#frmChangeUsersGroup', {
 								'member' : json.userToDelete
 							}, true);
+							//wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+					//if(isExists) {
 							driver.waitForSelector('form[name="ugfrm"]', function success() {
 								driver.test.assertExists('a#delete_user', '******Delete user button found ******');
 								driver.click('a#delete_user');
@@ -1096,27 +1147,27 @@ postEventMemberApprovalMethod.checkPendingUser = function(driver, callback) {
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
-							casper.fill('form#frmChangeUsersGroup', {
-								'member' : json.userToDelete
-							}, true);
-							casper.waitForSelector('form[name="ugfrm"]', function success() {
-								var checked = casper.evaluate(function() {
-									var element = document.getElementById(20237761).checked;
-									return element;
+						wait.waitForElement('form#frmChangeUsersGroup', casper, function(err, isExists) {
+							if(isExists) {
+								casper.fill('form#frmChangeUsersGroup', {
+									'member' : json.userToDelete
+								}, true);
+								wait.waitForElement('form[name="ugfrm"]', casper, function(err, isExists) {
+									if(isExists) {
+										var checked = casper.evaluate(function() {
+											var element = document.getElementById(20237761).checked;
+											return element;
+										});
+										casper.echo('the value of checked = '+checked,'INFO');
+										if(checked == true) {
+											casper.echo('The pending user is moved to Register user, Verified','INFO');
+										}
+										else {
+											casper.echo('The pending user is not moved to Register user, Verified','INFO');
+										}
+									}	
 								});
-								casper.echo('the value of checked = '+checked,'INFO');
-								if(checked == true) {
-									casper.echo('The pending user is moved to Register user, Verified','INFO');
-								}
-								else {
-									casper.echo('The pending user is not moved to Register user, Verified','INFO');
-								}
-							}, function fail() {
-								casper.echo('changer user group form not found','ERROR');	
-							});
-						},function fail() {
-							casper.echo('Change user group permission not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');

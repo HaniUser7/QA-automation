@@ -7,7 +7,7 @@ wait.waitForElement = function(element, driver, callback){
 		return callback(null, true);
 	}, function fail() {
 		casper.echo('Form Selector ' +element+ ' Not Found', 'ERROR');
-		return(null, false);
+		return callback(null, false);
 	});
 };
 

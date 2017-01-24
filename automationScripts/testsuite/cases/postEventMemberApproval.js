@@ -53,11 +53,11 @@ postEventMemberApprovalTestcases.approvalQueueButton = function() {
 		casper.echo('************************************************************************************', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		//method to enable approve new post** All posts
-		postEventMemberApprovalMethod.enableApproveNewPost(casper, casper.test, function(err) {
+		/*postEventMemberApprovalMethod.enableApproveNewPost(casper, casper.test, function(err) {
 			if(!err) {
 				casper.echo('Enable Approve New Post functionality method called ','INFO');
 			}
-		});
+		});*/
 		casper.then(function() {
 			//method to set the user permission to Administration 
 			postEventMemberApprovalMethod.setAdmin(casper, casper.test, function(err) {
@@ -171,7 +171,6 @@ postEventMemberApprovalTestcases.byClickingOnTopic = function() {
 								                          
 								                        casper.wait(5000,function(){
 								                        casper.test.assertDoesntExist('div.post-edit.pull-right.dropdown a.alert.alert-success.pull-left' ,'All Approved and  delete options are disappear');
-								                        casper.capture('removed.png');
 								                        });
 											casper.then(function() {
 												postEventMemberApprovalMethod.deletePost(casper, casper.test, function () {
@@ -1256,9 +1255,9 @@ postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUser = function
 		
 		});
 	});
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
+	/*casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
 
-	});
+	});*/
 	casper.thenOpen(config.url, function() {
 		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
@@ -2790,9 +2789,9 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUser = function()
 		
 		});
 	});
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
+	/*casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
 
-	});
+	});*/
 	casper.thenOpen(config.url, function() {
 		//login with admin user to search the user and to delete it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
@@ -3068,9 +3067,9 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingTwo = 
 		
 		});
 	});
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
+	/*casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
 
-	});
+	});*/
 	casper.thenOpen(config.url, function() {
 		//login with admin user to search the user and to delete it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
@@ -3201,9 +3200,9 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingThree 
 		
 		});
 	});
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
+	/*casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
 
-	});
+	});*/
 	casper.thenOpen(config.url, function() {
 		//login with admin user to search the user and to delete it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
@@ -3334,9 +3333,9 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingFour =
 		
 		});
 	});
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
+	/*casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function() {
 
-	});
+	});*/
 	casper.thenOpen(config.url, function() {
 		//login with admin user to search the user and to delete it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');

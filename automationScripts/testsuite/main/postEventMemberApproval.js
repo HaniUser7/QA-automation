@@ -47,7 +47,7 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.unregisterUserApprovePost();
 		
 		// method to Approve a pending event -Approval queue button
-		//postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
+		postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
 	
 		// method to Approve a pending event -By clicking on topic
 		//postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent();
@@ -200,7 +200,7 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButtonSettingThree();
 		
 		// method to Delete a pending user for setting four
-		postEventMemberApprovalTestcases.deleteMemberSettingFour();
+		//postEventMemberApprovalTestcases.deleteMemberSettingFour();
 			
 	});
 };
