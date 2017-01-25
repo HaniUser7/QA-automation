@@ -16,11 +16,7 @@ deletePostTests = module.exports = {};
 deletePostTests.CreateAdminUser=function() {
 	casper.then(function(){  
 	   
-	 //backend setting in registration
-	// casper.then(function(){
-		//registerTests.userAccountsEnable();
-	//});
-	
+	 
 	 //1.test case for register user
 		casper.then(function(){
                 
