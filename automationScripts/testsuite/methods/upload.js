@@ -217,22 +217,21 @@ uploadMethods.webaddresslogin=function(driver , callback) {
 };
 
 
-uploadMethods.startTopic = function(dataa,driver,callback) {
+uploadMethods.startTopic = function(data,driver,callback) {
 	driver.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 	driver.waitForSelector('div.post-body.pull-left',function success() {
                 //driver.test.assertExists('form#PostTopic');
 		driver.test.assertExists('div.post-body.pull-left');								
-		driver.sendKeys('input[name="subject"]', dataa.title, {reset:true});								
+		driver.sendKeys('input[name="subject"]', data.title, {reset:true});								
 		driver.withFrame('message_ifr', function() {
 			driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
 			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
-			driver.sendKeys('#tinymce',dataa.content);
-                        driver.capture('23.png');
-		});
+			driver.sendKeys('#tinymce',data.content);
+                });
 		driver.waitForSelector('#all_forums_dropdown', function success() {
 			driver.click('#all_forums_dropdown');
 			driver.fill('form[name="PostTopic"]',{
-				'forum' : dataa.category
+				'forum' : data.category
 			},false);
 			driver.then(function() {
 				driver.click('#post_submit');

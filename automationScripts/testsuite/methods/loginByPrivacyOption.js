@@ -7,7 +7,7 @@ var wait=require('../wait.js');
 loginPrivacyOptionMethod.loginToForumBackEnd = function(driver,callback) {
 		
 	//Click On Login Link
-	wait.waitForTime('1000' , casper , function(err) {
+	//wait.waitForTime(1000 , casper , function(err) {
 		wait.waitForElement('a#navLogin', casper, function(err, isExist) {
 			if(isExist) {
 				driver.click('a#navLogin');
@@ -22,7 +22,7 @@ loginPrivacyOptionMethod.loginToForumBackEnd = function(driver,callback) {
 			}
 			return callback(null)
 		});
-	});
+	//});
 };
 
 //Method For Filling Data In Login Form(Back end)

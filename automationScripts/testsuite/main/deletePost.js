@@ -7,11 +7,11 @@ deletePost.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		//verify by Admin a user on another server
-		deletePostTests.CreateAdminUser();
+		//deletePostTests.CreateAdminUser();
 		//verify by Register a user on another server
-		deletePostTests.CreateRegisterUser();
+		//deletePostTests.CreateRegisterUser();
 		//Verify by delete one topic -selecting by check box 
-		deletePostTests.deleteTopicAdmin();
+		/*deletePostTests.deleteTopicAdmin();
 		//Verify by delete multiple topic-selecting by check box 
 		deletePostTests.deleteAllTopicAdmin();
 		//Verify by delete all topic-selecting by check box 3-issue
@@ -25,24 +25,24 @@ deletePost.featureTest = function(casper, test) {
 		//delete post from members profile page
 		deletePostTests.deletePostProfilePageAdmin();
 		//Verify by delete multiple post-selecting by check box 
-		deletePostTests.deleteMultiplePostAdmin();
+		deletePostTests.deleteMultiplePostAdmin();*/
 	//****************************Register user*******************************************************
 		//Verify by delete one topic -selecting by check box-8 
-		deletePostTests.deletePostRegisteruser();
+		/*deletePostTests.deletePostRegisteruser();
 		//Verify by delete all topic -selecting by check box-9 
 		deletePostTests.deleteAllTopicRegisteruser();
 		//verify with delete topic-by drop down of the topic-10
 		deletePostTests.deleteTopicDropDownRegisuser();
 		//verify with delete post-selecting by check box-11
-		deletePostTests.deletePostCheckboxRegister();
+		deletePostTests.deletePostCheckboxRegister();*/
 		//verify with delete post-by drop down of the post Register user-12
-		deletePostTests.deletePostDropDownRegister();
+		//deletePostTests.deletePostDropDownRegister();
 		//delete post from members profile page register user-13
-		deletePostTests.deletePostProfilePage();
+		//deletePostTests.deletePostProfilePage();
 		//delete topic by searching topic-14
 		deletePostTests.deletePostSearchTopic();
 		//delete post by searching post-15
-		deletePostTests.deletePostSearchPost();
+		/*deletePostTests.deletePostSearchPost();
     //********************************Delete own topic using delete own topic- disable ,delete own post-enable ***********************************
 		//Verify by delete one own  topic -selecting by check box by register user.
 		deletePostTests.deleteOwnTopic();
@@ -134,7 +134,7 @@ deletePost.featureTest = function(casper, test) {
 		//edit post by searching own post
 		deletePostTests.editSearchPostRegister();
 		//edit on search listing page by people who posted
-		deletePostTests.editSearchPeoplePostedRegister();	
+		deletePostTests.editSearchPeoplePostedRegister();*/	
 //*****************************Edit own topic/post as register(edit own topic disable)**************************************
 		//verify with edit own  topic(Post listing  page)
 		/*deletePostTests.editTopicPostDisable();
