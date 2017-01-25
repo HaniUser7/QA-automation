@@ -78,10 +78,26 @@ profilePage.featureTest = function(casper, test) {
 	//verify with edit custom member title
 	//profilePageTests.profilePageEditCustomTitle();
 	//verify with delete custom user title
-	profilePageTests.profilePageDeleteCustomTitle();
+	//profilePageTests.profilePageDeleteCustomTitle();
+	//Verify the shield icon for registered user  on edit profile pgae
+	//profilePageTests.profilePageShieldIcon();
+	//Verify the tool tip on the shield icon 
+	//profilePageTests.profilePageToolTipShieldIcon();
+	//Verify the shield icon for registered user  on edit profile pgae by the admin
+	//profilePageTests.profilePageShieldIconRegisteruser();
+	//verify with invalid birthday(fututre year)
+	//profilePageTests.profilePageInvalidBirthday();
+	//verify with invalid birthday(future month)
+	//profilePageTests.profilePageInvalidFutureMonth();
+	//verify with enter full name greater then maximum limits(30)
+	//profilePageTests.profilePageVerifyFullName();
+	//verify with edit user icon
+	//profilePageTests.profilePageEdituserIcon();
+	//verify with delete icon
+	profilePageTests.profilePageDeleteIcon();
 	
-
-
+	
+	
 
 	//profilePageTests.profilePageSendFile();	
 	//sending message by message button when message permission is disable from back end

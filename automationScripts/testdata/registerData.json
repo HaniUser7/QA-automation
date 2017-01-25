@@ -149,6 +149,18 @@
         "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
     },
 
+	"validRegis" : {
+    	"uname" : "hani1",
+        "uemail" : "hani1@wt.com",
+        "upass" : "hani1",
+        "fullName" : "20",
+        "imID" : "20",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
+    },
+
 "validInfoRegis" : {
     	"uname" : "hani123",
         "uemail" : "hani123@wt.com",

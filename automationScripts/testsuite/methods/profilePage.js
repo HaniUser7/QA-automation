@@ -556,6 +556,60 @@ profilePageMethod.BackEndSettingsEnableCustomTitle=function(driver , callback) {
 };
 
 
+//----------------------verify by creating a custom profile-field--------------------------------------------
+profilePageMethod.AddShieldCustomField=function(driver , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable delete own post and topic-----------------------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				driver.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"').click();
+ 				});
+				wait.waitForElement('div.tooltipMenu.text a[title="Add profile fields that your users can fill out"]', casper , function(err , isExists) {
+					if(isExists) {
+						
+						driver.evaluate(function() {
+							document.querySelector('div.tooltipMenu.text a[title="Add profile fields that your users can fill out"]').click();
+						});
+						wait.waitForElement('div[align="center"] p[align="right"] a img' , casper , function(err , isExists){
+							if(isExists) {
+								casper.click('div[align="center"] p[align="right"] a img');
+								wait.waitForElement('button[type="submit"]' , casper , function(err , isExists) {
+									if(isExists){
+										casper.sendKeys('input[name="fieldname"]' ,'hell');
+										utils.enableorDisableCheckbox('private',true, casper, function(err) {
+											if(!err)
+												driver.echo('Successfully check private field','INFO');
+										});
+										casper.click('button[type="submit"]');
+										casper.wait(2000 , function(){
+											casper.capture('cap.png');
+
+										});
+	
+									
+									}										
+
+
+								});
+
+							}
+
+						});
+
+
+					}
+				});
+			}
+		});
+	});
+};
+
 
 
 

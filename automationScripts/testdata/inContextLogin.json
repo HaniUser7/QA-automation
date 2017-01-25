@@ -59,6 +59,19 @@
 	"subject" : "test message",
 	"pmessage" : "Hiiiiiiiiiiii"
 	},
+	
+	
+  "validRegis" : {
+	"username" : "hani1",
+	"password" :"hani1",
+	"expectedSuccessMsg" :""
+  },
+
+
+
+
+
+
 
  "signature" : {
 	"Instantmessage":"helle",
@@ -67,6 +80,7 @@
 
 
  }
+
 
 
 
