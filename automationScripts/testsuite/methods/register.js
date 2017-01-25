@@ -2,14 +2,15 @@
 var forumLoginMethod = require('../methods/login.js');
 var json = require('../../testdata/registerData.json');
 var wait = require('../wait.js');
-var utils = require('../utils.js');
+var utils = require('./utils.js');
+var config = require('../../../config/config.json');
 var registerMethod=module.exports = {};
 
 /************************************PRIVATE METHODS***********************************/
 
 //Login To Forum Back End
 
-registerMethod.loginToForumBackEnd = function(driver, test, callback) {
+registerMethod.loginToForumBackEnd = function(driver, callback) {
 		
 	//Click On Login Link 
 	wait.waitForElement('a#navLogin', casper, function(err, isExist) {
@@ -23,7 +24,7 @@ registerMethod.loginToForumBackEnd = function(driver, test, callback) {
 		} else {
 			driver.echo('Login Link Not Found', 'ERROR');
 		}
-		return callback(null)
+		return callback(null);
 	});
 };
 
@@ -41,12 +42,11 @@ var fillDataToLogin = function(data, driver, callback) {
 
 
 //Method For Filling Data In Registration Form
-
 registerMethod.registerToApp = function(data, driver, callback) {
 	driver.fill('form[name="PostTopic"]', {
-		'member' : data.uname,
-		'email': data.uemail,
-		'pw' : data.upass
+		'member' : data.username,
+		'email': data.email,
+		'pw' : data.password
 		
 	}, false);
 	
@@ -88,20 +88,19 @@ registerMethod.registerToApp = function(data, driver, callback) {
 	try {
 		driver.test.assertExists('form[name="PostTopic"] input[name="rules_checkbox"]');
 		utils.enableorDisableCheckbox('rules_checkbox', true, driver, function() {
-			casper.echo("Rules Checkbox Has Been Enabled For User", 'INFO');
+			driver.echo("Rules Checkbox Has Been Enabled For User", 'INFO');
 		});
 	} catch(e) {
 		driver.test.assertDoesntExist('form[name="PostTopic"] input[name="rules_checkbox"]');
 	}
-	/*
-	var actionValue = driver.evaluate(function() {   
+	
+	/*var actionValue = driver.evaluate(function() {   
 		document.querySelector('form[name="PostTopic"]').setAttribute('action', '/register/create_account?apikey=4XXhjFbE6fBhmfFwGWkmjgPIN4UKBFDYdSWGcR4q&type=json');
 		return document.querySelector('form[name="PostTopic"]').getAttribute('action');     
-	});
-	*/
+	});*/
+	
 	driver.test.assertExists('form[name="PostTopic"] button');
 	driver.click('form[name="PostTopic"] button');
-        driver.capture('3434.png');
 	return callback(null);		
 };
 
@@ -122,18 +121,17 @@ registerMethod.verifyErrorMsg = function(errorMessage, expectedErrorMsg, msgTitl
 
 registerMethod.redirectToLogout = function(driver, test, callback) {
 	try {
-		test.assertExists('div.bmessage');
+		driver.test.assertExists('div.bmessage');
 		var message = driver.fetchText('div.bmessage');
 		var successMsg = message.substring(0, message.indexOf('<'));
 		var expectedSuccessMsg = json['validInfo'].expectedSuccessMsg;
-		test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
+		driver.test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
 		driver.echo('Successfully done registration on forum.....', 'INFO');
 
-		
 		//Clicking On 'Back To Category' Link 
-		wait.waitForElement('a[href="/categories"]', casper, function(err, isExist) {
+		wait.waitForElement('small a[href="/categories"]', casper, function(err, isExist) {
 			if(isExist) {
-				driver.click('a[href="/categories"]');
+				driver.click('small a[href="/categories"]');
 				driver.echo('Successfully back to category', 'INFO');
 				forumLoginMethod.logoutFromApp(driver, function(err) {
 				if (!err)
@@ -143,36 +141,32 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		});
 	} catch(e) {
 		try {
-			test.assertExists('#registerEditProfile div[role="alert"]');
+			driver.test.assertExists('#registerEditProfile div[role="alert"]');
 			var errorMessage = driver.fetchText('#registerEditProfile div[role="alert"]');
 			var expectedErrorMsg = "It looks like you already have a forum account!";
+			//driver.echo('........errorMessage : ' +errorMessage+ '\nexpectedErrorMsg : ' +expectedErrorMsg, 'ERROR');
 			driver.test.assert(errorMessage.indexOf(expectedErrorMsg) > -1);
+			//driver.echo('........', 'ERROR');
 			driver.echo('USER ALREADY REGISTERED ON FORUM.....', 'INFO');
-			
 			return callback(null);
 		} catch(e1) {
 			driver.echo('Successfully done registration on forum.....', 'INFO');
-			driver.wait(2000 , function(){
-                                driver.capture('23.png');
 			//Click On Logout Link
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExist) {
 			    if(isExist) {
 					forumLoginMethod.logoutFromApp(driver, function(err) {
 						if (!err)
 							driver.echo('Successfully logout from application', 'INFO');
-                                                         driver.capture('24.png');
 					});
 				}else{
 				  casper.echo('logout link not found');
 				}
 			});
-                    });
 		}
 	}
-       casper.then(function(){
-	
-          return callback(null);
-  });
+	driver.then(function() {
+		return callback(null);
+	});
 };
 
 

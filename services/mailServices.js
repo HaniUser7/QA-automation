@@ -1,7 +1,7 @@
 //This script is responsible for sending mails.
 'use strict';
 var nodemailer = require('nodemailer');
- 
+var fs = require('fs');
 var mailServices = module.exports = {};
 
 //defining SMTP configuration
@@ -19,7 +19,7 @@ mailServices.sendMail = function(emailDetails, callback){
 	// setup e-mail data with unicode symbols 
 	var mailOptions = {
 		"from": 'noresponse@websitetoolbox.com', // sender address 
-		"to": emailDetails.committerEmail, // list of receivers 
+		"to": emailDetails.committerEmail, //'shipra@websitetoolbox.com', list of receivers 
 		"subject": "Forum test result: "+emailDetails.branchName, // Subject line 
 		"text": 'Hello ' + emailDetails.committerName+",\n\n Following is the automation test result: \n"+emailDetails.testResult+"\nPlease find details of the automation test result attached herewith. \n" , // plaintext body 
 		"attachments": emailDetails.attachments //attachments
@@ -34,4 +34,3 @@ mailServices.sendMail = function(emailDetails, callback){
 		return callback();
 	});
 };
-

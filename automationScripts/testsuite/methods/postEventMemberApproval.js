@@ -278,3 +278,4 @@ postEventMemberApprovalMethod.deletePost = function(driver, test, callback) {
 		});
 	});
 };
+

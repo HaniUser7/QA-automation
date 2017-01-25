@@ -2,7 +2,15 @@
 'use strict';
 var forumLoginMethod = module.exports = {};
 var wait=require('../wait.js');
+var config = require('../../../config/config.json');
+forumLoginMethod.jsErrors = [];
 var errorMessage = "";
+
+//Method To Verify JS Errors
+casper.on("page.error", function(msg, trace) {
+	this.echo("Error:    " + msg, "ERROR");
+	forumLoginMethod.jsErrors.push(msg);
+});
 
 // method for login to application by passing username and password
 forumLoginMethod.loginToApp = function(username, password, driver, callback) {
@@ -18,14 +26,16 @@ forumLoginMethod.loginToApp = function(username, password, driver, callback) {
 		try {
 			driver.test.assertExists('form[name="frmLogin"] input[type="submit"]');
 			driver.click('form[name="frmLogin"] input[type="submit"]');
+			return callback(null);
 		} catch(e) {
 			driver.test.assertExists('form[name="frmLogin"] button[type="submit"]');
 			driver.click('form[name="frmLogin"] button[type="submit"]');
+			return callback(null);
 		}
 	} catch(e) {
 		driver.echo("The user is already logged-in.", 'INFO');
+		return callback(null);
 	}	 
-	return callback(null);
 };
 
 
@@ -60,15 +70,3 @@ forumLoginMethod.verifyErrorMsg = function(errorMessage, expectedErrorMsg, msgTi
 	}
 	return callback(null);
 };
-
-
-
-
-
-
-
-
-
-
-
-

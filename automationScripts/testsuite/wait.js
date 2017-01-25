@@ -1,12 +1,13 @@
+// This file includes all methids of wait family
 
 var wait = module.exports = {};
 
 wait.waitForElement = function(element, driver, callback){
 	driver.waitForSelector(element, function success() {
-		driver.echo('Form Selector ' +element+ ' Found', 'INFO');
+		driver.echo('Selector ' +element+ ' Found', 'INFO');
 		return callback(null, true);
 	}, function fail() {
-		driver.echo('Form Selector ' +element+ ' Not Found', 'ERROR');
+		driver.echo('Selector ' +element+ ' Not Found', 'ERROR');
 		return callback(null, false);
 	});
 };
@@ -22,12 +23,9 @@ wait.waitForVisible = function(element, driver, callback){
 	driver.waitUntilVisible(element, function success(){
 		driver.echo('Selector '+ element  +' appears' ,'INFO');
 		return callback(null, true);		
-		},function fail(){
-			driver.echo('Selector ' + element + ' not appears', 'ERROR');
-			return callback(null, false);	
+	},function fail(){
+		driver.echo('Selector ' + element + ' not appears', 'ERROR');
+		return callback(null, false);	
 	});
 };
-
-
-
 
