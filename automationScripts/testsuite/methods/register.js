@@ -10,21 +10,26 @@ var registerMethod=module.exports = {};
 //Login To Forum Back End
 
 registerMethod.loginToForumBackEnd = function(driver, test, callback) {
-		
-	//Click On Login Link 
-	wait.waitForElement('a#navLogin', casper, function(err, isExist) {
-		if(isExist) {
-			driver.click('a#navLogin');
-			driver.echo('Successfully open login form.....', 'INFO');
-			fillDataToLogin(config.backendCred, driver, function(err) {
-				if (!err)
-					driver.echo('Proccessing to login on forum back end....', 'INFO');
-			});
-		} else {
-			driver.echo('Login Link Not Found', 'ERROR');
-		}
-		return callback(null)
-	});
+	try{	
+		driver.test.assertExists('a#navLogin');
+		wait.waitForElement('a#navLogin', casper, function(err, isExist) {
+			if(isExist) {
+				driver.click('a#navLogin');
+				driver.echo('Successfully open login form.....', 'INFO');
+				fillDataToLogin(config.backendCred, driver, function(err) {
+					if (!err)
+						driver.echo('Proccessing to login on forum back end....', 'INFO');
+						return callback(null)
+				});
+			} else {
+				driver.echo('Login Link Not Found', 'ERROR');
+			}
+			
+		});
+	}catch(e){
+	    driver.test.assertDoesntExist('ul.nav.pull-right span.caret');
+		return callback(null);
+	}
 };
 
 

@@ -15,30 +15,15 @@ var errorMessage = "";
 //1.Test case for create register user
 composeTopicTest.createRegisterUser= function() {
        
-	casper.then(function(){  
-		
-		//backend setting in createCategories 
-		casper.then(function(){
-			casper.echo(' ****   1.Method createCategories              ', 'INFO');
-			casper.echo('************************************************', 'INFO');
-			 composeTopicMethod.createCategories(casper, casper.test, function(err) {
-				if(!err){
-					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
-				}
-			});
-		});
+	casper.then(function(){  /* Uncessary use of then*/
 		
 		//backend setting in captchaRegistration
 		casper.then(function(){
 			casper.echo(' ****   1.Method captchaRegistration            ', 'INFO');
 			casper.echo('************************************************', 'INFO');
-			 composeTopicMethod.captchaRegistration(casper, casper.test, function(err) {
+			composeTopicMethod.captchaRegistration(casper, casper.test, function(err) {
 				if(!err){
 					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -56,17 +41,13 @@ composeTopicTest.createRegisterUser= function() {
 			registerMethod.registerToApp(data['validInfoRegister'], casper, function(err) {
 				if(!err) {
 					casper.echo('Processing to registration on forum.....', 'INFO');
-					wait.waitForTime(3000,casper,function(err){
+					casper.wait(3000,function(){
 						registerMethod.redirectToLogout(casper, casper.test, function(err) {
 						    if(!err) {
 								casper.echo('User logout successfully', 'ERROR');
-							}else {
-								casper.echo('Error : '+err, 'ERROR');
 							}
 						});
 					});
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -76,7 +57,7 @@ composeTopicTest.createRegisterUser= function() {
 			casper.echo('***************************************************', 'INFO');
 			casper.echo('1.2 register user(backend enable for register user)', 'INFO');
 			casper.echo('***************************************************', 'INFO');
-			composeTopicMethod.enableUserRegister('rajan41',casper,function(){
+			composeTopicMethod.enableUserRegister('rajan41', casper, function(){
 				casper.echo('enableUserRegister working', 'INFO');
 			});
 		});
@@ -87,34 +68,30 @@ composeTopicTest.createRegisterUser= function() {
 //2.Test case for create admin user
 composeTopicTest.createAdminUser= function() {
        
-	casper.then(function(){  
+	casper.then(function(){  /* Uncessary use of then*/
 
 		//2.1 Test case for create registration for Admin user
-                casper.then(function(){  
+        casper.then(function(){  /* Uncessary use of then*/
 			casper.thenOpen(config.url, function() {
 				casper.echo('*******************************************', 'INFO');
 				casper.echo('2.1 Admin user(registration for Admin user)', 'INFO');
 				casper.echo('*******************************************', 'INFO');
-				wait.waitForTime(2000,casper,function(){
+				casper.wait(2000,function(){/* Uncessary use of wait*/
 					wait.waitForElement('a[href="/register/register"]', casper, function(err, isExist) {
 						if(!err){
 							if(isExist) {
 								casper.test.assertExists('a[href="/register/register"]');
 								casper.click('a[href="/register/register"]');
 								casper.echo('Successfully open register form.....', 'INFO');
-								wait.waitForTime(3000,casper,function(){
+								casper.wait(3000,function(){
 									registerMethod.registerToApp(data['validInfoAdmin'], casper, function(err) {
 										if(!err) {
 											casper.echo('Processing to registration on forum.....', 'INFO');
 											registerMethod.redirectToLogout(casper, casper.test, function(err) {
 												if(!err) {
 													casper.echo('User logout successfully', 'INFO');
-												}else {
-													casper.echo('Error : '+err, 'ERROR');
 												}
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});
 								});
@@ -125,14 +102,14 @@ composeTopicTest.createAdminUser= function() {
 					});	
 				});
 			});
-                });
+        });
 
 		//2.2 Test case for backend setting  for enable user as  Admin user
 		casper.then(function(){
 			casper.echo('*********************************************', 'INFO');
 			casper.echo('1.2 Admin user(backend enable for Admin user)', 'INFO');
 			casper.echo('*********************************************', 'INFO');
-			composeTopicMethod.enableUserAdmin('sangita',casper,function(){
+			composeTopicMethod.enableUserAdmin('sangita', casper, function(){
 				casper.echo('enableUser working', 'INFO');
 			});
 		});
@@ -140,6 +117,31 @@ composeTopicTest.createAdminUser= function() {
 	});
 }
 
+
+//3.Test case for create register user
+composeTopicTest.backendNeed= function() {
+       
+	casper.then(function(){  /* Uncessary use of then*/
+		
+		casper.then(function(){ 
+		    casper.echo(' ****   1.categories          ', 'INFO');
+			composeTopicMethod.createCategories('categories2',casper,casper.test,function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
+					}
+			});
+		});
+	
+		casper.then(function(){ 
+			casper.echo(' ****   2.categories          ', 'INFO');
+			composeTopicMethod.createCategories('categories1',casper,casper.test,function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod captchaRegistration working', 'INFO');
+					}
+			});
+		});
+	});
+}
 
 	
 /**************************** Test case for composeTopic *********************/
@@ -156,31 +158,29 @@ composeTopicTest.addNewTopicSelectingCategory= function() {
 			forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 				if(!err) {
 					casper.echo('login by valid username and password and verify error message', 'INFO');
-                                        wait.waitForTime(2000,casper,function(){
+                    casper.wait(2000,function(){
 						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
 							if(!err){
 								if(isExist) {
 									casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000,casper,function(){
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-														casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
@@ -188,9 +188,7 @@ composeTopicTest.addNewTopicSelectingCategory= function() {
 								}
 							}
 						});
-                                        });		  
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
+                    });		  
 				}
 			});
 		});
@@ -199,7 +197,7 @@ composeTopicTest.addNewTopicSelectingCategory= function() {
 
 //2.test case for Add New Topic with hindi text and verify message
 composeTopicTest.addNewTopicHindiText= function() {
-	casper.then(function(){
+	casper.then(function(){/* Uncessary use of then*/
 		casper.thenOpen(config.url, function() {
 			casper.echo('                   case-2                                      ', 'INFO');
 			casper.echo(' test case for Add New Topic with hindi text and verify message', 'INFO');
@@ -214,24 +212,23 @@ composeTopicTest.addNewTopicHindiText= function() {
 								casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 								composeTopicMethod.startTopic(true,false,false,data['TopicHindiMessage'],casper,function(err){
 									if(!err){
-										wait.waitForTime(3000 , casper , function(err) {
-											try{
-												casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-												var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-												casper.echo('subject :'+sub,'INFO');													
-											}catch(e){
-												casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-											}
-											forumLoginMethod.logoutFromApp(casper, function(err){
-												if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-												}else {
-													casper.echo('Error : '+err, 'ERROR');
+										wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+										    if(!err){
+												if(isExist) {
+													
+													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+													casper.echo('subject :'+sub,'INFO');													
+													forumLoginMethod.logoutFromApp(casper, function(err){
+														if (!err){
+															casper.echo('Successfully logout from application', 'INFO');
+														}
+													});
+											    }else{
+													casper.echo('Start New Topic link Found', 'ERROR');
 												}
-											});
+											}													
 										});
-									}else {
-										casper.echo('Error : '+err, 'INFO');
 									}
 								});						   
 							}else{
@@ -239,8 +236,6 @@ composeTopicTest.addNewTopicHindiText= function() {
 							}
 						}
 					});		  
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -249,7 +244,7 @@ composeTopicTest.addNewTopicHindiText= function() {
 
 //3.test case for Verify Post preview with entered message
 composeTopicTest.postPreviewEnteredMessage= function() {
-	casper.then(function(){
+	casper.then(function(){/* Uncessary use of then*/
 		casper.thenOpen(config.url, function() {
 			casper.echo('                   case-3                    ', 'INFO');
 			casper.echo(' test case for Verify Post preview with entered message', 'INFO');
@@ -273,7 +268,7 @@ composeTopicTest.postPreviewEnteredMessage= function() {
 									casper.waitForSelector('#all_forums_dropdown', function success() {
 										casper.click('#all_forums_dropdown');
 										casper.fill('form[name="PostTopic"]',{
-											'forum' : 'General'
+											'forum' : 'categories1'
 										},false);
 										casper.then(function() {
 											casper.click('#previewpost_sbt');
@@ -282,15 +277,13 @@ composeTopicTest.postPreviewEnteredMessage= function() {
 												return element.innerHTML;
 											});
 											casper.echo('post_message :' +res,'INFO');
-                                                                                        wait.waitForTime(3000 , casper , function(err) {
+                                            casper.wait(3000 ,function() {
 												forumLoginMethod.logoutFromApp(casper, function(err){
 													if (!err){
-														casper.echo('Successfully logout from application', 'ERROR');
-													}else {
-													        casper.echo('Error : '+err, 'ERROR');
+														casper.echo('Successfully logout from application', 'INFO');
 													}
 												});
-                                                                                        });
+                                            });
 										});
 									}, function fail() {
 										casper.waitForSelector('#previewpost_sbt',function success() {							
@@ -308,8 +301,6 @@ composeTopicTest.postPreviewEnteredMessage= function() {
 							}
 						}
 					});		  
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 			
@@ -319,7 +310,7 @@ composeTopicTest.postPreviewEnteredMessage= function() {
 
 //4.test case for Verify Post preview with image of entered message
 composeTopicTest.postPreviewImage= function() {
-	casper.then(function(){
+	casper.then(function(){/* Uncessary use of then*/
 		casper.thenOpen(config.url, function() {
 			casper.echo('                   case-4                        ', 'INFO');
 			casper.echo(' Verify Post preview with image of entered message', 'INFO');
@@ -342,7 +333,7 @@ composeTopicTest.postPreviewImage= function() {
 									casper.waitForSelector('#all_forums_dropdown', function success() {
 										casper.click('#all_forums_dropdown');
 										casper.fill('form[name="PostTopic"]',{
-											'forum' : 'General'
+											'forum' : 'categories1'
 										},false);
 										casper.then(function() {
 											casper.click('#previewpost_sbt');
@@ -368,16 +359,12 @@ composeTopicTest.postPreviewImage= function() {
 							}
 						} 
 					});		  
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 			casper.then(function(){
 			 	forumLoginMethod.logoutFromApp(casper, function(err){
 					if (!err){
 						casper.echo('Successfully logout from application', 'INFO');
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -402,7 +389,6 @@ composeTopicTest.errorMessageMoreCharecters= function() {
 							    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 								composeTopicMethod.startTopic(true,false,false,data['topicMoreMessage'],casper,function(err){
 									if(!err){
-										//casper.echo('composeTopicMethod.startTopic');
 										var res = casper.evaluate(function(){
 											var element =document.querySelector('div.alert.alert-danger.text-center');
 											return element.innerHTML;
@@ -411,23 +397,15 @@ composeTopicTest.errorMessageMoreCharecters= function() {
 										forumLoginMethod.logoutFromApp(casper, function(err){
 											if (!err){
 												casper.echo('Successfully logout from application', 'INFO');
-											}else {
-												casper.echo('Error : '+err, 'ERROR');
 											}
 										});
-									}else {
-										casper.echo('Error : '+err, 'ERROR');
 									}
 								});						   
 							}else{
 								 casper.echo('Start New Topic link Found', 'ERROR');
 							}
-						}else {
-							casper.echo('Error : '+err, 'ERROR');
 						}
 					});		  
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -450,8 +428,6 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 			composeTopicMethod.backendSettingCompostTopic(casper, casper.test, function(err) {
 				if(!err){
 				   casper.echo('composeTopicMethod backendSettingCompostTopic working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -462,8 +438,6 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 			composeTopicMethod.compostTopic(true,casper, casper.test, function(err) {
 				if(!err){
 				   casper.echo('composeTopicMethod backendSettingCompostTopic working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -486,27 +460,25 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 								    wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
 										if(!err){
 											if(isExist) {
-											   casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+											    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 												composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 													if(!err){
-														  wait.waitForTime(2000 , casper , function(err) {
-															try{
-																casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-																var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-																casper.echo('subject :'+sub,'INFO');													
-															}catch(e){
-																casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-															}
-															forumLoginMethod.logoutFromApp(casper, function(err){
-																if (!err){
-																casper.echo('Successfully logout from application', 'INFO');
-																}else {
-																	casper.echo('Error : '+err, 'ERROR');
+														wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+															if(!err){
+																if(isExist) {
+																	casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+																	var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+																	casper.echo('subject :'+sub,'INFO');													
+																	forumLoginMethod.logoutFromApp(casper, function(err){
+																		if (!err){
+																			casper.echo('Successfully logout from application', 'INFO');
+																		}
+																	});
+																}else{
+																	casper.echo('Message not be generated', 'ERROR');
 																}
-															});
+															}													
 														});
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
 													}
 												});						   
 											}else{
@@ -519,8 +491,6 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 								}
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -539,33 +509,30 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 						wait.waitForElement('div#topics ul li:nth-child(2) a', casper, function(err, isExist) {
 							if(!err){
 								if(isExist) {
-								 
-								  casper.test.assertExists('div#topics ul li:nth-child(2) a');
-								  casper.click('div#topics ul li:nth-child(2) a');
-								  wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
+									casper.test.assertExists('div#topics ul li:nth-child(2) a');
+									casper.click('div#topics ul li:nth-child(2) a');
+									wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
 										if(!err){
 											if(isExist) {
 											    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 												composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 													if(!err){
-														 wait.waitForTime(2000 , casper , function(err) {
-															try{
-																casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-																var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-																casper.echo('subject :'+sub,'INFO');													
-															}catch(e){
-																casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-															}
-															forumLoginMethod.logoutFromApp(casper, function(err){
-																if (!err){
-																casper.echo('Successfully logout from application', 'INFO');
-																}else {
-																	casper.echo('Error : '+err, 'ERROR');
+														wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+															if(!err){
+																if(isExist) {
+																	casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+																	var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+																	casper.echo('subject :'+sub,'INFO');													
+																	forumLoginMethod.logoutFromApp(casper, function(err){
+																		if (!err){
+																			casper.echo('Successfully logout from application', 'INFO');
+																		}
+																	});
+																}else{
+																	casper.echo('Message not be generated', 'ERROR');
 																}
-															});
+															}													
 														});
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
 													}
 												});						   
 											}else{
@@ -578,8 +545,6 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 								}
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -593,8 +558,6 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 			composeTopicMethod.topicViewSetting(casper, casper.test, function(err) {
 				if(!err){
 					casper.echo('topicViewSetting working', 'INFO');
-				}else {
-				        casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -625,7 +588,7 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 												'name' : 'sahil',
 												'email' : 'sahil@gmail.com',
 												'subject':'For Guest',
-												'forum' : 'General'
+												'forum' : 'categories1'
 											},false);
 											casper.then(function() {
 												casper.click('#post_submit');
@@ -668,22 +631,22 @@ composeTopicTest.compostTopicListingPage= function() {
 								    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-									            try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
@@ -692,8 +655,6 @@ composeTopicTest.compostTopicListingPage= function() {
 								
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -715,24 +676,22 @@ composeTopicTest.compostTopicListingPage= function() {
 								    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'INFO');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'INFO');
 										}
 									});						   
 								}else{
@@ -740,8 +699,6 @@ composeTopicTest.compostTopicListingPage= function() {
 								}
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'INFO');
 					}
 				});
 			});
@@ -768,7 +725,7 @@ composeTopicTest.compostTopicListingPage= function() {
 									'name' : 'sahil',
 									'email' : 'sahil@gmail.com',
 									'subject':'topic-data',
-									'forum' : 'General'
+									'forum' : 'categories1'
 								},false);
 								casper.then(function() {
 									casper.click('#post_submit');
@@ -777,8 +734,6 @@ composeTopicTest.compostTopicListingPage= function() {
 						}else{
 							 casper.echo('Start New Topic link Found', 'ERROR');
 						}
-					}else {
-						casper.echo('Error : '+err, 'INFO');
 					}
 				});	
 			});
@@ -808,24 +763,22 @@ composeTopicTest.compostTopicLatestTopicPage= function() {
 								    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
@@ -833,8 +786,6 @@ composeTopicTest.compostTopicLatestTopicPage= function() {
 								}
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -856,25 +807,22 @@ composeTopicTest.compostTopicLatestTopicPage= function() {
 								    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
@@ -882,8 +830,6 @@ composeTopicTest.compostTopicLatestTopicPage= function() {
 								}
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -910,14 +856,14 @@ composeTopicTest.compostTopicLatestTopicPage= function() {
 									'name' : 'Darpan',
 									'email' : 'Darpan@gmail.com',
 									'subject':'topic-data',
-									'forum' : 'General'
+									'forum' : 'categories1'
 								},false);
 								casper.then(function() {
 									casper.click('#post_submit');
 								});
 							});
 						}else{
-							 casper.echo('Start New Topic link Found', 'ERROR');
+						    casper.echo('Start New Topic link Found', 'ERROR');
 						}
 					}
 				});	
@@ -934,13 +880,11 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
          
 		  //9.test case for Verify Compose Topic when there is no topic available(Delete topic)
 		casper.then(function(){
-			  composeTopicMethod.deleteTopic(casper,function(err){
-					if (!err){
-					     casper.echo('deleteTopic working', 'INFO');
-				    }else {
-						casper.echo('Error : '+err, 'ERROR');
-					}
-				});
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}
+			});
 		});
 		 
 		//9(a).test case for Verify Compose Topic when there is no topic available(Admin topic)
@@ -953,31 +897,29 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-						 wait.waitForTime(2000 , casper , function(err) {   
-							 wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
+						casper.wait(2000, function() {   
+							wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
 								if(!err){
 									if(isExist) {
 										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 										composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 											if(!err){
-												wait.waitForTime(2000 , casper , function(err) {
-													try{
-														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-														casper.echo('subject :'+sub,'INFO');													
-													}catch(e){
-														casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-													}
-													forumLoginMethod.logoutFromApp(casper, function(err){
-														if (!err){
-															casper.echo('Successfully logout from application', 'INFO');
-														}else {
-															casper.echo('Error : '+err, 'ERROR');
+												wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+													if(!err){
+														if(isExist) {
+															casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+															var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+															casper.echo('subject :'+sub,'INFO');													
+															forumLoginMethod.logoutFromApp(casper, function(err){
+																if (!err){
+																	casper.echo('Successfully logout from application', 'INFO');
+																}
+															});
+														}else{
+															casper.echo('Message not be generated', 'ERROR');
 														}
-													});
+													}													
 												});
-											}else {
-												casper.echo('Error : '+err, 'ERROR');
 											}
 										});						   
 									}else {
@@ -986,8 +928,6 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 								}
 							});
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -995,13 +935,11 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 		  
 		//9.test case for Verify Compose Topic when there is no topic available(Delete topic)
 		casper.then(function(){
-			  composeTopicMethod.deleteTopic(casper,function(err){
-					if (!err){
-					     casper.echo('deleteTopic working', 'INFO');
-				    }else {
-						casper.echo('Error : '+err, 'ERROR');
-					}
-				});
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					 casper.echo('deleteTopic working', 'INFO');
+				}
+			});
 		});
 		
 		//9(b).test case for Verify Compose Topic when there is no topic available(Registered User)
@@ -1017,28 +955,25 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
 							if(!err){
 								if(isExist) {
-								   casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
+								    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
@@ -1046,8 +981,6 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 								}
 							}
 						});		  
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1055,13 +988,11 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 		
 		 //9.test case for Verify Compose Topic when there is no topic available(Delete topic)
 		casper.then(function(){
-			  composeTopicMethod.deleteTopic(casper,function(err){
-					if (!err){
-					    casper.echo('deleteTopic working', 'INFO');
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
-					}
-				});
+			composeTopicMethod.deleteTopic(casper,function(err){
+				if (!err){
+					casper.echo('deleteTopic working', 'INFO');
+				}
+			});
 		});
 		
 		//9(c).test case for Verify Compose Topic when there is no topic available(For Guest)
@@ -1074,8 +1005,7 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 				wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary', casper, function(err, isExist) {
 					if(!err){
 						if(isExist) {
-						  casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						   
+						    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 							casper.waitForSelector('div.post-body.pull-left',function success() { 
 							   	casper.withFrame('message_ifr', function() {
 									casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
@@ -1086,7 +1016,7 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 									'name' : 'hellio',
 									'email' : 'hellio@gmail.com',
 									'subject':'top-data',
-									'forum' : 'General'
+									'forum' : 'categories1'
 								},false);
 								casper.then(function() {
 									casper.click('#post_submit');
@@ -1106,7 +1036,7 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 //10.test case for Verify Preview Post of Compose Topic(For Guest/Registered User/Admin-preview)
 composeTopicTest.previewPostComposeTopics= function() {
    
-   casper.then(function(){	
+    casper.then(function(){	
      
 		//10(a).test case for Verify Preview Post of Compose Topic(For Admin-preview)
 	    casper.then(function(){
@@ -1117,7 +1047,7 @@ composeTopicTest.previewPostComposeTopics= function() {
 				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 					if(!err) {
-					    wait.waitForTime(4000 , casper , function(err) {
+					     casper.wait(4000 , function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 								casper.sendKeys('input[name="subject"]','raj-Admin',{reset:true});								
@@ -1130,23 +1060,26 @@ composeTopicTest.previewPostComposeTopics= function() {
 								casper.waitForSelector('#all_forums_dropdown', function success() {
 									casper.click('#all_forums_dropdown');
 									casper.fill('form[name="PostTopic"]',{
-										'forum' : 'General'
+										'forum' : 'categories1'
 									},false);
 									casper.then(function() {
-										casper.click('#previewpost_sbt');
-										 wait.waitForTime(3000 , casper , function(err) {		
-                              								  
-											//casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-											var res = casper.evaluate(function(){
-												var element =document.querySelector('span#first_coloumn_ div div div span');
-												return element.innerHTML;
+										 casper.click('#previewpost_sbt');
+										 	wait.waitForElement('span#first_coloumn_ div div div span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('span#first_coloumn_ div div div span');
+														var sub = casper.fetchText('span#first_coloumn_ div div div span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
+													}
+                                                }													
 											});
-											casper.echo('post_message :' +res,'INFO');
-											forumLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-												casper.echo('Successfully logout from application', 'INFO');
-											});
-										 });
 									});
 								}, function fail() {
 									casper.waitForSelector('#previewpost_sbt',function success() {							
@@ -1160,8 +1093,6 @@ composeTopicTest.previewPostComposeTopics= function() {
 								casper.echo('Unable to Open Form To Start Topic','ERROR');
 							});	
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1177,9 +1108,7 @@ composeTopicTest.previewPostComposeTopics= function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					
-					    wait.waitForTime(3000 , casper , function(err) {
-							
+					    casper.wait(3000 ,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 								casper.sendKeys('input[name="subject"]','raj-registerUser',{reset:true});								
@@ -1187,17 +1116,15 @@ composeTopicTest.previewPostComposeTopics= function() {
 									casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 									casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 									casper.sendKeys('#tinymce','social-issue-registerUser');
-								
 								});
 								casper.waitForSelector('#all_forums_dropdown', function success() {
 									casper.click('#all_forums_dropdown');
 									casper.fill('form[name="PostTopic"]',{
-										'forum' : 'General'
+										'forum' : 'categories1'
 									},false);
 									casper.then(function() {
 										casper.click('#previewpost_sbt');
-										 wait.waitForTime(3000 , casper , function(err) {
-										
+										casper.wait(3000 ,function() {
 											//casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
 											var res = casper.evaluate(function(){
 												var element =document.querySelector('span#first_coloumn_ div div div span');
@@ -1223,8 +1150,6 @@ composeTopicTest.previewPostComposeTopics= function() {
 								casper.echo('Unable to Open Form To Start Topic','ERROR');
 							});	
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1244,24 +1169,21 @@ composeTopicTest.previewPostComposeTopics= function() {
 							casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 							casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 							casper.sendKeys('#tinymce','social-issue-registerUser');
-							
 						});
 						casper.waitForSelector('#all_forums_dropdown', function success() {
 							casper.click('#all_forums_dropdown');
 							casper.fill('form[name="PostTopic"]',{
-								'forum' : 'General'
+								'forum' : 'categories1'
 							},false);
 							casper.then(function() {
 								casper.click('#previewpost_sbt');
-								wait.waitForTime(2000 , casper , function(err) {
-								
+								casper.wait(2000 ,function() {
 									//casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
 									var res = casper.evaluate(function(){
 										var element =document.querySelector('span#first_coloumn_ div div div span');
 										return element.innerHTML;
 									});
 									casper.echo('post_message :' +res,'INFO');
-								
 								 });
 							});
 						}, function fail() {
@@ -1296,7 +1218,7 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 					if(!err) {
-					    wait.waitForTime(4000 , casper , function(err) {
+					    casper.wait(4000 ,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 								casper.sendKeys('input[name="subject"]','raj-Admin',{reset:true});								
@@ -1308,11 +1230,11 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 								casper.waitForSelector('#all_forums_dropdown', function success() {
 									casper.click('#all_forums_dropdown');
 									casper.fill('form[name="PostTopic"]',{
-										'forum' : 'General'
+										'forum' : 'categories1'
 									},false);
 									casper.then(function() {
 										casper.click('#previewpost_sbt');
-										 wait.waitForTime(3000 , casper , function(err) {										 
+										casper.wait(3000 ,function() {										 
 										    var res = casper.fetchText('div.alert.alert-danger.text-center');
 											casper.echo('post_message :' +res,'INFO');
 											forumLoginMethod.logoutFromApp(casper, function(err){
@@ -1333,8 +1255,6 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 								casper.echo('Unable to Open Form To Start Topic','ERROR');
 							});	
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1350,8 +1270,7 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					    wait.waitForTime(3000,casper,function() {
-						   
+					    casper.wait(3000,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 								casper.sendKeys('input[name="subject"]','raj-registerUser',{reset:true});								
@@ -1363,20 +1282,16 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 								casper.waitForSelector('#all_forums_dropdown', function success() {
 									casper.click('#all_forums_dropdown');
 									casper.fill('form[name="PostTopic"]',{
-										'forum' : 'General'
+										'forum' : 'categories1'
 									},false);
 									casper.then(function() {
 										casper.click('#previewpost_sbt');
-										 wait.waitForTime(2000 , casper , function(err) {
-										 
+										casper.wait(2000 ,function() {
 											var res = casper.fetchText('div.alert.alert-danger.text-center');
 											casper.echo('post_message :' +res,'INFO');
 											forumLoginMethod.logoutFromApp(casper, function(err){
 												if (!err)
 												casper.echo('Successfully logout from application', 'INFO');
-												wait.waitForTime(4000 , casper , function(err) {
-												
-												});
 											});
 										 });
 									});
@@ -1393,8 +1308,6 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 								casper.echo('Unable to Open Form To Start Topic','ERROR');
 							});	
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1421,11 +1334,11 @@ composeTopicTest.previewPostComposeTopicMessage= function() {
 					casper.waitForSelector('#all_forums_dropdown', function success() {
 						casper.click('#all_forums_dropdown');
 						casper.fill('form[name="PostTopic"]',{
-							'forum' : 'General'
+							'forum' : 'categories1'
 						},false);
 						casper.then(function() {
 							casper.click('#previewpost_sbt');
-							wait.waitForTime(2000 , casper , function(err) {
+							casper.wait(2000 , function() {
 								 var res = casper.fetchText('div.alert.alert-danger.text-center');
 								 casper.echo('post_message :' +res,'INFO');
 							 });
@@ -1461,7 +1374,7 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 					if(!err) {
-					    wait.waitForTime(4000 , casper , function(err) {
+					    casper.wait(4000 ,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 								casper.sendKeys('input[name="subject"]','raj-Admin',{reset:true});								
@@ -1477,7 +1390,7 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 									},false);
 									casper.then(function() {
 										casper.click('#previewpost_sbt');
-										 wait.waitForTime(3000 , casper , function(err) {										 
+										casper.wait(3000 ,function() {										 
 										    var res = casper.fetchText('div.alert.alert-danger.text-center');
 											casper.echo('post_message :' +res,'INFO');
 											forumLoginMethod.logoutFromApp(casper, function(err){
@@ -1498,8 +1411,6 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 								casper.echo('Unable to Open Form To Start Topic','ERROR');
 							});	
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1515,9 +1426,7 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-				
-					    wait.waitForTime(3000 , casper , function(err) {
-							
+					    casper.wait(3000 , function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 								casper.sendKeys('input[name="subject"]','raj-registerUser',{reset:true});								
@@ -1534,15 +1443,13 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 									},false);
 									casper.then(function() {
 										casper.click('#previewpost_sbt');
-										 wait.waitForTime(2000 , casper , function(err) {
+										casper.wait(2000 ,function() {
 											var res = casper.fetchText('div.alert.alert-danger.text-center');
 											casper.echo('post_message :' +res,'INFO');
 											forumLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-												casper.echo('Successfully logout from application', 'INFO');
-												wait.waitForTime(4000 , casper , function(err) {
-												
-												});
+												if (!err){
+												    casper.echo('Successfully logout from application', 'INFO');
+												}
 											});
 										 });
 									});
@@ -1559,8 +1466,6 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 								casper.echo('Unable to Open Form To Start Topic','ERROR');
 							});	
                         });						
-					}else {
-						casper.echo('Error : '+err, 'ERROR');
 					}
 				});
 			});
@@ -1591,8 +1496,7 @@ composeTopicTest.composeTopicWithoutSelectingAnyCategory= function() {
 						},false);
 						casper.then(function() {
 							casper.click('#previewpost_sbt');
-							wait.waitForTime(2000 , casper, function(err) {
-							   
+							casper.wait(2000 , function() {
 								 var res = casper.fetchText('div.alert.alert-danger.text-center');
 								 casper.echo('post_message :' +res,'INFO');
 							 });
@@ -1632,8 +1536,7 @@ composeTopicTest.composePostOptions= function() {
 				casper.echo('********************************************', 'INFO');
 				casper.echo('Title of the page :' +this.getTitle(), 'INFO');  
 				casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
-				wait.waitForTime(2000 , casper , function() {
-			
+				casper.wait(2000 ,function() {
 				   try {
 					 casper.test.assertExists('#fancy_attach_');
 					 casper.test.assertExists('#insert_image_dialog_');
@@ -1655,10 +1558,9 @@ composeTopicTest.composePostOptions= function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					    wait.waitForTime(3000 , casper , function() {
-						    
+					    casper.wait(3000 ,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
-							wait.waitForTime(2000 , casper , function() {
+							casper.wait(2000 , function() {
 							    try {
 									 casper.test.assertExists('#fancy_attach_');
 									 casper.test.assertExists('#insert_image_dialog_');
@@ -1666,7 +1568,7 @@ composeTopicTest.composePostOptions= function() {
 									casper.test.assertDoesntExist('#fancy_attach_');
 									casper.test.assertDoesntExist('#insert_image_dialog_');
 								}
-								wait.waitForTime(3000 , casper , function() {
+								casper.wait(3000 ,function() {
 									forumLoginMethod.logoutFromApp(casper, function(err){
 										if (!err)
 										casper.echo('Successfully logout from application', 'INFO');
@@ -1682,16 +1584,16 @@ composeTopicTest.composePostOptions= function() {
 		//13(c).Test case for Verify Compose Post Options(For Registered User)
 		casper.then(function(){
 			casper.thenOpen(config.url, function() {
-				casper.echo('                   case-13-b(Registered User)            ', 'INFO');
+				casper.echo('                   case-13-c(Registered User)            ', 'INFO');
 				casper.echo('Verify Compose Topic without selecting any category(For Registered User)', 'INFO');
 				casper.echo('********************************************', 'INFO');
 				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					    wait.waitForTime(3000 , casper , function(err) {
+					    casper.wait(3000 ,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
-							wait.waitForTime(2000 , casper , function(err) {
+							casper.wait(2000 ,function() {
 							    try {
 									 casper.test.assertExists('#fancy_attach_');
 									 casper.test.assertExists('#insert_image_dialog_');
@@ -1702,7 +1604,7 @@ composeTopicTest.composePostOptions= function() {
 								casper.then(function(){
 									forumLoginMethod.logoutFromApp(casper, function(err){
 										if (!err)
-										casper.echo('Successfully logout from application', 'ERROR');
+										casper.echo('Successfully logout from application', 'INFO');
 									});
 								});
 							});
@@ -1731,8 +1633,7 @@ composeTopicTest.composePostOptions= function() {
 				casper.echo('Title of the page :' +this.getTitle(), 'INFO');
 				forumLoginMethod.loginToApp(json['ValidCredential'].username, json['ValidCredential'].password, casper, function(err){
 					if(!err) {
-					 
-					    wait.waitForTime(4000 , casper , function(err) {
+					    casper.wait(4000 ,function() {
 							casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
 							casper.waitForSelector('div.post-body.pull-left',function success() {    							
 							    try {
@@ -1774,13 +1675,11 @@ composeTopicTest.startNewTopicPermissionDisabled= function() {
 			if(!err){
 				casper.thenOpen(config.url, function() { 
 					casper.click('a.pull-right.btn.btn-uppercase.btn-primary ');
-					wait.waitForTime(3000 , casper , function(err) {								
+					casper.wait(3000 ,function() {								
 						var res = casper.fetchText('#myModalLabel');
 						casper.echo('message :' +res,'INFO');
 					});
 				});
-			}else {
-				casper.echo('Error : '+err, 'INFO');
 			}
 		});
 	});
@@ -1796,8 +1695,6 @@ composeTopicTest.listingPageDisabledOneCateogry= function() {
 			composeTopicMethod.composeTopicPermission(true,casper,casper.test, function(err) {
 				if(!err){
 					 casper.echo(' composeTopicPermission working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -1808,8 +1705,6 @@ composeTopicTest.listingPageDisabledOneCateogry= function() {
 			  composeTopicMethod.listingPageDisabledOneCateogry('Unregistered / Not Logged In','post_threads_20237800',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -1832,7 +1727,7 @@ composeTopicTest.listingPageDisabledOneCateogry= function() {
 									if(isExist) {
 										casper.test.assertExists('a.pull-right.btn.btn-uppercase.btn-primary.signupLogin');
 										casper.click('a.pull-right.btn.btn-uppercase.btn-primary.signupLogin');
-										wait.waitForTime(2000 , casper , function(err) {								
+										casper.wait(2000 ,function() {								
 											var res = casper.fetchText('#myModalLabel');
 											casper.echo('message :' +res,'INFO');
 										});																						
@@ -1895,7 +1790,6 @@ composeTopicTest.listingPageDisabledOneCateogry= function() {
 				});
 			});
 		});
-	
 	});
 	  
 }
@@ -1910,8 +1804,6 @@ composeTopicTest.dropdownDisabledOneCateogry = function() {
 			composeTopicMethod.composeTopicPermission(true,casper,casper.test, function(err) {
 				if(!err){
 					 casper.echo('Method composeTopicPermission working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -1922,8 +1814,6 @@ composeTopicTest.dropdownDisabledOneCateogry = function() {
 			  composeTopicMethod.listingPageDisabledOneCateogry('Unregistered / Not Logged In','post_threads_20237800',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -1953,9 +1843,8 @@ composeTopicTest.dropdownDisabledOneCateogry = function() {
 									'forum' : 'Newss'
 								},false);
 								casper.then(function() {
-								     
 									casper.click('#post_submit');
-									wait.waitForTime(2000, casper, function() { 
+									casper.wait(2000, function() { 
 										var res = casper.fetchText('div.alert.alert-danger.text-center');
 										casper.echo('message :' +res,'INFO');
 									});
@@ -1993,7 +1882,7 @@ composeTopicTest.dropdownDisabledOneCateogry = function() {
 									'name' : 'darpan',
 									'email' : 'sahil@gmail.com',
 									'subject':'topic-data',
-									'forum' : 'General'
+									'forum' : 'categories1'
 								},false);
 								casper.then(function() {
 									casper.click('#post_submit');
@@ -2037,8 +1926,7 @@ composeTopicTest.composePostRegisterUser = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-						wait.waitForTime(3000, casper, function() {
-                     
+						casper.wait(3000, function() {
 							var grpName = casper.evaluate(function() {
 							     var x3 = document.querySelector('div#topics a').getAttribute('data-original-title');
 								return x3;
@@ -2050,7 +1938,7 @@ composeTopicTest.composePostRegisterUser = function() {
 							});
 					    });			  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2066,21 +1954,21 @@ composeTopicTest.composePostRegisterUser = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-						wait.waitForTime(2000, casper, function() {
+						casper.wait(2000, function() {
 							var grpName = casper.evaluate(function() {
 								var id = document.querySelector('a.pull-right.btn.btn-uppercase.btn-primary ').getAttribute('data-original-title');
 								return id;
 							});
 							casper.echo('message :'+grpName ,'INFO');
-                                                        wait.waitForTime(2000, casper, function() {
+                            casper.wait(2000,function() {
 								forumLoginMethod.logoutFromApp(casper, function(err){
 									if (!err)
-									         casper.echo('Successfully logout from application', 'INFO');
+									     casper.echo('Successfully logout from application', 'INFO');
 								});
-                                                        });
+                            });
 					    });			  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2096,7 +1984,7 @@ composeTopicTest.composePostRegisterUser = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-						wait.waitForTime(3000, casper, function() {
+						casper.wait(3000, function() {
 							var grpName = casper.evaluate(function() {
 								var id = document.querySelector('a.pull-right.btn.btn-uppercase.btn-primary ').getAttribute('data-original-title');
 								return id;
@@ -2108,7 +1996,7 @@ composeTopicTest.composePostRegisterUser = function() {
 							});
 					    });			  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2127,8 +2015,6 @@ composeTopicTest.previewPostComposeTopic = function() {
 			composeTopicMethod.permissionDisabled(true,casper,casper.test, function(err) {
 				if(!err){
 					 casper.echo('Method permissionDisabled working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -2139,8 +2025,6 @@ composeTopicTest.previewPostComposeTopic = function() {
 			  composeTopicMethod.listingPageDisabledOneCateogry('Registered Users','post_threads_20237806',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -2155,7 +2039,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-						wait.waitForTime(2000, casper, function() {
+						casper.wait(2000,function() {
                                        
 							casper.test.assertExists('div#topics ul li:nth-child(2) a');
 							casper.click('div#topics ul li:nth-child(2) a');
@@ -2164,17 +2048,17 @@ composeTopicTest.previewPostComposeTopic = function() {
 									if(isExist) {
 										casper.test.assertExists('ul li[id^="forum_"]:nth-child(1) span span:nth-child(1) a');
 										casper.click('ul li[id^="forum_"]:nth-child(1) span span:nth-child(1) a');
-										wait.waitForTime(2000, casper, function() {
+										casper.wait(2000, function() {
 																				
 											var grpName = casper.evaluate(function() {
 												var id = document.querySelector('a.pull-right.btn.btn-uppercase.btn-primary ').getAttribute('data-original-title');
 												return id;
 											});
 											casper.echo('message :'+grpName ,'INFO');
-	                                            wait.waitForTime(2000, casper, function() {
+	                                            casper.wait(2000, function() {
 													forumLoginMethod.logoutFromApp(casper, function(err){
 														if (!err)
-														casper.echo('Successfully logout from application', 'ERROR');
+														casper.echo('Successfully logout from application', 'INFO');
 													});
                                                 });					   
 										});						   
@@ -2185,7 +2069,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 							});	
                         });						
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2201,7 +2085,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					        wait.waitForTime(2000 , casper , function(err) {
+					        casper.wait(2000 ,function() {
 							casper.test.assertExists('div#topics ul li:nth-child(2) a');
 							casper.click('div#topics ul li:nth-child(2) a');
 							wait.waitForElement('ul li[id^="forum_"]:nth-child(2) span span:nth-child(1) a', casper, function(err, isExist) {
@@ -2216,23 +2100,24 @@ composeTopicTest.previewPostComposeTopic = function() {
 													casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 													composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 														if(!err){
-															 wait.waitForTime(2000 , casper , function(err) {
-																try{
-																	casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-																	var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-																	casper.echo('subject :'+sub,'INFO');													
-																}catch(e){
-																	casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-																}
-																forumLoginMethod.logoutFromApp(casper, function(err){
-																	if (!err){
-																	casper.echo('Successfully logout from application', 'ERROR');
+															wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+																if(!err){
+																	if(isExist) {
+																		casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+																		var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+																		casper.echo('subject :'+sub,'INFO');													
+																		forumLoginMethod.logoutFromApp(casper, function(err){
+																			if (!err){
+																				casper.echo('Successfully logout from application', 'INFO');
+																			}
+																		});
+																	}else{
+																		casper.echo('Message not be generated', 'ERROR');
 																	}
-																});
+																}													
 															});
-															}else {
-																casper.echo('Error : '+err, 'ERROR');
-															}
+														
+														}
 													});						   
 												}else {
 													casper.echo('Start New Topic link Found', 'ERROR');
@@ -2246,7 +2131,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 							});
                         });						
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2264,8 +2149,6 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 			composeTopicMethod.permissionDisabled(true,casper,casper.test, function(err) {
 				if(!err){
 					 casper.echo('Method permissionDisabled working', 'INFO');
-				}else {
-						casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -2276,8 +2159,6 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 			  composeTopicMethod.listingPageDisabledOneCateogry('Registered Users','post_threads_20237806',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -2307,14 +2188,12 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 										},false);
 										casper.then(function() {
 											 casper.click('#post_submit');
-											 wait.waitForTime(2000, casper, function() { 
+											 casper.wait(2000, function() { 
 												var res = casper.fetchText('div.alert.alert-danger.text-center');
 												casper.echo('message :' +res,'INFO');
 												forumLoginMethod.logoutFromApp(casper, function(err){
 													if(!err){
 															casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
 													}
 												});
 											});
@@ -2326,7 +2205,7 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 							}
 						});	
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}					
 				});
 			});
@@ -2341,7 +2220,7 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 				forumLoginMethod.loginToApp(json['Valid'].username, json['Valid'].password, casper, function(err){
 					if(!err) {
 						casper.echo('login by valid username and password and verify error message', 'INFO');
-					        wait.waitForTime(2000 , casper , function(err) {
+					        casper.wait(2000 , function() {
 							wait.waitForElement('div#topics ul li:nth-child(2) a', casper, function(err, isExist) {
 								if(!err){
 									if(isExist) {
@@ -2359,24 +2238,22 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 																casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 																composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 																	if(!err){
-																		wait.waitForTime(2000 , casper , function(err) {
-																			try{
-																				casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-																				var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-																				casper.echo('subject :'+sub,'INFO');													
-																			}catch(e){
-																				casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-																			}
-																		       wait.waitForTime(2000 , casper , function(err) {
-																				forumLoginMethod.logoutFromApp(casper, function(err){
-																					if (!err){
-																					casper.echo('Successfully logout from application', 'INFO');
-																					}
-																				});
-                                                                                                                                                        });
+																		wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+																			if(!err){
+																				if(isExist) {
+																					casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+																					var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+																					casper.echo('subject :'+sub,'INFO');													
+																					forumLoginMethod.logoutFromApp(casper, function(err){
+																						if (!err){
+																							casper.echo('Successfully logout from application', 'INFO');
+																						}
+																					});
+																				}else{
+																					casper.echo('Message not be generated', 'ERROR');
+																				}
+																			}													
 																		});
-																	}else {
-																		casper.echo('Error : '+err, 'ERROR');
 																	}
 													            });						   
 															}else{
@@ -2396,7 +2273,7 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 							});	
 						});						
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});																								
 			});
@@ -2427,24 +2304,22 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 								    casper.click('div#topics ul li:nth-child(1) a');
 									composeTopicMethod.startTopic(false,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
@@ -2453,7 +2328,7 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2475,24 +2350,22 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 									casper.click('div#topics ul li:nth-child(2) a');
 									composeTopicMethod.startTopic(false,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});									
 								}else{
@@ -2501,7 +2374,7 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2523,28 +2396,26 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 								    casper.click('div#topics ul li:nth-child(1) a');
 									composeTopicMethod.startTopic(false,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											 wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}	
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
-													}else {
-														casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});						   
 								}else{
-									 casper.echo('Topics Link Not Found', 'ERROR');
+									 casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 								}
 							}
 						});		  
@@ -2569,24 +2440,22 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 									casper.click('div#topics ul li:nth-child(2) a');
 									composeTopicMethod.startTopic(false,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
-											wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
 													}else{
-														 casper.echo('Error : '+err, 'ERROR');
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});									
 								}else{
@@ -2595,7 +2464,7 @@ composeTopicTest.composeTopicUnFollowOption = function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2624,24 +2493,22 @@ composeTopicTest.composeTopicFollowOption= function() {
 								    casper.click('div#topics ul li:nth-child(1) a');
 									composeTopicMethod.startTopic(true,true,true,data['Topicmessage'],casper,function(err){
 										if(!err){
-											 wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}	
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
 													}else{
-													    casper.echo('Error : '+err, 'ERROR');
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});									
 								}else{
@@ -2650,7 +2517,7 @@ composeTopicTest.composeTopicFollowOption= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2672,24 +2539,22 @@ composeTopicTest.composeTopicFollowOption= function() {
 									casper.click('div#topics ul li:nth-child(2) a');
 									composeTopicMethod.startTopic(true,true,true,data['Topicmessage'],casper,function(err){
 										if(!err){
-											 wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}	
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-														casper.echo('Successfully logout from application', 'INFO');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
 													}else{
-														 casper.echo('Error : '+err, 'ERROR');
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});									
 								}else{
@@ -2698,7 +2563,7 @@ composeTopicTest.composeTopicFollowOption= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2720,24 +2585,22 @@ composeTopicTest.composeTopicFollowOption= function() {
 								    casper.click('div#topics ul li:nth-child(1) a');
 									composeTopicMethod.startTopic(true,true,true,data['Topicmessage'],casper,function(err){
 										if(!err){
-											 wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}	
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-														}else{
-														 casper.echo('Error : '+err, 'ERROR');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});									
 								}else{
@@ -2746,7 +2609,7 @@ composeTopicTest.composeTopicFollowOption= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2768,24 +2631,22 @@ composeTopicTest.composeTopicFollowOption= function() {
 									casper.click('div#topics ul li:nth-child(2) a');
 									composeTopicMethod.startTopic(true,true,true,data['Topicmessage'],casper,function(err){
 										if(!err){
-											 wait.waitForTime(2000 , casper , function(err) {
-												try{
-													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-													casper.echo('subject :'+sub,'INFO');													
-												}catch(e){
-													casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-												}	
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													    casper.echo('Successfully logout from application', 'INFO');
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
+														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+														casper.echo('subject :'+sub,'INFO');													
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
 													}else{
-														 casper.echo('Error : '+err, 'ERROR');
+														casper.echo('Message not be generated', 'ERROR');
 													}
-												});
+                                                }													
 											});
-										}else {
-											casper.echo('Error : '+err, 'ERROR');
 										}
 									});									
 								}else{
@@ -2794,7 +2655,7 @@ composeTopicTest.composeTopicFollowOption= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2813,8 +2674,6 @@ composeTopicTest.compostTopicAttachFile= function() {
 			composeTopicMethod.compostTopic(true,casper, casper.test, function(err) {
 				if(!err){
 				   casper.echo('composeTopicMethod  working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -2839,13 +2698,12 @@ composeTopicTest.compostTopicAttachFile= function() {
 												casper.test.assertExists('a.pull-right.btn.btn-uppercase.btn-primary ');
 												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 												casper.waitForSelector('div.post-body.pull-left',function success() { 
-												
 													casper.withFrame('message_ifr', function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 														
 													});			
-													wait.waitForTime(2000 , casper , function(err) {
+													casper.wait(2000 , function() {
 														casper.test.assertExists('a#fancy_attach_');
 														//casper.click('a#fancy_attach_');
 													 forumLoginMethod.logoutFromApp(casper, function(err){
@@ -2865,7 +2723,7 @@ composeTopicTest.compostTopicAttachFile= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2895,8 +2753,7 @@ composeTopicTest.compostTopicAttachFile= function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 													});
-													
-													wait.waitForTime(2000 , casper , function(err) {
+													casper.wait(2000 ,function() {
 											
 														casper.test.assertExists('a#fancy_attach_');
 														//casper.click('a#fancy_attach_');
@@ -2917,7 +2774,7 @@ composeTopicTest.compostTopicAttachFile= function() {
 							}
 						});	  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -2936,8 +2793,6 @@ composeTopicTest.compostTopicInsert= function() {
 			composeTopicMethod.compostTopic(true,casper, casper.test, function(err) {
 				if(!err){
 				   casper.echo('composeTopicMethod backendSettingCompostTopic working', 'INFO');
-				}else {
-					casper.echo('Error : '+err, 'ERROR');
 				}
 			});
 		});
@@ -2962,18 +2817,15 @@ composeTopicTest.compostTopicInsert= function() {
 												casper.test.assertExists('a.pull-right.btn.btn-uppercase.btn-primary ');
 												casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 												casper.waitForSelector('div.post-body.pull-left',function success() { 
-												
 													casper.withFrame('message_ifr', function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 														
 													});
-													
-													wait.waitForTime(2000 , casper , function(err) {
-											
+													casper.wait(2000 ,function() {
 														casper.test.assertExists('a#insert_image_dialog_');
 														//casper.click('a#fancy_attach_');
-													 forumLoginMethod.logoutFromApp(casper, function(err){
+													    forumLoginMethod.logoutFromApp(casper, function(err){
 															if (!err)
 															casper.echo('Successfully logout from application', 'INFO');
 														});
@@ -2990,7 +2842,7 @@ composeTopicTest.compostTopicInsert= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -3021,11 +2873,10 @@ composeTopicTest.compostTopicInsert= function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 													});
 													
-													wait.waitForTime(2000 , casper , function(err) {
-												
+													casper.wait(2000 , function() {
 														casper.test.assertExists('a#insert_image_dialog_');
 														//casper.click('a#fancy_attach_');
-													 forumLoginMethod.logoutFromApp(casper, function(err){
+													     forumLoginMethod.logoutFromApp(casper, function(err){
 															if (!err)
 															casper.echo('Successfully logout from application', 'INFO');
 														});
@@ -3042,7 +2893,7 @@ composeTopicTest.compostTopicInsert= function() {
 							}
 						});	  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -3065,26 +2916,25 @@ composeTopicTest.composeTopicPinOption= function() {
 					wait.waitForElement('div#topics ul li:nth-child(1) a ', casper, function(err, isExist) {
 						if(!err){
 							if(isExist) {
-							  casper.click('div#topics ul li:nth-child(1) a');
+							    casper.click('div#topics ul li:nth-child(1) a');
 								composeTopicMethod.startTopic(false,true,false,data['Topicmessage'],casper,function(err){
 									if(!err){
-									    wait.waitForTime(2000 , casper , function(err) {
-											try{
-												casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
-												var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
-												casper.echo('subject :'+sub,'INFO');													
-											}catch(e){
-												casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
-											}
-											
-											forumLoginMethod.logoutFromApp(casper, function(err){
-												if (!err){
-												casper.echo('Successfully logout from application', 'INFO');
+									   	wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+											if(!err){
+												if(isExist) {
+													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
+													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
+													casper.echo('subject :'+sub,'INFO');													
+													forumLoginMethod.logoutFromApp(casper, function(err){
+														if (!err){
+															casper.echo('Successfully logout from application', 'INFO');
+														}
+													});
+												}else{
+													casper.echo('Message not be generated', 'ERROR');
 												}
-											});
+											}													
 										});
-									}else {
-										casper.echo('Error : '+err, 'ERROR');
 									}
 								});						   
 							}else{
@@ -3093,7 +2943,7 @@ composeTopicTest.composeTopicPinOption= function() {
 						}
 					});		  
 				}else {
-					casper.echo('Error : '+err, 'ERROR');
+					casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 				}
 			});
 		});
@@ -3103,7 +2953,8 @@ composeTopicTest.composeTopicPinOption= function() {
 //25.Verify Compose Topic with Lock option(Admin)
 composeTopicTest.composeTopicLockOption= function() {
 	casper.then(function(){	
-		casper.then(function(){
+	
+	casper.then(function(){
 			casper.thenOpen(config.url, function() {
 				casper.echo('                case-25               ', 'INFO');
 				casper.echo('Verify Compose Topic with Lock option(Admin)', 'INFO');
@@ -3118,23 +2969,24 @@ composeTopicTest.composeTopicLockOption= function() {
 								    casper.click('div#topics ul li:nth-child(1) a');
 									composeTopicMethod.startTopic(false,false,true,data['Topicmessage'],casper,function(err){
 										if(!err){
-											  wait.waitForTime(2000 , casper , function(err) {
-												    try{
+											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
+												if(!err){
+													if(isExist) {
 														casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
 														var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
 														casper.echo('subject :'+sub,'INFO');													
-													}catch(e){
-														casper.test.assertDoesntExist('div#ajax_subscription_vars div div:nth-child(4) span');
+														forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err){
+																casper.echo('Successfully logout from application', 'INFO');
+															}
+														});
+													}else{
+														casper.echo('Message not be generated', 'ERROR');
 													}
-											
-												forumLoginMethod.logoutFromApp(casper, function(err){
-													if (!err){
-													casper.echo('Successfully logout from application', 'INFO');
-													}
-												});
+                                                }													
 											});
 										}else {
-											casper.echo('Error : '+err, 'ERROR');
+											casper.echo('Method startTopic not working', 'ERROR');
 										}
 									});						   
 								}else{
@@ -3143,7 +2995,7 @@ composeTopicTest.composeTopicLockOption= function() {
 							}
 						});		  
 					}else {
-						casper.echo('Error : '+err, 'ERROR');
+						casper.echo('forumLogin Method loginToApp not working', 'ERROR');
 					}
 				});
 			});
@@ -3154,7 +3006,7 @@ composeTopicTest.composeTopicLockOption= function() {
 			if (!err){
 				casper.echo('deleteTopic working', 'INFO');
 			}else {
-			        casper.echo('Error : '+err, 'ERROR');
+			        casper.echo('composeTopic Method deleteTopic not working', 'ERROR');
 			}
 		});
 	});
