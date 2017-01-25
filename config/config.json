@@ -1,5 +1,6 @@
 {
 	"screenShotsLocation": "../Screenshots/",
+	
 	"url": "http://beta22.websitetoolbox.com/",
 	"backEndUrl": "http://beta22.websitetoolbox.com/tool/members/login",
 	"app": {	
@@ -28,6 +29,5 @@
 		"port" : 6379
 	},
 	
-	"permissionSettingMsg" : "Your user group settings have been updated.",
-	"beta" : 0
+	"permissionSettingMsg" : "Your user group settings have been updated."
 }
