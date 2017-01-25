@@ -63,14 +63,6 @@ deletePostTests.CreateAdminUser=function() {
                     });
 		});
 
-		//3.Test case for backend setting Register user 
-		
-
-
-
-
-
-
 	});
 };
 
@@ -960,9 +952,9 @@ deletePostTests.deletePostDropDownRegister=function(){
 										var post= casper.evaluate(function(){
    												var aa=document.querySelectorAll('a#delete_post_request');
      													var a= aa.length;
-    													 //for(var i=1;i<=1;i++){
+    													
       														var hh=aa[1].getAttribute('href');
-     													// }
+     													
 														return hh;
 											});
 											casper.echo("message :" +post,'INFO');
@@ -977,7 +969,7 @@ deletePostTests.deletePostDropDownRegister=function(){
 														});
 												});	
 
-											//});
+											
 										});
 									}
 								});
@@ -1883,8 +1875,7 @@ deletePostTests.deleteOwnSearchPost=function(){
 	casper.then(function(){
 		casper.echo('                         Testcase 24                                 ' ,'INFO');
 		casper.echo('-----------------------------------delete topic by searching post when delete own topic- disable delete own post-enable ------------------------------' ,'INFO');
-		//try {
-			//casper.test.assertExists('a#anchor_tab_show_posts' ,'Found Element');
+		
 			wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
 				if(isExists) {
 					casper.wait(2000 , function(){
@@ -1914,15 +1905,7 @@ deletePostTests.deleteOwnSearchPost=function(){
 						casper.echo('Successfully logout from application', 'INFO');
 				});	
 			});
-		/*} catch(e) {
-			casper.echo('Cannot be Searched Element div.post-body.pull-left span:nth-child(2) a' ,'ERROR');
-			casper.then(function() {
-				inContextLoginMethod.logoutFromApp(casper, function(err){
-					if (!err)
-						casper.echo('Successfully logout from application', 'INFO');
-				});	
-			});
-		}*/
+		
 		
 	});
 };

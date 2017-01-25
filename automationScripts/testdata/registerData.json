@@ -149,7 +149,31 @@
         "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
     },
 
- "validInfoAdmin" : {
+	"validRegis" : {
+    	"uname" : "hani1",
+        "uemail" : "hani1@wt.com",
+        "upass" : "hani1",
+        "fullName" : "20",
+        "imID" : "20",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
+    },
+
+"validInfoRegis" : {
+    	"uname" : "hani123",
+        "uemail" : "hani123@wt.com",
+        "upass" : "hani123",
+        "fullName" : "18",
+        "imID" : "18",
+        "birthday" : "04/12/1991",
+        "usignature" : "This is my signature 18",
+        "namePrivate" : true,
+        "expectedSuccessMsg" : "Thank you for registering! Please check your email for instructions on how to begin using your account."
+    },
+
+"validInfoAdmin" : {
     	"uname" : "hani12",
         "uemail" : "hani12@wt.com",
         "upass" : "hani12",

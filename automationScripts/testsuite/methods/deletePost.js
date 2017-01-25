@@ -22,8 +22,7 @@ deletePostMethod.profilePost=function(driver , callback) {
 						casper.echo('Processing to Login on forum.....','INFO');
 						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 							if(isExists){
-								//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-								//casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								
 								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 									if(isExists) {
@@ -91,9 +90,7 @@ deletePostMethod.disableApproveAllPost=function(driver , callback) {
 		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]' , casper , function(err , isExists){
 			if(isExists) {
 				casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
-				/*casper.evaluate(function() {
-																														document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddSettings').click();
-});*/
+				
 				casper.capture('88.png');
 				casper.click('div#ddSettings a[href="/tool/members/mb/settings?tab=Security"]');
 				wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
@@ -230,8 +227,7 @@ deletePostMethod.profilePostRegister=function(driver , callback) {
 						casper.echo('Processing to Login on forum.....','INFO');
 						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 							if(isExists){
-								//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-								//casper.click('ul li:nth-child(2) span:nth-child(1) span:nth-child(2) h4 a');
+								
 								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 									if(isExists) {
