@@ -46,8 +46,11 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		// method to check the functionality of approve post for guest user
 		//postEventMemberApprovalTestcases.unregisterUserApprovePost();
 		
+		// method to Delete a pending post by select all pending post by  check box
+		//postEventMemberApprovalTestcases.deleteByAllCheckBox();
+		
 		// method to Approve a pending event -Approval queue button
-		postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
+		//postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
 	
 		// method to Approve a pending event -By clicking on topic
 		//postEventMemberApprovalTestcases.eventApprovalByClickingOnEvent();
@@ -94,17 +97,26 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		// method to Approve a pending user from- Approval queue button for backend setting two 
 		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingTwo();
 		
+		// method to Approve a pending user-by  Searching pending User Setting Two
+		//postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUserSettingTwo();
+		
 		// method to Approve pending member by searching it from advance search for backend setting two 
 		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingTwo();
 		
 		// method to Approve a pending user from- Approval queue button for backend setting three 
 		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingThree();
+		
+		// method to Approve a pending user-by  Searching pending User Setting Three
+		//postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUserSettingThree();
 
 		// method to Approve pending member by searching it from advance search for backend setting three 
 		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingThree();
 		
 		// method to Approve a pending user from- Approval queue button for backend setting Four 
 		//postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingFour();
+		
+		// method to Approve a pending user-by  Searching pending User Setting four
+		//postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUserSettingFour();
 		
 		// method to Approve pending member by searching it from advance search for backend setting Four 
 		//postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingFour();
@@ -149,7 +161,7 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		//postEventMemberApprovalTestcases.deleteMemberBySelectingCheckbox();
 		
 		// method to Delete All user by selecting the checkbox appearing on the top right corner 
-		//postEventMemberApprovalTestcases.deleteMemberBySelectingRightCornerCheckbox();
+		postEventMemberApprovalTestcases.deleteMemberBySelectingRightCornerCheckbox();
 		
 		// method to Delete a pending user from- Approval queue button for backend setting two 
 		//postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingTwo();	
