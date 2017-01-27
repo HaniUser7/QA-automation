@@ -65,7 +65,7 @@ deletePostMethod.PostListing=function(driver , callback) {
 	var post= casper.evaluate(function(){
 		var aa=document.querySelectorAll('input[name="pid"]');
 			var a= aa.length;
-			var hh=aa[2].getAttribute('id');
+			var hh=aa[1].getAttribute('id');
 			return hh;
 	});
 	casper.echo("message :" +post,'INFO');
@@ -195,7 +195,7 @@ deletePostMethod.searchLoginOwn=function(driver , callback) {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -335,7 +335,7 @@ deletePostMethod.BackEndSettings=function(driver , callback) {
 deletePostMethod.createMoreTopic=function(driver , callback) {
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
@@ -366,7 +366,7 @@ deletePostMethod.createMoreTopic=function(driver , callback) {
 					
 				});
 				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
+					forumLoginMethod.logoutFromApp(casper, function(err){
 						if (!err)
 							casper.echo('Successfully logout from application', 'INFO');
 					});
@@ -689,8 +689,10 @@ deletePostMethod.topicCreate=function(driver , callback){
 							if (!err)
 								casper.echo('Successfully logout from application', 'INFO');
 								return callback(null);
+								
 						});
-					});	
+					});
+						
 				});
 			}
 		});
@@ -750,6 +752,7 @@ deletePostMethod.topicCreate=function(driver , callback){
 														casper.test.assertExists('div#ddAccount a:nth-child(6)');
 														casper.click('div#ddAccount a:nth-child(6)');	
 														casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+													        return callback(null);
 
 
 

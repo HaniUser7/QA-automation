@@ -11,7 +11,7 @@ deletePost.featureTest = function(casper, test) {
 		//verify by Register a user on another server
 		//deletePostTests.CreateRegisterUser();
 		//Verify by delete one topic -selecting by check box 
-		/*deletePostTests.deleteTopicAdmin();
+		deletePostTests.deleteTopicAdmin();
 		//Verify by delete multiple topic-selecting by check box 
 		deletePostTests.deleteAllTopicAdmin();
 		//Verify by delete all topic-selecting by check box 3-issue
@@ -25,25 +25,26 @@ deletePost.featureTest = function(casper, test) {
 		//delete post from members profile page
 		deletePostTests.deletePostProfilePageAdmin();
 		//Verify by delete multiple post-selecting by check box 
-		deletePostTests.deleteMultiplePostAdmin();*/
+		deletePostTests.deleteMultiplePostAdmin();
 	//****************************Register user*******************************************************
 		//Verify by delete one topic -selecting by check box-8 
-		/*deletePostTests.deletePostRegisteruser();
+		deletePostTests.deletePostRegisteruser();
 		//Verify by delete all topic -selecting by check box-9 
 		deletePostTests.deleteAllTopicRegisteruser();
 		//verify with delete topic-by drop down of the topic-10
 		deletePostTests.deleteTopicDropDownRegisuser();
 		//verify with delete post-selecting by check box-11
-		deletePostTests.deletePostCheckboxRegister();*/
+		deletePostTests.deletePostCheckboxRegister();
 		//verify with delete post-by drop down of the post Register user-12
-		//deletePostTests.deletePostDropDownRegister();
+		deletePostTests.deletePostDropDownRegister();
 		//delete post from members profile page register user-13
-		//deletePostTests.deletePostProfilePage();
+		deletePostTests.deletePostProfilePage();
 		//delete topic by searching topic-14
 		deletePostTests.deletePostSearchTopic();
 		//delete post by searching post-15
-		/*deletePostTests.deletePostSearchPost();
+		deletePostTests.deletePostSearchPost();
     //********************************Delete own topic using delete own topic- disable ,delete own post-enable ***********************************
+    	
 		//Verify by delete one own  topic -selecting by check box by register user.
 		deletePostTests.deleteOwnTopic();
 		//Verify by delete own all topic-selecting by check box using register user
@@ -59,6 +60,7 @@ deletePost.featureTest = function(casper, test) {
 		//delete  own post by searching post
 		deletePostTests.deleteOwnSearchPost();
    //*****************"view category-delete own topic- enable-delete own post-disable******************************
+   	
 		//Verify by delete own topic -selecting by check box 
 		deletePostTests.deleteOwnTopicPostDisable();
 		//Verify by delete all own topic-selecting by check box 
@@ -76,6 +78,7 @@ deletePost.featureTest = function(casper, test) {
 		//delete own post by searching post
 		deletePostTests.deleteOwnSearPostDisable();
    //***************************view category-delete own topic-disable-delete own post-disable*************************
+   
 		//Verify by delete own topic -selecting by check box 
 		deletePostTests.deleteOwnTopicPostDisable();
 		//Verify by delete all own topic-selecting by check box 
@@ -93,6 +96,7 @@ deletePost.featureTest = function(casper, test) {
 		//delete own post by searching post
 		deletePostTests.deleteOwnSearchTopicPostDis();
 //*****************************view category-delete own topic-enable-delete own post-enable*******************************
+
 		//Verify by delete own topic -selecting by check box 
 		deletePostTests.deleteOwnTopicPostEnable();
 		//Verify by delete all own topic-selecting by check box 
@@ -119,7 +123,7 @@ deletePost.featureTest = function(casper, test) {
 		//edit topic by searching topic
 		deletePostTests.editTopicSearchAdmin();
 		//edit post by searching post
-		deletePostTests.editPostSearchAdmin();
+		/*deletePostTests.editPostSearchAdmin();
 		//edit on search listing page by people who posted
 		deletePostTests.editPostPeoplePosted();
  //****************************Edit own topic/post as register(edit own topic enable)**********************************
