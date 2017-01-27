@@ -36,6 +36,9 @@ postEventMemberApprovalMethod.setAdmin = function(driver, test, callback) {
 									driver.fillLabels('form#frmChangeUsersGroupFinal', {
 										Administrators: 'checked'
 									}, true);
+									casper.wait(2000,function() {
+									
+									});
 								} else {
 									driver.echo('Administration checkbox not found','ERROR');	
 								}
@@ -523,7 +526,6 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 															return id;
 														}, casper.getCurrentUrl());
 														casper.echo('*******event_id='+eventId,'INFO');
-														casper.capture('event.png');
 														return callback(null, eventId);
 													});
 												});
@@ -1197,20 +1199,36 @@ postEventMemberApprovalMethod.enableViewableMembersPendingApproval = function(dr
 							casper.click('div#ddUsers a:nth-child(1)');
 							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
 								if(isExists) {
-									casper.click('li.inactive_tab a');
+									//casper.click('li.inactive_tab a');
 									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
 										if(isExists) {
-											casper.evaluate(function(){
+											var id = casper.evaluate(function(){
 												for(var i=1; i<=7; i++) {
 													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
+													if (x1.innerText == 'Pending Approval') {
+														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
+														return x2;
 													}
 												}
 											});
-											wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+											casper.click('a[id="'+id+'"]');
+											wait.waitForElement('input#memberslist_viewable', casper, function(err, isExists) {
 												if(isExists) {
-													casper.echo("Permission unchanged",'INFO');
+													utils.enableorDisableCheckbox('memberslist_viewable', true, casper, function() {
+														casper.echo('checkbox is checked', 'INFO');
+													});
+													casper.test.assertExists('button.button.btn-m.btn-blue');
+													casper.click('button.button.btn-m.btn-blue');
+													casper.wait(40000, function() {
+													});
+													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+														if(isExists) {
+															casper.echo("Permission unchanged",'INFO');
+														}
+													});*/
+												}else {
+													casper.echo(' Viewable on Members List  not found', 'ERROR');
 												}
 											});
 										} else {
@@ -1244,7 +1262,7 @@ postEventMemberApprovalMethod.enableViewableMembersPendingApproval = function(dr
 postEventMemberApprovalMethod.enableViewableMembersPendingEmailVerification = function(driver, test, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
 		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
 				if(isExists) {
 					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
@@ -1253,24 +1271,40 @@ postEventMemberApprovalMethod.enableViewableMembersPendingEmailVerification = fu
 							casper.click('div#ddUsers a:nth-child(1)');
 							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
 								if(isExists) {
-									casper.click('li.inactive_tab a');
+									//casper.click('li.inactive_tab a');
 									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
 										if(isExists) {
-											casper.evaluate(function(){
+											var id = casper.evaluate(function(){
 												for(var i=1; i<=7; i++) {
 													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(2) a').click();
+													if (x1.innerText == 'Pending Email Verification') {
+														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
+														return x2;
 													}
 												}
 											});
-											wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+											casper.click('a[id="'+id+'"]');
+											wait.waitForElement('input#memberslist_viewable', casper, function(err, isExists) {
 												if(isExists) {
-													casper.echo("Permission unchanged",'INFO');
+													utils.enableorDisableCheckbox('memberslist_viewable', true, casper, function() {
+														casper.echo('checkbox is checked', 'INFO');
+													});
+													casper.test.assertExists('button.button.btn-m.btn-blue');
+													casper.click('button.button.btn-m.btn-blue');
+													casper.wait(40000, function() {
+													});
+													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+														if(isExists) {
+															casper.echo("Permission unchanged",'INFO');
+														}
+													});*/
+												}else {
+													casper.echo(' Viewable on Members List  not found', 'ERROR');
 												}
 											});
 										} else {
-											driver.echo('Table not found', 'ERROR');
+											casper.echo('Table not found', 'ERROR');
 										}
 									});
 								} else {

@@ -11,36 +11,62 @@ var backEndForumRegisterMethod = require('../methods/backEndRegistration.js');
 var wait = require('../wait.js');
 var postEventMemberApprovalTestcases = module.exports = {};
 
-// method to create a topic 
-postEventMemberApprovalTestcases.createTopic = function() {
-//Open front end and logged in as register user
-	try {
-		casper.test.assertExists('a.topic-title','Topic found');
-	} catch (e) {
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+// method to register two user neha and isneha
+postEventMemberApprovalTestcases.registerUserTOLogin = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		//method to Disable -  Email verification and Disable -Approve New Registrations
+		postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail(casper, function(err) {
 			if(!err) {
-				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					if(isExists) {
-						//method to create a new topic
-						postEventMemberApprovalMethod.startTopic(json.newTopic, casper, function(err) {
-							if(!err) {
-								casper.echo('new topic method called successfully', 'INFO');
-							}else {
-								casper.echo('Topic not created', 'ERROR');
-							}
-						});	
-					} else {
-						casper.echo('User icon not found','ERROR');	
-					}
-				});
-			}else {
-				casper.echo('User not logged in', 'ERROR');
+				casper.echo('Disable Approve New Event functionality method called ','INFO');
 			}
 		});
-		casper.then(function() {
-			forumLoginMethod.logoutFromApp(casper, function() { });
+	});
+	casper.eachThen(json['infoToRegisterUser'], function(response) {
+		casper.echo("the response data "+response.data,"INFO");
+		var responseData = response.data;
+		postEventMemberApprovalMethod.registerMember(responseData, casper, function(err) {
+			if(!err) {
+				casper.echo('Users registered method called successfully', 'INFO');
+			}else {
+				casper.echo('Users registered method not called successfully', 'ERROR');
+			}
 		});
-	}
+	});
+};
+
+// method to create a topic 
+postEventMemberApprovalTestcases.createTopic = function() {
+	casper.thenOpen(config.url, function() {
+		//Open front end and logged in as register user
+		try {
+			casper.test.assertExists('a.topic-title','Topic found');
+		} catch (e) {
+			forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+				if(!err) {
+					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
+						if(isExists) {
+							//method to create a new topic
+							postEventMemberApprovalMethod.startTopic(json.newTopic, casper, function(err) {
+								if(!err) {
+									casper.echo('new topic method called successfully', 'INFO');
+								}else {
+									casper.echo('Topic not created', 'ERROR');
+								}
+							});	
+						} else {
+							casper.echo('User icon not found','ERROR');	
+						}
+					});
+				}else {
+					casper.echo('User not logged in', 'ERROR');
+				}
+			});
+			casper.then(function() {
+				forumLoginMethod.logoutFromApp(casper, function() { });
+			});
+		}
+	});
 };
 
 // method to Approve a pending post from- Approval queue button 
@@ -260,7 +286,7 @@ postEventMemberApprovalTestcases.byCheckBox = function() {
 												casper.test.assertExists('div#pending-menu span.dropdown a.text-success i', 'approve tick on the floating menu******************');
 												casper.click('div#pending-menu span.dropdown a.text-success i');
 											}else{
-												casper.echo('Checkbox not Found','INFO');
+												casper.echo('Checkbox not Found','ERROR');
 											}
 										});
 										casper.then(function() {
@@ -458,7 +484,6 @@ postEventMemberApprovalTestcases.deleteClickingPost = function() {
 														casper.echo('*************************************', 'INFO');
 														casper.test.assertExists('a[id^="delete_pending_"]','Delete tick found');
 														casper.click('a[id^="delete_pending_"]');
-														casper.capture('delete_pending.png');
 														casper.wait(3000);
 														casper.reload(function() {
 															casper.test.assertDoesntExist('span#post_message_'+postId ,'**********post is  not  present on the approval queue page Hence Deleted.*************');
@@ -744,16 +769,24 @@ postEventMemberApprovalTestcases.editByClickingPost = function() {
 
 // method to check the functionality of approve post for guest user
 postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
-	//Open front end and logged in as register user
+	//Open front end for unregister user
 	casper.thenOpen(config.url, function() {
-		casper.echo('*             Test case 11     *', 'INFO');
+		casper.echo('*             Test case 46     *', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		//method to compose a post by unregistered user
-		postEventMemberApprovalMethod.composePost(casper, casper.test, function(err) {
-			if(!err) {
-				casper.echo('','INFO');
-			} else {
-				casper.echo('Not called compose method','ERROR');
+		casper.test.assertExists('a.topic-title', 'Composed topic is found');
+		topic = casper.evaluate(function() {
+			var name = document.querySelector('a.topic-title span');
+			return name.innerHTML;
+		});
+		casper.echo('*******************************************************','INFO');
+		casper.echo('*           The name of the topic is-'+topic+        '*','INFO');
+		casper.echo('*******************************************************','INFO');
+		casper.click('div.panel-body.table-responsive ul li span span:nth-child(2) a');
+		wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExists) {
+			if(isExists) {
+				casper.test.assertDoesntExist('#message','Reply option is not present for unregistered user');
+			}else {
+				casper.echo('Reply option is present for unregistered user', 'ERROR');
 			}
 		});
 	});
@@ -807,7 +840,7 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 								casper.waitWhileVisible('div#event_'+eventId , function success() {
 									casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
 								}, function fail() { 
-									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','ERROR');
 								});
 							}else{
 								casper.echo('approve tick not found','ERROR');
@@ -818,7 +851,7 @@ postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton = function()
 					}
 				});
 			} else {
-				casper.echo('Not called compose event method','INFO');
+				casper.echo('Not called compose event method','ERROR');
 			}
 		});
 	});
@@ -889,7 +922,7 @@ postEventMemberApprovalTestcases.eventApprovalByCheckBox = function() {
 								casper.waitWhileVisible('div#event_'+eventId , function success() {
 									casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
 								}, function fail() { 
-									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','ERROR');
 								});
 							}else{
 								casper.echo('Checkbox not Found','ERROR');
@@ -934,7 +967,7 @@ postEventMemberApprovalTestcases.eventApprovalByCheckBoxAll = function() {
 											var expectedText = "There's currently nothing that needs your approval.";	
 											casper.test.assert(actualText.indexOf(expectedText) > -1);
 										}, function fail() { 
-											casper.echo('events not deleted from the page','INFO');
+											casper.echo('events not deleted from the page','ERROR');
 										});
 									}else{
 										casper.echo('Floating Menu not Found','ERROR');
@@ -975,7 +1008,7 @@ postEventMemberApprovalTestcases.eventdeleteByApprovalQueueButton = function() {
 								casper.waitWhileVisible('div#event_'+eventId , function success() {
 									casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
 								}, function fail() { 
-									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','ERROR');
 								});
 							}else {
 								casper.echo('approve tick not found','ERROR');
@@ -1057,7 +1090,7 @@ postEventMemberApprovalTestcases.eventdeleteByCheckBox = function() {
 								casper.waitWhileVisible('div#event_'+eventId , function success() {
 									casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted from the page','INFO');
 								}, function fail() { 
-									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','INFO');
+									casper.test.assertExists('div#event_'+eventId ,'event is not deleted from the page','ERROR');
 								});
 							}else{
 								casper.echo('Checkbox not Found','ERROR');
@@ -1101,7 +1134,7 @@ postEventMemberApprovalTestcases.eventdeleteByAllCheckBox = function() {
 											var expectedText = "There's currently nothing that needs your approval.";	
 											casper.test.assert(actualText.indexOf(expectedText) > -1);
 										}, function fail() { 
-											casper.echo('events not deleted from the page','INFO');
+											casper.echo('events not deleted from the page','ERROR');
 										});
 									}else{
 										casper.echo('Floating Menu not Found','ERROR');
@@ -1151,7 +1184,7 @@ postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 											if(text2!=text){
 												casper.echo('Event edited','INFO');
 											} else {
-												casper.echo('Event not edited','INFO');
+												casper.echo('Event not edited','ERROR');
 											}
 										});
 										casper.click('div.editable-buttons i.glyphicon.glyphicon-ok');
@@ -1169,7 +1202,7 @@ postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 					}
 				});
 			} else {
-				casper.echo('Not called compose event method','INFO');
+				casper.echo('Not called compose event method','ERROR');
 			}
 		});
 	});
@@ -1208,6 +1241,14 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButton = function(
 				}
 			});
 		});
+		casper.then(function() {
+			//method to enable Viewable on Members List for pending approval from backend
+			postEventMemberApprovalMethod.enableViewableMembersPendingApproval(casper, casper.test, function(err) {
+				if(!err) {
+					casper.echo('Viewable on Members List for pending approval enabled ','INFO');
+				}
+			});
+		});
 	});
 	casper.then(function() {
 		postEventMemberApprovalMethod.registerMember(json['memberInfo'], casper, function(err) {
@@ -1223,7 +1264,7 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButton = function(
 										casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 											casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 										});
 									});
 									casper.then(function() { // method called to verify  user moved to Registered group
@@ -1280,7 +1321,7 @@ postEventMemberApprovalTestcases.memberApprovalByClickingOnUsername  = function(
 												casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 													casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 												}, function fail() { 
-													casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+													casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 												});
 											}else{
 												casper.echo('Alert div not found','ERROR');
@@ -1408,7 +1449,7 @@ postEventMemberApprovalTestcases.memberApprovalBySelectingCheckbox = function() 
 										casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 											casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 										});
 									});
 									casper.then(function() { // method called to delete the user which is approved above
@@ -1458,7 +1499,7 @@ postEventMemberApprovalTestcases.memberApprovalBySelectingRightCornerCheckbox = 
 													var expectedText = "There's currently nothing that needs your approval.";	
 													casper.test.assert(actualText.indexOf(expectedText) > -1);
 												}, function fail() { 
-													casper.echo('events not deleted from the page','INFO');
+													casper.echo('events not deleted from the page','ERROR');
 												});
 											}else{
 												casper.echo('Floating Menu not Found','ERROR');
@@ -1594,6 +1635,14 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingTwo =
 			postEventMemberApprovalMethod.setAdmin(casper, casper.test, function(err) {
 				if(!err) {
 					casper.echo('Set admin method called ','INFO');
+				}
+			});
+		});
+		casper.then(function() {
+			//method to enable Viewable on Members List for pending email verification from backend
+			postEventMemberApprovalMethod.enableViewableMembersPendingEmailVerification(casper, casper.test, function(err) {
+				if(!err) {
+					casper.echo('Viewable on Members List for pending email verification enabled ','INFO');
 				}
 			});
 		});
@@ -1843,7 +1892,7 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingThree
 				forumLoginMethod.logoutFromApp(casper, function() { });
 			});
 		} catch (e) {
-			casper.echo('No user logged in','INFO');
+			casper.echo('No user logged in','ERROR');
 		}
 		postEventMemberApprovalMethod.registerMember(json['memberInfo'], casper, function(err) {
 		
@@ -1864,7 +1913,7 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingThree
 										if(isExists) {
 											casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
 										}else{
-											casper.echo('Approval Queue not Found','INFO');
+											casper.echo('Approval Queue not Found','ERROR');
 										}
 									});        
 								}else{
@@ -2052,7 +2101,7 @@ postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingThree = fun
 							casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 								casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 							}, function fail() { 
-								casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+								casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 							});
 						});
 					}
@@ -2101,7 +2150,7 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingFour 
 				forumLoginMethod.logoutFromApp(casper, function() { });
 			});
 		} catch (e) {
-			casper.echo('No user logged in','INFO');
+			casper.echo('No user logged in','ERROR');
 		}
 		postEventMemberApprovalMethod.registerMember(json['memberInfo'], casper, function(err) {
 		
@@ -2431,7 +2480,7 @@ postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByButtons = 
 										casper.waitWhileVisible('a[title="View profile"]', function success() {
 											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
 										});
 									}else{
 										casper.echo('User table not found','ERROR');
@@ -2503,7 +2552,7 @@ postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupApproveButton 
 										casper.waitWhileVisible('a[title="View profile"]', function success() {
 											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
 										});
 									}else{
 										casper.echo('Approve user button not found','ERROR');	
@@ -2578,7 +2627,7 @@ postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroup = 
 										casper.waitWhileVisible('a[title="View profile"]', function success() {
 											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
 										});
 									}else{
 										casper.echo('Approve user button not found','ERROR');
@@ -2680,7 +2729,7 @@ postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByCheckboxSe
 														casper.waitWhileVisible('a[title="View profile"]', function success() {
 															casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
 														}, function fail() { 
-															casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
+															casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','ERROR');
 														});
 													}else{
 														casper.echo('pop up not found','ERROR');
@@ -2764,7 +2813,7 @@ postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroupSet
 										casper.waitWhileVisible('a[title="View profile"]', function success() {
 											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','ERROR');
 										});
 									}else {
 										casper.echo('Approve user button not found','ERROR');
@@ -2866,7 +2915,7 @@ postEventMemberApprovalTestcases.memberApprovalFromDefaultUserGroupsByCheckboxSe
 														casper.waitWhileVisible('a[title="View profile"]', function success() {
 															casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
 														}, function fail() { 
-															casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
+															casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','ERROR');
 														});
 													}else{
 														casper.echo('pop up not found','ERROR');
@@ -2950,7 +2999,7 @@ postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroupSet
 										casper.waitWhileVisible('a[title="View profile"]', function success() {
 											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','ERROR');
 										});
 									}else {
 										casper.echo('Approve user button not found','ERROR');
@@ -3041,7 +3090,7 @@ postEventMemberApprovalTestcases.memberApprovalFromChangeUserGroupChangeGroupSet
 											casper.echo('The pending user is moved to Register user, Verified','INFO');
 										}
 										else {
-											casper.echo('The pending user is not moved to Register user, Verified','INFO');
+											casper.echo('The pending user is not moved to Register user, Verified','ERROR');
 										}
 									}else{
 										casper.echo('changer user group form not found','ERROR');
@@ -3112,7 +3161,7 @@ postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButton = function() 
 										casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 											casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 										});
 									});	
 								}
@@ -3155,7 +3204,7 @@ postEventMemberApprovalTestcases.deleteMemberByClickingOnUsername  = function() 
 												casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 													casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 												}, function fail() { 
-													casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+													casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 												});
 											}else{
 												casper.echo('Alert div not found','ERROR');
@@ -3264,7 +3313,7 @@ postEventMemberApprovalTestcases.deleteMemberBySelectingCheckbox = function() {
 										casper.waitWhileVisible('li#member_'+memberId[1], function success() {
 											casper.test.assertDoesntExist('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
 										}, function fail() { 
-											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','INFO');
+											casper.test.assertExists('li#member_'+memberId[1] ,'username is deleted from the approval queue page','ERROR');
 										});
 									});	
 								}
@@ -3307,7 +3356,7 @@ postEventMemberApprovalTestcases.deleteMemberBySelectingRightCornerCheckbox = fu
 													var expectedText = "There's currently nothing that needs your approval.";	
 													casper.test.assert(actualText.indexOf(expectedText) > -1);
 												}, function fail() { 
-													casper.echo('events not deleted from the page','INFO');
+													casper.echo('events not deleted from the page','ERROR');
 												});
 											}else{
 												casper.echo('Floating Menu not Found','ERROR');
@@ -3346,58 +3395,58 @@ postEventMemberApprovalTestcases.deleteMemberByAdvanceSearch = function() {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
-					//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('button#searchContent', function success() {
-							casper.click('button#searchContent');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('a#advancedSearch', function success() {
-								casper.click('a#advancedSearch');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('a#anchor_tab_member_search', function success() {
-									casper.click('a#anchor_tab_member_search');
-									//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-									casper.waitForSelector('#search-par', function success() {
-										casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
-										casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-										casper.fillSelectors('form[name="posts"]', {
-			    								'select[name="usergroupid"]': '20237757'
-										}, true);
-										casper.click('input.btn.btn-primary');
-										//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-										casper.waitForSelector('div.panel-body.table-responsive a strong',function success() {
-											casper.click('div.panel-body.table-responsive a strong');
-											//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-											casper.waitForSelector('div.alert.alert-danger.text-center strong', function() {
-												casper.echo(casper.fetchText('div.alert.alert-danger.text-center strong'),'INFO');
-												casper.click('div.alert.alert-danger.text-center a.btn.btn-success');
-											});
-										}, function fail() {
-											casper.echo('Pending Member not found','ERROR');
+						wait.waitForElement('button#searchContent', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('button#searchContent');
+								wait.waitForElement('a#advancedSearch', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('a#advancedSearch');
+										wait.waitForElement('a#anchor_tab_member_search', casper,function(err, isExists) {
+											if(isExists) {
+												casper.click('a#anchor_tab_member_search');
+												wait.waitForElement('#search-par', casper,function(err, isExists) {
+													if(isExists) {
+														casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
+														casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+														casper.fillSelectors('form[name="posts"]', {
+							    								'select[name="usergroupid"]': '20237757'
+														}, true);
+														casper.click('input.btn.btn-primary');
+														wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
+															if(isExists) {
+																casper.click('div.panel-body.table-responsive a strong');
+																wait.waitForElement('div.alert.alert-danger.text-center strong', casper,function(err, isExists) {
+																	if(isExists) { 
+																		casper.echo(casper.fetchText('div.alert.alert-danger.text-center strong'),'INFO');
+																		casper.click('div.alert.alert-danger.text-center a.btn.btn-success');
+																	}
+																});
+															}else{
+																casper.echo('Pending Member not found','ERROR');
+															}
+														});
+													}else{
+														casper.echo('Member Search Form not found','ERROR');
+													}	
+												});
+											}else {
+												casper.echo('Member panel-heading not found','ERROR');
+											}
 										});
-									}, function fail() {
-										casper.echo('Member Search Form not found','ERROR');	
-									});
-								}, function fail() {
-									casper.echo('Member panel-heading not found','ERROR');
+									}else{
+										casper.echo('Advance Search button not found','ERROR');
+									}
 								});
-							}, function fail() {
-								casper.echo('Advance Search button not found','ERROR');
-							});
-						}, function fail() {
-							casper.echo('Search button not found','ERROR');
+							}else{
+								casper.echo('Search button not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
-				casper.echo('Admin user not logged in', 'INFO');
+				casper.echo('Admin user not logged in', 'ERROR');
 			}
 		});
 	});
@@ -3447,20 +3496,20 @@ postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingTwo = f
 					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 						if(isExists) {
 							casper.echo('User has been successfuly login to application with admin user', 'INFO');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
-								casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
-								casper.click('ul.nav.nav-tabs li:nth-child(2) a');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('li[id^="forum_"]', function success() {
-									casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
-								},function fail(){
-									casper.echo('Approval Queue not Found','INFO');
-								});        
-							},function fail(){
-								casper.echo('Categories not Found','ERROR');
+							wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', casper,function(err, isExists) {
+								if(isExists) {
+									casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+									casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+									wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+										if(isExists) {
+											casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
+										}else{
+											casper.echo('Approval Queue not Found','ERROR');
+										}
+									});        
+								}else{
+									casper.echo('Categories not Found','ERROR');
+								}
 							});
 						} else {
 							casper.echo('User not logged in','ERROR');	
@@ -3493,56 +3542,55 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingTwo = 
 		});
 	});
 	casper.thenOpen(config.url, function() {
-		//login with admin user to search the user and to delete it
+		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["AdminUserLogin"].username, json["AdminUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
-					//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('button#searchContent', function success() {
-							casper.click('button#searchContent');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('a#searchMembers', function success() {
-								casper.click('a#searchMembers');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('input[name="s_username"]', function success() {
-									casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
-									casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-									//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-									casper.waitForSelector('div.panel-body.table-responsive a strong',function success() {
-										casper.click('div.panel-body.table-responsive a strong');
-										//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-										casper.waitForSelector('div.alert.alert-danger.text-center strong', function() {
-											casper.echo(casper.fetchText('div.alert.alert-danger.text-center strong'),'INFO');
-											casper.click('div.alert.alert-danger.text-center a.btn.btn-danger');
-											casper.wait(5000, function() {
-											
-											});	
+						wait.waitForElement('button#searchContent', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('button#searchContent');
+								wait.waitForElement('a#searchMembers', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('a#searchMembers');
+										wait.waitForElement('input[name="s_username"]', casper,function(err, isExists) {
+											if(isExists) {
+												casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
+												casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+												wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
+													if(isExists) {
+														casper.click('div.panel-body.table-responsive a strong');
+														wait.waitForElement('div.alert.alert-danger.text-center strong', casper,function(err, isExists) {
+															if(isExists) {
+																casper.test.assertExists('a#delete_user_account i','Delete button appeared');
+																casper.click('a#delete_user_account i');
+																casper.wait(5000, function() {
+																});	
+															}	
+														});
+													}else{
+														casper.echo('Pending Member not found','ERROR');
+													}
+												});
+											}else {
+												casper.echo('Search bar not found','ERROR');
+											}
 										});
-									}, function fail() {
-										casper.echo('Pending Member not found','ERROR');
-									});
-								}, function fail() {
-									casper.echo('Search bar not found','ERROR');
+									}else{
+										casper.echo('Member Search button not found','ERROR');
+									}
 								});
-							}, function fail() {
-								casper.echo('Member Search button not found','ERROR');
-							});
-						}, function fail() {
-							casper.echo('Search button not found','ERROR');
+							}else {
+								casper.echo('Search button not found','ERROR');
+							}
 						});
 				} else {
 						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
-				casper.echo('Admin user not logged in', 'INFO');
+				casper.echo('Admin user not logged in', 'ERROR');
 			}
 		});
 	});
@@ -3591,20 +3639,20 @@ postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingThree =
 					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 						if(isExists) {
 							casper.echo('User has been successfuly login to application with admin user', 'INFO');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
-								casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
-								casper.click('ul.nav.nav-tabs li:nth-child(2) a');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('li[id^="forum_"]', function success() {
-									casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
-								},function fail(){
-									casper.echo('Approval Queue not Found','INFO');
-								});        
-							},function fail(){
-								casper.echo('Categories not Found','ERROR');
+							wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', casper,function(err, isExists) {
+								if(isExists) {
+									casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+									casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+									wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+										if(isExists) {
+											casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
+										}else{
+											casper.echo('Approval Queue not Found','ERROR');
+										}
+									});        
+								}else{
+									casper.echo('Categories not Found','ERROR');
+								}
 							});
 						} else {
 							casper.echo('User not logged in','ERROR');	
@@ -3637,56 +3685,55 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingThree 
 		});
 	});
 	casper.thenOpen(config.url, function() {
-		//login with admin user to search the user and to delete it
+		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["AdminUserLogin"].username, json["AdminUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
-					//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('button#searchContent', function success() {
-							casper.click('button#searchContent');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('a#searchMembers', function success() {
-								casper.click('a#searchMembers');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('input[name="s_username"]', function success() {
-									casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
-									casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-									//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-									casper.waitForSelector('div.panel-body.table-responsive a strong',function success() {
-										casper.click('div.panel-body.table-responsive a strong');
-										//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-										casper.waitForSelector('div.alert.alert-danger.text-center strong', function() {
-											casper.echo(casper.fetchText('div.alert.alert-danger.text-center strong'),'INFO');
-											casper.click('div.alert.alert-danger.text-center a.btn.btn-danger');
-											casper.wait(5000, function() {
-											
-											});	
+						wait.waitForElement('button#searchContent', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('button#searchContent');
+								wait.waitForElement('a#searchMembers', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('a#searchMembers');
+										wait.waitForElement('input[name="s_username"]', casper,function(err, isExists) {
+											if(isExists) {
+												casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
+												casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+												wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
+													if(isExists) {
+														casper.click('div.panel-body.table-responsive a strong');
+														wait.waitForElement('div.alert.alert-danger.text-center strong', casper,function(err, isExists) {
+															if(isExists) {
+																casper.test.assertExists('a#delete_user_account i','Delete button appeared');
+																casper.click('a#delete_user_account i');
+																casper.wait(5000, function() {
+																});	
+															}	
+														});
+													}else{
+														casper.echo('Pending Member not found','ERROR');
+													}
+												});
+											}else {
+												casper.echo('Search bar not found','ERROR');
+											}
 										});
-									}, function fail() {
-										casper.echo('Pending Member not found','ERROR');
-									});
-								}, function fail() {
-									casper.echo('Search bar not found','ERROR');
+									}else{
+										casper.echo('Member Search button not found','ERROR');
+									}
 								});
-							}, function fail() {
-								casper.echo('Member Search button not found','ERROR');
-							});
-						}, function fail() {
-							casper.echo('Search button not found','ERROR');
+							}else {
+								casper.echo('Search button not found','ERROR');
+							}
 						});
 				} else {
 						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
-				casper.echo('Admin user not logged in', 'INFO');
+				casper.echo('Admin user not logged in', 'ERROR');
 			}
 		});
 	});
@@ -3735,20 +3782,20 @@ postEventMemberApprovalTestcases.deleteMemberByApprovalQueueButtonSettingFour = 
 					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 						if(isExists) {
 							casper.echo('User has been successfuly login to application with admin user', 'INFO');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('ul.nav.nav-tabs li:nth-child(2) a', function success() {
-								casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
-								casper.click('ul.nav.nav-tabs li:nth-child(2) a');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('li[id^="forum_"]', function success() {
-									casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
-								},function fail(){
-									casper.echo('Approval Queue not Found','INFO');
-								});        
-							},function fail(){
-								casper.echo('Categories not Found','ERROR');
+							wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', casper,function(err, isExists) {
+								if(isExists) {
+									casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+									casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+									wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+										if(isExists) {
+											casper.test.assertDoesntExist('li#approvalQueue a' ,'approval queue icon is deleted from the forum','INFO');
+										}else{
+											casper.echo('Approval Queue not Found','ERROR');
+										}
+									});        
+								}else{
+									casper.echo('Categories not Found','ERROR');
+								}
 							});
 						} else {
 							casper.echo('User not logged in','ERROR');	
@@ -3781,56 +3828,55 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingFour =
 		});
 	});
 	casper.thenOpen(config.url, function() {
-		//login with admin user to search the user and to delete it
+		//login with admin user to get the id of the post and to approve it
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["AdminUserLogin"].username, json["AdminUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
-					//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('button#searchContent', function success() {
-							casper.click('button#searchContent');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('a#searchMembers', function success() {
-								casper.click('a#searchMembers');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('input[name="s_username"]', function success() {
-									casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
-									casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-									//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-									casper.waitForSelector('div.panel-body.table-responsive a strong',function success() {
-										casper.click('div.panel-body.table-responsive a strong');
-										//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-										casper.waitForSelector('div.alert.alert-danger.text-center strong', function() {
-											casper.echo(casper.fetchText('div.alert.alert-danger.text-center strong'),'INFO');
-											casper.click('div.alert.alert-danger.text-center a.btn.btn-danger');
-											casper.wait(5000, function() {
-											
-											});	
+						wait.waitForElement('button#searchContent', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('button#searchContent');
+								wait.waitForElement('a#searchMembers', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('a#searchMembers');
+										wait.waitForElement('input[name="s_username"]', casper,function(err, isExists) {
+											if(isExists) {
+												casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
+												casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+												wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
+													if(isExists) {
+														casper.click('div.panel-body.table-responsive a strong');
+														wait.waitForElement('div.alert.alert-danger.text-center strong', casper,function(err, isExists) {
+															if(isExists) {
+																casper.test.assertExists('a#delete_user_account i','Delete button appeared');
+																casper.click('a#delete_user_account i');
+																casper.wait(5000, function() {
+																});	
+															}	
+														});
+													}else{
+														casper.echo('Pending Member not found','ERROR');
+													}
+												});
+											}else {
+												casper.echo('Search bar not found','ERROR');
+											}
 										});
-									}, function fail() {
-										casper.echo('Pending Member not found','ERROR');
-									});
-								}, function fail() {
-									casper.echo('Search bar not found','ERROR');
+									}else{
+										casper.echo('Member Search button not found','ERROR');
+									}
 								});
-							}, function fail() {
-								casper.echo('Member Search button not found','ERROR');
-							});
-						}, function fail() {
-							casper.echo('Search button not found','ERROR');
+							}else {
+								casper.echo('Search button not found','ERROR');
+							}
 						});
 				} else {
 						casper.echo('User not logged in','ERROR');	
 					}
 				});
 			}else {
-				casper.echo('Admin user not logged in', 'INFO');
+				casper.echo('Admin user not logged in', 'ERROR');
 			}
 		});
 	});
@@ -3872,28 +3918,28 @@ postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByCheckbox = f
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('table.text.fullborder', function success() {
-							casper.click('tr:nth-child(5) td:nth-child(2) a');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('table#groupUsersList', function success() {
-								casper.click('tr td input[name="user_id"]');
-								casper.test.assertExist('select[name="action"]','drop down is appear on the bottom of page');
-								casper.fillSelectors('div#floatingActionMenu', {
-				    					'select[name="action"]': 'delete_members'
-								}, true);
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('table.text.fullborder', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('tr:nth-child(5) td:nth-child(2) a');
+								wait.waitForElement('table#groupUsersList', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('tr td input[name="user_id"]');
+										casper.test.assertExist('select[name="action"]','drop down is appear on the bottom of page');
+										casper.fillSelectors('div#floatingActionMenu', {
+						    					'select[name="action"]': 'delete_members'
+										}, true);
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('Floating menu not found','ERROR');
+									}
 								});
-							},function fail() {
-								casper.echo('Floating menu not found','INFO');
-							});
-						}, function fail() {
-							casper.echo('Table not found','INFO');
+							}else{
+								casper.echo('Table not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -3931,26 +3977,25 @@ postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByButtons = fu
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('table.text.fullborder', function success() {
-							casper.click('tr:nth-child(5) td:nth-child(2) a');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('table#groupUsersList', function success() {
-								casper.mouse.move("td.userlist-icons a:nth-child(3)");
-								casper.click('td.userlist-icons a:nth-child(3)');
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('table.text.fullborder', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('tr:nth-child(5) td:nth-child(2) a');
+								wait.waitForElement('table#groupUsersList', casper,function(err, isExists) {
+									if(isExists) {
+										casper.mouse.move("td.userlist-icons a:nth-child(3)");
+										casper.click('td.userlist-icons a:nth-child(3)');
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('User table not found','ERROR');
+									}
 								});
-							},function fail(){
-								casper.echo('User table not found','ERROR');
-							});
-			
-						}, function fail() {
-							casper.echo('Table not found','INFO');
+							}else {
+								casper.echo('Table not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -3988,27 +4033,27 @@ postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButton = f
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
-							casper.fill('form#frmChangeUsersGroup', {
-								'member' : json.userToDelete
-							}, true);
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('form[name="ugfrm"]', function success() {
-								casper.test.assertExists('a#delete_user', '******Delete user button found *****');
-								casper.click('a#delete_user');
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('form#frmChangeUsersGroup', casper,function(err, isExists) {
+							if(isExists) {
+								casper.fill('form#frmChangeUsersGroup', {
+									'member' : json.userToDelete
+								}, true);
+								wait.waitForElement('form[name="ugfrm"]', casper,function(err, isExists) {
+									if(isExists) {
+										casper.test.assertExists('a#delete_user', '******Delete user button found *****');
+										casper.click('a#delete_user');
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('Approve user button not found','ERROR');
+									}	
 								});
-							}, function fail(){
-								casper.echo('Approve user button not found','ERROR');	
-							});
-						},function fail(){
-							casper.echo('Change user group permission not found','ERROR');
+							}else{
+								casper.echo('Change user group permission not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4061,35 +4106,28 @@ postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByCheckboxSett
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('table.text.fullborder', function success() {
-							casper.click('tr:nth-child(5) td:nth-child(2) a');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('table#groupUsersList', function success() {
-								casper.click('tr td input[name="user_id"]');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('div#floatingActionMenu', function success() {
-									casper.test.assertExist('select[name="action"]','drop down is appear on the bottum of page');
-									casper.fillSelectors('div#floatingActionMenu', {
-					    					'select[name="action"]': 'delete_members'
-									}, true);
-									casper.waitWhileVisible('a[title="View profile"]', function success() {
-										casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
-									}, function fail() { 
-										casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
-									});
-								},function fail() {
-									casper.echo('Floating menu not found','INFO');
+						wait.waitForElement('table.text.fullborder', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('tr:nth-child(5) td:nth-child(2) a');
+								wait.waitForElement('table#groupUsersList', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('tr td input[name="user_id"]');
+										casper.test.assertExist('select[name="action"]','drop down is appear on the bottom of page');
+										casper.fillSelectors('div#floatingActionMenu', {
+						    					'select[name="action"]': 'delete_members'
+										}, true);
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('Floating menu not found','ERROR');
+									}
 								});
-							},function fail(){
-								casper.echo('User table not found','ERROR');
-							});
-			
-						}, function fail() {
-							casper.echo('Table not found','INFO');
+							}else{
+								casper.echo('Table not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4127,27 +4165,27 @@ postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButtonSett
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
-							casper.fill('form#frmChangeUsersGroup', {
-								'member' : json.userToDelete
-							}, true);
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('form[name="ugfrm"]', function success() {
-								casper.test.assertExists('a#delete_user', '******Delete user button found *****');
-								casper.click('a#delete_user');
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('form#frmChangeUsersGroup', casper,function(err, isExists) {
+							if(isExists) {
+								casper.fill('form#frmChangeUsersGroup', {
+									'member' : json.userToDelete
+								}, true);
+								wait.waitForElement('form[name="ugfrm"]', casper,function(err, isExists) {
+									if(isExists) {
+										casper.test.assertExists('a#delete_user', '******Delete user button found *****');
+										casper.click('a#delete_user');
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('Approve user button not found','ERROR');
+									}	
 								});
-							}, function fail(){
-								casper.echo('Approve user button not found','ERROR');	
-							});
-						},function fail() {
-							casper.echo('Change user group permission not found','ERROR');
+							}else{
+								casper.echo('Change user group permission not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4185,26 +4223,25 @@ postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByButtonsSetti
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('table.text.fullborder', function success() {
-							casper.click('tr:nth-child(5) td:nth-child(2) a');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('table#groupUsersList', function success() {
-								casper.mouse.move("tr td a.userlist-delete");
-								casper.click('tr td a.userlist-delete');
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('table.text.fullborder', casper,function(err, isExists) {
+								if(isExists) {
+								casper.click('tr:nth-child(5) td:nth-child(2) a');
+								wait.waitForElement('table#groupUsersList', casper,function(err, isExists) {
+									if(isExists) {
+										casper.mouse.move("tr td a.userlist-delete");
+										casper.click('tr td a.userlist-delete');
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('User table not found','ERROR');
+									}
 								});
-							},function fail(){
-								casper.echo('User table not found','ERROR');
-							});
-			
-						}, function fail() {
-							casper.echo('Table not found','INFO');
+							}else{
+								casper.echo('Table not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4257,35 +4294,28 @@ postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByCheckboxSett
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('table.text.fullborder', function success() {
-							casper.click('tr:nth-child(6) td:nth-child(2) a');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('table#groupUsersList', function success() {
-								casper.click('tr td input[name="user_id"]');
-								//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-								casper.waitForSelector('div#floatingActionMenu', function success() {
-									casper.test.assertExist('select[name="action"]','drop down is appear on the bottum of page');
-									casper.fillSelectors('div#floatingActionMenu', {
-					    					'select[name="action"]': 'delete_members'
-									}, true);
-									casper.waitWhileVisible('a[title="View profile"]', function success() {
-										casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
-									}, function fail() { 
-										casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
-									});
-								},function fail() {
-									casper.echo('Floating menu not found','INFO');
+						wait.waitForElement('table.text.fullborder', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('tr:nth-child(6) td:nth-child(2) a');
+								wait.waitForElement('table#groupUsersList', casper,function(err, isExists) {
+									if(isExists) {
+										casper.click('tr td input[name="user_id"]');
+										casper.test.assertExist('select[name="action"]','drop down is appear on the bottom of page');
+										casper.fillSelectors('div#floatingActionMenu', {
+						    					'select[name="action"]': 'delete_members'
+										}, true);
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('Floating menu not found','ERROR');
+									}
 								});
-							},function fail(){
-								casper.echo('User table not found','ERROR');
-							});
-			
-						}, function fail() {
-							casper.echo('Table not found','INFO');
+							}else{
+								casper.echo('Table not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4323,26 +4353,25 @@ postEventMemberApprovalTestcases.deleteMemberFromDefaultUserGroupsByButtonsSetti
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('table.text.fullborder', function success() {
-							casper.click('tr:nth-child(6) td:nth-child(2) a');
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('table#groupUsersList', function success() {
-								casper.mouse.move("tr td a.userlist-delete");
-								casper.click('tr td a.userlist-delete');
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('table.text.fullborder', casper,function(err, isExists) {
+							if(isExists) {
+								casper.click('tr:nth-child(6) td:nth-child(2) a');
+								wait.waitForElement('table#groupUsersList', casper,function(err, isExists) {
+									if(isExists) {
+										casper.mouse.move("tr td a.userlist-delete");
+										casper.click('tr td a.userlist-delete');
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('User table not found','ERROR');
+									}
 								});
-							},function fail(){
-								casper.echo('User table not found','ERROR');
-							});
-			
-						}, function fail() {
-							casper.echo('Table not found','INFO');
+							}else{
+								casper.echo('Table not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4380,30 +4409,30 @@ postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupChangeGroupSetti
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
-							casper.fill('form#frmChangeUsersGroup', {
-								'member' : json.userToDelete
-							}, true);
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('form[name="ugfrm"]', function success() {
-								casper.test.assertExists('form#frmChangeUsersGroupFinal', '*************POP UP appear*************');
-								/*casper.fillLabels('form#frmChangeUsersGroupFinal', {
-									'Registered Users' : 'checked',
-									'Pending Email Verification' : ''
-								}, true);*/
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','INFO');
+						wait.waitForElement('form#frmChangeUsersGroup', casper,function(err, isExists) {
+							if(isExists) {
+								casper.fill('form#frmChangeUsersGroup', {
+									'member' : json.userToDelete
+								}, true);
+								wait.waitForElement('form[name="ugfrm"]', casper,function(err, isExists) {
+									if(isExists) {
+										casper.test.assertExists('form#frmChangeUsersGroupFinal', '*************POP UP appear*************');
+										casper.fillLabels('form#frmChangeUsersGroupFinal', {
+											'Registered Users' : 'checked',
+											'Pending Email Verification' : ''
+										}, true);
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the Pending Email Verification page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the Pending Email Verification page','ERROR');
+										});
+									}else{
+										casper.echo('Approve user button not found','ERROR');
+									}	
 								});
-							}, function fail() {
-								casper.echo('Approve user button not found','ERROR');	
-							});
-						},function fail() {
-							casper.echo('Change user group permission not found','ERROR');
+							}else {
+								casper.echo('Change user group permission not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4416,6 +4445,13 @@ postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupChangeGroupSetti
 		casper.then(function() {
 			backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 			});
+		});
+	});
+	casper.then(function() { // method called to delete the user which is approved above
+		postEventMemberApprovalMethod.deleteMember(casper, function (err) {
+			if(!err) {
+				casper.echo('Inside the deleteUser method','INFO');
+			}
 		});
 	});
 };
@@ -4441,27 +4477,27 @@ postEventMemberApprovalTestcases.deleteMemberFromChangeUserGroupDeleteButtonSett
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
-							casper.fill('form#frmChangeUsersGroup', {
-								'member' : json.userToDelete
-							}, true);
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('form[name="ugfrm"]', function success() {
-								casper.test.assertExists('a#delete_user', '******Delete user button found *****');
-								casper.click('a#delete_user');
-								casper.waitWhileVisible('a[title="View profile"]', function success() {
-									casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
-								}, function fail() { 
-									casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','INFO');
+						wait.waitForElement('form#frmChangeUsersGroup', casper,function(err, isExists) {
+							if(isExists) {
+								casper.fill('form#frmChangeUsersGroup', {
+									'member' : json.userToDelete
+								}, true);
+								wait.waitForElement('form[name="ugfrm"]', casper,function(err, isExists) {
+									if(isExists) {
+										casper.test.assertExists('a#delete_user', '******Delete user button found *****');
+										casper.click('a#delete_user');
+										casper.waitWhileVisible('a[title="View profile"]', function success() {
+											casper.test.assertDoesntExist('a[title="View profile"]' ,'username is deleted from the approval queue page','INFO');
+										}, function fail() { 
+											casper.test.assertExists('a[title="View profile"]' ,'username is not deleted from the approval queue page','ERROR');
+										});
+									}else{
+										casper.echo('Approve user button not found','ERROR');
+									}	
 								});
-							}, function fail(){
-								casper.echo('Approve user button not found','ERROR');	
-							});
-						},function fail() {
-							casper.echo('Change user group permission not found','ERROR');
+							}else {
+								casper.echo('Change user group permission not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -4514,31 +4550,31 @@ postEventMemberApprovalTestcases.deleteMemberSettingFour = function() {
 						casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
 						casper.test.assertExists('div#ddUsers a', '*****Group permission is found****');
 						casper.click('div#ddUsers a');
-						//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-						casper.waitForSelector('form#frmChangeUsersGroup', function success() {
-							casper.fill('form#frmChangeUsersGroup', {
-								'member' : json.userToDelete
-							}, true);
-							//wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					//if(isExists) {
-							casper.waitForSelector('form[name="ugfrm"]', function success() {
-								var checked = casper.evaluate(function() {
-									var element = document.getElementById(20237761).checked;
-									return element;
+						wait.waitForElement('form#frmChangeUsersGroup', casper,function(err, isExists) {
+							if(isExists) {
+								casper.fill('form#frmChangeUsersGroup', {
+									'member' : json.userToDelete
+								}, true);
+								wait.waitForElement('form[name="ugfrm"]', casper,function(err, isExists) {
+									if(isExists) {
+										var checked = casper.evaluate(function() {
+											var element = document.getElementById(20237761).checked;
+											return element;
+										});
+										casper.echo('the value of checked = '+checked,'INFO');
+										if(checked == true) {
+											casper.echo('The pending user is moved to Register user, Verified','INFO');
+										}
+										else {
+											casper.echo('The pending user is not moved to Register user, Verified','ERROR');
+										}
+									}else{
+										casper.echo('changer user group form not found','ERROR');
+									}	
 								});
-								casper.echo('the value of checked = '+checked,'INFO');
-								if(checked == true) {
-									casper.echo('The pending user is moved to Register user, Verified','INFO');
-								}
-								else {
-									casper.echo('The pending user is not moved to Register user, Verified','INFO');
-								}
-							}, function fail() {
-								casper.echo('changer user group form not found','ERROR');	
-							});
-						},function fail() {
-							casper.echo('Change user group permission not found','ERROR');
+							}else{
+								casper.echo('Change user group permission not found','ERROR');
+							}
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
