@@ -53,6 +53,16 @@ switch (feature) {
 		});
 	break;
 	
+	case "combinationOfSubCategoryAndGroupPermissions":
+		casper.test.begin('Verify combination  Of SubCategory And GroupPermissions functionality from home page with all valid and invalid scenarios ', function(test) {
+			var privateMessage = require("./testsuite/main/combinationOfSubCategoryAndGroupPermissions.js");
+			privateMessage.featureTest(casper, casper.test);
+			casper.run(function(){
+				test.done();
+			});
+		});
+	break;
+	
 	default:
 		casper.echo("Please select any feature from options given below. For ex: casperjs automation.js <option>.\n"); 
         	casper.echo("Options:");
@@ -60,6 +70,7 @@ switch (feature) {
         	casper.echo("thumpsUpDown");
         	casper.echo("privateMessage");
         	casper.echo("postEventMemberApproval");
+        	casper.echo("combinationOfSubCategoryAndGroupPermissions");
 		casper.exit();
 };
 
