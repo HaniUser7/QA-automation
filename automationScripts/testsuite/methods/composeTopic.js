@@ -65,7 +65,7 @@ composeTopicMethod.backendSettingCompostTopic= function(casper,test,callback) {
 										casper.fill('form#frmForumSettings', {
 											'post_approval' : 'Disabled'
 										}, true);
-										forumLoginMethod.logoutFromApp (casper,function(err) {
+										composeTopicMethod.BackEndLogout(casper,function(err) {
 											if(!err){
 												casper.echo('uploadAttachmentMethod of logoutFromApp work sucessful', 'INFO');
 												 return callback(null);
@@ -131,7 +131,7 @@ composeTopicMethod.topicViewSetting = function(casper,test,callback) {
 																				var message = casper.fetchText('div#tab_wrapper .heading[color="red"]');
 																				var expectedErrorMsg = 'Your user group settings have been updated.';
 																				casper.test.assertEquals(message, expectedErrorMsg);
-																				forumLoginMethod.logoutFromApp (casper, function(err) {
+																				composeTopicMethod.BackEndLogout(casper, function(err) {
 																					if(!err){
 																						casper.echo('backend logout sucessful');
 																						return callback(null);
@@ -187,7 +187,7 @@ composeTopicMethod.deleteTopic = function(driver,callback) {
 							casper.test.assertDoesntExist('div#topics div div div form div div:nth-child(2) span input[name="allbox"]');
 						}
 						casper.wait(2000, function(){
-							forumLoginMethod.logoutFromApp(casper, function(err){
+							composeTopicMethod.BackEndLogout(casper, function(err){
 								if (!err)
 								casper.echo('Successfully logout from application', 'INFO');
 								return callback(null);
@@ -199,11 +199,33 @@ composeTopicMethod.deleteTopic = function(driver,callback) {
 		});
 }
 
+//5.Logout To Forum Back End
+composeTopicMethod.BackEndLogout = function(driver, callback) {
+    try{
+	 	driver.test.assertExists('div#account_sub_menu a:nth-of-type(2)');
+		driver.click('div#account_sub_menu a:nth-of-type(2)');
+		driver.test.assertExists('div#ddAccount a:nth-of-type(5)');
+		driver.click('div#ddAccount a:nth-of-type(5)');
+		driver.wait(2000, function(){
+		   var logout = casper.fetchText('div#content_wrapper div.text');
+		   this.echo("message : "+logout, 'INFO');
+		   return callback(null);	
+		});
+	}catch(e){
+	   driver.test.assertDoesntExist('div#account_sub_menu a:nth-of-type(2)');
+	   forumLoginMethod.logoutFromApp(casper, function(err){
+			if (!err)
+			casper.echo('Successfully logout from application', 'INFO');
+			return callback(null);
+		});	
+	}
+};
+
 
 
 /******************************  3.Compose Topic Options   ******************************************/
 
-//5.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+//6.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
 composeTopicMethod.compostTopic= function(value,casper,test,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper, function(err) {
@@ -267,7 +289,7 @@ composeTopicMethod.compostTopic= function(value,casper,test,callback) {
 																					var message = casper.fetchText('div#tab_wrapper .heading[color="red"]');
 																					var expectedErrorMsg = 'Your user group settings have been updated.';
 																					casper.test.assertEquals(message, expectedErrorMsg);
-																					forumLoginMethod.logoutFromApp (casper, function(err) {
+																					composeTopicMethod.BackEndLogout(casper, function(err) {
 																						if(!err){
 																							casper.echo('backend logout sucessful');
 																							return callback(null);
@@ -304,7 +326,7 @@ composeTopicMethod.compostTopic= function(value,casper,test,callback) {
 
 /**************  4.Compose Topic Permission(Make sure 'Post approval' is disabled)  ******************/
 
-//6.Method for Backend Setting(Compose Topic Permission)
+//7.Method for Backend Setting(Compose Topic Permission)
 composeTopicMethod.composeTopicPermission = function(value,casper,test,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
@@ -348,7 +370,7 @@ composeTopicMethod.composeTopicPermission = function(value,casper,test,callback)
 																		var message = casper.fetchText('div#tab_wrapper .heading[color="red"]');
 																		var expectedErrorMsg = 'Your user group settings have been updated.';
 																		casper.test.assertEquals(message, expectedErrorMsg);
-																		forumLoginMethod.logoutFromApp (casper, function(err) {
+																		composeTopicMethod.BackEndLogout(casper, function(err) {
 																			if(!err){
 																				casper.echo('backend logout sucessful');
 																				return callback(null);
@@ -379,7 +401,7 @@ composeTopicMethod.composeTopicPermission = function(value,casper,test,callback)
     });	
 }
 
-//7.Method for Backend Setting(listingPageDisabledOneCateogry)
+//8.Method for Backend Setting(listingPageDisabledOneCateogry)
 composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,test,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
@@ -399,9 +421,10 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 										    for(var i=1; i<=7; i++) {
 												var x1 = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
 												if (x1.innerText == 'categories2') {
-														var x2 = document.querySelector('div#sortable ul li:nth-child(1) a:nth-child(2)');
-														x2.click();
-														var x3 = document.querySelector('div.tooltipMenu.forumActionbutton a:nth-child(3)').getAttribute('data-url');
+														var x2 = document.querySelector('div#sortable ul li:nth-child('+i+') a:nth-child(2)').getAttribute('data-forumid');
+														var x4 = document.querySelector('div#sortable ul li:nth-child('+i+') a:nth-child(2)');
+														x4.click()
+														var x3 = document.querySelector('div#forumAction'+x2+' a:nth-child(3)').getAttribute('data-url');
 													return x3;
 													
 												}  
@@ -433,7 +456,7 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 																						//casper.click('button[type="button"] span.ui-button-text');
 																						casper.wait(2000, function(){
 																							
-																							forumLoginMethod.logoutFromApp (casper,function(err) {
+																							composeTopicMethod.BackEndLogout(casper,function(err) {
 																								if(!err){
 																									casper.echo('backend logout sucessful');
 																									return callback(null);
@@ -472,7 +495,7 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
     });	
 }
 
-//8.Method for Backend Setting(Compost Topic (start new topic permission is disabled for register User)
+//9.Method for Backend Setting(Compost Topic (start new topic permission is disabled for register User)
 composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
@@ -534,7 +557,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 																var message = casper.fetchText('div#tab_wrapper .heading[color="red"]');
 																var expectedErrorMsg = 'Your user group settings have been updated.';
 																casper.test.assertEquals(message, expectedErrorMsg);
-																forumLoginMethod.logoutFromApp (casper,function(err) {
+																composeTopicMethod.BackEndLogout(casper,function(err) {
 																	if(!err){
 																		casper.echo('backend logout sucessful');
 																		return callback(null);
@@ -564,8 +587,8 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 
 /**************  4.Making enable registration user as admin or register user  ******************/
 
-//9.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
- composeTopicMethod.enableUserRegister= function(username, casper, test) {	
+//10.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+ composeTopicMethod.enableUserRegister= function(username, casper,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper, function(err) {
 			if(!err){
@@ -606,9 +629,10 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 																casper.test.assertExists('button[title="Close"]');
 																casper.click('button[title="Close"]');
 																casper.wait(2000, function(){ 
-																    forumLoginMethod.logoutFromApp (casper, function(err) {
+																    composeTopicMethod.BackEndLogout(casper, function(err) {
 																		if(!err){
-																			casper.echo('backend logout sucessful','ERROR');
+																			casper.echo('backend logout sucessful','INFO');
+																			return callback(null);
 																		}
 																	});	
 																});
@@ -635,12 +659,12 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
-//10.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
- composeTopicMethod.enableUserAdmin= function(username,casper,test) {	
+//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+ composeTopicMethod.enableUserAdmin= function(username,driver,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
 			if(!err){
-				registerMethod.loginToForumBackEnd(casper, test, function(err) {
+				registerMethod.loginToForumBackEnd(casper, casper.test, function(err) {
 					 if(!err){
 						casper.echo('Logged-in successfully from back-end', 'INFO');
 						wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
@@ -675,9 +699,10 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 														casper.test.assertExists('button[title="Close"]');
 														casper.click('button[title="Close"]');
 														casper.wait(2000, function(){ 
-															forumLoginMethod.logoutFromApp (casper,function(err) {
+															composeTopicMethod.BackEndLogout(casper,function(err) {
 																if(!err){
 																	casper.echo('backend logout sucessful','INFO');
+																	return callback(null);
 																}
 															});	
 														});
@@ -702,7 +727,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
-//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+//12.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
  composeTopicMethod.captchaRegistration= function(casper, test, callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper, function(err) {
@@ -726,10 +751,10 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 																casper.click('button.button.btn-m.btn-blue');
 																casper.wait(4000, function(){
 																	casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-																	forumLoginMethod.logoutFromApp (casper, function(err) {
+																	composeTopicMethod.BackEndLogout(casper, function(err) {
 																		if(!err){
 																			casper.echo('backend logout successful');
-																			  return callback(null);
+																			 return callback(null);
 																		}
 																	});	
 																}, function fail() { 
@@ -760,7 +785,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
-//12.Method for Backend Setting(create Categories)
+//13.Method for Backend Setting(create Categories)
 composeTopicMethod.createCategories= function(value,casper,test,callback) {/*Return callback missing*/	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
@@ -785,7 +810,7 @@ composeTopicMethod.createCategories= function(value,casper,test,callback) {/*Ret
 																},false);
 																casper.click('form[name="frmOptions"] button');
 																casper.wait(2000, function(){ 					 
-																	forumLoginMethod.logoutFromApp (casper, function(err) {
+																	composeTopicMethod.BackEndLogout(casper, function(err) {
 																		if(!err){
 																			casper.echo('forumLoginMethod working sucessful','INFO');
 																			return callback(null);
@@ -811,3 +836,120 @@ composeTopicMethod.createCategories= function(value,casper,test,callback) {/*Ret
 		});
 	});
 }
+
+//14.Method for Backend Setting(delete Categories)
+composeTopicMethod.deleteCategories= function(data,driver,callback) {	
+	casper.thenOpen(config.backEndUrl, function() {
+		forumLoginMethod.logoutFromApp (casper,function(err) {
+			if(!err){
+				registerMethod.loginToForumBackEnd(casper, casper.test, function(err) {
+				    if(!err){
+						wait.waitForElement('div#my_account_forum_menu',casper, function(err, isExists) {
+						    if(!err){
+								if(isExists) {
+								    casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+									casper.test.assertExists('div#ddContent div a:nth-child(1)');
+								    casper.click('div#ddContent div a:nth-child(1)');
+									casper.wait(2000, function(){
+											var grpName = casper.evaluate(function(){
+										    for(var i=1; i<=5; i++) {
+												var x1 = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
+												if (x1.innerText == data) {
+														var x2 = document.querySelector('div#sortable ul li:nth-child('+i+') a:nth-child(2)').getAttribute('data-forumid');
+														var x3 = document.querySelector('div#forumAction'+x2+' a:nth-child(2)').getAttribute('href');
+													return x3;
+												}  
+                                            }												
+											
+										});
+										casper.echo(grpName);
+										casper.click('a[href="'+grpName+'"]');
+										casper.wait(2000, function(){
+											try{
+												casper.test.assertExists('input#remove_forum');
+												casper.click('input#remove_forum');
+											}catch(e){
+												 casper.test.assertDoesntExist('input#remove_forum');
+											}
+											casper.wait(2000, function(){
+												composeTopicMethod.BackEndLogout(casper,function(err) {
+													if(!err){
+														casper.echo('backend logout sucessful');
+														return callback(null);
+													}
+												});	
+											});
+										});
+									});	
+							    }else {
+									casper.echo('Top menu link not found', 'ERROR');
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+	});
+}
+
+//15.Method for Backend Setting(Compost Topic (for delete user)
+ composeTopicMethod.deleteUser= function(username,driver,callback) {	
+	casper.thenOpen(config.backEndUrl, function() {
+		forumLoginMethod.logoutFromApp (casper, function(err) {
+			if(!err){
+				registerMethod.loginToForumBackEnd(casper,casper.test, function(err) {
+					 if(!err){
+						casper.echo('Logged-in successfully from back-end', 'INFO');
+						wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+						    if(!err){
+								if(isExists) {
+									casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+									casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+									casper.test.assertExists('div#ddUsers div a:nth-child(1)');
+									casper.click('div#ddUsers div a:nth-child(1)');
+									wait.waitForElement('input#autosuggest', casper, function(err, isExists) {
+										if(!err){
+								            if(isExists) {
+												casper.test.assertExists('#autosuggest');
+												casper.sendKeys('#autosuggest',username, {keepFocus: true});
+												casper.click('#autosuggest');
+												casper.page.sendEvent("keypress", casper.page.event.key.Enter);
+												casper.wait(2000, function(){ 
+													try{
+														casper.test.assertExists('form[name="ugfrm"]');
+														casper.test.assertExists('a#delete_user');
+														casper.click('a#delete_user');
+													
+													}catch(e){
+													    casper.test.assertDoesntExist('form[name="ugfrm"]');
+														casper.test.assertDoesntExist('a#delete_user');
+														casper.click('button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only span');
+													}
+													casper.wait(2000, function(){ 
+														casper.capture('errr.png')
+														composeTopicMethod.BackEndLogout(casper, function(err) {
+															if(!err){
+																casper.echo('backend logout sucessful','INFO');
+																return callback(null);
+															}
+														});	
+													});
+												});
+											} else {
+												casper.echo('Change a Users User Group textbox not found', 'ERROR');
+											}
+										}
+									});
+								} else {
+									casper.echo('Backend Menu not found', 'ERROR');
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+	});
+}
+

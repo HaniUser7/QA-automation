@@ -20,8 +20,8 @@ composeTopic.featureTest = function(casper, test) {
 	  	composeTopicTest.createAdminUser();	
 
 		//Test case for create  category
-        composeTopicTest.backendNeed()		
-
+        composeTopicTest.backendNeed()	
+     
 		/************************   1.Add New Topic   ****************************/
 
 		//1.Test case for Add New Topic with selecting category and verify message
@@ -106,6 +106,14 @@ composeTopic.featureTest = function(casper, test) {
 
 		//25.Verify Compose Topic with Lock option(Admin)
 		composeTopicTest.composeTopicLockOption();
+	
+		/**************  5.Compose Topic With Attach, Insert and Follow Option  ******************/
+			
+		//26Test case for create  category
+        composeTopicTest.deleteCategories();
+         		
+		//27.Test case for create  category
+        composeTopicTest.deleteUser();		 
 
 	});
 

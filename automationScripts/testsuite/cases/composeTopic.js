@@ -10,7 +10,7 @@ var composeTopicTest=module.exports = {};
 var errorMessage = "";
 
 
-/**************************** Test case for Making User*********************/
+/**************************** Test case for basic need composeTopic *********************/
 
 //1.Test case for create register user
 composeTopicTest.createRegisterUser= function() {
@@ -64,14 +64,13 @@ composeTopicTest.createRegisterUser= function() {
 	});
 }
 
-
 //2.Test case for create admin user
 composeTopicTest.createAdminUser= function() {
        
-	casper.then(function(){  /* Uncessary use of then*/
+	casper.then(function(){  
 
 		//2.1 Test case for create registration for Admin user
-        casper.then(function(){  /* Uncessary use of then*/
+        casper.then(function(){  
 			casper.thenOpen(config.url, function() {
 				casper.echo('*******************************************', 'INFO');
 				casper.echo('2.1 Admin user(registration for Admin user)', 'INFO');
@@ -109,14 +108,15 @@ composeTopicTest.createAdminUser= function() {
 			casper.echo('*********************************************', 'INFO');
 			casper.echo('1.2 Admin user(backend enable for Admin user)', 'INFO');
 			casper.echo('*********************************************', 'INFO');
-			composeTopicMethod.enableUserAdmin('sangita', casper, function(){
-				casper.echo('enableUser working', 'INFO');
+			composeTopicMethod.enableUserAdmin('sangita', casper, function(err){
+			    if(err){
+				     casper.echo('enableUser working', 'INFO');
+				}
 			});
 		});
 
 	});
 }
-
 
 //3.Test case for create register user
 composeTopicTest.backendNeed= function() {
@@ -142,6 +142,8 @@ composeTopicTest.backendNeed= function() {
 		});
 	});
 }
+
+
 
 	
 /**************************** Test case for composeTopic *********************/
@@ -215,7 +217,6 @@ composeTopicTest.addNewTopicHindiText= function() {
 										wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
 										    if(!err){
 												if(isExist) {
-													
 													casper.test.assertExists('div#ajax_subscription_vars div div:nth-child(4) span');
 													var sub = casper.fetchText('div#ajax_subscription_vars div div:nth-child(4) span');
 													casper.echo('subject :'+sub,'INFO');													
@@ -530,6 +531,11 @@ composeTopicTest.compostTopicCategoryListingPage= function() {
 																	});
 																}else{
 																	casper.echo('Message not be generated', 'ERROR');
+																	forumLoginMethod.logoutFromApp(casper, function(err){
+																		if (!err){
+																			casper.echo('Successfully logout from application', 'INFO');
+																		}
+																	});
 																}
 															}													
 														});
@@ -958,6 +964,8 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 								    casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 									composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 										if(!err){
+										    casper.wait(2000,function(){
+											   casper.capture('9(b).png');
 											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
 												if(!err){
 													if(isExist) {
@@ -973,6 +981,7 @@ composeTopicTest.composeTopicNoTopicAvailable= function() {
 														casper.echo('Message not be generated', 'ERROR');
 													}
                                                 }													
+											});
 											});
 										}
 									});						   
@@ -2100,6 +2109,8 @@ composeTopicTest.previewPostComposeTopic = function() {
 													casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 													composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 														if(!err){
+														    casper.wait(2000,function(){
+															casper.capture('18(c).png');
 															wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
 																if(!err){
 																	if(isExist) {
@@ -2116,7 +2127,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 																	}
 																}													
 															});
-														
+														});
 														}
 													});						   
 												}else {
@@ -2238,6 +2249,8 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 																casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 																composeTopicMethod.startTopic(true,false,false,data['Topicmessage'],casper,function(err){
 																	if(!err){
+																	    casper.wait(2000,function(){
+																		   casper.capture('19(b).png');
 																		wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
 																			if(!err){
 																				if(isExist) {
@@ -2253,6 +2266,7 @@ composeTopicTest.previewPostDropdownTopicMessage = function() {
 																					casper.echo('Message not be generated', 'ERROR');
 																				}
 																			}													
+																		});
 																		});
 																	}
 													            });						   
@@ -2631,6 +2645,8 @@ composeTopicTest.composeTopicFollowOption= function() {
 									casper.click('div#topics ul li:nth-child(2) a');
 									composeTopicMethod.startTopic(true,true,true,data['Topicmessage'],casper,function(err){
 										if(!err){
+										    casper.wait(2000,function(){
+											   casper.capture('21(d).png');
 											wait.waitForElement('div#ajax_subscription_vars div div:nth-child(4) span', casper, function(err, isExist) {
 												if(!err){
 													if(isExist) {
@@ -2646,6 +2662,7 @@ composeTopicTest.composeTopicFollowOption= function() {
 														casper.echo('Message not be generated', 'ERROR');
 													}
                                                 }													
+											});
 											});
 										}
 									});									
@@ -3015,6 +3032,59 @@ composeTopicTest.composeTopicLockOption= function() {
 }
 
 
+/**************  5.Compose Topic With unnecessary data  ******************/
+
+
+//26.Test case for create register user(delete Categories)
+composeTopicTest.deleteCategories= function() {
+       
+	casper.then(function(){ 
+		
+		casper.then(function(){ 
+		    casper.echo(' ****   1.categories1        ', 'INFO');
+			composeTopicMethod.deleteCategories('categories1',casper,function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod delete categories2 working', 'INFO');
+					}
+			});
+		});
+	
+		casper.then(function(){ 
+			casper.echo(' ****   2.categories2      ', 'INFO');
+			composeTopicMethod.deleteCategories('categories2',casper,function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod delete categories2 working', 'INFO');
+					}
+			});
+		});
+	});
+}
+
+
+//27.Test case for create register user
+composeTopicTest.deleteUser= function() {
+       
+	casper.then(function(){  /* Uncessary use of then*/
+		
+		casper.then(function(){ 
+		    casper.echo(' ****   1.Delete register user         ', 'INFO');
+			composeTopicMethod.deleteUser('rajan41',casper,function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod deleteUser working', 'INFO');
+					}
+			});
+		});
+	
+		casper.then(function(){ 
+			casper.echo(' ****   2.Delete admin user      ', 'INFO');
+			composeTopicMethod.deleteUser('sangita',casper,function(err) {
+				if(!err){
+					casper.echo('composeTopicMethod deleteUser working', 'INFO');
+					}
+			});
+		});
+	});
+}
 
 
 
