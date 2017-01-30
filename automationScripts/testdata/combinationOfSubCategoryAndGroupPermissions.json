@@ -25,6 +25,16 @@
 		"username" : "isneha",
 		"password" : "1234",
 		"email" : "isneha@gmail.com"
-	}]
+	}],
+	
+	"category" : {
+		"title" : "cat1",
+		"description" : "To test parent category"
+	},
+	
+	"subCategory" : {
+		"title" : "cat1a",
+		"description" : "To test child category"
+	}
 	
 }

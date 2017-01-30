@@ -444,23 +444,23 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval = fu
 };
 
 //*************************Method to create a category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(data, driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
 		if(!err) {
 			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
 				if(isExists) {
 					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 					wait.waitForElement('div#ddContent', driver, function(err, isExists) {
 						if(isExists) {
 							driver.click('div#ddContent a:nth-child(1)');
 							wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
 								if(isExists) {
-									driver.click('a#addForumButton');
-									wait.waitForElement('div#addedit_forum_dialog', driver, function(err, isExists) {
+									casper.click('a#addForumButton');
+									wait.waitForElement('form#edit_forum_form', casper, function(err, isExists) {
 										if(isExists) {
-											driver.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
-											driver.sendKeys('textarea[name="forum_description"]', data.title, {reset:true});
+											casper.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
+											casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
 											casper.wait(40000, function() {
@@ -475,7 +475,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(driv
 										}
 									});
 								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
+									casper.echo('Add category tab not found', 'ERROR');
 								}
 							});
 						} else {
@@ -498,38 +498,40 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(driv
 };
 
 //*************************Method to create a Sub Category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(data, driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
 		if(!err) {
 			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
 				if(isExists) {
 					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 					wait.waitForElement('div#ddContent', driver, function(err, isExists) {
 						if(isExists) {
 							driver.click('div#ddContent a:nth-child(1)');
 							wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
 								if(isExists) {
-									driver.click('a#addForumButton');
-									wait.waitForElement('div#addedit_forum_dialog', driver, function(err, isExists) {
+									casper.click('a#addForumButton');
+									wait.waitForElement('form#edit_forum_form', casper, function(err, isExists) {
 										if(isExists) {
-											driver.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
-											driver.sendKeys('textarea[name="forum_description"]', data.title, {reset:true});
+											casper.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
+											casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
 											utils.enableorDisableCheckbox('isSubcategory', true, casper, function() {
 												casper.echo('checkbox is checked', 'INFO');
 											});
-											driver.fillSelectors('form[name="posts"]', {
-				    								'select[name="parentid"]': '99'
-											}, true);
-											casper.test.assertExists('button.button.btn-m.btn-blue');
-											casper.click('button.button.btn-m.btn-blue');
-											casper.wait(40000, function() {
+											casper.then(function() {
+												casper.fillSelectors('div#parentOpt', {
+					    								'select[name="parentid"]': '199641'
+												}, true);
+												casper.test.assertExists('button.button.btn-m.btn-blue');
+												casper.click('button.button.btn-m.btn-blue');
+												casper.wait(40000, function() {
+												});
+												/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													if(isExists) {
+														casper.echo("Permission unchanged",'INFO');
+													}
+												});*/
 											});
-											/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-												if(isExists) {
-													casper.echo("Permission unchanged",'INFO');
-												}
-											});*/
 										} else {
 											casper.echo('Form not found', 'ERROR');
 										}

@@ -11,7 +11,22 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		this.echo("Title of the page :"+this.getTitle(),'INFO');
 		
 		// method to test methods
-		combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
+		
+		// method to verify with category cat1
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
+		
+		// method to verify with sub-category cat1a
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory();
+		
+		// method to verify with the private sub-category cat1a
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPrivateSubCategory();
+		
+		// method to verify with the parent category cat1
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory();
+		
+		// method to verify start new topic button with the sub-category cat1a
+		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
 		
 	});
 };
