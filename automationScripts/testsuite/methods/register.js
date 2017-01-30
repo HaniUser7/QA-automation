@@ -13,18 +13,21 @@ var registerMethod=module.exports = {};
 registerMethod.loginToForumBackEnd = function(driver, callback) {
 		
 	//Click On Login Link 
-	wait.waitForElement('a#navLogin', casper, function(err, isExist) {
+	wait.waitForElement('a#navLogin', driver, function(err, isExist) {
 		if(isExist) {
 			driver.click('a#navLogin');
 			driver.echo('Successfully open login form.....', 'INFO');
 			fillDataToLogin(config.backendCred, driver, function(err) {
 				if (!err)
 					driver.echo('Proccessing to login on forum back end....', 'INFO');
+					
+					
 			});
 		} else {
 			driver.echo('Login Link Not Found', 'ERROR');
 		}
 		return callback(null);
+		
 	});
 };
 
@@ -44,9 +47,9 @@ var fillDataToLogin = function(data, driver, callback) {
 //Method For Filling Data In Registration Form
 registerMethod.registerToApp = function(data, driver, callback) {
 	driver.fill('form[name="PostTopic"]', {
-		'member' : data.username,
-		'email': data.email,
-		'pw' : data.password
+		'member' : data.uname,
+		'email': data.uemail,
+		'pw' : data.upass
 		
 	}, false);
 	
@@ -127,6 +130,8 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		var expectedSuccessMsg = json['validInfo'].expectedSuccessMsg;
 		driver.test.assertEquals(successMsg.trim(), expectedSuccessMsg.trim());
 		driver.echo('Successfully done registration on forum.....', 'INFO');
+		
+		
 
 		//Clicking On 'Back To Category' Link 
 		wait.waitForElement('small a[href="/categories"]', casper, function(err, isExist) {
@@ -151,6 +156,10 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 			return callback(null);
 		} catch(e1) {
 			driver.echo('Successfully done registration on forum.....', 'INFO');
+			casper.wait(2000 , function(){
+				casper.capture('3.png');
+
+			});
 			//Click On Logout Link
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExist) {
 			    if(isExist) {
