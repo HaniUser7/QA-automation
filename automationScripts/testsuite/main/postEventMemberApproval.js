@@ -49,9 +49,6 @@ postEventMemberApproval.featureTest = function(casper, test) {
 		// method to check the functionality of approve post for guest user
 		postEventMemberApprovalTestcases.unregisterUserApprovePost();
 		
-		// method to Delete a pending post by select all pending post by  check box
-		postEventMemberApprovalTestcases.deleteByAllCheckBox();
-		
 		// method to Approve a pending event -Approval queue button
 		postEventMemberApprovalTestcases.eventApprovalByApprovalQueueButton();
 	

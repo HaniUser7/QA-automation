@@ -173,6 +173,7 @@ postEventMemberApprovalTestcases.byClickingOnTopic = function() {
 	});*/
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 2', 'INFO');
 		casper.echo('*                   Approve a pending post -By clicking on topic             *', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
@@ -263,6 +264,7 @@ postEventMemberApprovalTestcases.byCheckBox = function() {
 	});*/
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 3', 'INFO');
 		casper.echo('*             Approve a pending post by select the pending post by  check box      *', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
@@ -345,6 +347,7 @@ postEventMemberApprovalTestcases.byCheckBoxAll = function() {
 	});*/
 	//Open front end and logged in as register user
 	casper.thenOpen(config.url, function() {
+		casper.echo('                                      CASE 4', 'INFO');
 		casper.echo('*             Approve a pending post by select all pending post by  check box      *', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
@@ -774,7 +777,7 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 		casper.echo('*             Test case 46     *', 'INFO');
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
 		casper.test.assertExists('a.topic-title', 'Composed topic is found');
-		topic = casper.evaluate(function() {
+		var topic = casper.evaluate(function() {
 			var name = document.querySelector('a.topic-title span');
 			return name.innerHTML;
 		});
@@ -782,7 +785,7 @@ postEventMemberApprovalTestcases.unregisterUserApprovePost = function() {
 		casper.echo('*           The name of the topic is-'+topic+        '*','INFO');
 		casper.echo('*******************************************************','INFO');
 		casper.click('div.panel-body.table-responsive ul li span span:nth-child(2) a');
-		wait.waitForElement('form[name="PostTopic"]', casper, function(err, isExists) {
+		wait.waitForElement('div#posts-list', casper, function(err, isExists) {
 			if(isExists) {
 				casper.test.assertDoesntExist('#message','Reply option is not present for unregistered user');
 			}else {
@@ -1183,6 +1186,12 @@ postEventMemberApprovalTestcases.eventEditByClickingOnIt = function() {
 											casper.echo('The text of the event is--'+text2,'INFO');
 											if(text2!=text){
 												casper.echo('Event edited','INFO');
+												casper.click('a#deleteEvent_'+eventId+' i');
+												casper.waitWhileVisible('div#event_'+eventId , function success() {
+													casper.test.assertDoesntExist('div#event_'+eventId ,'event is deleted after edited from the page','INFO');
+												}, function fail() { 
+													casper.test.assertExists('div#event_'+eventId ,'event is not deleted after edited from the page','ERROR');
+												});
 											} else {
 												casper.echo('Event not edited','ERROR');
 											}
@@ -1230,7 +1239,7 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButton = function(
 		//method to enable approve new Registration and disable email verification
 		postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail(casper, function(err) {
 			if(!err) {
-				casper.echo('Enable Approve New Event functionality method called ','INFO');
+				casper.echo('Enable approve new Registration and disable email verification method called ','INFO');
 			}
 		});
 		casper.then(function() {
@@ -1627,7 +1636,7 @@ postEventMemberApprovalTestcases.memberApprovalByApprovalQueueButtonSettingTwo =
 		//method to Enable -  Email verification and Disable -Approve New Registrations
 		postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail(casper, function(err) {
 			if(!err) {
-				casper.echo('Enable Approve New Event functionality method called ','INFO');
+				casper.echo('Enable Email verification and Disable -Approve New Registrations method called ','INFO');
 			}
 		});
 		casper.then(function() {
@@ -3851,7 +3860,7 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingFour =
 															if(isExists) {
 																casper.test.assertExists('a#delete_user_account i','Delete button appeared');
 																casper.click('a#delete_user_account i');
-																casper.wait(5000, function() {
+																wait.waitForTime(5000, casper, function(err) {
 																});	
 															}	
 														});

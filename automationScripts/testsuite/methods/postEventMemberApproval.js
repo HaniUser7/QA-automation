@@ -36,8 +36,7 @@ postEventMemberApprovalMethod.setAdmin = function(driver, test, callback) {
 									driver.fillLabels('form#frmChangeUsersGroupFinal', {
 										Administrators: 'checked'
 									}, true);
-									casper.wait(2000,function() {
-									
+									wait.waitForTime(2000, casper, function(err) {
 									});
 								} else {
 									driver.echo('Administration checkbox not found','ERROR');	
@@ -80,21 +79,21 @@ postEventMemberApprovalMethod.enableApproveNewPost = function(driver, test, call
 									}, true);
 									casper.test.assertExists('button.button.btn-m.btn-blue');
 									casper.click('button.button.btn-m.btn-blue');
-									casper.wait(40000, function() {
-											});
-									//casper.waitUntilVisible('div#loading_msg', function success() {
-										//casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-										/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
+									/*casper.wait(40000, function() {
+											});*/
+									casper.waitUntilVisible('div#loading_msg', function success() {
+										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+										casper.waitUntilVisible('div#ajax-msg-top', function success() {
 											casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 										}, function fail() { 
 											casper.echo('Saved not found', 'ERROR');
 											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											});
-										});*/
-									//}, function fail() {
-										//casper.echo('Loading... not found', 'INFO');
-									//});
+										},30000);
+									}, function fail() {
+										casper.echo('Loading... not found', 'INFO');
+									});
 								} else {
 									casper.echo('approve new post dropDown not found', 'ERROR');
 								}
@@ -136,13 +135,13 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 									}, true);
 									casper.test.assertExists('button.button.btn-m.btn-blue');
 									casper.click('button.button.btn-m.btn-blue');
-									casper.wait(40000, function() {
-											});
-									/*casper.waitUntilVisible('div#loading_msg', function success() {
+									/*casper.wait(40000, function() {
+											});*/
+									casper.waitUntilVisible('div#loading_msg', function success() {
 										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
 									}, function fail() {
 										casper.echo('Loading... not found', 'INFO');
-									});*/
+									},30000);
 								} else {
 									casper.echo('approve new post checkbox not found', 'ERROR');
 								}
@@ -233,8 +232,10 @@ postEventMemberApprovalMethod.composePost = function(driver, test, callback) {
 				if(isExists) {
 					driver.test.assertExists('#reply_submit');
 					driver.click('#reply_submit');
-					driver.wait(2000,function() {
-						return callback(null);
+					wait.waitForTime(2000, casper, function(err) {
+						if(!err) {
+							return callback(null);
+						}
 					});
 				}else {
 					driver.echo('Reply Submit button not found', 'ERROR');
@@ -307,8 +308,10 @@ postEventMemberApprovalMethod.deletePost = function(driver, test, callback) {
 		wait.waitForElement('input#deleteposts', driver, function(err, isExists) {
 			if(isExists) {
 				driver.click('input#deleteposts');
-				driver.wait(2000,function() {
-					return callback(null);
+				wait.waitForTime(2000, casper, function(err) {
+					if(!err) {
+						return callback(null);
+					}
 				});
 			}
 		});
@@ -514,19 +517,21 @@ postEventMemberApprovalMethod.composeEvent = function(driver, test, callback) {
 												// code get the id of event
 												driver.then(function() {
 													casper.click('#post_event_buttton');
-													casper.wait(5000, function() {
-														eventId = casper.evaluate( function(a) {
-															var n = a.indexOf('eventid=');
-															var stre='eventid=';
-															var leng=stre.length;
-															var h = n+leng;
-															var stringt=a.substring(h);
-															var t = stringt.indexOf('&');
-															var id = stringt.substring(0,t);
-															return id;
-														}, casper.getCurrentUrl());
-														casper.echo('*******event_id='+eventId,'INFO');
-														return callback(null, eventId);
+													wait.waitForTime(5000, casper, function(err) {
+														if(!err) {
+															eventId = casper.evaluate( function(a) {
+																var n = a.indexOf('eventid=');
+																var stre='eventid=';
+																var leng=stre.length;
+																var h = n+leng;
+																var stringt=a.substring(h);
+																var t = stringt.indexOf('&');
+																var id = stringt.substring(0,t);
+																return id;
+															}, casper.getCurrentUrl());
+															casper.echo('*******event_id='+eventId,'INFO');
+															return callback(null, eventId);
+														}
 													});
 												});
 											}else{
@@ -628,9 +633,9 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.wait(40000, function() {
-											});
-											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											/*casper.wait(40000, function() {
+											});*/
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -638,7 +643,7 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndDisableEmail = functi
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});*/
+											}, 30000);
 										});
 									});
 								} else {
@@ -732,9 +737,9 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.wait(40000, function() {
-											});
-											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											/*casper.wait(40000, function() {
+											});*/
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -742,7 +747,7 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndEnableEmail = functi
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});*/
+											}, 30000);
 										});
 									});
 								} else {
@@ -836,9 +841,9 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.wait(40000, function() {
-											});
-											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											/*casper.wait(40000, function() {
+											});*/
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -846,7 +851,7 @@ postEventMemberApprovalMethod.enableApproveRegistrationsAndEnableEmail = functio
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});*/
+											}, 30000);
 										});
 									});
 								} else {
@@ -940,9 +945,9 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 											});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.wait(40000, function() {
-											});
-											/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
+											/*casper.wait(40000, function() {
+											});*/
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
 												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 											}, function fail() { 
 												casper.waitUntilVisible('div#ajax-msg-top', function success() {
@@ -950,7 +955,7 @@ postEventMemberApprovalMethod.disableApproveRegistrationsAndDisableEmail = funct
 												}, function fail() { 
 													casper.echo('Saved not found', 'ERROR');
 												});
-											});*/
+											}, 30000);
 										});
 									});
 								} else {
@@ -1220,13 +1225,17 @@ postEventMemberApprovalMethod.enableViewableMembersPendingApproval = function(dr
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
+													/*casper.wait(40000, function() {
 													});*/
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() { 
+														casper.waitUntilVisible('div#ajax-msg-top', function success() {
+															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+														}, function fail() { 
+															casper.echo('Saved not found', 'ERROR');
+														}, 30000);
+													});
 												}else {
 													casper.echo(' Viewable on Members List  not found', 'ERROR');
 												}
@@ -1292,13 +1301,17 @@ postEventMemberApprovalMethod.enableViewableMembersPendingEmailVerification = fu
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
+													/*casper.wait(40000, function() {
 													});*/
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() { 
+														casper.waitUntilVisible('div#ajax-msg-top', function success() {
+															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+														}, function fail() { 
+															casper.echo('Saved not found', 'ERROR');
+														}, 30000);
+													});
 												}else {
 													casper.echo(' Viewable on Members List  not found', 'ERROR');
 												}
