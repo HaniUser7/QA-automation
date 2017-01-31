@@ -7,6 +7,8 @@ var wait = require('../wait.js');
 var json = require('../../testdata/combinationOfSubCategoryAndGroupPermissions.json');
 var forumLoginMethod = require('../methods/login.js');
 var backEndForumRegisterMethod = require('./backEndRegistration.js');
+var categoryId;
+var subCategoryId;
 var combinationOfSubCategoryAndGroupPermissionsMethod = module.exports = {};
 
 //*************************************************PRIVATE METHODS***********************************************
@@ -45,6 +47,11 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory = function(
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
+													/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() {
+														casper.echo('Saved not found', 'INFO');
+													},30000);*/
 													casper.wait(40000, function() {
 													});
 													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
@@ -53,7 +60,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory = function(
 														}
 													});*/
 												}else {
-													casper.echo(' Viewable on Members List  not found', 'ERROR');
+													casper.echo(' View category not found', 'ERROR');
 												}
 											});
 										} else {
@@ -117,8 +124,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics = function(d
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() {
+														casper.echo('Saved not found', 'INFO');
+													},30000);
+													//casper.wait(40000, function() {
+													//});
 													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
@@ -189,8 +201,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopics = function(d
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() {
+														casper.echo('Saved not found', 'INFO');
+													},30000);
+													//casper.wait(40000, function() {
+													//});
 													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
@@ -261,8 +278,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachments = func
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() {
+														casper.echo('Saved not found', 'INFO');
+													},30000);
+													//casper.wait(40000, function() {
+													//});
 													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
@@ -333,8 +355,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments = functi
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() {
+														casper.echo('Saved not found', 'INFO');
+													},30000);
+													//casper.wait(40000, function() {
+													//});
 													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
@@ -405,8 +432,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval = fu
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.wait(40000, function() {
-													});
+													casper.waitUntilVisible('div#ajax-msg-top', function success() {
+														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+													}, function fail() {
+														casper.echo('Saved not found', 'INFO');
+													},30000);
+													//casper.wait(40000, function() {
+													//});
 													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
@@ -463,8 +495,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(data
 											casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
 											casper.test.assertExists('button.button.btn-m.btn-blue');
 											casper.click('button.button.btn-m.btn-blue');
-											casper.wait(40000, function() {
-											});
+											casper.waitUntilVisible('div#ajax-msg-top', function success() {
+												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+											}, function fail() {
+												casper.echo('Saved not found', 'INFO');
+											},30000);
+											//casper.wait(40000, function() {
+											//});
 											/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 												if(isExists) {
 													casper.echo("Permission unchanged",'INFO');
@@ -519,13 +556,30 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(d
 												casper.echo('checkbox is checked', 'INFO');
 											});
 											casper.then(function() {
+												var catId = casper.evaluate(function() {
+													var id = document.querySelectorAll('#parentid option');
+													var len = id.length;
+													for(var i =1; i<=len; i++) {
+														var cat = document.querySelector('#parentid option:nth-child('+i+')');
+														if(cat.innerText == 'cat1') {
+															var catValue = document.querySelector('#parentid option:nth-child('+i+')').getAttribute('value');
+															return catValue;
+														}
+													}
+												});
+												casper.echo('Total category available= '+catId, 'INFO');
 												casper.fillSelectors('div#parentOpt', {
-					    								'select[name="parentid"]': '199641'
+					    								'select[name="parentid"]': catId
 												}, true);
 												casper.test.assertExists('button.button.btn-m.btn-blue');
 												casper.click('button.button.btn-m.btn-blue');
-												casper.wait(40000, function() {
-												});
+												casper.waitUntilVisible('div#ajax-msg-top', function success() {
+													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+												}, function fail() {
+													casper.echo('Saved not found', 'INFO');
+												},30000);
+												//casper.wait(40000, function() {
+												//});
 												/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 													if(isExists) {
 														casper.echo("Permission unchanged",'INFO');
@@ -559,8 +613,8 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(d
 	});
 };
 
-//*************************Method to goto the permission of Sub Category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = function(driver, callback) {
+//*************************Method to get the id of Category and sub category from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.getId = function(driver, callback) {
 	registerMethod.loginToForumBackEnd(casper, function(err) {
 		if(!err) {
 			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
@@ -572,29 +626,276 @@ combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = fu
 							casper.click('div#ddContent a:nth-child(1)');
 							wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
 								if(isExists) {
-									var id = casper.evaluate(function(){
+									categoryId = casper.evaluate(function(){
 										var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
 										for(var i=1; i<=x1.length; i++) {
 											var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
-											if (cat.innerText == 'Cat1') {
-												var x2 = document.querySelector("div#wrapper li:nth-child('+i+')").getAttribute('id');
+											if (cat.innerText == 'cat1') {
+												var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
+												return (x2);
+											}
+										}
+									});
+									casper.echo('the id of the category ='+categoryId,'INFO');
+									subCategoryId = casper.evaluate(function(){
+										var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
+										for(var i=1; i<=x1.length; i++) {
+											var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
+											if (cat.innerText == 'cat1') {
+												var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
 												var x3 = document.querySelector('li[id="'+x2+'"] ul li').getAttribute('id');
 												return x3;
 											}
 										}
 									});
-									casper.echo('the id of the subcategory'+id,'INFO');
-									casper.mouse.move('a[data-forumid="'+id+'"]');
-									casper.click('a[data-forumid="'+id+'"]'); // click on manage of cat1
-									casper.click('div[id="forumAction'+id+' a:nth-child(3)'); // click on change permission
-									wait.waitForElement('div#change_perm_dialog', casper, function(err, isExists) {
-										if(isExists) {
-											casper.echo("Change Permission Page opened",'INFO');
-											return callback(null);
-										}
-									});
+									casper.echo('the id of the subcategory ='+subCategoryId,'INFO');
+									return callback(null, categoryId, subCategoryId);
 								} else {
 									casper.echo('Calendar Permissions tab not found', 'ERROR');
+								}
+							});
+						} else {
+							casper.echo('Content  tooltip menu not found', 'ERROR');
+						}
+					});
+				} else {
+					casper.echo('Backend Menu not found', 'ERROR');
+				}
+			});
+			/*casper.then(function() {
+				backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+				});
+				
+			});*/
+		}else {
+			casper.echo('Error : ', 'ERROR');
+		}
+	});
+};
+
+//*************************Method to goto the permission of Sub Category from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.getId(casper, function(err, categoryId, subCategoryId) {
+		if(!err) {
+			casper.echo('getId method called ','INFO');
+			casper.mouse.move('li[id="'+subCategoryId+'"] div.select');
+			casper.capture('pq.png');
+			casper.click('li[id="'+subCategoryId+'"] a.manageAction'); // click on manage of cat1
+			casper.click('div[id="forumAction'+subCategoryId+'"] a.change_perm'); // click on change permission
+			wait.waitForElement('span#inheritance', casper, function(err, isExists) {
+				if(isExists) {
+					casper.echo("Change Permission Page opened",'INFO');
+					return callback(null);
+				}
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for View Category from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('view_forum_20237761', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for View Category(disable) from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('view_forum_20237761', false, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Start topics from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('post_threads_20237761', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Start topics(disable) from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('post_threads_20237761', false, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Reply Topics from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('other_post_replies_20237761', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Reply Topics(disable) from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('other_post_replies_20237761', false, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Upload Attachments from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('upload_attachments_20237761', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Upload Attachments(disable) from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('upload_attachments_20237761', false, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for View Attachments from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('view_attachments_20237761', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for View Attachments(disable) from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('view_attachments_20237761', false, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Require Post Approval from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('post_approval_20237761', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to change permission of Sub Category for Require Post Approval(disable) from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.disablePostApprovalForSubCategory = function(driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		if(!err) {
+			utils.enableorDisableCheckbox('post_approval_20237761', false, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
+			});
+			casper.wait(2000, function() {
+				casper.capture('df.png');
+				return callback(null);
+			});
+		}
+	});
+};
+
+//*************************Method to enable Private Categories from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enablePrivateCategories = function(driver, callback) {
+	registerMethod.loginToForumBackEnd(casper, function(err) {
+		if(!err) {
+			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+				if(isExists) {
+					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]');
+					wait.waitForElement('div#ddSettings', casper, function(err, isExists) {
+						if(isExists) {
+							casper.click('div#ddSettings a:nth-child(1)');
+							wait.waitForElement('#show_private_forums', casper, function(err, isExists) {
+								if(isExists) {
+									utils.enableorDisableCheckbox('show_private_forums', true, casper, function() {
+										casper.echo('checkbox is checked', 'INFO');
+									});
+									casper.test.assertExists('button.button.btn-m.btn-blue');
+									casper.click('button.button.btn-m.btn-blue');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+									}, function fail() {
+										casper.echo('Saved not found', 'INFO');
+									},30000);
+									return callback(null);
 								}
 							});
 						} else {
@@ -609,88 +910,10 @@ combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = fu
 			casper.echo('Error : ', 'ERROR');
 		}
 	});
-};
-
-//*************************Method to change permission of Sub Category for View Category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory = function(driver, callback) {
-	wait.waitForElement('div#change_perm_dialog', driver, function(err, isExists) {
-		if(isExists) {
-			utils.enableorDisableCheckbox('view_forum_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.wait(2000, function() {
-				return callback(null);
-			});
-		}
+	casper.then(function() {
+		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+		});
+		return callback(null);
 	});
 };
 
-//*************************Method to change permission of Sub Category for Start topics from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(driver, callback) {
-	wait.waitForElement('div#change_perm_dialog', driver, function(err, isExists) {
-		if(isExists) {
-			utils.enableorDisableCheckbox('post_threads_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.wait(2000, function() {
-				return callback(null);
-			});
-		}
-	});
-};
-
-//*************************Method to change permission of Sub Category for Reply Topics from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(driver, callback) {
-	wait.waitForElement('div#change_perm_dialog', driver, function(err, isExists) {
-		if(isExists) {
-			utils.enableorDisableCheckbox('other_post_replies_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.wait(2000, function() {
-				return callback(null);
-			});
-		}
-	});
-};
-
-//*************************Method to change permission of Sub Category for Upload Attachments from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(driver, callback) {
-	wait.waitForElement('div#change_perm_dialog', driver, function(err, isExists) {
-		if(isExists) {
-			utils.enableorDisableCheckbox('upload_attachments_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.wait(2000, function() {
-				return callback(null);
-			});
-		}
-	});
-};
-
-//*************************Method to change permission of Sub Category for View Attachments from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(driver, callback) {
-	wait.waitForElement('div#change_perm_dialog', driver, function(err, isExists) {
-		if(isExists) {
-			utils.enableorDisableCheckbox('view_attachments_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.wait(2000, function() {
-				return callback(null);
-			});
-		}
-	});
-};
-
-//*************************Method to change permission of Sub Category for Require Post Approval from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(driver, callback) {
-	wait.waitForElement('div#change_perm_dialog', driver, function(err, isExists) {
-		if(isExists) {
-			utils.enableorDisableCheckbox('post_approval_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.wait(2000, function() {
-				return callback(null);
-			});
-		}
-	});
-};

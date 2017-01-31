@@ -11,7 +11,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		this.echo("Title of the page :"+this.getTitle(),'INFO');
 		
 		// method to test methods
-		//combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
+		combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
 		
 		// method to verify with category cat1
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
@@ -26,7 +26,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory();
 		
 		// method to verify start new topic button with the sub-category cat1a
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
 		
 	});
 };

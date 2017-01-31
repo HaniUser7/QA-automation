@@ -14,9 +14,9 @@ var combinationOfSubCategoryAndGroupPermissionsTestcases = module.exports = {};
 // method to test all backend setting
 combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods = function() {
 	casper.thenOpen(config.backEndUrl, function() {
-		combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+		combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory(casper, function(err) {
 			if(!err) {
-				casper.echo('Disable Approve New Event functionality method called ','INFO');
+				casper.echo('disableViewCategoryForSubCategory method called ','INFO');
 			}
 		});
 	});
@@ -24,36 +24,61 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods = function() 
 
 // method to verify with category cat1
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = function() {
-	casper.thenOpen(config.url, function() {
-		//login with registerd user
-		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+	casper.thenOpen(config.backEndUrl, function() {
+		combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory(casper, function(err) {
 			if(!err) {
-				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-					if(isExists) {
-						casper.echo('User has been successfuly login to application with admin user', 'INFO');
-						wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', casper,function(err, isExists) {
-							if(isExists) {
-								casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
-								casper.click('ul.nav.nav-tabs li:nth-child(2) a');
-								wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+				casper.echo('enableViewCategoryForSubCategory method called ','INFO');
+				casper.then(function() {
+					backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+					});
+				});
+			}
+		});
+		casper.thenOpen(config.backEndUrl, function() {
+			combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
+				if(!err) {
+					casper.echo('enableViewCategory method called ','INFO');
+				}
+			});
+		});
+		casper.then(function() {
+			combinationOfSubCategoryAndGroupPermissionsMethod.getId(casper, function(err, categoryId, subCategoryId) {
+				if(!err) {
+					casper.echo('getId method called ','INFO');
+					casper.thenOpen(config.url, function() {
+						//login with registerd user
+						casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+						forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+							if(!err) {
+								wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 									if(isExists) {
-										casper.test.assertExists('li#forum_199641 a' ,'cat1 visible on category listing page','INFO');
-									}else{
-										casper.echo('cat1 not visible on category listing page','ERROR');
+										casper.echo('User has been successfuly login to application with admin user', 'INFO');
+										wait.waitForElement('ul.nav.nav-tabs li:nth-child(2) a', casper,function(err, isExists) {
+											if(isExists) {
+												casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+												casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+												wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+													if(isExists) {
+														casper.test.assertExists('li#forum_'+categoryId+' a' ,'cat1 visible on category listing page','INFO');
+													}else{
+														casper.echo('cat1 not visible on category listing page','ERROR');
+													}
+												});        
+											}else{
+												casper.echo('Categories not Found','ERROR');
+											}
+										});
+									} else {
+										casper.echo('User not logged in','ERROR');	
 									}
-								});        
-							}else{
-								casper.echo('Categories not Found','ERROR');
+								});
+							}else {
+								casper.echo('Admin user not logged in', 'ERROR');
 							}
 						});
-					} else {
-						casper.echo('User not logged in','ERROR');	
-					}
-				});
-			}else {
-				casper.echo('Admin user not logged in', 'ERROR');
-			}
+					});
+				}
+			});
 		});
 	});
 };
@@ -218,3 +243,5 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 		});
 	});
 };
+
+
