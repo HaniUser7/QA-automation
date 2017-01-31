@@ -1,8 +1,7 @@
 //----- This js file covers all the upload functionality on forum Frontend---------//
 var config = require('../../../config/config.json');
-var jsons=require('../../testdata/registerData.json');
-var json = require('../../testdata/inContextLogin.json');
-//var inContextLoginMethod = require('../methods/inContextLogin.js');
+var registerJSON=require('../../testdata/registerData.json');
+var loginJSON = require('../../testdata/loginData.json');
 var forumLoginMethod = require('../methods/login.js');
 var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
 var deletePostMethod = require('../methods/deletePost.js');
@@ -25,7 +24,7 @@ deletePostTests.CreateAdminUser=function() {
 			casper.click('a[href="/register/register"]');
 			casper.echo('Successfully open register form.....', 'INFO');
 			wait.waitForTime(2000,casper,function(err){
-				registerMethod.registerToApp(jsons['validInfoAdmin'], casper, function(err) {
+				registerMethod.registerToApp(registerJSON['validInfoAdmin'], casper, function(err) {
 					if(!err) {
 						casper.echo('Processing to registration on forum.....', 'INFO');
 						registerMethod.redirectToLogout(casper, casper.test, function(err) {
@@ -40,7 +39,7 @@ deletePostTests.CreateAdminUser=function() {
 	}); 
                    
 	//2.Test case for backend setting admin user 
-	deletePostMethod.enableUserRegister('hani12',casper,function(err){
+	deletePostMethod.enableUserRegister(registerJSON['validInfoAdmin'].uname , casper , function(err){
 		if(!err){
 			casper.echo('enableUser working', 'INFO');
 		}
@@ -60,7 +59,7 @@ deletePostTests.CreateRegisterUser=function() {
 			casper.click('a[href="/register/register"]');
 			casper.echo('Successfully open register form.....', 'INFO');
 			wait.waitForTime(2000,casper,function(err){
-				registerMethod.registerToApp(jsons['validInfoRegister'], casper, function(err) {
+				registerMethod.registerToApp(registerJSON['validInfoRegister'], casper, function(err) {
 					if(!err) {
 						casper.echo('Processing to registration on forum.....', 'INFO');
 						registerMethod.redirectToLogout(casper, casper.test, function(err) {
@@ -90,7 +89,7 @@ deletePostTests.deleteTopicAdmin=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -139,8 +138,7 @@ deletePostTests.deleteAllTopicAdmin=function(){
 		casper.echo('                   TestCase 2             ' ,'INFO');	
 		casper.echo('***********Verify by delete all topic-selecting by check box  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
-			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+			if(isExists) {				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -195,7 +193,7 @@ deletePostTests.deleteMultipleTopicAdmin=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -243,7 +241,7 @@ deletePostTests.deleteTopicDropDownAdmin=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username,loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -301,7 +299,7 @@ deletePostTests.deletePostDropDownAdmin=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -345,7 +343,7 @@ deletePostTests.deletePostCheckboxAdmin=function(){
 		casper.echo('***********verify with delete post-selecting by check box ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -408,7 +406,7 @@ deletePostTests.deletePostProfilePageAdmin=function(){
 		casper.echo('***********delete post from members profile page************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -466,7 +464,7 @@ deletePostTests.deleteMultiplePostAdmin=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -557,7 +555,7 @@ deletePostTests.deletePostRegisteruser=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -613,7 +611,7 @@ deletePostTests.deleteAllTopicRegisteruser=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box Register user','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -665,7 +663,7 @@ deletePostTests.deleteTopicDropDownRegisuser=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -715,7 +713,7 @@ deletePostTests.deletePostCheckboxRegister=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -783,7 +781,7 @@ deletePostTests.deletePostDropDownRegister=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -829,7 +827,7 @@ deletePostTests.deletePostProfilePage=function(){
 		casper.echo('***********delete post from members profile page************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -869,13 +867,12 @@ deletePostTests.deletePostProfilePage=function(){
 //delete topic by searching topic
 deletePostTests.deletePostSearchTopic=function(){
 	deletePostMethod.topicCreate(casper , function(err) {
-		if(!err)
+		if(!err){
 			casper.echo('topic created method called' ,'INFO');
-	});
+			casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
 
-	
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
-
+			});
+		}
 	});
 
 	casper.then(function() {
@@ -936,34 +933,33 @@ deletePostTests.deletePostSearchPost=function(){
 		});
 		wait.waitForTime(2000 , casper , function(err) {
 			casper.echo('                         Testcase 16                                 ' ,'INFO');
-			casper.echo('-----------------------------------delete topic by searching post by Register user------------------------------' ,'INFO');
+			casper.echo('----------------------delete topic by searching post by Register user---------------------' ,'INFO');
 			wait.waitForElement('a#anchor_tab_show_threads' , casper , function(err , isExists){
 				if(isExists) {
 					casper.click('a#anchor_tab_show_posts');
 					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
 						if(isExists) {
 							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
-							
-								var post= casper.evaluate(function(){
-   									var aa=document.querySelectorAll('a#search_delete_post');
-     									var a= aa.length;
-    									var hh=aa[1].getAttribute('href');
-     									return hh;
-								});
-								casper.echo("message :" +post,'INFO');
-								casper.click('a[href="'+post+'"]');
-								wait.waitForTime(2000 , casper , function(err){
-									forumLoginMethod.logoutFromApp(casper, function(err){
-										if (!err)
-											casper.echo('Successfully logout from application', 'INFO');
-									});	
-								});
-							}
-						});
-					}
-				});
+							var post= casper.evaluate(function(){
+   								var aa=document.querySelectorAll('a#search_delete_post');
+     								var a= aa.length;
+    								var hh=aa[1].getAttribute('href');
+     								return hh;
+							});
+							casper.echo("message :" +post,'INFO');
+							casper.click('a[href="'+post+'"]');
+							wait.waitForTime(2000 , casper , function(err){
+								forumLoginMethod.logoutFromApp(casper, function(err){
+									if (!err)
+										casper.echo('Successfully logout from application', 'INFO');
+								});	
+							});
+						}
+					});
+				}
 			});
 		});
+	});
 	
 };
 
@@ -992,7 +988,7 @@ deletePostTests.deleteOwnTopic=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box when delete own topic- disable delete own post-enable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1049,7 +1045,7 @@ deletePostTests.deleteAllOwnTopic=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box when when delete own topic- disable delete own post-enable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1103,7 +1099,7 @@ deletePostTests.deleteOwnTopicDropdown=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when when delete own topic- disable delete own post-enable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1157,7 +1153,7 @@ deletePostTests.deleteOwnPostCheckbox=function(){
 		casper.echo('***********Verify with delete own post-selecting by check box when when delete own topic- disable delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1219,7 +1215,7 @@ deletePostTests.deletePostDropDown=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post  when delete own topic- disable delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1280,7 +1276,7 @@ deletePostTests.deleteOwnProfilePage=function(){
 		casper.echo('***********delete post from members profile page when delete own topic- disable delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1461,7 +1457,7 @@ deletePostTests.deleteOwnTopicPostDisable=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box when delete own topic- enable ,delete own post-disable ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1477,7 +1473,7 @@ deletePostTests.deleteOwnTopicPostDisable=function(){
 
 												casper.click('input[name="id"]');
 												wait.waitForTime(1000 , casper , function(err) {
-													casper.capture('1.png');
+													
 													casper.click('i.glyphicon.glyphicon-trash');
 													wait.waitForTime(2000 , casper , function(err){
 														forumLoginMethod.logoutFromApp(casper, function(err){
@@ -1524,7 +1520,7 @@ deletePostTests.deleteAllTopicPostDisable=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box when delete own topic- enable ,delete own post-disable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1578,7 +1574,7 @@ deletePostTests.deleteOwnTopicDropdownPostDisable=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when delete own topic- enable ,delete own post-disable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1631,7 +1627,7 @@ deletePostTests.deleteOwnPostCheckboxPostDisable=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box when delete own topic- enable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1692,7 +1688,7 @@ deletePostTests.deleteOwnPostDropDownOwnPostDisable=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user when delete own topic- enable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1743,7 +1739,7 @@ deletePostTests.deleteOwnProfilePagePostDisable=function(){
 		casper.echo('***********delete post from members profile page when delete own topic- enable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1884,7 +1880,7 @@ deletePostTests.deleteOwnTopicPostDisable=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box when delete own topic- disable ,delete own post-disable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1941,7 +1937,7 @@ deletePostTests.deleteAllTopicsPostDisable=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box when delete own topic- disable ,delete own post-disable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1994,7 +1990,7 @@ deletePostTests.deleteOwnTopicDropdownTopicPostDisable=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when delete own topic- disable ,delete own post-disable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2046,7 +2042,7 @@ deletePostTests.deleteOwnPostCheckboxTopicPostDisable=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box when delete own topic- disable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2105,7 +2101,7 @@ deletePostTests.deleteOwnPostDropDownOwnTopicPostDisable=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user when delete own topic- disable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2154,7 +2150,7 @@ deletePostTests.deleteOwnProfilePageTopicPostDisable=function(){
 		casper.echo('***********delete post from members profile page when delete own topic- disable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2307,7 +2303,7 @@ deletePostTests.deleteOwnTopicPostEnable=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2368,7 +2364,7 @@ deletePostTests.deleteAllTopicsPostEnable=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box when-delete own topic- enable ,delete own post-enable ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2419,7 +2415,7 @@ deletePostTests.deleteOwnTopicDropdownPostEnable=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when-delete own topic- enable ,delete own post-enable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2475,7 +2471,7 @@ deletePostTests.deleteOwnPostCheckboxPostEnable=function(){
 		casper.echo('***********verify with delete own post-selecting by check box when-delete own topic- enable ,delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2544,7 +2540,7 @@ deletePostTests.deleteOwnPostDropDownOwnTopicPostEnable=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user when-delete own topic- enable ,delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2608,7 +2604,7 @@ deletePostTests.deleteOwnProfilePageTopicPostEnable=function(){
 		casper.echo('***********delete post from members profile page when-delete own topic- enable ,delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2771,7 +2767,7 @@ deletePostTests.editTopicAdmin=function(){
 		casper.echo('*********verify with edit topic(Post listing  page) as Admin**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2843,7 +2839,7 @@ deletePostTests.editPostAdmin=function(){
 		casper.echo('*********verify with edit Post(Post listing  page) as Admin**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2915,7 +2911,7 @@ deletePostTests.editPostProfilePageAdmin=function(){
 		casper.echo('************verify with edit post on profile page as Admin***********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3109,7 +3105,7 @@ deletePostTests.editPostPeoplePosted=function(){
 		casper.echo('-------------------------edit on search listing page by people who posted as Admin----------------------------' ,'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3172,50 +3168,15 @@ deletePostTests.editTopicregister=function(){
 	deletePostMethod.BackEndSettingsEditOwnTopicEnable(casper , function(err) {
 		if(!err)
 			casper.echo('Successfully checked' ,'INFO');
+			
+	});
+
+	deletePostMethod.topicCreate(casper , function(err) {
+		if(!err)
+			casper.echo('Topic created method called' ,'INFO');
+			
 	});
 	
-	casper.thenOpen(config.url , function(){
-		casper.echo('-----------New topic created Method called-------------' , 'INFO');
-			
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
-					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-					casper.click('span.topic-content a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
-						if(isExists) {
-							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						}
-					});						
-				},function fail() {
-					casper.echo('Failed block called','INFO');
-					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-						if(isExists) {
-							//method to create a new topic
-							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
-								if(!err) {
-									casper.echo('new topic created', 'INFO');
-								}else {
-									casper.echo('Topic not created', 'INFO');
-								}
-							});
-						} else {
-							casper.echo('User icon not found','ERROR');	
-						}
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});	
-			}
-		});
-     	});
 	
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -3223,7 +3184,7 @@ deletePostTests.editTopicregister=function(){
 		casper.echo('*********verify with edit topic(Post listing  page) register when edit own topic enable**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3242,27 +3203,22 @@ deletePostTests.editTopicregister=function(){
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
-											
-										//casper.click('edit_post_request');	
-										wait.waitForElement('input[type="button"]' , casper , function(err) {
-											if(isExists) {
-												wait.waitForTime(5000 , casper , function(err) {
-													casper.capture('7.png');
-													casper.withFrame('message1_ifr', function() {
+											wait.waitForElement('input[type="button"]' , casper , function(err) {
+												if(isExists) {
+													wait.waitForTime(5000 , casper , function(err) {
+														casper.withFrame('message1_ifr', function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 														casper.sendKeys('#tinymce', 'hdragme');
 													});
 													wait.waitForTime(2000 , casper ,  function(err){
-														casper.capture('hel.png');
 														casper.click('input[type="button"]');
-														casper.then(function() {
-															inContextLoginMethod.logoutFromApp(casper, function(err){
-																if (!err)
-																	casper.echo('Successfully logout from application', 'INFO');
+														wait.waitForTime(2000 , casper , function(err){
+															forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
 															});
 														});	
-														
 													});
 												});	
 											}
@@ -3283,56 +3239,21 @@ deletePostTests.editPostregister=function(){
 		if(!err)
 			casper.echo('Successfully checked' ,'INFO');
 	});
-	
-	casper.thenOpen(config.url , function(){
-		casper.echo('-----------New topic created Method called-------------' , 'INFO');
+
+	deletePostMethod.topicCreate(casper , function(err) {
+		if(!err)
+			casper.echo('Topic created method called' ,'INFO');
 			
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
-					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-					casper.click('span.topic-content a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
-						if(isExists) {
-							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						}
-					});						
-				},function fail() {
-					casper.echo('Failed block called','INFO');
-					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-						if(isExists) {
-							//method to create a new topic
-							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
-								if(!err) {
-									casper.echo('new topic created', 'INFO');
-								}else {
-									casper.echo('Topic not created', 'INFO');
-								}
-							});
-						} else {
-							casper.echo('User icon not found','ERROR');	
-						}
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});	
-			}
-		});
-     	});
+	});
+	
+	
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                   TestCase 56                ' ,'INFO');	
 		casper.echo('*********verify with edit topic(Post listing  page) register when edit own topic enable**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3345,46 +3266,42 @@ deletePostTests.editPostregister=function(){
 										casper.click('span#first_coloumn_2 div div div:nth-child(1) div a i');
 										var post= casper.evaluate(function(){
    											var aa=document.querySelectorAll('a#edit_post_request');
-     												var a= aa.length;
-    												var hh=aa[1].getAttribute('href');
-     												return hh;
-											});
-											casper.echo("message :" +post,'INFO');
-											casper.click('a[href="'+post+'"]');
-											wait.waitForElement('input[type="button"]' , casper , function(err) {
-												if(isExists) {
-													wait.waitForTime(5000 , casper , function(err) {
-														casper.capture('post1.png');
-														casper.withFrame('message1_ifr', function() {
-															casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
-															casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-															casper.sendKeys('#tinymce', 'h234dragme');
-														});
-														wait.waitForTime(2000 , casper ,  function(err){
-															casper.capture('post.png');
-															casper.click('input[type="button"]');
-															casper.then(function() {
-															inContextLoginMethod.logoutFromApp(casper, function(err){
-																if (!err)
-																	casper.echo('Successfully logout from application', 'INFO');
-																});
-															});	
+     											var a= aa.length;
+    											var hh=aa[1].getAttribute('href');
+     											return hh;
+										});
+										casper.echo("message :" +post,'INFO');
+										casper.click('a[href="'+post+'"]');
+										wait.waitForElement('input[type="button"]' , casper , function(err) {
+											if(isExists) {
+												wait.waitForTime(5000 , casper , function(err) {
 														
-														});
+													casper.withFrame('message1_ifr', function() {
+														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+														casper.sendKeys('#tinymce', 'h234dragme');
 													});
-												}	
-											});
-										}
-											
-		
-									});
-								}
-							});
-						}
-					});
-				}
-			});
-		
+													wait.waitForTime(2000 , casper ,  function(err){
+															
+														casper.click('input[type="button"]');
+														wait.waitForTime(2000 , casper , function(err){
+															forumLoginMethod.logoutFromApp(casper, function(err){
+															if (!err)
+																casper.echo('Successfully logout from application', 'INFO');
+															});
+														});	
+													});
+												});
+											}	
+										});
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
 	});	
 };
 
@@ -3392,13 +3309,11 @@ deletePostTests.editPostregister=function(){
 
 deletePostTests.editProfilePageregister=function(){
 
-	casper.then(function(){
-		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
-     		deletePostMethod.profilePostRegister(casper , function(err) {
-			if(!err)
-				casper.echo('post have been created' ,'INFO');
-    		});
-    	});	
+	deletePostMethod.profilePostRegister(casper , function(err) {
+		if(!err)
+			casper.echo('post have been created' ,'INFO');
+    	});
+    	
 	//verify with edit post(Post listing  page)
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -3406,7 +3321,7 @@ deletePostTests.editProfilePageregister=function(){
 		casper.echo('************verify with edit post on profile page  register when edit own topic enable***********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3436,10 +3351,11 @@ deletePostTests.editProfilePageregister=function(){
 															casper.sendKeys('#tinymce', 'h234dragme');
 														});
 														wait.waitForTime(2000 , casper ,  function(err){
-															casper.capture('post.png');
+															
 															casper.click('input[type="button"]');
-															casper.then(function() {
-															inContextLoginMethod.logoutFromApp(casper, function(err){
+															wait.waitForTime(2000 , casper , function(err){
+															
+															forumLoginMethod.logoutFromApp(casper, function(err){
 																if (!err)
 																	casper.echo('Successfully logout from application', 'INFO');
 																});
@@ -3449,7 +3365,6 @@ deletePostTests.editProfilePageregister=function(){
 												}	
 											});											
 										}
-										
 									});
 								}
 							});
@@ -3462,158 +3377,94 @@ deletePostTests.editProfilePageregister=function(){
 
 //edit topic by searching own topic
 deletePostTests.editSearchTopicRegister=function(){
-	casper.thenOpen(config.url , function(){
-		casper.echo('-----------New topic created Method called-------------' , 'INFO');
-			
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
-					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-					casper.click('span.topic-content a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
-						if(isExists) {
-							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						}
-					});						
-				},function fail() {
-					casper.echo('Failed block called','INFO');
-					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-						if(isExists) {
-							//method to create a new topic
-							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
-								if(!err) {
-									casper.echo('new topic created', 'INFO');
-								}else {
-									casper.echo('Topic not created', 'INFO');
-								}
-							});
-						} else {
-							casper.echo('User icon not found','ERROR');	
-						}
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});	
-			}
-		});
-     	});
-
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
-
-	});
-
-
-
-
-
-		
-	deletePostMethod.searchlogin(casper , function(err) {
+	deletePostMethod.topicCreate(casper , function(err) {
 		if(!err)
-			casper.echo('search method called successfully' ,'INFO');
-	});		
-	casper.then(function(){
-		casper.echo('                         Testcase 58                                 ' ,'INFO');
-		casper.echo('-----------------------------------edit topic by searching topic  register when edit own topic enable------------------------------' ,'INFO');
-		
-		
-			wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
-				if(isExists) {
-					casper.click('a#anchor_tab_show_posts');
-					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' ,casper , function(err , isExists) {
-						if(isExists){
-							casper.click('i.glyphicon.glyphicon-chevron-down');
-							
-							//casper.click('div.post-body.pull-left span:nth-child(2) a');
-							//wait.waitForElement('' , casper , function(err , isExists) {
-							//if(isExists){
-							var post= casper.evaluate(function(){
-   								var aa=document.querySelectorAll('a#search_edit_post');
-     									var a= aa.length;
-    									var hh=aa[0].getAttribute('href');
-     									return hh;
-								});
-								casper.echo("message :" +post,'INFO');
-								casper.click('a[href="'+post+'"]');
-								wait.waitForElement('input[type="button"]' , casper , function(err) {
-									if(isExists) {
-									wait.waitForTime(20000 , casper , function(err) {
-										casper.capture('post1.png');
-										casper.withFrame('message1_ifr', function() {
-											casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
-											casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-											casper.sendKeys('#tinymce', 'h234dragme');
-										});
-									});
-									wait.waitForTime(2000 , casper ,  function(err){
-										casper.capture('post.png');
-										casper.click('input[type="button"]');
-										casper.then(function() {
-											inContextLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-													casper.echo('Successfully logout from application', 'INFO');
-											});
-										});	
-									});
-								}
-							});	
-						}
-					});											
-				}
+			casper.echo('Topic created method called' ,'INFO');
+			casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
 			});
-			
-		
-		
 	});
 
+	
+	deletePostMethod.searchlogin(casper , function(err) {
+		if(!err){
+			casper.echo('search method called successfully' ,'INFO');
+			wait.waitForTime(2000 , casper , function(err){		
+				casper.echo('                         Testcase 58                                 ' ,'INFO');
+				casper.echo('----------edit topic by searching topic  register when edit own topic enable--------------' ,'INFO');
+				wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
+					if(isExists) {
+						casper.click('a#anchor_tab_show_posts');
+						wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' ,casper , function(err , isExists) {
+							if(isExists){
+								casper.click('i.glyphicon.glyphicon-chevron-down');
+								wait.waitForTime(1000 , casper , function(err){
+									var post= casper.evaluate(function(){
+   										var aa=document.querySelectorAll('a#search_edit_post');
+     										var a= aa.length;
+    										var hh=aa[0].getAttribute('href');
+     										return hh;
+									});
+									casper.echo("message :" +post,'INFO');
+									casper.click('a[href="'+post+'"]');
+									wait.waitForElement('input[type="button"]' , casper , function(err) {
+										if(isExists) {
+											wait.waitForTime(20000 , casper , function(err) {
+												casper.withFrame('message1_ifr', function() {
+													casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+													casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+													casper.sendKeys('#tinymce', 'h234dragme');
+												});
+											});
+											wait.waitForTime(2000 , casper ,  function(err){
+												casper.click('input[type="button"]');
+												wait.waitForTime(2000 , casper , function(){
+													forumLoginMethod.logoutFromApp(casper, function(err){
+														if (!err)
+															casper.echo('Successfully logout from application', 'INFO');
+													});
+												});	
+											});
+										}
+									});	
+								});
+							}											
+						});
+					}
+				});
+			});
+		}
+	});		
+	
 };
 
 //edit post by searching post as register (edit own topic enable)
 deletePostTests.editSearchPostRegister=function(){
 
-	casper.then(function(){
-		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
-     		deletePostMethod.profilePostRegister(casper , function(err) {
-			if(!err)
-				casper.echo('post have been created' ,'INFO');
-    		});
-    	});
+	deletePostMethod.profilePostRegister(casper , function(err) {
+		if(!err){
+			casper.echo('post have been created' ,'INFO');
+			wait.waitForTime(1000 , casper , function(err){
+				deletePostMethod.profilePostRegister(casper , function(err) {
+					if(!err) {
+						casper.echo('post have been created' ,'INFO');
+						casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+						});
+					}
+				});
+			});
+		}
+    	});	
+    	
 	
 	casper.then(function(){
-		casper.echo('-----------------------------2nd New post created---------------------------------------------------' ,'INFO');
-     		deletePostMethod.profilePostRegister(casper , function(err) {
+		deletePostMethod.searchLoginOwn(casper , function(err) {
 			if(!err)
-				casper.echo('post have been created' ,'INFO');
-    		});
-    	});
-
-
-
-
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
-
-	});
-
-
-
-	
-
-				
-	deletePostMethod.searchLoginOwn(casper , function(err) {
-		if(!err)
-			casper.echo('search method called successfully' ,'INFO');
-	});	
-	casper.then(function(){
-		casper.echo('                         Testcase 59                                 ' ,'INFO');
-		casper.echo('-----------------------------------edit post by searching post ------------------------------' ,'INFO');
-		
-		
+				casper.echo('search method called successfully' ,'INFO');
+		});
+		wait.waitForTime(2000 , casper , function(err){
+			casper.echo('                         Testcase 59                                 ' ,'INFO');
+			casper.echo('-----------------------------------edit post by searching post ------------------------------' ,'INFO');
 			wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
 				if(isExists) {
 					casper.click('a#anchor_tab_show_posts');
@@ -3631,7 +3482,7 @@ deletePostTests.editSearchPostRegister=function(){
 							wait.waitForElement('input[type="button"]' , casper , function(err) {
 								if(isExists) {
 									wait.waitForTime(20000 , casper , function(err) {
-										casper.capture('post1.png');
+										
 										casper.withFrame('message1_ifr', function() {
 											casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 											casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -3641,8 +3492,8 @@ deletePostTests.editSearchPostRegister=function(){
 									wait.waitForTime(2000 , casper ,  function(err){
 										casper.capture('post.png');
 										casper.click('input[type="button"]');
-										casper.then(function() {
-											inContextLoginMethod.logoutFromApp(casper, function(err){
+									        wait.waitForTime(2000 , casper , function(err){
+											forumLoginMethod.logoutFromApp(casper, function(err){
 												if (!err)
 													casper.echo('Successfully logout from application', 'INFO');
 											});
@@ -3654,10 +3505,8 @@ deletePostTests.editSearchPostRegister=function(){
 					});											
 				}
 			});
-			
-		
-		
-	});
+		});
+	});	
 };
 
 
@@ -3669,7 +3518,7 @@ deletePostTests.editSearchPeoplePostedRegister=function() {
 		casper.echo('-------------------------edit on search listing page by people who posted  register when edit own topic enable----------------------------' ,'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3702,10 +3551,10 @@ deletePostTests.editSearchPeoplePostedRegister=function() {
 															});
 														});
 														wait.waitForTime(2000 , casper ,  function(err){
-															casper.capture('post.png');
+															
 															casper.click('input[type="button"]');
-															casper.then(function() {
-															inContextLoginMethod.logoutFromApp(casper, function(err){
+															wait.waitForTime(2000 , casper , function(err){
+															forumLoginMethod.logoutFromApp(casper, function(err){
 																if (!err)
 																	casper.echo('Successfully logout from application', 'INFO');
 																});
@@ -3738,7 +3587,7 @@ deletePostTests.editTopicPostDisable=function(){
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+		inContextLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
@@ -3784,7 +3633,7 @@ deletePostTests.editTopicPostDisable=function(){
 		casper.echo('*********verify with edit topic(Post listing  page) as register when (edit own topic/post disable)**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3823,7 +3672,7 @@ deletePostTests.editPostDisable=function(){
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+		inContextLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
@@ -3868,7 +3717,7 @@ deletePostTests.editPostDisable=function(){
 		casper.echo('*********verify with edit topic(Post listing  page) as register when (edit own topic/post disable**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3915,7 +3764,7 @@ deletePostTests.editProfilePagePostDisable=function(){
 		casper.echo('************verify with edit post on profile page as register when (edit own topic/post disable***********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -4102,7 +3951,7 @@ deletePostTests.editSearchPeoplePostedEditPostDisable=function() {
 		casper.echo('-------------------------edit on search listing page by people who posted as register when (edit own topic/post disable----------------------------' ,'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				inContextLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {

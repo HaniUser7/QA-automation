@@ -156,10 +156,7 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 			return callback(null);
 		} catch(e1) {
 			driver.echo('Successfully done registration on forum.....', 'INFO');
-			casper.wait(2000 , function(){
-				casper.capture('3.png');
-
-			});
+			
 			//Click On Logout Link
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExist) {
 			    if(isExist) {

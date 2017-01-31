@@ -5,7 +5,8 @@ var uploadMethods=require('../methods/upload.js');
 var forumLoginMethod = require('../methods/login.js');
 var loginPrivacyOptionMethod = require('../methods/loginByPrivacyOption.js');
 var registerMethod=require('../methods/register.js');
-var json = require('../../testdata/inContextLogin.json');
+
+var loginJSON = require('../../testdata/loginData.json');
 
 
 //Create a post method  admin--------------------------------------------------------------------------
@@ -15,7 +16,7 @@ deletePostMethod.profilePost=function(casper , callback) {
 		casper.echo('***********Method to create post************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfose'].username, json['validInfose'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfose'].username, loginJSON['validInfose'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -29,8 +30,8 @@ deletePostMethod.profilePost=function(casper , callback) {
 										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 										wait.waitForTime(5000 , casper , function(err) {
 											casper.withFrame('message_ifr', function() {
-												casper.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
-												casper.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 												casper.sendKeys('#tinymce', 'dragme');
 											});
 											wait.waitForTime(5000 , casper , function(err){
@@ -111,7 +112,7 @@ deletePostMethod.createTopic=function(casper , callback) {
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
-		forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+		forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
@@ -131,7 +132,7 @@ deletePostMethod.createTopic=function(casper , callback) {
 						wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 							if(isExists) {
 								//method to create a new topic
-								uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+								uploadMethods.startTopic(loginJSON['newTopic'], casper, function(err) {
 									if(!err) {
 										casper.echo('new topic created', 'INFO');
 									}else {
@@ -163,7 +164,7 @@ deletePostMethod.searchlogin=function(casper , callback) {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -222,7 +223,7 @@ deletePostMethod.profilePostRegister=function(casper , callback) {
 		casper.echo('***********Method to create post************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -236,8 +237,8 @@ deletePostMethod.profilePostRegister=function(casper , callback) {
 										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 										wait.waitForTime(5000 , casper , function(err) {
 											casper.withFrame('message_ifr', function() {
-												casper.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
-												casper.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 												casper.sendKeys('#tinymce', 'dragme');
 											});
 											wait.waitForTime(5000 , casper , function(err){
@@ -333,7 +334,7 @@ deletePostMethod.BackEndSettings=function(casper , callback) {
 deletePostMethod.createMoreTopic=function(casper , callback) {
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
-		forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+		forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
@@ -652,7 +653,7 @@ deletePostMethod.topicCreate=function(casper , callback){
 	casper.thenOpen(config.url , function(){
 		casper.echo('-----------New topic created Method called-------------' , 'INFO');
 			
-		forumLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
+		forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
 			if (err) {
 				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 			}else {
@@ -672,7 +673,7 @@ deletePostMethod.topicCreate=function(casper , callback){
 						wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 							if(isExists) {
 								//method to create a new topic
-								uploadMethods.startTopic(json['newTopic'], casper, function(err) {
+								uploadMethods.startTopic(loginJSON['newTopic'], casper, function(err) {
 									if(!err) {
 										casper.echo('new topic created', 'INFO');
 									}else {
@@ -689,19 +690,16 @@ deletePostMethod.topicCreate=function(casper , callback){
 							if (!err)
 								casper.echo('Successfully logout from application', 'INFO');
 								return callback(null);
-								
 						});
-					});
-						
+					});	
 				});
 			}
 		});
 	});
-
 };
 
 //-----------------------------------------------Register a user-----------------------------------------------------------
- deletePostMethod.enableUserRegister= function(username,casper,callback){
+ deletePostMethod.enableUserRegister= function(data , casper , callback){
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		registerMethod.loginToForumBackEnd(casper, function(err){
@@ -715,7 +713,7 @@ deletePostMethod.topicCreate=function(casper , callback){
 						casper.click('div#ddUsers a[href="/tool/members/mb/usergroup"]');
 						wait.waitForElement('input#autosuggest', casper, function(err, isExists) {
 							casper.test.assertExists('#autosuggest');
-							casper.sendKeys('#autosuggest',username, {keepFocus: true});
+							casper.sendKeys('#autosuggest',data, {keepFocus: true});
 							casper.click('#autosuggest');
 							casper.page.sendEvent("keypress", casper.page.event.key.Enter);
 							casper.waitForSelector('form[name="ugfrm"]', function success(){
@@ -746,7 +744,7 @@ deletePostMethod.topicCreate=function(casper , callback){
 											});
 										});
 									},function fail(){
-										casper.echo('form selector not found','INFO');
+										casper.echo('form selector not found','ERROR');
 									});
 								});
 							} else {
@@ -782,8 +780,8 @@ deletePostMethod.profilePostAdmin=function(casper , callback) {
 										wait.waitForTime(5000 , casper , function(err) {
 											
 											casper.withFrame('message_ifr', function() {
-												casper.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});			
-												casper.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 												casper.sendKeys('#tinymce', 'dragme');
 											});
 											wait.waitForTime(2000 , casper , function(err){

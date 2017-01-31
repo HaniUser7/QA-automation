@@ -49,13 +49,13 @@
 		"ExpectedErrorMessage" : "Admin Login successfully." 
 	},
 
-   "validInfos" : {
+   "validInfo" : {
 	"username" : "hani",
         "password" : "hani",
         "expectedSuccessMsg" : ""
     },
 
-   "validInfose" : {
+   "userInfo" : {
 	"username" : "hani12",
 	"password" :"hani12",
 	"expectedSuccessMsg" :""

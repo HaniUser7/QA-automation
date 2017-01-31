@@ -7,13 +7,13 @@ deletePost.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		//verify by Admin a user on another server
-		deletePostTests.CreateAdminUser();
+		//deletePostTests.CreateAdminUser();
 		//verify by Register a user on another server
-		deletePostTests.CreateRegisterUser();
+		//deletePostTests.CreateRegisterUser();
 		//Verify by delete one topic -selecting by check box 
-		deletePostTests.deleteTopicAdmin();
+		//deletePostTests.deleteTopicAdmin();
 		//Verify by delete multiple topic-selecting by check box 
-		deletePostTests.deleteAllTopicAdmin();
+		/*deletePostTests.deleteAllTopicAdmin();
 		//Verify by delete all topic-selecting by check box 3-issue
 		deletePostTests.deleteMultipleTopicAdmin();
 		//verify with delete topic-by drop down of the topic
@@ -125,10 +125,10 @@ deletePost.featureTest = function(casper, test) {
 		//edit post by searching post
 		deletePostTests.editPostSearchAdmin();
 		//edit on search listing page by people who posted
-		deletePostTests.editPostPeoplePosted();
+		deletePostTests.editPostPeoplePosted();*/
  //****************************Edit own topic/post as register(edit own topic enable)**********************************
 		//verify with edit own  topic(Post listing  page)
-		/*deletePostTests.editTopicregister();	
+		deletePostTests.editTopicregister();	
 		//verify with edit own  post(Post listing  page)
 		deletePostTests.editPostregister();	
 		//verify with edit own  post on profile page
@@ -138,7 +138,7 @@ deletePost.featureTest = function(casper, test) {
 		//edit post by searching own post
 		deletePostTests.editSearchPostRegister();
 		//edit on search listing page by people who posted
-		deletePostTests.editSearchPeoplePostedRegister();*/	
+		deletePostTests.editSearchPeoplePostedRegister();	
 //*****************************Edit own topic/post as register(edit own topic disable)**************************************
 		//verify with edit own  topic(Post listing  page)
 		/*deletePostTests.editTopicPostDisable();
