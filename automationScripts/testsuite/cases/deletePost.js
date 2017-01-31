@@ -291,7 +291,6 @@ deletePostTests.deletePostDropDownAdmin=function(){
     			});	
 		});
     	});
-
 	
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -311,10 +310,10 @@ deletePostTests.deletePostDropDownAdmin=function(){
 									if(isExists) {	
 										casper.click('span#first_coloumn_3 div div div:nth-child(1) div a i');
 										var post= casper.evaluate(function(){
-   										var aa=document.querySelectorAll('a#delete_post_request');
-     											var a= aa.length;
-    											var hh=aa[1].getAttribute('href');
-     											return hh;
+   											var postId=document.querySelectorAll('a#delete_post_request');
+     												var postLength= postId.length;
+    												var postHref=postId[1].getAttribute('href');
+     												return postHref;
 										});
 										casper.echo("message :" +post,'INFO');
 										casper.click('a[href="'+post+'"]');
@@ -363,10 +362,10 @@ deletePostTests.deletePostCheckboxAdmin=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   														var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
-    													 		var hh=aa[1].getAttribute('id');
-     															return hh;
+   														var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
+    													 		var postHref=postId[1].getAttribute('id');
+     															return postHref;
 														});
 														casper.echo("message :" +post,'INFO');
 														casper.click('input[value="'+post+'"]');
@@ -420,9 +419,9 @@ deletePostTests.deletePostProfilePageAdmin=function(){
 										casper.click('i.glyphicon.glyphicon-chevron-down');
 										wait.waitForTime(1000 , casper , function(err){
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#search_delete_post');
-     													var a= aa.length;
-    													var hh=aa[0].getAttribute('href');
+   												var postId==document.querySelectorAll('a#search_delete_post');
+     													var postLength= postId.length;
+    													var postHref=postId[0].getAttribute('href');
      												return hh;
 											});
 											casper.echo("message :" +post,'INFO');
@@ -483,12 +482,12 @@ deletePostTests.deleteMultiplePostAdmin=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   															var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
+   															var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
     													 	
-      															var hh=aa[1].getAttribute('id');
+      															var postHref=postId[1].getAttribute('id');
      															
-																return hh;
+																return postHref;
 														});
 														casper.echo("message :" +post,'INFO');
 														casper.click('input[value="'+post+'"]');
@@ -626,7 +625,7 @@ deletePostTests.deleteAllTopicRegisteruser=function(){
 											if(isExists) {
 												casper.click('input[name="allbox"]');
 												wait.waitForTime(1000 , casper , function(err) {
-													casper.capture('1.png');
+													
 													casper.click('i.glyphicon.glyphicon-trash');
 													wait.waitForTime(2000 , casper , function(err){
 														forumLoginMethod.logoutFromApp(casper, function(err){
@@ -730,12 +729,12 @@ deletePostTests.deletePostCheckboxRegister=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   															var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
+   															var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
     													 		
-      															var hh=aa[1].getAttribute('id');
+      															var postHref=postId[1].getAttribute('id');
      															
-																return hh;
+																return postHref;
 														});
 														casper.echo("message :" +post,'INFO');
 														casper.click('input[value="'+post+'"]');
@@ -794,10 +793,10 @@ deletePostTests.deletePostDropDownRegister=function(){
 										casper.click('span#first_coloumn_3 div div div:nth-child(1) div a i');
 										wait.waitForTime(1000 , casper , function(err){
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#delete_post_request');
-     												var a= aa.length;
-    												var hh=aa[1].getAttribute('href');
-     												return hh;
+   												var postId=document.querySelectorAll('a#delete_post_request');
+     												var postLength= postId.length;
+    												var postHref=postId[1].getAttribute('href');
+     												return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
@@ -840,10 +839,10 @@ deletePostTests.deletePostProfilePage=function(){
 									if(isExists) {
 										casper.click('i.glyphicon.glyphicon-chevron-down');
 										var post= casper.evaluate(function(){
-   											var aa=document.querySelectorAll('a#search_delete_post');
-     												var a= aa.length;
-    												var hh=aa[0].getAttribute('href');
-     											return hh;
+   											var postId=document.querySelectorAll('a#search_delete_post');
+     												var postLength= postId.length;
+    												var postHref=postId[0].getAttribute('href');
+     											return postHref;
 										});
 										casper.echo("message :" +post,'INFO');
 										casper.click('a[href="'+post+'"]');
@@ -886,7 +885,7 @@ deletePostTests.deletePostSearchTopic=function(){
 			casper.echo('--------------------delete topic by searching topic by Register user--------------------' ,'INFO');
 			wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
 				if(isExists) {
-					casper.capture('a.png');
+					
 					casper.click('input[name="id"]');
 					casper.click('input[type="button"]');	
 					wait.waitForTime(2000 , casper , function(){
@@ -914,7 +913,7 @@ deletePostTests.deletePostSearchPost=function(){
 			if(!err)
 				casper.echo('post have been created' ,'INFO');
     		});
-		wait.waitForTime(3000 , casper , function(){
+		wait.waitForTime(5000 , casper , function(){
 			deletePostMethod.profilePostRegister(casper , function(err) {
 			if(!err)
 				casper.echo(' 2nd post have been created' ,'INFO');
@@ -941,10 +940,10 @@ deletePostTests.deletePostSearchPost=function(){
 						if(isExists) {
 							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
 							var post= casper.evaluate(function(){
-   								var aa=document.querySelectorAll('a#search_delete_post');
-     								var a= aa.length;
-    								var hh=aa[1].getAttribute('href');
-     								return hh;
+   								var postId=document.querySelectorAll('a#search_delete_post');
+     								var postLength= postId.length;
+    								var postHref=postId[1].getAttribute('href');
+     								return postHref;
 							});
 							casper.echo("message :" +post,'INFO');
 							casper.click('a[href="'+post+'"]');
@@ -1137,7 +1136,7 @@ deletePostTests.deleteOwnPostCheckbox=function(){
 		if(!err) {
 			casper.echo('Topic created successfully','INFO')
 		}
-		wait.waitForTime(3000 , casper , function(err) {
+		wait.waitForTime(5000 , casper , function(err) {
 			deletePostMethod.profilePostRegister(casper , function(err) {
 				if(!err)
 					casper.echo('post have been created' ,'INFO');
@@ -1170,12 +1169,12 @@ deletePostTests.deleteOwnPostCheckbox=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   															var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
+   															var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
     													 		
-      															var hh=aa[1].getAttribute('id');
+      															var postHref=postId[1].getAttribute('id');
      															
-																return hh;
+																return postHref;
 														});
 														casper.echo("message :" +post,'INFO');
 														casper.click('input[value="'+post+'"]');
@@ -1229,10 +1228,10 @@ deletePostTests.deletePostDropDown=function(){
 									if(isExists) {	
 											casper.click('i.glyphicon.glyphicon-chevron-down');
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#delete_post_request');
-     													var a= aa.length;
-    													var hh=aa[3].getAttribute('href');
-     													return hh;
+   												var postId=document.querySelectorAll('a#delete_post_request');
+     													var postLength= postId.length;
+    													var postHref=postId[3].getAttribute('href');
+     													return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
@@ -1291,10 +1290,10 @@ deletePostTests.deleteOwnProfilePage=function(){
 										if(isExists) {
 											casper.click('i.glyphicon.glyphicon-chevron-down');
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#search_delete_post');
-     												var a= aa.length;
-    												var hh=aa[0].getAttribute('href');
-     											return hh;
+   												var postId=document.querySelectorAll('a#search_delete_post');
+     												var postLength= postId.length;
+    												var postHref=postId[0].getAttribute('href');
+     												return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
@@ -1324,7 +1323,7 @@ deletePostTests.deleteOwnSearchTopic=function(){
 		if(!err) {
 			casper.echo('Backend settings  successfully','INFO')
 		}
-		wait.waitFortime(4000 , casper , function(err){
+		wait.waitForTime(4000 , casper , function(err){
 			deletePostMethod.createTopic(casper , function(err) {
 				if(!err) {
 					casper.echo('Topic created successfully','INFO')
@@ -1409,10 +1408,10 @@ deletePostTests.deleteOwnSearchPost=function(){
 							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
 							wait.waitForTime(1000 , casper , function(err){
 								var post= casper.evaluate(function(){
-   									var aa=document.querySelectorAll('a#search_delete_post');
-     									var a= aa.length;
-    									var hh=aa[1].getAttribute('href');
-     									return hh;
+   									var postId=document.querySelectorAll('a#search_delete_post');
+     									var postLength= postId.length;
+    									var postHref=postId[1].getAttribute('href');
+     									return postHref;
 								});
 								casper.echo("message :" +post,'INFO');
 								casper.click('a[href="'+post+'"]');
@@ -1536,7 +1535,7 @@ deletePostTests.deleteAllTopicPostDisable=function(){
 
 												casper.click('input[name="allbox"]');
 												wait.waitForTime(1000 , casper , function(err) {
-													casper.capture('1.png');
+													
 													wait.waitForTime(2000 , casper , function(){
 														forumLoginMethod.logoutFromApp(casper, function(err){
 															if (!err)
@@ -1574,7 +1573,7 @@ deletePostTests.deleteOwnTopicDropdownPostDisable=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when delete own topic- enable ,delete own post-disable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1627,7 +1626,7 @@ deletePostTests.deleteOwnPostCheckboxPostDisable=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box when delete own topic- enable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1644,12 +1643,12 @@ deletePostTests.deleteOwnPostCheckboxPostDisable=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   															var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
+   															var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
     													 		
-      															var hh=aa[1].getAttribute('id');
+      															var postHref=postId[1].getAttribute('id');
      															
-																return hh;
+																return postHref;
 														});
 														casper.echo("message :" +post,'INFO');
 														wait.waitForTime(2000 , casper , function(err){
@@ -1688,7 +1687,7 @@ deletePostTests.deleteOwnPostDropDownOwnPostDisable=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user when delete own topic- enable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1739,7 +1738,7 @@ deletePostTests.deleteOwnProfilePagePostDisable=function(){
 		casper.echo('***********delete post from members profile page when delete own topic- enable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1782,33 +1781,37 @@ deletePostTests.deleteSearchPostDisable=function(){
 		deletePostMethod.createTopic(casper , function(err) {
 			if(!err) {
 				casper.echo('Topic created successfully','INFO')
+				casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+				});
 			}
 		});
 	});
 
 	casper.then(function(){
 		deletePostMethod.searchlogin(casper , function(err) {
-			if(!err)
+			if(!err) {
 				casper.echo('search method called successfully' ,'INFO');
+				wait.waitForTime(5000 , casper , function(err){
+					casper.echo('                         Testcase 31                                ' ,'INFO');
+					casper.echo('delete topic by searching topic when delete own topic- enable ,delete own post-disable' ,'INFO');
+					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('input[name="id"]');
+							casper.click('i.glyphicon.glyphicon-trash');
+							wait.waitForTime(3000 , casper , function(err){
+								forumLoginMethod.logoutFromApp(casper, function(err){
+									if (!err)
+										casper.echo('Successfully logout from application', 'INFO');
+								});	
+							});	
+						}
+					});	
+				});
+			}
 		});
 	});
-	//Result found delete option is unavaialble
-	casper.then(function(){
-		casper.echo('                         Testcase 31                                ' ,'INFO');
-		casper.echo('------------------delete topic by searching topic when delete own topic- enable ,delete own post-disable--------------------------' ,'INFO');
-		wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists){
-			if(isExists) {
-				casper.click('input[name="id"]');
-				casper.click('i.glyphicon.glyphicon-trash');
-				wait.waitForTime(3000 , casper , function(err){
-					forumLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});	
-				});	
-			}
-		});				
-	});
+	
 };
 
 //delete own post by searching post
@@ -1822,6 +1825,9 @@ deletePostTests.deleteOwnSearPostDisable=function(){
 			deletePostMethod.profilePostRegister(casper , function(err) {
 				if(!err)
 					casper.echo('post have been created' ,'INFO');
+					casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
+
+					});
     			});
 		});
 	});
@@ -1840,7 +1846,11 @@ deletePostTests.deleteOwnSearPostDisable=function(){
 					casper.click('a#anchor_tab_show_posts');
 					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
 						if(isExists) {
-							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+							
+								casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+
+							
+							
 							wait.waitForTime(2000 , casper , function(err){
 								forumLoginMethod.logoutFromApp(casper, function(err){
 									if (!err)
@@ -1860,7 +1870,7 @@ deletePostTests.deleteOwnSearPostDisable=function(){
 //-----------------------------------------------------------"view category-------------------------------------------------
 //----------------------------------------------------------delete own topic- disable---------------------------------------
 //----------------------------------------------------------delete own post-disable"----------------------------------------
-deletePostTests.deleteOwnTopicPostDisable=function(){
+deletePostTests.deletetDisable=function(){
 	deletePostMethod.createTopic(casper , function(err) {
 		if(!err) {
 			casper.echo('Topic created successfully','INFO')
@@ -1880,7 +1890,7 @@ deletePostTests.deleteOwnTopicPostDisable=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box when delete own topic- disable ,delete own post-disable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1937,7 +1947,7 @@ deletePostTests.deleteAllTopicsPostDisable=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box when delete own topic- disable ,delete own post-disable  ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -1990,7 +2000,7 @@ deletePostTests.deleteOwnTopicDropdownTopicPostDisable=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when delete own topic- disable ,delete own post-disable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2042,7 +2052,7 @@ deletePostTests.deleteOwnPostCheckboxTopicPostDisable=function(){
 		casper.echo('***********Verify by delete multiple topic-selecting by check box when delete own topic- disable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2059,10 +2069,10 @@ deletePostTests.deleteOwnPostCheckboxTopicPostDisable=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   															var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
-    													 		var hh=aa[1].getAttribute('id');
-     															return hh;
+   															var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
+    													 		var postHref=postId[1].getAttribute('id');
+     															return postHref
 														});
 														casper.echo("message :" +post,'INFO');
 														wait.waitForTime(2000 , casper , function(err) {
@@ -2101,7 +2111,7 @@ deletePostTests.deleteOwnPostDropDownOwnTopicPostDisable=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user when delete own topic- disable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2150,7 +2160,7 @@ deletePostTests.deleteOwnProfilePageTopicPostDisable=function(){
 		casper.echo('***********delete post from members profile page when delete own topic- disable ,delete own post-disable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2303,7 +2313,7 @@ deletePostTests.deleteOwnTopicPostEnable=function(){
 		casper.echo('***********Verify by delete one topic -selecting by check box ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2319,7 +2329,7 @@ deletePostTests.deleteOwnTopicPostEnable=function(){
 
 												casper.click('input[name="id"]');
 												wait.waitForTime(1000 , casper , function(err) {
-													casper.capture('1.png');
+													
 													casper.click('i.glyphicon.glyphicon-trash');
 													wait.waitForTime(2000 , casper , function(){
 														forumLoginMethod.logoutFromApp(casper, function(err){
@@ -2364,7 +2374,7 @@ deletePostTests.deleteAllTopicsPostEnable=function(){
 		casper.echo('***********Verify by delete all topic-selecting by check box when-delete own topic- enable ,delete own post-enable ************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2415,7 +2425,7 @@ deletePostTests.deleteOwnTopicDropdownPostEnable=function(){
 		casper.echo('**********verify with delete  own topic-by drop down of the topic when-delete own topic- enable ,delete own post-enable*************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2429,7 +2439,7 @@ deletePostTests.deleteOwnTopicDropdownPostEnable=function(){
 									if(isExists) {	
 										casper.click('i.glyphicon.glyphicon-chevron-down');
 										wait.waitForTime(1000 , casper , function(err){
-											casper.capture('d.png');
+											
 											casper.click('div[id^="post_list_"]:nth-child(1) div:nth-child(1) div ul li:nth-child(3) a');
 											wait.waitForTime(2000 , casper , function(err) {
 											
@@ -2471,7 +2481,7 @@ deletePostTests.deleteOwnPostCheckboxPostEnable=function(){
 		casper.echo('***********verify with delete own post-selecting by check box when-delete own topic- enable ,delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2490,10 +2500,10 @@ deletePostTests.deleteOwnPostCheckboxPostEnable=function(){
 												wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 													if(isExists){
 														var post= casper.evaluate(function(){
-   															var aa=document.querySelectorAll('input[name="pid"]');
-     															var a= aa.length;
-    													 		var hh=aa[1].getAttribute('id');
-     															return hh;
+   															var postId=document.querySelectorAll('input[name="pid"]');
+     															var postLength= postId.length;
+    													 		var postHref=postId[1].getAttribute('id');
+     															return postHref;
 														});
 														casper.echo("message :" +post,'INFO');
 														casper.click('input[value="'+post+'"]');
@@ -2540,7 +2550,7 @@ deletePostTests.deleteOwnPostDropDownOwnTopicPostEnable=function(){
 		casper.echo('***********verify with delete post-selecting by drop down of the post register user when-delete own topic- enable ,delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2557,10 +2567,10 @@ deletePostTests.deleteOwnPostDropDownOwnTopicPostEnable=function(){
 											wait.waitForTime(1000 , casper , function(err){
 											
 												var post= casper.evaluate(function(){
-   													var aa=document.querySelectorAll('a#delete_post_request');
-     													var a= aa.length;
-    													var hh=aa[1].getAttribute('href');
-     													return hh;
+   													var postId=document.querySelectorAll('a#delete_post_request');
+     													var postLength= postId.length;
+    													var postHref=postId[1].getAttribute('href');
+     													return postHref;
 												});
 												casper.echo("message :" +post,'INFO');
 												casper.click('a[href="'+post+'"]');
@@ -2604,7 +2614,7 @@ deletePostTests.deleteOwnProfilePageTopicPostEnable=function(){
 		casper.echo('***********delete post from members profile page when-delete own topic- enable ,delete own post-enable************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username,loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -2618,10 +2628,10 @@ deletePostTests.deleteOwnProfilePageTopicPostEnable=function(){
 										if(isExists) {
 											casper.click('i.glyphicon.glyphicon-chevron-down');
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#search_delete_post');
-     												var a= aa.length;
-    												var hh=aa[0].getAttribute('href');
-     											return hh;
+   												var postId=document.querySelectorAll('a#search_delete_post');
+     												var postLength= postId.length;
+    												var postHref=postId[0].getAttribute('href');
+     												return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
@@ -2671,7 +2681,7 @@ deletePostTests.deleteOwnSearchTopicPostEnable=function(){
 			casper.echo('                         Testcase 47                                ' ,'INFO');
 			casper.echo('-----delete topic by searching topic when-delete own topic- enable ,delete own post-enable----------','INFO');
 			wait.waitForTime(2000 , casper , function(err) {
-				casper.capture('search.png');
+				
 				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err, isExists){
 					if(isExists){
 						casper.click('input[name="id"]');
@@ -2730,10 +2740,10 @@ deletePostTests.deleteOwnSearchTopicPostEnab=function(){
 							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
 
 							var post= casper.evaluate(function(){
-   								var aa=document.querySelectorAll('a#search_delete_post');
-     								var a= aa.length;
-    								var hh=aa[1].getAttribute('href');
-     								return hh;
+   								var postId=document.querySelectorAll('a#search_delete_post');
+     								var postLength= postId.length;
+    								var postHref=postId[1].getAttribute('href');
+     								return postHref;
 							});
 							casper.echo("message :" +post,'INFO');
 							casper.click('a[href="'+post+'"]');
@@ -2779,10 +2789,10 @@ deletePostTests.editTopicAdmin=function(){
 									if(isExists) {
 										casper.click('i.glyphicon.glyphicon-chevron-down');
 										var post= casper.evaluate(function(){
-   											var aa=document.querySelectorAll('a#edit_post_request');
-     											var a= aa.length;
-    											var hh=aa[0].getAttribute('href');
-     											return hh;
+   											var postId=document.querySelectorAll('a#edit_post_request');
+     											var postLength= postId.length;
+    											var postHref=postId[0].getAttribute('href');
+     											return postHref;
 										});
 										casper.echo("message :" +post,'INFO');
 										casper.click('a[href="'+post+'"]');
@@ -2853,24 +2863,24 @@ deletePostTests.editPostAdmin=function(){
 											if(isExists) {
 												casper.click('span#first_coloumn_2 div div div:nth-child(1) div a i');
 												var post= casper.evaluate(function(){
-   													var aa=document.querySelectorAll('a#edit_post_request');
-     														var a= aa.length;
-    														var hh=aa[1].getAttribute('href');
-     														return hh;
+   													var postId=document.querySelectorAll('a#edit_post_request');
+     														var postLength= postId.length;
+    														var postHref=postId[1].getAttribute('href');
+     														return postHref;
 												});
 												casper.echo("message :" +post,'INFO');
 												casper.click('a[href="'+post+'"]');
 												wait.waitForElement('input[type="button"]' , casper , function(err) {
 													if(isExists) {
 														wait.waitForTime(5000 , casper , function(err) {
-															casper.capture('post1.png');
+															
 															casper.withFrame('message1_ifr', function() {
 																casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 																casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 																casper.sendKeys('#tinymce', 'h234dragme');
 															});
 															wait.waitForTime(2000 , casper ,  function(err){
-																casper.capture('post.png');
+																
 																casper.click('input[type="button"]');
 																wait.waitForTime(2000 , casper , function(){
 	forumLoginMethod.logoutFromApp(casper, function(err){
@@ -2924,10 +2934,10 @@ deletePostTests.editPostProfilePageAdmin=function(){
 										if(isExists) {
 											casper.click('i.glyphicon.glyphicon-chevron-down');
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#search_edit_post');
-     												var a= aa.length;
-    												var hh=aa[0].getAttribute('href');
-     											return hh;
+   												var postId=document.querySelectorAll('a#search_edit_post');
+     												var postLength= postId.length;
+    												var postHref=postId[0].getAttribute('href');
+     												return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
@@ -2990,10 +3000,10 @@ deletePostTests.editTopicSearchAdmin=function(){
 							casper.click('i.glyphicon.glyphicon-chevron-down');
 							wait.waitForTime(2000 , casper , function(err){
 								var post= casper.evaluate(function(){
-   									var aa=document.querySelectorAll('a#search_edit_post');
-     									var a= aa.length;
-    									var hh=aa[0].getAttribute('href');
-     									return hh;
+   									var postId=document.querySelectorAll('a#search_edit_post');
+     									var postLength= postId.length;
+    									var postHref=postId[0].getAttribute('href');
+     									return postHref;
 								});
 								casper.echo("message :" +post,'INFO');
 								casper.click('a[href="'+post+'"]');
@@ -3060,17 +3070,17 @@ deletePostTests.editPostSearchAdmin=function(){
 							if(isExists){
 								casper.click('i.glyphicon.glyphicon-chevron-down');
 								var post= casper.evaluate(function(){
-   									var aa=document.querySelectorAll('a#search_edit_post');
-     									var a= aa.length;
-    									var hh=aa[0].getAttribute('href');
-     									return hh;
+   									var postId=document.querySelectorAll('a#search_edit_post');
+     									var postLength= postId.length;
+    									var postHref=postId[0].getAttribute('href');
+     									return postHref;
 								});
 								casper.echo("message :" +post,'INFO');
 								casper.click('a[href="'+post+'"]');
 								wait.waitForElement('input[type="button"]' , casper , function(err) {
 									if(isExists) {
 										wait.waitForTime(20000 , casper , function(err) {
-											casper.capture('post1.png');
+											
 											casper.withFrame('message1_ifr', function() {
 												casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -3078,7 +3088,7 @@ deletePostTests.editPostSearchAdmin=function(){
 											});
 										});
 										wait.waitForTime(2000 , casper ,  function(err){
-											casper.capture('post.png');
+											
 											casper.click('input[type="button"]');
 											wait.waitForTime(2000 , casper , function(err){
 												forumLoginMethod.logoutFromApp(casper, function(err){
@@ -3102,7 +3112,7 @@ deletePostTests.editPostPeoplePosted=function(){
 	casper.thenOpen( config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                         Testcase 54                                ' ,'INFO');
-		casper.echo('-------------------------edit on search listing page by people who posted as Admin----------------------------' ,'INFO');
+		casper.echo('-------------------------edit on search listing page by people who posted as Admin------------------------' ,'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
 				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
@@ -3120,17 +3130,17 @@ deletePostTests.editPostPeoplePosted=function(){
 											if(isExists) {
 												casper.click('i.glyphicon.glyphicon-chevron-down');
 												var post= casper.evaluate(function(){
-   													var aa=document.querySelectorAll('a#search_edit_post');
-     														var a= aa.length;
-    														var hh=aa[0].getAttribute('href');
-     													return hh;
+   													var postId=document.querySelectorAll('a#search_edit_post');
+     													var postLength= postId.length;
+    													var postHref=postId[0].getAttribute('href');
+     													return postHref;
 												});
 												casper.echo("message :" +post,'INFO');
 												casper.click('a[href="'+post+'"]');
 												wait.waitForElement('input[type="button"]' , casper , function(err) {
 													if(isExists) {
 														wait.waitForTime(20000 , casper , function(err) {
-															casper.capture('post1.png');
+															
 															casper.withFrame('message1_ifr', function() {
 																casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 																casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -3138,7 +3148,7 @@ deletePostTests.editPostPeoplePosted=function(){
 															});
 														});
 														wait.waitForTime(2000 , casper ,  function(err){
-															casper.capture('post.png');
+															
 															casper.click('input[type="button"]');
 															wait.waitForTime(2000 , casper , function(err){
 																forumLoginMethod.logoutFromApp(casper, function(err){
@@ -3184,7 +3194,7 @@ deletePostTests.editTopicregister=function(){
 		casper.echo('*********verify with edit topic(Post listing  page) register when edit own topic enable**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3196,10 +3206,10 @@ deletePostTests.editTopicregister=function(){
 									if(isExists) {
 										casper.click('i.glyphicon.glyphicon-chevron-down');
 										var post= casper.evaluate(function(){
-   											var aa=document.querySelectorAll('a#edit_post_request');
-     												var a= aa.length;
-    												var hh=aa[0].getAttribute('href');
-     												return hh;
+   											var postId=document.querySelectorAll('a#edit_post_request');
+     												var postLength= postId.length;
+    												var postHref=postId[0].getAttribute('href');
+     												return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
@@ -3265,10 +3275,10 @@ deletePostTests.editPostregister=function(){
 									if(isExists) {
 										casper.click('span#first_coloumn_2 div div div:nth-child(1) div a i');
 										var post= casper.evaluate(function(){
-   											var aa=document.querySelectorAll('a#edit_post_request');
-     											var a= aa.length;
-    											var hh=aa[1].getAttribute('href');
-     											return hh;
+   											var postId=document.querySelectorAll('a#edit_post_request');
+     											var postLength= postId.length;
+    											var postHref=postId[1].getAttribute('href');
+     											return postHref;
 										});
 										casper.echo("message :" +post,'INFO');
 										casper.click('a[href="'+post+'"]');
@@ -3334,17 +3344,17 @@ deletePostTests.editProfilePageregister=function(){
 										if(isExists) {
 											casper.click('i.glyphicon.glyphicon-chevron-down');
 											var post= casper.evaluate(function(){
-   												var aa=document.querySelectorAll('a#search_edit_post');
-     												var a= aa.length;
-    												var hh=aa[0].getAttribute('href');
-     											return hh;
+   												var postId=document.querySelectorAll('a#search_edit_post');
+     												var postLength= postId.length;
+    												var postHref=postId[0].getAttribute('href');
+     												return postHref;
 											});
 											casper.echo("message :" +post,'INFO');
 											casper.click('a[href="'+post+'"]');
 											wait.waitForElement('input[type="button"]' , casper , function(err) {
 												if(isExists) {
 													wait.waitForTime(20000 , casper , function(err) {
-														casper.capture('post1.png');
+														
 														casper.withFrame('message1_ifr', function() {
 															casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 															casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -3400,10 +3410,10 @@ deletePostTests.editSearchTopicRegister=function(){
 								casper.click('i.glyphicon.glyphicon-chevron-down');
 								wait.waitForTime(1000 , casper , function(err){
 									var post= casper.evaluate(function(){
-   										var aa=document.querySelectorAll('a#search_edit_post');
-     										var a= aa.length;
-    										var hh=aa[0].getAttribute('href');
-     										return hh;
+   										var postId=document.querySelectorAll('a#search_edit_post');
+     										var postLength= postId.length;
+    										var postHref=postId[0].getAttribute('href');
+     										return postHref;
 									});
 									casper.echo("message :" +post,'INFO');
 									casper.click('a[href="'+post+'"]');
@@ -3472,10 +3482,10 @@ deletePostTests.editSearchPostRegister=function(){
 						if(isExists){
 							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
 							var post= casper.evaluate(function(){
-   								var aa=document.querySelectorAll('a#search_edit_post');
-     								var a= aa.length;
-    								var hh=aa[1].getAttribute('href');
-     								return hh;
+   								var postId=document.querySelectorAll('a#search_edit_post');
+     								var postLength= postId.length;
+    								var postHref=postId[1].getAttribute('href');
+     								return postHref;
 							});
 							casper.echo("message :" +post,'INFO');
 							casper.click('a[href="'+post+'"]');
@@ -3490,7 +3500,7 @@ deletePostTests.editSearchPostRegister=function(){
 										});
 									});
 									wait.waitForTime(2000 , casper ,  function(err){
-										casper.capture('post.png');
+										
 										casper.click('input[type="button"]');
 									        wait.waitForTime(2000 , casper , function(err){
 											forumLoginMethod.logoutFromApp(casper, function(err){
@@ -3515,7 +3525,7 @@ deletePostTests.editSearchPeoplePostedRegister=function() {
 	casper.thenOpen( config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                         Testcase 60                                ' ,'INFO');
-		casper.echo('-------------------------edit on search listing page by people who posted  register when edit own topic enable----------------------------' ,'INFO');
+		casper.echo('-----------edit on search listing page by people who posted  register when edit own topic enable----------' ,'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
 				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
@@ -3533,17 +3543,17 @@ deletePostTests.editSearchPeoplePostedRegister=function() {
 											if(isExists) {
 												casper.click('i.glyphicon.glyphicon-chevron-down');
 												var post= casper.evaluate(function(){
-   													var aa=document.querySelectorAll('a#search_edit_post');
-     														var a= aa.length;
-    														var hh=aa[0].getAttribute('href');
-     													return hh;
+   													var postId=document.querySelectorAll('a#search_edit_post');
+     													var postLength= postId.length;
+    													var postHref=postId[0].getAttribute('href');
+     													return postHref;
 												});
 												casper.echo("message :" +post,'INFO');
 												casper.click('a[href="'+post+'"]');
 												wait.waitForElement('input[type="button"]' , casper , function(err) {
 													if(isExists) {
 														wait.waitForTime(20000 , casper , function(err) {
-															casper.capture('post1.png');
+															
 															casper.withFrame('message1_ifr', function() {
 																casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 																casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -3583,57 +3593,20 @@ deletePostTests.editTopicPostDisable=function(){
 		if(!err)
 			casper.echo('Successfully checked' ,'INFO');
 	});
-	
-	casper.thenOpen(config.url , function(){
-		casper.echo('-----------New topic created Method called-------------' , 'INFO');
+
+	deletePostMethod.topicCreate(casper , function(err) {
+		if(!err)
+			casper.echo('Topic created method called' ,'INFO');
 			
-		inContextLoginMethod.loginToApp(loginJSON['validInfo'].username,loginJSON['validInfo'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
-					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-					casper.click('span.topic-content a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
-						if(isExists) {
-							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						}
-					});						
-				},function fail() {
-					casper.echo('Failed block called','INFO');
-					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-						if(isExists) {
-							//method to create a new topic
-							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
-								if(!err) {
-									casper.echo('new topic created', 'INFO');
-								}else {
-									casper.echo('Topic not created', 'INFO');
-								}
-							});
-						} else {
-							casper.echo('User icon not found','ERROR');	
-						}
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});	
-			}
-		});
-     	});
-	
+	});
+
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                   TestCase 61                ' ,'INFO');	
-		casper.echo('*********verify with edit topic(Post listing  page) as register when (edit own topic/post disable)**************','INFO');
+		casper.echo('*********verify with edit topic(Post listing  page) as register when (edit own topic/post disable)*********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3644,13 +3617,13 @@ deletePostTests.editTopicPostDisable=function(){
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('i.glyphicon.glyphicon-chevron-down');
-										 										}
-									casper.then(function() {
-										inContextLoginMethod.logoutFromApp(casper, function(err){
-											if (!err)
-												casper.echo('Successfully logout from application', 'INFO');
+										wait.waitForTime(2000 , casper , function(err){
+											forumLoginMethod.logoutFromApp(casper, function(err){
+												if (!err)
+													casper.echo('Successfully logout from application', 'INFO');
+											});	
 										});
-									});	
+									}
 								});
 							}
 						});	
@@ -3668,56 +3641,21 @@ deletePostTests.editPostDisable=function(){
 		if(!err)
 			casper.echo('Successfully checked' ,'INFO');
 	});
-	
-	casper.thenOpen(config.url , function(){
-		casper.echo('-----------New topic created Method called-------------' , 'INFO');
+
+	deletePostMethod.topicCreate(casper , function(err) {
+		if(!err)
+			casper.echo('Topic created method called' ,'INFO');
 			
-		inContextLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
-					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-					casper.click('span.topic-content a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
-						if(isExists) {
-							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						}
-					});						
-				},function fail() {
-					casper.echo('Failed block called','INFO');
-					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-						if(isExists) {
-							//method to create a new topic
-							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
-								if(!err) {
-									casper.echo('new topic created', 'INFO');
-								}else {
-									casper.echo('Topic not created', 'INFO');
-								}
-							});
-						} else {
-							casper.echo('User icon not found','ERROR');	
-						}
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});	
-			}
-		});
-     	});
+	});
+	
+	
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                   TestCase 62                ' ,'INFO');	
-		casper.echo('*********verify with edit topic(Post listing  page) as register when (edit own topic/post disable**************','INFO');
+		casper.echo('******verify with edit topic(Post listing  page) as register when (edit own topic/post disable**************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3728,14 +3666,14 @@ deletePostTests.editPostDisable=function(){
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists) {
 									if(isExists) {
 										casper.click('span#first_coloumn_2 div div div:nth-child(1) div a i');
-										casper.then(function() {
-																																								       												inContextLoginMethod.logoutFromApp(casper, function(err){
+										wait.waitForTime(2000 , casper , function(err){
+										
+																												forumLoginMethod.logoutFromApp(casper, function(err){
 												if (!err)
 													casper.echo('Successfully logout from application', 'INFO');
 											});
 										});	
 									}
-											
 								});
 							}
 						});
@@ -3743,20 +3681,18 @@ deletePostTests.editPostDisable=function(){
 				});
 			}
 		});
-		
 	});	
 };
 		
 //verify with edit own  post on profile page
 deletePostTests.editProfilePagePostDisable=function(){
 
-	/*casper.then(function(){
-		casper.echo('-----------------------------New post created---------------------------------------------------' ,'INFO');
-     		deletePostMethod.profilePostRegister(casper , function(err) {
-			if(!err)
-				casper.echo('post have been created' ,'INFO');
-    		});
-    	});*/	
+	
+     	deletePostMethod.profilePostRegister(casper , function(err) {
+		if(!err)
+			casper.echo('post have been created' ,'INFO');
+    	});
+    		
 	//verify with edit post(Post listing  page)
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -3764,33 +3700,33 @@ deletePostTests.editProfilePagePostDisable=function(){
 		casper.echo('************verify with edit post on profile page as register when (edit own topic/post disable***********','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
 						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
-									casper.click('ul.nav.pull-right span.caret');
-									casper.click('a#user-nav-panel-profile');
-									wait.waitForElement('a#send_message', casper , function(err ,isExists) {
-										if(isExists) {
-											casper.click('i.glyphicon.glyphicon-chevron-down');
-											casper.then(function() {
-																																															      													inContextLoginMethod.logoutFromApp(casper, function(err){
-													if (!err)
-														casper.echo('Successfully logout from application', 'INFO');
-												});
-											});	
-										 }											
-									});
-								}
-							});
-						}
-					});
-				}
-			});
+								casper.click('ul.nav.pull-right span.caret');
+								casper.click('a#user-nav-panel-profile');
+								wait.waitForElement('a#send_message', casper , function(err ,isExists) {
+									if(isExists) {
+										casper.click('i.glyphicon.glyphicon-chevron-down');
+										wait.waitForTime(2000 , casper , function(err){
+																																															      												forumLoginMethod.logoutFromApp(casper, function(err){
+												if (!err)
+													casper.echo('Successfully logout from application', 'INFO');
+											});
+										});	
+									}											
+								});
+							}
+						});
+					}
+				});
+			}
 		});
+	});
 };
 
 //edit topic by searching own topic
@@ -3801,144 +3737,77 @@ deletePostTests.editSearchTopicPostDisable=function(){
 			casper.echo('Successfully checked' ,'INFO');
 	});
 	
+	deletePostMethod.topicCreate(casper , function(err) {
+		if(!err) {
+			casper.echo('Topic created method called' ,'INFO');
+			casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
 
-
-
-
-
-	/*casper.thenOpen(config.url , function(){
-		casper.echo('-----------New topic created Method called-------------' , 'INFO');
-			
-		inContextLoginMethod.loginToApp(json['validInfos'].username, json['validInfos'].password, casper, function(err) {
-			if (err) {
-				casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-			}else {
-				casper.echo('Processing to Login on forum.....','INFO');
-				casper.waitForSelector('form[name="posts"] a.topic-title' , function success(){
-					casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
-					casper.click('span.topic-content a');
-					wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
-						if(isExists) {
-							casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
-						}
-					});						
-				},function fail() {
-					casper.echo('Failed block called','INFO');
-					wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
-						if(isExists) {
-							//method to create a new topic
-							uploadMethods.startTopic(json['newTopic'], casper, function(err) {
-								if(!err) {
-									casper.echo('new topic created', 'INFO');
-								}else {
-									casper.echo('Topic not created', 'INFO');
-								}
-							});
-						} else {
-							casper.echo('User icon not found','ERROR');	
-						}
-					});
-				});
-				casper.then(function() {
-					inContextLoginMethod.logoutFromApp(casper, function(err){
-						if (!err)
-							casper.echo('Successfully logout from application', 'INFO');
-					});
-				});	
-			}
-		});
-     	});*/
-	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
-
+			});
+		}
 	});
 
-
-
-
-		
-	deletePostMethod.searchlogin(casper , function(err) {
-		casper.echo('--------------------------Searchlogin method called----------------------------------' ,'INFO');
-		if(!err)
-			casper.echo('search method called successfully' ,'INFO');
-	});		
 	casper.then(function(){
-		casper.echo('                         Testcase 64                                ' ,'INFO');
-		casper.echo('-----------------------------------delete topic by searching topic as register when (edit own topic/post disable------------------------------' ,'INFO');
-		wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
-			if(isExists) {
-				casper.click('a#anchor_tab_show_posts');
-				wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' ,casper , function(err , isExists) {
-					if(isExists){
-						casper.echo('Topic cannot be deleted' ,'INFO');
-							
-					}
-				});											
+		deletePostMethod.searchlogin(casper , function(err) {
+			casper.echo('--------------------------Searchlogin method called----------------------------------' ,'INFO');
+			if(!err) {
+				casper.echo('search method called successfully' ,'INFO');
+				wait.waitForTime(2000 , casper , function(err){
+					casper.echo('                         Testcase 64                                ' ,'INFO');
+					casper.echo('---delete topic by searching topic as register when (edit own topic/post disable--' ,'INFO');
+					wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
+						if(isExists) {
+							casper.click('a#anchor_tab_show_posts');
+							wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' ,casper , function(err , isExists) {
+								if(isExists){
+									casper.echo('Topic cannot be deleted' ,'INFO');
+									forumLoginMethod.logoutFromApp(casper, function(err){
+										if (!err)
+											casper.echo('Successfully logout from application', 'INFO');
+									});
+								}
+							});											
+						}
+					});	
+				});
 			}
-		});
+		});	
 	});
-
 };
 
-deletePostTests.editSearchTopicPostDisable=function(){
+
+//edit post by searching own post
+
+deletePostTests.editSearchTopicPostDisa=function(){
 	
 	casper.thenOpen("http://beta8.websitetoolbox.com/cgi/members/cloudsearch_batch_changes.cgi" , function(){
 
 	});
-	casper.then(function() {
-		deletePostMethod.searchLoginOwn(casper , function(err) {
-			if(!err)
-				casper.echo('search method called successfully' ,'INFO');
-		});
-	});	
-	casper.then(function(){
-		casper.echo('                         Testcase 59                                 ' ,'INFO');
-		casper.echo('-----------------------------------edit post by searching post ------------------------------' ,'INFO');
-		
-		
-			wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
-				if(isExists) {
-					casper.click('a#anchor_tab_show_posts');
-					wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' ,casper , function(err , isExists) {
-						if(isExists){
-							casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
-							casper.echo('Post cannot be deleted' ,'INFO');
-							/*var post= casper.evaluate(function(){
-   								var aa=document.querySelectorAll('a#search_edit_post');
-     								var a= aa.length;
-    								var hh=aa[1].getAttribute('href');
-     								return hh;
-							});
-							casper.echo("message :" +post,'INFO');
-							casper.click('a[href="'+post+'"]');
-							wait.waitForElement('input[type="button"]' , casper , function(err) {
-								if(isExists) {
-									wait.waitForTime(20000 , casper , function(err) {
-										casper.capture('post1.png');
-										casper.withFrame('message1_ifr', function() {
-											casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
-											casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-											casper.sendKeys('#tinymce', 'h234dragme');
-										});
+	
+	deletePostMethod.searchLoginOwn(casper , function(err) {
+		if(!err) {
+			casper.echo('search method called successfully' ,'INFO');
+			wait.waitForTime(2000 , casper , function(err){
+				casper.echo('                         Testcase 59                                 ' ,'INFO');
+				casper.echo('-------------------------------edit post by searching post ------------------------------' ,'INFO');
+				wait.waitForElement('a#anchor_tab_show_posts' , casper , function(err , isExists){
+					if(isExists) {
+						casper.click('a#anchor_tab_show_posts');
+						wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' ,casper , function(err , isExists) {
+							if(isExists){
+								casper.click('div#feed-main div:nth-child(2) div div div:nth-child(1) div a');
+								casper.echo('Post cannot be deleted' ,'INFO');
+								wait.waitForTime(2000 , casper , function(err){
+									forumLoginMethod.logoutFromApp(casper, function(err){
+										if (!err)
+											casper.echo('Successfully logout from application', 'INFO');
 									});
-									wait.waitForTime(2000 , casper ,  function(err){
-										casper.capture('post.png');
-										casper.click('input[type="button"]');
-										casper.then(function() {
-											inContextLoginMethod.logoutFromApp(casper, function(err){
-												if (!err)
-													casper.echo('Successfully logout from application', 'INFO');
-											});
-										});	
-									});
-								}
-							});*/	
-						}
-					});											
-				}
+								});
+							}
+						});											
+					}
+				});
 			});
-			
-		
-		
+		}
 	});
 };
 
@@ -3948,10 +3817,10 @@ deletePostTests.editSearchPeoplePostedEditPostDisable=function() {
 	casper.thenOpen( config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                         Testcase 65                                ' ,'INFO');
-		casper.echo('-------------------------edit on search listing page by people who posted as register when (edit own topic/post disable----------------------------' ,'INFO');
+		casper.echo('----edit on search listing page by people who posted as register when (edit own topic/post disable--------' ,'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				inContextLoginMethod.loginToApp(loginJSON['validInfos'].username, loginJSON['validInfos'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['validInfo'].username, loginJSON['validInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -3965,8 +3834,8 @@ deletePostTests.editSearchPeoplePostedEditPostDisable=function() {
 										wait.waitForElement('div.post-body.pull-left span:nth-child(2) a' , casper , function(err , isExists) {
 											if(isExists) {
 												casper.click('i.glyphicon.glyphicon-chevron-down');
-												casper.then(function() {
-																																																								   														inContextLoginMethod.logoutFromApp(casper, function(err){
+												wait.waitForTime(2000 , casper , function(err){
+																																																								   														forumLoginMethod.logoutFromApp(casper, function(err){
 														if (!err)
 															casper.echo('Successfully logout from application', 'INFO');
 													});

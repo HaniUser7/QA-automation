@@ -7,13 +7,13 @@ deletePost.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		//verify by Admin a user on another server
-		//deletePostTests.CreateAdminUser();
+		deletePostTests.CreateAdminUser();
 		//verify by Register a user on another server
-		//deletePostTests.CreateRegisterUser();
+		deletePostTests.CreateRegisterUser();
 		//Verify by delete one topic -selecting by check box 
-		//deletePostTests.deleteTopicAdmin();
+		deletePostTests.deleteTopicAdmin();
 		//Verify by delete multiple topic-selecting by check box 
-		/*deletePostTests.deleteAllTopicAdmin();
+		deletePostTests.deleteAllTopicAdmin();
 		//Verify by delete all topic-selecting by check box 3-issue
 		deletePostTests.deleteMultipleTopicAdmin();
 		//verify with delete topic-by drop down of the topic
@@ -46,9 +46,9 @@ deletePost.featureTest = function(casper, test) {
     //********************************Delete own topic using delete own topic- disable ,delete own post-enable ***********************************
     	
 		//Verify by delete one own  topic -selecting by check box by register user.
-		deletePostTests.deleteOwnTopic();
+		//deletePostTests.deleteOwnTopic();
 		//Verify by delete own all topic-selecting by check box using register user
-		deletePostTests.deleteAllOwnTopic();
+		/*deletePostTests.deleteAllOwnTopic();
 		//verify with delete  own topic-by drop down of the topic
 		deletePostTests.deleteOwnTopicDropdown();
 		//verify with delete own post-selecting by check box 
@@ -80,7 +80,7 @@ deletePost.featureTest = function(casper, test) {
    //***************************view category-delete own topic-disable-delete own post-disable*************************
    
 		//Verify by delete own topic -selecting by check box 
-		deletePostTests.deleteOwnTopicPostDisable();
+		deletePostTests.deleteDisable();
 		//Verify by delete all own topic-selecting by check box 
 		deletePostTests.deleteAllTopicsPostDisable();
 		//verify with delete  own topic-by drop down of the topic
@@ -125,7 +125,7 @@ deletePost.featureTest = function(casper, test) {
 		//edit post by searching post
 		deletePostTests.editPostSearchAdmin();
 		//edit on search listing page by people who posted
-		deletePostTests.editPostPeoplePosted();*/
+		deletePostTests.editPostPeoplePosted();
  //****************************Edit own topic/post as register(edit own topic enable)**********************************
 		//verify with edit own  topic(Post listing  page)
 		deletePostTests.editTopicregister();	
@@ -141,7 +141,7 @@ deletePost.featureTest = function(casper, test) {
 		deletePostTests.editSearchPeoplePostedRegister();	
 //*****************************Edit own topic/post as register(edit own topic disable)**************************************
 		//verify with edit own  topic(Post listing  page)
-		/*deletePostTests.editTopicPostDisable();
+		deletePostTests.editTopicPostDisable();
 		//verify with edit own  post(Post listing  page)
 		deletePostTests.editPostDisable();
 		//verify with edit own  post on profile page
@@ -149,18 +149,12 @@ deletePost.featureTest = function(casper, test) {
 		//edit topic by searching own topic
 		deletePostTests.editSearchTopicPostDisable();
 		//edit post by searching own post
-		//deletePostTests.editSearchTopicPostDisa();
+		deletePostTests.editSearchTopicPostDisa();
 		//edit on search listing page by people who posted
-		//deletePostTests.editSearchPeoplePostedEditPostDisable();*/
+		deletePostTests.editSearchPeoplePostedEditPostDisable();*/
 		
 
 
-
-
-
-
-
-	
 
 
 	});
