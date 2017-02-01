@@ -1567,10 +1567,7 @@ postEventMemberApprovalTestcases.memberApprovalByAdvanceSearch = function() {
 													if(isExists) {
 														casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
 														casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-														casper.fillSelectors('form[name="posts"]', {
-							    								'select[name="usergroupid"]': '20237757'
-														}, true);
-														casper.click('input.btn.btn-primary');
+														//casper.click('input.btn.btn-primary');
 														wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 															if(isExists) {
 																casper.click('div.panel-body.table-responsive a strong');
@@ -1819,10 +1816,7 @@ postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingTwo = funct
 													if(isExists) {
 														casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
 														casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-														casper.fillSelectors('form[name="posts"]', {
-							    								'select[name="usergroupid"]': '20237756'
-														}, true);
-														casper.click('input.btn.btn-primary');
+														//casper.click('input.btn.btn-primary');
 														wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 															if(isExists) {
 																casper.click('div.panel-body.table-responsive a strong');
@@ -2057,10 +2051,7 @@ postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingThree = fun
 													if(isExists) {
 														casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
 														casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-														casper.fillSelectors('form[name="posts"]', {
-							    								'select[name="usergroupid"]': '20237756'
-														}, true);
-														casper.click('input.btn.btn-primary');
+														//casper.click('input.btn.btn-primary');
 														wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 															if(isExists) {
 																casper.click('div.panel-body.table-responsive a strong');
@@ -2314,10 +2305,7 @@ postEventMemberApprovalTestcases.memberApprovalByAdvanceSearchSettingFour = func
 													if(isExists) {
 														casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
 														casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-														casper.fillSelectors('form[name="posts"]', {
-							    								'select[name="usergroupid"]': '20237756'
-														}, true);
-														casper.click('input.btn.btn-primary');
+														//casper.click('input.btn.btn-primary');
 														wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 															if(isExists) {
 																casper.click('div.panel-body.table-responsive a strong');
@@ -3417,9 +3405,6 @@ postEventMemberApprovalTestcases.deleteMemberByAdvanceSearch = function() {
 													if(isExists) {
 														casper.sendKeys('input[name="s_username"]',json.userToDelete, {keepFocus: true});
 														casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-														casper.fillSelectors('form[name="posts"]', {
-							    								'select[name="usergroupid"]': '20237757'
-														}, true);
 														casper.click('input.btn.btn-primary');
 														wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 															if(isExists) {
@@ -3856,7 +3841,7 @@ postEventMemberApprovalTestcases.deleteMemberBySearchingPendingUserSettingFour =
 												wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 													if(isExists) {
 														casper.click('div.panel-body.table-responsive a strong');
-														wait.waitForElement('div.alert.alert-danger.text-center strong', casper,function(err, isExists) {
+														wait.waitForElement('a#delete_user_account i', casper,function(err, isExists) {
 															if(isExists) {
 																casper.test.assertExists('a#delete_user_account i','Delete button appeared');
 																casper.click('a#delete_user_account i');

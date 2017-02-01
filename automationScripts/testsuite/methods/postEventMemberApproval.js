@@ -1162,8 +1162,15 @@ postEventMemberApprovalMethod.checkPendingUser = function(driver, callback) {
 								wait.waitForElement('form[name="ugfrm"]', casper, function(err, isExists) {
 									if(isExists) {
 										var checked = casper.evaluate(function() {
-											var element = document.getElementById(20237761).checked;
-											return element;
+											var totalUserGroup = document.querySelectorAll('form#frmChangeUsersGroupFinal input[type="checkbox"]');
+											for(var i=2; i<=totalUserGroup.length; i++) {
+												var userGroup = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') label');
+												if (userGroup.innerText == 'Registered Users') {
+													var userGroupId = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') input').getAttribute('id');
+													var element = document.getElementById(userGroupId).checked;
+													return element;
+												}	
+											}
 										});
 										casper.echo('the value of checked = '+checked,'INFO');
 										if(checked == true) {
@@ -1227,14 +1234,10 @@ postEventMemberApprovalMethod.enableViewableMembersPendingApproval = function(dr
 													casper.click('button.button.btn-m.btn-blue');
 													/*casper.wait(40000, function() {
 													});*/
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() { 
-														casper.waitUntilVisible('div#ajax-msg-top', function success() {
-															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-														}, function fail() { 
-															casper.echo('Saved not found', 'ERROR');
-														}, 30000);
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+														if(isExists) {
+															casper.echo("Permission unchanged",'INFO');
+														}
 													});
 												}else {
 													casper.echo(' Viewable on Members List  not found', 'ERROR');
@@ -1303,14 +1306,10 @@ postEventMemberApprovalMethod.enableViewableMembersPendingEmailVerification = fu
 													casper.click('button.button.btn-m.btn-blue');
 													/*casper.wait(40000, function() {
 													});*/
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() { 
-														casper.waitUntilVisible('div#ajax-msg-top', function success() {
-															casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-														}, function fail() { 
-															casper.echo('Saved not found', 'ERROR');
-														}, 30000);
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+														if(isExists) {
+															casper.echo("Permission unchanged",'INFO');
+														}
 													});
 												}else {
 													casper.echo(' Viewable on Members List  not found', 'ERROR');
