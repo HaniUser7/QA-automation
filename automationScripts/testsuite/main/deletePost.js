@@ -7,9 +7,9 @@ deletePost.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		//verify by Admin a user on another server
-		deletePostTests.CreateAdminUser();
+		//deletePostTests.CreateAdminUser();
 		//verify by Register a user on another server
-		deletePostTests.CreateRegisterUser();
+		//deletePostTests.CreateRegisterUser();
 		//Verify by delete one topic -selecting by check box 
 		deletePostTests.deleteTopicAdmin();
 		//Verify by delete multiple topic-selecting by check box 
@@ -46,9 +46,9 @@ deletePost.featureTest = function(casper, test) {
     //********************************Delete own topic using delete own topic- disable ,delete own post-enable ***********************************
     	
 		//Verify by delete one own  topic -selecting by check box by register user.
-		//deletePostTests.deleteOwnTopic();
+		 deletePostTests.deleteOwnTopic();
 		//Verify by delete own all topic-selecting by check box using register user
-		/*deletePostTests.deleteAllOwnTopic();
+		deletePostTests.deleteAllOwnTopic();
 		//verify with delete  own topic-by drop down of the topic
 		deletePostTests.deleteOwnTopicDropdown();
 		//verify with delete own post-selecting by check box 
@@ -151,7 +151,7 @@ deletePost.featureTest = function(casper, test) {
 		//edit post by searching own post
 		deletePostTests.editSearchTopicPostDisa();
 		//edit on search listing page by people who posted
-		deletePostTests.editSearchPeoplePostedEditPostDisable();*/
+		deletePostTests.editSearchPeoplePostedEditPostDisable();
 		
 
 

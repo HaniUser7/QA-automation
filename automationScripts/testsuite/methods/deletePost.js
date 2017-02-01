@@ -37,7 +37,7 @@ deletePostMethod.profilePost=function(casper , callback) {
 											wait.waitForTime(5000 , casper , function(err){
 												casper.test.assertExists('input[name="submitbutton"]','button found');
                                                                                                 casper.click('input[name="submitbutton"]');
-												wait.waitForTime(3000 , casper , function(err){
+												wait.waitForTime(1000 , casper , function(err){
 													forumLoginMethod.logoutFromApp(casper, function(err){
 														if (!err)
 															casper.echo('Successfully logout from application', 'INFO');
@@ -48,7 +48,6 @@ deletePostMethod.profilePost=function(casper , callback) {
 											});
 										});
 									}
-									
 								});
 							}
 						});
@@ -208,6 +207,7 @@ deletePostMethod.searchLoginOwn=function(casper , callback) {
 									},true);
 									return callback(null);
 								});
+
 							}
 						});
 					}
@@ -252,18 +252,16 @@ deletePostMethod.profilePostRegister=function(casper , callback) {
 											wait.waitForTime(5000 , casper , function(err){
 												casper.test.assertExists('input[name="submitbutton"]','button found');
                                                                                                 casper.click('input[name="submitbutton"]');
-												wait.waitForTime(3000 , casper , function(err){
+												wait.waitForTime(1000 , casper , function(err){
 													forumLoginMethod.logoutFromApp(casper, function(err){
 														if (!err)
 															casper.echo('Successfully logout from application', 'INFO');
-															return callback(null);
-															
+															 return callback(null);
 													});
 												});
 											});
 										});
 									}
-									
 								});
 							}
 						});
@@ -735,35 +733,34 @@ deletePostMethod.topicCreate=function(casper , callback){
 													return x3;
 											}
 										}
-									});
-									casper.echo(+grpName,'INFO');
-									wait.waitForTime(3000, casper, function() { 
-										casper.fillSelectors('form[name="ugfrm"]', {
-											'input[type="checkbox"]' :grpName
-											}, true);
-											casper.test.assertExists('button[title="Close"]');
-											casper.click('button[title="Close"]');
-											wait.waitForTime(4000, casper, function() {
-												casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
-												casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
-												casper.test.assertExists('div#ddAccount a:nth-child(6)');
-												casper.click('div#ddAccount a:nth-child(6)');	
-												casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
-												return callback(null);
-													        
-											});
-										});
-									},function fail(){
-										casper.echo('form selector not found','ERROR');
+								});
+								casper.echo(+grpName,'INFO');
+								wait.waitForTime(3000, casper, function() { 
+									casper.fillSelectors('form[name="ugfrm"]', {
+										'input[type="checkbox"]' :grpName
+									}, true);
+									casper.test.assertExists('button[title="Close"]');
+									casper.click('button[title="Close"]');
+									wait.waitForTime(4000, casper, function() {
+										casper.test.assertExists('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+										casper.click('div#account_sub_menu a[data-tooltip-elm="ddAccount"]');
+										casper.test.assertExists('div#ddAccount a:nth-child(6)');
+										casper.click('div#ddAccount a:nth-child(6)');	
+										casper.echo('                    Logout Form BackEnd                     ' ,'INFO');
+										return callback(null);
 									});
 								});
-							} else {
-								casper.echo('Backend Menu not found', 'ERROR');
-							}
+							},function fail(){
+								casper.echo('form selector not found','ERROR');
+							});
 						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
 					}
 				});
-			});
+			}
+		});
+	});
    
 };
 
@@ -775,7 +772,7 @@ deletePostMethod.profilePostAdmin=function(casper , callback) {
 		casper.echo('***********Method to create post************','INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
@@ -826,7 +823,7 @@ deletePostMethod.searchloginAdmin=function(casper , callback){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
 			if(isExists) {
-				forumLoginMethod.loginToApp(json['userInfo'].username, json['userInfo'].password, casper, function(err) {
+				forumLoginMethod.loginToApp(loginJSON['userInfo'].username, loginJSON['userInfo'].password, casper, function(err) {
 					if (err) {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
