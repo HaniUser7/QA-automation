@@ -22,6 +22,45 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods = function() 
 	});
 };
 
+// method to create a category and its sub category and get their id
+combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.isCategoryExists(json["category"], casper, function(err, isExists) {
+									if(isExists) {
+										casper.echo('Category already existed', 'INFO');
+									} else {
+										casper.echo('Category not exist', 'INFO');
+										combinationOfSubCategoryAndGroupPermissionsMethod.createCategory(json["category"], casper, function(err) {
+											if(!err) {
+											
+											}
+										});
+									}
+								});
+							}
+						});
+						/*casper.then(function() {
+							backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+							});
+				
+						});*/
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+};
+
 // method to verify with category cat1
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {

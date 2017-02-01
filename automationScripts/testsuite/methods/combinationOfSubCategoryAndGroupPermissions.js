@@ -47,18 +47,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory = function(
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													/*casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() {
-														casper.echo('Saved not found', 'INFO');
-													},30000);*/
-													casper.wait(40000, function() {
-													});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													//casper.wait(40000, function() {
+													//});
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
 														}
-													});*/
+													});
 												}else {
 													casper.echo(' View category not found', 'ERROR');
 												}
@@ -124,20 +119,15 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics = function(d
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() {
-														casper.echo('Saved not found', 'INFO');
-													},30000);
 													//casper.wait(40000, function() {
 													//});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
 														}
-													});*/
+													});
 												}else {
-													casper.echo(' Viewable on Members List  not found', 'ERROR');
+													casper.echo('Start Topic not found', 'ERROR');
 												}
 											});
 										} else {
@@ -201,18 +191,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopics = function(d
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() {
-														casper.echo('Saved not found', 'INFO');
-													},30000);
 													//casper.wait(40000, function() {
 													//});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
 														}
-													});*/
+													});
 												}else {
 													casper.echo(' Viewable on Members List  not found', 'ERROR');
 												}
@@ -278,18 +263,13 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachments = func
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() {
-														casper.echo('Saved not found', 'INFO');
-													},30000);
 													//casper.wait(40000, function() {
 													//});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
 														}
-													});*/
+													});
 												}else {
 													casper.echo(' Viewable on Members List  not found', 'ERROR');
 												}
@@ -355,20 +335,15 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments = functi
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() {
-														casper.echo('Saved not found', 'INFO');
-													},30000);
 													//casper.wait(40000, function() {
 													//});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
 														}
-													});*/
+													});
 												}else {
-													casper.echo(' Viewable on Members List  not found', 'ERROR');
+													casper.echo('View Attachments not found', 'ERROR');
 												}
 											});
 										} else {
@@ -432,20 +407,15 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval = fu
 													});
 													casper.test.assertExists('button.button.btn-m.btn-blue');
 													casper.click('button.button.btn-m.btn-blue');
-													casper.waitUntilVisible('div#ajax-msg-top', function success() {
-														casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-													}, function fail() {
-														casper.echo('Saved not found', 'INFO');
-													},30000);
 													//casper.wait(40000, function() {
 													//});
-													/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 														if(isExists) {
 															casper.echo("Permission unchanged",'INFO');
 														}
-													});*/
+													});
 												}else {
-													casper.echo(' Viewable on Members List  not found', 'ERROR');
+													casper.echo('Require Post Approval not found', 'ERROR');
 												}
 											});
 										} else {
@@ -477,60 +447,33 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval = fu
 
 //*************************Method to create a category from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(data, driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
+	driver.test.assertExists('a#addForumButton');
+	driver.click('a#addForumButton');
+	wait.waitForElement('form#edit_forum_form', driver, function(err, isExists) {
+		if(isExists) {
+			driver.sendKeys('input[name="forum_name"]', data.title, {reset:true});		
+			driver.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
+			driver.test.assertExists('button.button.btn-m.btn-blue');
+			driver.click('button.button.btn-m.btn-blue');
+			/*driver.waitUntilVisible('div#ajax-msg-top', function success() {
+				driver.echo(driver.fetchText('div#ajax-msg-top'),'INFO');
+			}, function fail() {
+				driver.echo('Saved not found', 'INFO');
+			},30000);*/
+			//casper.wait(40000, function() {
+			//});
+			wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
 				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					wait.waitForElement('div#ddContent', driver, function(err, isExists) {
-						if(isExists) {
-							driver.click('div#ddContent a:nth-child(1)');
-							wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a#addForumButton');
-									wait.waitForElement('form#edit_forum_form', casper, function(err, isExists) {
-										if(isExists) {
-											casper.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
-											casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
-											casper.test.assertExists('button.button.btn-m.btn-blue');
-											casper.click('button.button.btn-m.btn-blue');
-											casper.waitUntilVisible('div#ajax-msg-top', function success() {
-												casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-											}, function fail() {
-												casper.echo('Saved not found', 'INFO');
-											},30000);
-											//casper.wait(40000, function() {
-											//});
-											/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-												if(isExists) {
-													casper.echo("Permission unchanged",'INFO');
-												}
-											});*/
-										} else {
-											casper.echo('Form not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Add category tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
+					casper.echo("Category created",'INFO');
+					return callback(null);
 				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
+					driver.echo('Category not created', 'ERROR');
+					return callback(null);
 				}
 			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
+		} else {
+			driver.echo('Form not found', 'ERROR');
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
@@ -917,3 +860,44 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enablePrivateCategories = func
 	});
 };
 
+// method to goto category page from backend
+combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage = function(driver, callback) {
+	driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+	driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
+	wait.waitForElement('div#ddContent', driver, function(err, isExists) {
+		if(isExists) {
+			driver.click('div#ddContent a:nth-child(1)');
+			wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
+				if(isExists) {
+					casper.echo('Category page opened', 'INFO');
+					return callback(null);
+				} else {
+					casper.echo('Category page not opened', 'ERROR');
+					return callback(null);
+				}
+			});
+		} else {
+			casper.echo('Content  tooltip menu not found', 'ERROR');
+		}
+	});
+};
+
+// method to check cat1 is already exists or not
+combinationOfSubCategoryAndGroupPermissionsMethod.isCategoryExists = function(data, driver, callback) {
+	var title = data.title;
+	driver.test.assertExists('div#sortable ul li','Category present');
+	var isCatExists = driver.evaluate(function(title) {
+		var totalCategories = document.querySelectorAll('div#sortable ul li');
+	   	for(var i=1; i<=(totalCategories.length); i++) {
+			var category = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
+			if (category.innerText == title) {
+				return true;
+			}
+		}
+	},title);
+	if(isCatExists == true) {
+		return callback(null, true);
+	} else {
+		return callback(null, false);
+	}
+};

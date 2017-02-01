@@ -11,7 +11,10 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		this.echo("Title of the page :"+this.getTitle(),'INFO');
 		
 		// method to test methods
-		combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
+		
+		// method to create a category and its sub category and get their id
+		combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory();
 		
 		// method to verify with category cat1
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
