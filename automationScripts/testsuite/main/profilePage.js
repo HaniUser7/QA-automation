@@ -10,17 +10,17 @@ profilePage.featureTest = function(casper, test) {
 	casper.echo("Title of the page :"+this.getTitle(), 'INFO');	
 
 	//Verify with sending message by message button.
-	//profilePageTests.profilePageMessageButton();
+	 profilePageTests.profilePageMessageButton();
 	//Verify with sending message by message button is disable.
-	//profilePageTests.profilePageMessageButtonDisable();
+	profilePageTests.profilePageMessageButtonDisable();
 	//All Post tab for own profile page.
-	//profilePageTests.profilePageAllPostTab();
+	profilePageTests.profilePageAllPostTab();
 	//Verify with All post tab after start a topic/post
-	//profilePageTests.profilePageCreateTopic();
+	profilePageTests.profilePageCreateTopic();
         //Verify with All post tab after delete a topic/post
-	//profilePageTests.profilePageDeletePost();
+	profilePageTests.profilePageDeletePost();
 	//Verify with All post tab after edit a topic/post on topic listing page
-	//profilePageTests.profilePageEditTopic();
+	profilePageTests.profilePageEditTopic();
 //---------------------------------Topic started tab--------------------------------------------------
 	//verify Topic started tab with before start a topic.
 	//profilePageTests.profilePageTopicTab();
@@ -61,7 +61,7 @@ profilePage.featureTest = function(casper, test) {
 	//profilePageTests.profilePageEditUserIcon();
 
  //---------------EditProfilePage-----------------------------------------------------------------
-	//Disable Signature  for Registered user from group Permission.
+	/*//Disable Signature  for Registered user from group Permission.
 	//profilePageTests.profilePageDisableSignature();	
 	//Enable Signature  for Registered user from group Permission
 	//profilePageTests.profilePageEnableSignature();
@@ -94,7 +94,7 @@ profilePage.featureTest = function(casper, test) {
 	//verify with edit user icon
 	//profilePageTests.profilePageEdituserIcon();
 	//verify with delete icon
-	profilePageTests.profilePageDeleteIcon();
+	//profilePageTests.profilePageDeleteIcon();*/
 	
 	
 	
