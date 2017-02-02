@@ -37,6 +37,19 @@ postEventMemberApprovalTestcases.registerUserTOLogin = function() {
 
 // method to create a topic 
 postEventMemberApprovalTestcases.createTopic = function() {
+	//Open Back-End URL And Get Title and logout if logged in
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*                        Create a topic if not already existed                     *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		//method to enable approve new post** All posts
+		postEventMemberApprovalMethod.disableApproveNewPost(casper, casper.test, function(err) {
+			if(!err) {
+				casper.echo('Disable Approve New Post functionality method called ','INFO');
+			}
+		});
+	});
 	casper.thenOpen(config.url, function() {
 		//Open front end and logged in as register user
 		try {
@@ -1977,6 +1990,7 @@ postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUserSettingThre
 															if(isExists) {
 																casper.echo(casper.fetchText('div.alert.alert-danger.text-center strong'),'INFO');
 																casper.click('div.alert.alert-danger.text-center a.btn.btn-danger');
+																casper.wait(5000, function() {});
 															}	
 														});
 													}else{
@@ -2228,7 +2242,7 @@ postEventMemberApprovalTestcases.memberApprovalBySearchingPendingUserSettingFour
 												wait.waitForElement('div.panel-body.table-responsive a strong', casper,function(err, isExists) {
 													if(isExists) {
 														casper.click('div.panel-body.table-responsive a strong');
-														wait.waitForElement('div.alert.alert-danger.text-center strong', casper,function(err, isExists) {
+														wait.waitForElement('span#avatar', casper,function(err, isExists) {
 															if(isExists) {
 																casper.test.assertDoesntExist('div.alert.alert-danger.text-center a.btn.btn-danger','approve button is not appear');
 															}	

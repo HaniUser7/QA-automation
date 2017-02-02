@@ -135,12 +135,10 @@ postEventMemberApprovalMethod.disableApproveNewPost = function(driver, test, cal
 									}, true);
 									casper.test.assertExists('button.button.btn-m.btn-blue');
 									casper.click('button.button.btn-m.btn-blue');
-									/*casper.wait(40000, function() {
-											});*/
-									casper.waitUntilVisible('div#loading_msg', function success() {
-										casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+									casper.waitUntilVisible('div#ajax-msg-top', function success() {
+										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 									}, function fail() {
-										casper.echo('Loading... not found', 'INFO');
+										casper.echo('Saved not found', 'ERROR');
 									},30000);
 								} else {
 									casper.echo('approve new post checkbox not found', 'ERROR');
@@ -1177,7 +1175,7 @@ postEventMemberApprovalMethod.checkPendingUser = function(driver, callback) {
 											casper.echo('The pending user is moved to Register user, Verified','INFO');
 										}
 										else {
-											casper.echo('The pending user is not moved to Register user, Verified','INFO');
+											casper.echo('The pending user is not moved to Register user, Verified','ERROR');
 										}
 									}	
 								});
