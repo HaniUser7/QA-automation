@@ -449,27 +449,20 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval = fu
 combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(data, driver, callback) {
 	driver.test.assertExists('a#addForumButton');
 	driver.click('a#addForumButton');
-	wait.waitForElement('form#edit_forum_form', driver, function(err, isExists) {
+	wait.waitForElement('form#edit_forum_form', casper, function(err, isExists) {
 		if(isExists) {
-			driver.sendKeys('input[name="forum_name"]', data.title, {reset:true});		
-			driver.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
-			driver.test.assertExists('button.button.btn-m.btn-blue');
-			driver.click('button.button.btn-m.btn-blue');
-			/*driver.waitUntilVisible('div#ajax-msg-top', function success() {
-				driver.echo(driver.fetchText('div#ajax-msg-top'),'INFO');
+			casper.sendKeys('input[name="forum_name"]', data.title, {reset:true});		
+			casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
+			casper.test.assertExists('button.button.btn-m.btn-blue');
+			casper.click('button.button.btn-m.btn-blue');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				casper.echo("Category created",'INFO');
+				return callback(null);
 			}, function fail() {
-				driver.echo('Saved not found', 'INFO');
-			},30000);*/
-			//casper.wait(40000, function() {
-			//});
-			wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-				if(isExists) {
-					casper.echo("Category created",'INFO');
-					return callback(null);
-				} else {
-					driver.echo('Category not created', 'ERROR');
-					return callback(null);
-				}
+				casper.echo('Category not created', 'ERROR');
+				casper.echo('Loading... not found', 'ERROR');
+				return callback(null);
 			});
 		} else {
 			driver.echo('Form not found', 'ERROR');
@@ -479,158 +472,101 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createCategory = function(data
 
 //*************************Method to create a Sub Category from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(data, driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', driver, function(err, isExists) {
-				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					wait.waitForElement('div#ddContent', driver, function(err, isExists) {
-						if(isExists) {
-							driver.click('div#ddContent a:nth-child(1)');
-							wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
-								if(isExists) {
-									casper.click('a#addForumButton');
-									wait.waitForElement('form#edit_forum_form', casper, function(err, isExists) {
-										if(isExists) {
-											casper.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
-											casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
-											utils.enableorDisableCheckbox('isSubcategory', true, casper, function() {
-												casper.echo('checkbox is checked', 'INFO');
-											});
-											casper.then(function() {
-												var catId = casper.evaluate(function() {
-													var id = document.querySelectorAll('#parentid option');
-													var len = id.length;
-													for(var i =1; i<=len; i++) {
-														var cat = document.querySelector('#parentid option:nth-child('+i+')');
-														if(cat.innerText == 'cat1') {
-															var catValue = document.querySelector('#parentid option:nth-child('+i+')').getAttribute('value');
-															return catValue;
-														}
-													}
-												});
-												casper.echo('Total category available= '+catId, 'INFO');
-												casper.fillSelectors('div#parentOpt', {
-					    								'select[name="parentid"]': catId
-												}, true);
-												casper.test.assertExists('button.button.btn-m.btn-blue');
-												casper.click('button.button.btn-m.btn-blue');
-												casper.waitUntilVisible('div#ajax-msg-top', function success() {
-													casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-												}, function fail() {
-													casper.echo('Saved not found', 'INFO');
-												},30000);
-												//casper.wait(40000, function() {
-												//});
-												/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-													if(isExists) {
-														casper.echo("Permission unchanged",'INFO');
-													}
-												});*/
-											});
-										} else {
-											casper.echo('Form not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
-				}
+	driver.test.assertExists('a#addForumButton');
+	driver.click('a#addForumButton');
+	wait.waitForElement('form#edit_forum_form', casper, function(err, isExists) {
+		if(isExists) {
+			casper.sendKeys('input[name="forum_name"]', data.title, {reset:true});								
+			casper.sendKeys('textarea[name="forum_description"]', data.description, {reset:true});
+			utils.enableorDisableCheckbox('isSubcategory', true, casper, function() {
+				casper.echo('checkbox is checked', 'INFO');
 			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
+			casper.then(function() {
+				var catId = casper.evaluate(function() {
+					var id = document.querySelectorAll('#parentid option');
+					var len = id.length;
+					for(var i =1; i<=len; i++) {
+						var cat = document.querySelector('#parentid option:nth-child('+i+')');
+						if(cat.innerText == 'cat1') {
+							var catValue = document.querySelector('#parentid option:nth-child('+i+')').getAttribute('value');
+							return catValue;
+						}
+					}
+				});
+				casper.echo('Total category available= '+catId, 'INFO');
+				casper.fillSelectors('div#parentOpt', {
+					'select[name="parentid"]': catId
+				}, true);
+				casper.test.assertExists('button.button.btn-m.btn-blue');
+				casper.click('button.button.btn-m.btn-blue');
+				/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+					if(isExists) {
+						casper.echo("Sub Category created",'INFO');
+						return callback(null);
+					} else {
+						casper.echo('Sub Category not created', 'ERROR');
+						return callback(null);
+					}
+				});*/
+				casper.waitUntilVisible('div.heading.error_message', function success() {
+					casper.echo(casper.fetchText('div.heading.error_message'),'INFO');
+					casper.echo("Sub Category created",'INFO');
+					return callback(null);
+				}, function fail() {
+					casper.echo('Sub Category not created', 'ERROR');
+					return callback(null);
+				});
+			});
+		} else {
+			driver.echo('Form not found', 'ERROR');
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
 	});
 };
 
 //*************************Method to get the id of Category and sub category from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.getId = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-				if(isExists) {
-					casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
-					wait.waitForElement('div#ddContent', casper, function(err, isExists) {
-						if(isExists) {
-							casper.click('div#ddContent a:nth-child(1)');
-							wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
-								if(isExists) {
-									categoryId = casper.evaluate(function(){
-										var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
-										for(var i=1; i<=x1.length; i++) {
-											var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
-											if (cat.innerText == 'cat1') {
-												var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
-												return (x2);
-											}
-										}
-									});
-									casper.echo('the id of the category ='+categoryId,'INFO');
-									subCategoryId = casper.evaluate(function(){
-										var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
-										for(var i=1; i<=x1.length; i++) {
-											var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
-											if (cat.innerText == 'cat1') {
-												var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
-												var x3 = document.querySelector('li[id="'+x2+'"] ul li').getAttribute('id');
-												return x3;
-											}
-										}
-									});
-									casper.echo('the id of the subcategory ='+subCategoryId,'INFO');
-									return callback(null, categoryId, subCategoryId);
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
+	wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
+		if(isExists) {
+			categoryId = casper.evaluate(function(){
+				var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
+				for(var i=1; i<=x1.length; i++) {
+					var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
+					if (cat.innerText == 'cat1') {
+						var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
+						return (x2);
+					}
 				}
 			});
-			/*casper.then(function() {
-				backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-				});
-				
-			});*/
-		}else {
-			casper.echo('Error : ', 'ERROR');
+			casper.echo('the id of the category ='+categoryId,'INFO');
+			subCategoryId = casper.evaluate(function(){
+				var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
+				for(var i=1; i<=x1.length; i++) {
+					var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
+					if (cat.innerText == 'cat1') {
+						var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
+						var x3 = document.querySelector('li[id="'+x2+'"] ul li').getAttribute('id');
+						return x3;
+					}
+				}
+			});
+			casper.echo('the id of the subcategory ='+subCategoryId,'INFO');
+			return callback(null, categoryId, subCategoryId);
+		} else {
+			casper.echo('Calendar Permissions tab not found', 'ERROR');
 		}
 	});
 };
 
 //*************************Method to goto the permission of Sub Category from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = function(driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.getId(casper, function(err, categoryId, subCategoryId) {
-		if(!err) {
-			casper.echo('getId method called ','INFO');
-			casper.mouse.move('li[id="'+subCategoryId+'"] div.select');
-			casper.capture('pq.png');
-			casper.click('li[id="'+subCategoryId+'"] a.manageAction'); // click on manage of cat1
-			casper.click('div[id="forumAction'+subCategoryId+'"] a.change_perm'); // click on change permission
-			wait.waitForElement('span#inheritance', casper, function(err, isExists) {
-				if(isExists) {
-					casper.echo("Change Permission Page opened",'INFO');
-					return callback(null);
-				}
-			});
+	casper.mouse.move('li[id="'+subCategoryId+'"] div.select');
+	casper.capture('pq.png');
+	casper.click('li[id="'+subCategoryId+'"] a.manageAction'); // click on manage of cat1
+	casper.click('div[id="forumAction'+subCategoryId+'"] a.change_perm'); // click on change permission
+	wait.waitForElement('span#inheritance', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Change Permission Page opened",'INFO');
+			return callback(null);
 		}
 	});
 };
@@ -836,7 +772,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enablePrivateCategories = func
 									casper.waitUntilVisible('div#ajax-msg-top', function success() {
 										casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 									}, function fail() {
-										casper.echo('Saved not found', 'INFO');
+										casper.echo('Saved not found', 'ERROR');
 									},30000);
 									return callback(null);
 								}
@@ -901,3 +837,24 @@ combinationOfSubCategoryAndGroupPermissionsMethod.isCategoryExists = function(da
 		return callback(null, false);
 	}
 };
+
+// method to check cat1a is already exists or not
+combinationOfSubCategoryAndGroupPermissionsMethod.isSubCategoryExists = function(data, driver, callback) {
+	var title = data.title;
+	driver.test.assertExists('div#sortable ul li','Category present');
+	var isSubCatExists = driver.evaluate(function(title) {
+		var totalCategories = document.querySelectorAll('div#sortable ul li');
+	   	for(var i=1; i<=(totalCategories.length); i++) {
+			var category = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
+			if (category.innerText == title) {
+				return true;
+			}
+		}
+	},title);
+	if(isSubCatExists == true) {
+		return callback(null, true);
+	} else {
+		return callback(null, false);
+	}
+};
+

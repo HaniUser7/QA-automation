@@ -14,7 +14,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
 		
 		// method to create a category and its sub category and get their id
-		combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory();
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory();
 		
 		// method to verify with category cat1
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
@@ -30,6 +30,12 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		
 		// method to verify start new topic button with the sub-category cat1a
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
+		
+		// method to verify start new topic button with the sub-category cat1a(Disable)
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategoryDisable();
+		
+		// method to verify Reply topic button with the sub-category cat1a
+		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategory();
 		
 	});
 };
