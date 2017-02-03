@@ -12,7 +12,7 @@ composeTopic.featureTest = function(casper, test) {
 
 
 		/************************   .Create User   ****************************/
-/*
+
 		//Test case for create registeruser
 		composeTopicTest.createRegisterUser();
 
@@ -21,9 +21,9 @@ composeTopic.featureTest = function(casper, test) {
 
 		//Test case for create  category
          composeTopicTest.backendSetting()	
-  */ 
+   
 		/************************  1.Compost Topic (Add New Topic)   ****************************/
-/*
+
 		//1.Test case for Add New Topic with selecting category and verify message
 		composeTopicTest.addNewTopicSelectingCategory();
 
@@ -38,9 +38,9 @@ composeTopic.featureTest = function(casper, test) {
 
 		//5.test case for Verify Error message after entering message more than 65000 charecters while adding new Topic
 		//composeTopicTest.errorMessageMoreCharecters();
-*/
+
 		/************************   2.Compost Topic (Make sure 'Post approval' is disabled)    ****************************/
-/*
+
 		//6.Test case for Verify Compost Topic on Category Listing Page(For Guest/Registered User/Admin)
 		composeTopicTest.compostTopicCategoryListingPage();
 
@@ -61,16 +61,16 @@ composeTopic.featureTest = function(casper, test) {
 
 		//12.Verify Compose Topic without selecting any category(For Guest/Registered User/Admin)
 		composeTopicTest.composeTopicWithoutSelectingAnyCategory();
-*/
+
 		/******************************  3.Compose Topic Options   ******************************************/
-/*
+
 		//13.Test case for Verify Compose Post Options(For Guest/Registered User/Admin)
 		composeTopicTest.composePostOptions();
-*/
+
 		/**************  4.Compose Topic Permission(Make sure 'Post approval' is disabled)  ******************/
 
 		//14.Verify Compose Topic on Category/topic Listing Page(if start new topic permission is disabled)(For Guest User)
-		//composeTopicTest.startNewTopicPermissionDisabled();
+		composeTopicTest.startNewTopicPermissionDisabled();
 
 		//15.Verify Compose Topic on topic listing page(if start new topic permission is disabled of one cateogry)(For Guest User)
 		composeTopicTest.listingPageDisabledOneCateogry();
