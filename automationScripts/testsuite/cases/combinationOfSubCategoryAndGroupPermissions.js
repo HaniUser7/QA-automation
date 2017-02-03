@@ -16,9 +16,33 @@ var combinationOfSubCategoryAndGroupPermissionsTestcases = module.exports = {};
 // method to test all backend setting
 combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods = function() {
 	casper.thenOpen(config.backEndUrl, function() {
-		combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory(casper, function(err) {
+		registerMethod.loginToForumBackEnd(casper, function(err) {
 			if(!err) {
-				casper.echo('disableViewCategoryForSubCategory method called ','INFO');
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getId(casper, function(err,categoryId, subCategoryId) {
+									if(!err) {
+										category_Id = categoryId;
+										subCategory_Id = subCategoryId;
+									}
+								});
+								casper.then(function() {
+									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory(subCategory_Id, casper, function(err) {
+										if(!err) {
+											casper.echo('EnableViewCategoryForSubCategory method called ','INFO');
+										}
+									});
+								});
+							}
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
 			}
 		});
 	});
@@ -90,7 +114,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = functi
 									}
 								});
 								casper.then(function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory(casper, function(err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory(subCategory_Id, casper, function(err) {
 										if(!err) {
 											casper.echo('enableViewCategoryForSubCategory method called ','INFO');
 											casper.then(function() {
@@ -100,13 +124,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = functi
 										}
 									});
 								});
-								/*casper.thenOpen(config.backEndUrl, function() {
+								casper.thenOpen(config.backEndUrl, function() {
 									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
 										if(!err) {
 											casper.echo('enableViewCategory method called ','INFO');
 										}
 									});
-								});*/
+								});
 							}
 						});
 					} else {

@@ -558,11 +558,14 @@ combinationOfSubCategoryAndGroupPermissionsMethod.getId = function(driver, callb
 };
 
 //*************************Method to goto the permission of Sub Category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = function(driver, callback) {
-	casper.mouse.move('li[id="'+subCategoryId+'"] div.select');
-	casper.capture('pq.png');
-	casper.click('li[id="'+subCategoryId+'"] a.manageAction'); // click on manage of cat1
-	casper.click('div[id="forumAction'+subCategoryId+'"] a.change_perm'); // click on change permission
+combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = function(id, driver, callback) {
+	casper.mouse.move('li[id="'+id+'"] div.select');
+	casper.click('li[id="'+id+'"] a.manageAction span'); // click on manage of cat1
+	wait.waitForTime(2000,casper, function(err) {
+		if(!err) {
+		}
+	});
+	casper.click('div[id="forumAction'+id+'"] a.change_perm'); // click on change permission
 	wait.waitForElement('span#inheritance', casper, function(err, isExists) {
 		if(isExists) {
 			casper.echo("Change Permission Page opened",'INFO');
@@ -572,14 +575,20 @@ combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = fu
 };
 
 //*************************Method to change permission of Sub Category for View Category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory = function(driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory = function(id, driver, callback) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
+			/*var checkboxId = casper.evaluate(function() {
+				var id = document.querySelector()
+			});*/
 			utils.enableorDisableCheckbox('view_forum_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -587,14 +596,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCatego
 };
 
 //*************************Method to change permission of Sub Category for View Category(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('view_forum_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -602,14 +614,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCateg
 };
 
 //*************************Method to change permission of Sub Category for Start topics from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_threads_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -617,14 +632,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategor
 };
 
 //*************************Method to change permission of Sub Category for Start topics(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_threads_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -632,14 +650,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCatego
 };
 
 //*************************Method to change permission of Sub Category for Reply Topics from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('other_post_replies_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -647,14 +668,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategor
 };
 
 //*************************Method to change permission of Sub Category for Reply Topics(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('other_post_replies_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -662,14 +686,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCatego
 };
 
 //*************************Method to change permission of Sub Category for Upload Attachments from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('upload_attachments_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -677,14 +704,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubC
 };
 
 //*************************Method to change permission of Sub Category for Upload Attachments(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('upload_attachments_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -692,14 +722,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSub
 };
 
 //*************************Method to change permission of Sub Category for View Attachments from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('view_attachments_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -707,14 +740,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCat
 };
 
 //*************************Method to change permission of Sub Category for View Attachments(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('view_attachments_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -722,14 +758,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCa
 };
 
 //*************************Method to change permission of Sub Category for Require Post Approval from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_approval_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
@@ -737,14 +776,17 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCatego
 };
 
 //*************************Method to change permission of Sub Category for Require Post Approval(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disablePostApprovalForSubCategory = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.disablePostApprovalForSubCategory = function(id, driver, callback) {
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_approval_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
 			});
-			casper.wait(2000, function() {
-				casper.capture('df.png');
+			casper.waitUntilVisible('div#loading_msg', function success() {
+				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+				return callback(null);
+			}, function fail() {
+				casper.echo('Loading... not found', 'ERROR');
 				return callback(null);
 			});
 		}
