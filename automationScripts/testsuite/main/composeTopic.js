@@ -12,7 +12,7 @@ composeTopic.featureTest = function(casper, test) {
 
 
 		/************************   .Create User   ****************************/
-
+/*
 		//Test case for create registeruser
 		composeTopicTest.createRegisterUser();
 
@@ -20,10 +20,10 @@ composeTopic.featureTest = function(casper, test) {
 	  	composeTopicTest.createAdminUser();	
 
 		//Test case for create  category
-        composeTopicTest.backendSetting()	
-    
+                composeTopicTest.backendSetting()	
+   */ 
 		/************************   1.Add New Topic   ****************************/
-
+/*
 		//1.Test case for Add New Topic with selecting category and verify message
 		composeTopicTest.addNewTopicSelectingCategory();
 
@@ -38,7 +38,7 @@ composeTopic.featureTest = function(casper, test) {
 
 		//5.test case for Verify Error message after entering message more than 65000 charecters while adding new Topic
 		//composeTopicTest.errorMessageMoreCharecters();
-
+*/
 		/************************   2.Compost Topic (Make sure 'Post approval' is disabled)    ****************************/
 
 		//6.Test case for Verify Compost Topic on Category Listing Page(For Guest/Registered User/Admin)
@@ -110,10 +110,10 @@ composeTopic.featureTest = function(casper, test) {
 		/**************  5.Compose Topic With Attach, Insert and Follow Option  ******************/
 		
 		//26Test case for create  category
-        composeTopicTest.deleteCategories();
-         		
+		composeTopicTest.deleteCategories();
+
 		//27.Test case for create  category
-        composeTopicTest.deleteUser();		 
+		composeTopicTest.deleteUser();		 
      
 	});
 
