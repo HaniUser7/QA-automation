@@ -19,10 +19,30 @@ composeTopicMethod.startTopic = function(value1,value2,value3,data,driver,callba
 			driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
 			driver.sendKeys('#tinymce',data.subject);
 		});
-		driver.waitForSelector('#all_forums_dropdown', function success() {
-			driver.click('#all_forums_dropdown');
+		try{
+		    driver.test.assertExists('#all_forums_dropdown');
+			driver.waitForSelector('#all_forums_dropdown', function success() {
+				driver.click('#all_forums_dropdown');
+				driver.fill('form[name="PostTopic"]',{
+					'forum' : 'categories1',
+					'e_reply': value1,
+					'pin': value2,
+					'locked': value3
+				},false);
+				driver.then(function() {
+					driver.click('#post_submit');
+				});
+			}, function fail() {
+				driver.waitForSelector('#post_submit',function success() {			
+					driver.test.assertExists('#post_submit');
+					driver.click('#post_submit');
+				},function fail() {
+					driver.echo('Unable to submit form','ERROR');
+				});
+			});
+		} catch(e){
+			driver.test.assertDoesntExist('#all_forums_dropdown');
 			driver.fill('form[name="PostTopic"]',{
-				'forum' : 'categories1',
 				'e_reply': value1,
 				'pin': value2,
 				'locked': value3
@@ -30,14 +50,7 @@ composeTopicMethod.startTopic = function(value1,value2,value3,data,driver,callba
 			driver.then(function() {
 				driver.click('#post_submit');
 			});
-		}, function fail() {
-			driver.waitForSelector('#post_submit',function success() {				
-				driver.test.assertExists('#post_submit');
-				driver.click('#post_submit');
-			},function fail() {
-				driver.echo('Unable to submit form','ERROR');
-			});
-		});
+		}
 	},function fail(){
 		driver.echo('Unable to Open Form To Start Topic','ERROR');
 	});
@@ -215,7 +228,7 @@ composeTopicMethod.BackEndLogout = function(driver, callback) {
 	   driver.test.assertDoesntExist('div#account_sub_menu a:nth-of-type(2)');
 	   forumLoginMethod.logoutFromApp(casper, function(err){
 			if (!err)
-			casper.echo('Successfully logout from application', 'INFO');
+			casper.echo('forumLoginMethod of logoutFromApp working', 'INFO');
 			return callback(null);
 		});	
 	}
@@ -281,7 +294,7 @@ composeTopicMethod.compostTopic= function(value,casper,test,callback) {
 															if(isExist) {
 																utils.enableorDisableCheckbox('post_threads', value, casper, function(err) {
 																	 if(!err){
-																		casper.echo("upload_attachments Checkbox setting For Registered User", 'INFO');
+																		casper.echo(" Start Topics  Checkbox setting For Registered User", 'INFO');
 																		casper.click('button.button.btn-m.btn-blue');
 																		wait.waitForElement('div#tab_wrapper .heading[color="red"]', casper, function(err, isExist) {
 																			if(!err){
@@ -296,21 +309,21 @@ composeTopicMethod.compostTopic= function(value,casper,test,callback) {
 																						}
 																					});																		 
 																				}else{
-																					 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+																					 casper.echo('Message  Not be generated', 'ERROR');
 																				}
 																			}
 																		});
 																	}
 																});
 															}else{
-																 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+																 casper.echo(' Start Topics  Checkbox Link Not Found', 'ERROR');
 															}
 														}
 													});	
 												}
 											});
 										}else{
-											 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+											 casper.echo('upload_attachments Checkbox  Link Not Found', 'ERROR');
 										}
 									}
 								});	
@@ -360,13 +373,11 @@ composeTopicMethod.composeTopicPermission = function(value,casper,test,callback)
 												if(isExist) {
 													utils.enableorDisableCheckbox('post_threads',value, casper, function(err) {
 														if(!err){
-														
 															casper.echo(" Start Topics  Checkbox Has Been Disabled For Un-Registered User", 'INFO');
 															casper.click('button.button.btn-m.btn-blue');
 															wait.waitForElement('div#tab_wrapper .heading[color="red"]', casper, function(err, isExist) {
 																if(!err){
-																	if(isExist) {
-																	
+																	if(isExist) {	
 																		var message = casper.fetchText('div#tab_wrapper .heading[color="red"]');
 																		var expectedErrorMsg = 'Your user group settings have been updated.';
 																		casper.test.assertEquals(message, expectedErrorMsg);
@@ -429,7 +440,6 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 													
 												}  
                                             }												
-											
 										});
 										casper.echo(grpName);
 										casper.click('a[data-url="'+grpName+'"]');
@@ -441,40 +451,48 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 														casper.test.assertExists('#list_usergroup');
 														casper.click('#list_usergroup');
 														casper.sendKeys('#list_usergroup',Custom);
-														wait.waitForElement('div.usergroup_perm_dialog', casper, function(err, isExist) {
-															if(!err){
-																if(isExist) {
-																	
-																	utils.enableorDisableCheckbox(id,false, casper, function(err) {
-																		if(!err){
-																		   
-																			casper.echo(" Start Topics  Checkbox Has Been Disabled ", 'INFO');
-																			wait.waitForElement('button[type="button"] span.ui-button-text', casper, function(err, isExist) {
-																				if(!err){
-																					if(isExist) {
-																						casper.test.assertExists('button[type="button"] span.ui-button-text');
-																						//casper.click('button[type="button"] span.ui-button-text');
-																						casper.wait(2000, function(){
-																							
-																							composeTopicMethod.BackEndLogout(casper,function(err) {
-																								if(!err){
-																									casper.echo('backend logout sucessful');
-																									return callback(null);
-																								}
-																							});	
-																						});																							
-																					}else{
-																						 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+														casper.wait(2000, function(){
+															var customId = casper.evaluate(function(Custom){
+																for(var i=1; i<=3; i++) {
+																	var x1 = document.querySelector('select#list_usergroup option:nth-child('+i+')');
+																	if (x1.innerText == Custom) {
+																			var x2 = document.querySelector('select#list_usergroup option:nth-child('+i+')').getAttribute('value');
+																		return x2;
+																	}  
+																}												
+															},Custom);
+															casper.test.assertExists('input#'+id+customId+'');
+															wait.waitForElement('div.usergroup_perm_dialog', casper, function(err, isExist) {
+																if(!err){
+																	if(isExist) {
+																		utils.enableorDisableCheckbox(id+customId,false, casper, function(err) {
+																			if(!err){ 
+																				casper.echo(" Start Topics  Checkbox Has Been Disabled ", 'INFO');
+																				wait.waitForElement('button[type="button"] span.ui-button-text', casper, function(err, isExist) {
+																					if(!err){
+																						if(isExist) {
+																							casper.test.assertExists('button[type="button"] span.ui-button-text');
+																							casper.wait(2000, function(){
+																								composeTopicMethod.BackEndLogout(casper,function(err) {
+																									if(!err){
+																										casper.echo('backend logout sucessful');
+																										return callback(null);
+																									}
+																								});	
+																							});																							
+																						}else{
+																							 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+																						}
 																					}
-																				}
-																			});
-																			
-																		}
-																	});																	 
-																}else{
-																	 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+																				});
+																				
+																			}
+																		});																	 
+																	}else{
+																		 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+																	}
 																}
-															}
+															});
 														});
 													}else{
 														 casper.echo('Default_registration_option Link Not Found', 'ERROR');
@@ -587,80 +605,9 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 
 /**************  4.Making enable registration user as admin or register user  ******************/
 
-//10.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
- composeTopicMethod.enableUserRegister= function(username, casper,callback) {	
-	casper.thenOpen(config.backEndUrl, function() {
-		forumLoginMethod.logoutFromApp (casper, function(err) {
-			if(!err){
-				registerMethod.loginToForumBackEnd(casper,casper.test, function(err) {
-					 if(!err){
-						casper.echo('Logged-in successfully from back-end', 'INFO');
-						wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-						    if(!err){
-								if(isExists) {
-									casper.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-									casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-									casper.test.assertExists('div#ddUsers div a:nth-child(1)');
-									casper.click('div#ddUsers div a:nth-child(1)');
-									wait.waitForElement('input#autosuggest', casper, function(err, isExists) {
-										if(!err){
-								            if(isExists) {
-												casper.test.assertExists('#autosuggest');
-												casper.sendKeys('#autosuggest',username, {keepFocus: true});
-												casper.click('#autosuggest');
-												casper.page.sendEvent("keypress", casper.page.event.key.Enter);
-												casper.waitForSelector('form[name="ugfrm"]', function success(){
-													if(!err){
-											            if(isExists) {
-															var grpName = casper.evaluate(function(){
-																for(var i=2;i<6;i++){
-																	var x1 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') label');
-																	if (x1.innerText == 'Registered Users') {
-																		var x3 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') input').getAttribute('value');
-																		return x3;
-																	}
-																}
-															});
-															casper.echo(+grpName,'INFO');
-															casper.wait(2000, function(){ 
-																casper.fillSelectors('form[name="ugfrm"]', {
-																	'input[type="checkbox"]' :grpName
-																}, true);
-																casper.test.assertExists('button[title="Close"]');
-																casper.click('button[title="Close"]');
-																casper.wait(2000, function(){ 
-																    composeTopicMethod.BackEndLogout(casper, function(err) {
-																		if(!err){
-																			casper.echo('backend logout sucessful','INFO');
-																			return callback(null);
-																		}
-																	});	
-																});
-															});
-														} else {
-															casper.echo('form not found', 'ERROR');
-														}
-													}
-												});
-											} else {
-												casper.echo('Change a Users User Group textbox not found', 'ERROR');
-											}
-										}
-									});
-								} else {
-									casper.echo('Backend Menu not found', 'ERROR');
-								}
-							}
-						});
-					}
-				});
-			}
-		});
-	});
-}
 
-//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
- composeTopicMethod.enableUserAdmin= function(username,driver,callback) {	
+//10.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+ composeTopicMethod.enableUser= function(username,userType,driver,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
 			if(!err){
@@ -682,16 +629,16 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 												casper.click('#autosuggest');
 												casper.page.sendEvent("keypress", casper.page.event.key.Enter);
 												casper.waitForSelector('form[name="ugfrm"]', function success(){
-												    var userName = casper.evaluate(function(){
+												    var userName = casper.evaluate(function(userType){
 														for(var i=2;i<6;i++){
 															var x1 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') label');
-															if (x1.innerText == 'Administrators') {
+															if (x1.innerText == userType) {
 																var x3 = document.querySelector('form#frmChangeUsersGroupFinal div:nth-child('+i+') input').getAttribute('value');
 																return x3;
 															}
 														}
-													});
-													casper.echo('User :',userName,'INFO');
+													},userType);
+													casper.echo(+userName,'INFO');
 													casper.wait(2000, function(){ 
 														casper.fillSelectors('form[name="ugfrm"]', {
 															'input[type="checkbox"]' :userName
@@ -727,7 +674,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
-//12.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
+//11.Method for Backend Setting(Compost Topic (Make sure 'Post approval' is disabled))
  composeTopicMethod.captchaRegistration= function(casper, test, callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper, function(err) {
@@ -785,7 +732,7 @@ composeTopicMethod.permissionDisabled = function(value,casper,test,callback) {
 	});
 }
 
-//13.Method for Backend Setting(create Categories)
+//12.Method for Backend Setting(create Categories)
 composeTopicMethod.createCategories= function(value,casper,test,callback) {/*Return callback missing*/	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
@@ -798,33 +745,44 @@ composeTopicMethod.createCategories= function(value,casper,test,callback) {/*Ret
 								    casper.click('div#my_account_forum_menu a[data-tooltip-elm="ddContent"]');
 									casper.test.assertExists('div#ddContent div a:nth-child(1)');
 								    casper.click('div#ddContent div a:nth-child(1)');
-										wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err , isExists) {	
-											if(!err){
-												if(isExists) {
-													casper.click('div#forum-manager-heading-actions a');
-													casper.wait(2000, function(){
-														utils.enableorDisableCheckbox('isSubcategory',false, casper, function(err) {
-															if(!err){ 
-																casper.fillSelectors('form#edit_forum_form',{	
-																	'input[name="forum_name"]': value
-																},false);
-																casper.click('form[name="frmOptions"] button');
-																casper.wait(2000, function(){ 					 
-																	composeTopicMethod.BackEndLogout(casper, function(err) {
-																		if(!err){
-																			casper.echo('forumLoginMethod working sucessful','INFO');
-																			return callback(null);
-																		}
-																	});	
-																});	
-															}
-														});													
-													});	
-												}else {
-													casper.echo('New Category button not found', 'ERROR');
+									casper.wait(2000, function(){
+										var categoriesCheck = casper.evaluate(function(value){
+										    for(var i=1; i<=5; i++) {
+												var x1 = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
+												if (x1.innerText == value) {
+													return x1.innerText;
+												}  
+                                            }												
+										},value);
+										casper.echo('categoriesName :'+categoriesCheck,'INFO');
+										if (categoriesCheck == null) {
+										  	wait.waitForElement('div#forum-manager-heading-actions a' , casper , function(err , isExists) {	
+												if(!err){
+													if(isExists) {
+														casper.click('div#forum-manager-heading-actions a');
+														casper.wait(2000, function(){
+															casper.fillSelectors('form#edit_forum_form',{	
+																'input[name="forum_name"]': value
+															},false);
+															casper.click('form[name="frmOptions"] button');												
+														});	
+													}else {
+														casper.echo('New Category button not found', 'ERROR');
+													}
 												}
-											}
+											});
+										}else{
+											casper.echo('Category is already exist','INFO');
+										}
+										casper.wait(2000, function(){ 												
+											composeTopicMethod.BackEndLogout(casper, function(err) {
+												if(!err){
+													casper.echo('forumLoginMethod working sucessful','INFO');
+													return callback(null);
+												}
+											});	
 										});
+									});
 							    }else {
 									casper.echo('Top menu link not found', 'ERROR');
 								}
@@ -837,7 +795,7 @@ composeTopicMethod.createCategories= function(value,casper,test,callback) {/*Ret
 	});
 }
 
-//14.Method for Backend Setting(delete Categories)
+//13.Method for Backend Setting(delete Categories)
 composeTopicMethod.deleteCategories= function(data,driver,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper,function(err) {
@@ -851,19 +809,21 @@ composeTopicMethod.deleteCategories= function(data,driver,callback) {
 									casper.test.assertExists('div#ddContent div a:nth-child(1)');
 								    casper.click('div#ddContent div a:nth-child(1)');
 									casper.wait(2000, function(){
-											var grpName = casper.evaluate(function(){
+											var deleteCategorie = casper.evaluate(function(data){
 										    for(var i=1; i<=5; i++) {
 												var x1 = document.querySelector('div#sortable ul li:nth-child('+i+') div:nth-child(1) a');
 												if (x1.innerText == data) {
 														var x2 = document.querySelector('div#sortable ul li:nth-child('+i+') a:nth-child(2)').getAttribute('data-forumid');
-														var x3 = document.querySelector('div#forumAction'+x2+' a:nth-child(2)').getAttribute('href');
-													return x3;
+														var x3 = document.querySelector('div#forumAction'+x2+' a:nth-child(2)');
+														x3.click()
+													return x2;
 												}  
                                             }												
 											
-										});
-										casper.echo(grpName);
-										casper.click('a[href="'+grpName+'"]');
+										},data);
+										casper.echo(deleteCategorie);
+										casper.click('div#forumAction'+deleteCategorie+' a:nth-child(2)');
+										//casper.click('a[href="'+grpName+'"]');
 										casper.wait(2000, function(){
 											try{
 												casper.test.assertExists('input#remove_forum');
@@ -893,7 +853,7 @@ composeTopicMethod.deleteCategories= function(data,driver,callback) {
 	});
 }
 
-//15.Method for Backend Setting(Compost Topic (for delete user)
+//14.Method for Backend Setting(Compost Topic (for delete user)
  composeTopicMethod.deleteUser= function(username,driver,callback) {	
 	casper.thenOpen(config.backEndUrl, function() {
 		forumLoginMethod.logoutFromApp (casper, function(err) {
@@ -927,7 +887,6 @@ composeTopicMethod.deleteCategories= function(data,driver,callback) {
 														casper.click('button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only span');
 													}
 													casper.wait(2000, function(){ 
-														casper.capture('errr.png')
 														composeTopicMethod.BackEndLogout(casper, function(err) {
 															if(!err){
 																casper.echo('backend logout sucessful','INFO');
@@ -952,4 +911,5 @@ composeTopicMethod.deleteCategories= function(data,driver,callback) {
 		});
 	});
 }
+
 
