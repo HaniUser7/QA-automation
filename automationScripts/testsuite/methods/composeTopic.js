@@ -453,7 +453,7 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 														casper.sendKeys('#list_usergroup',Custom);
 														casper.wait(2000, function(){
 															var customId = casper.evaluate(function(Custom){
-																for(var i=1; i<=3; i++) {
+																for(var i=1; i<=5; i++) {
 																	var x1 = document.querySelector('select#list_usergroup option:nth-child('+i+')');
 																	if (x1.innerText == Custom) {
 																			var x2 = document.querySelector('select#list_usergroup option:nth-child('+i+')').getAttribute('value');
@@ -461,31 +461,35 @@ composeTopicMethod.listingPageDisabledOneCateogry = function(Custom,id,driver,te
 																	}  
 																}												
 															},Custom);
+															casper.echo(customId,'INFO');
 															casper.test.assertExists('input#'+id+customId+'');
 															wait.waitForElement('div.usergroup_perm_dialog', casper, function(err, isExist) {
 																if(!err){
 																	if(isExist) {
-																		utils.enableorDisableCheckbox(id+customId,false, casper, function(err) {
+																		utils.enableorDisableCheckbox('view_forum_'+customId,true, casper, function(err) {
 																			if(!err){ 
 																				casper.echo(" Start Topics  Checkbox Has Been Disabled ", 'INFO');
-																				wait.waitForElement('button[type="button"] span.ui-button-text', casper, function(err, isExist) {
-																					if(!err){
-																						if(isExist) {
-																							casper.test.assertExists('button[type="button"] span.ui-button-text');
-																							casper.wait(2000, function(){
-																								composeTopicMethod.BackEndLogout(casper,function(err) {
-																									if(!err){
-																										casper.echo('backend logout sucessful');
-																										return callback(null);
-																									}
-																								});	
-																							});																							
-																						}else{
-																							 casper.echo('Default_registration_option Link Not Found', 'ERROR');
-																						}
+																				utils.enableorDisableCheckbox(id+customId,false, casper, function(err) {
+																				    if(!err){ 
+																						wait.waitForElement('button[type="button"] span.ui-button-text', casper, function(err, isExist) {
+																							if(!err){
+																								if(isExist) {
+																									casper.test.assertExists('button[type="button"] span.ui-button-text');
+																									casper.wait(2000, function(){
+																										composeTopicMethod.BackEndLogout(casper,function(err) {
+																											if(!err){
+																												casper.echo('backend logout sucessful');
+																												return callback(null);
+																											}
+																										});	
+																									});																							
+																								}else{
+																									 casper.echo('Default_registration_option Link Not Found', 'ERROR');
+																								}
+																							}
+																						});
 																					}
 																				});
-																				
 																			}
 																		});																	 
 																	}else{

@@ -1725,7 +1725,7 @@ composeTopicTest.listingPageDisabledOneCateogry= function() {
 	  //test case for Backend Setting(listingPageDisabledOneCateogry)
 		casper.then(function(){
 		      casper.echo('15.Backend Setting(listingPageDisabledOneCateogry for Unregistered / Not Logged In) ', 'INFO');
-			  composeTopicMethod.listingPageDisabledOneCateogry('Unregistered / Not Logged In','post_threads_20237800',casper,casper.test,function(err) {
+			  composeTopicMethod.listingPageDisabledOneCateogry('Unregistered / Not Logged In','post_threads_',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
 				}
@@ -1858,7 +1858,7 @@ composeTopicTest.dropdownDisabledOneCateogry = function() {
 		//test case for Backend Setting(listingPageDisabledOneCateogry for Unregistered / Not Logged In)
 		casper.then(function(){
 		      casper.echo('16.Backend Setting( listingPage Disabled OneCateogry for Unregistered / Not Logged In)', 'INFO');
-			  composeTopicMethod.listingPageDisabledOneCateogry('Unregistered / Not Logged In','post_threads_20237800',casper,casper.test,function(err) {
+			  composeTopicMethod.listingPageDisabledOneCateogry('Unregistered / Not Logged In','post_threads_',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
 				}
@@ -2069,7 +2069,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 	    //test case for Backend Setting(listingPageDisabledOneCateogry for Registered Users)
 		casper.then(function(){
 		      casper.echo('****18.Backend Setting( listingPage Disabled OneCateogry for Registered Users)', 'INFO');
-			  composeTopicMethod.listingPageDisabledOneCateogry('Registered Users','view_forum_',casper,casper.test,function(err) {
+			  composeTopicMethod.listingPageDisabledOneCateogry('Registered Users','post_threads_',casper,casper.test,function(err) {
 				if(!err){
 					casper.echo('Method listingPageDisabledOneCateogry working', 'INFO');
 				}
@@ -2092,6 +2092,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 									casper.test.assertExists('div#topics ul li:nth-child(2) a');
 									casper.click('div#topics ul li:nth-child(2) a');
 									wait.waitForTime(3000 , casper , function() {
+									      casper.capture('18(b).png');
 										var cateogrySelection = casper.evaluate(function(){
 											for(var i=3; i<=7; i++) {
 												var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
@@ -2143,6 +2144,7 @@ composeTopicTest.previewPostComposeTopic = function() {
 							casper.test.assertExists('div#topics ul li:nth-child(2) a');
 							casper.click('div#topics ul li:nth-child(2) a');
 							wait.waitForTime(3000 , casper , function() {
+							      
 									var cateogrySelection = casper.evaluate(function(){
 										for(var i=3; i<=7; i++) {
 											var x1 = document.querySelector('ul#forums_toggle_link li ul:nth-child('+i+') li a');
