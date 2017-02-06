@@ -20,7 +20,7 @@ composeTopic.featureTest = function(casper, test) {
 	  	composeTopicTest.createAdminUser();	
 
 		//Test case for create  category
-         composeTopicTest.backendSetting()	
+                composeTopicTest.backendSetting()	
    
 		/************************  1.Compost Topic (Add New Topic)   ****************************/
 
