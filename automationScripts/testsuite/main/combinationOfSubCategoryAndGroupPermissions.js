@@ -17,7 +17,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory();
 		
 		// method to verify with category cat1
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
 		
 		// method to verify with sub-category cat1a
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory();
@@ -34,8 +34,23 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		// method to verify start new topic button with the sub-category cat1a(Disable)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategoryDisable();
 		
+		// method to verify start new topic button with the parent category cat1
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForParentCategory();
+		
 		// method to verify Reply topic button with the sub-category cat1a
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategory();
+		
+		// method to verify Reply topic button with the sub-category cat1a(Disable)
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategoryDisable();
+		
+		// method to verify reply topic button with the parent category cat1
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithParentCategory();
+		
+		// method to verify Post approval with the private sub-category cat1a
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategory();
+		
+		// method to verify Post approval with the private sub-category cat1a(Disable)
+		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategoryDisable();
 		
 	});
 };

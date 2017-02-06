@@ -597,7 +597,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCatego
 
 //*************************Method to change permission of Sub Category for View Category(disable) from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('view_forum_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -615,7 +615,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCateg
 
 //*************************Method to change permission of Sub Category for Start topics from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_threads_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -633,7 +633,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategor
 
 //*************************Method to change permission of Sub Category for Start topics(disable) from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_threads_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -651,7 +651,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCatego
 
 //*************************Method to change permission of Sub Category for Reply Topics from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('other_post_replies_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -669,7 +669,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategor
 
 //*************************Method to change permission of Sub Category for Reply Topics(disable) from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('other_post_replies_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -687,7 +687,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCatego
 
 //*************************Method to change permission of Sub Category for Upload Attachments from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('upload_attachments_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -705,7 +705,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubC
 
 //*************************Method to change permission of Sub Category for Upload Attachments(disable) from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('upload_attachments_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -723,7 +723,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSub
 
 //*************************Method to change permission of Sub Category for View Attachments from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('view_attachments_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -741,7 +741,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCat
 
 //*************************Method to change permission of Sub Category for View Attachments(disable) from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('view_attachments_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -759,7 +759,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCa
 
 //*************************Method to change permission of Sub Category for Require Post Approval from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_approval_20237761', true, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
@@ -777,7 +777,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCatego
 
 //*************************Method to change permission of Sub Category for Require Post Approval(disable) from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.disablePostApprovalForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(casper, function(err) {
+	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('post_approval_20237761', false, casper, function() {
 				casper.echo('checkbox is checked', 'INFO');
