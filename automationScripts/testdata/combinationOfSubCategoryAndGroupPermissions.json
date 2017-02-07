@@ -1,7 +1,12 @@
 {
-	"RegisteredUserLogin" : {
+	"registeredUserLogin" : {
 		"username": "neha",
 		"password": "123"
+	},
+	
+	"userLogin" : {
+		"username": "isneha",
+		"password": "1234"
 	},
 	
 	"newTopic" : {
@@ -10,7 +15,7 @@
 		"category" : "General"
 	},
 	
-	"AdminUserLogin" : {
+	"adminUserLogin" : {
 		"username": "isneha",
 		"password": "1234"
 	},

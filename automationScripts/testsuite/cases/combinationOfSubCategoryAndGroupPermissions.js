@@ -150,7 +150,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = functi
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -214,7 +214,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory = fun
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -301,7 +301,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPrivateSubCategor
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -384,7 +384,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory = 
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -462,7 +462,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -561,7 +561,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -650,7 +650,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -741,7 +741,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubC
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["userLogin"].username, json["userLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -837,7 +837,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubC
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["userLogin"].username, json["userLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -926,7 +926,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithPar
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["userLogin"].username, json["userLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -941,6 +941,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithPar
 										casper.click('li#forum_'+category_Id+' a');
 										wait.waitForElement('div#category_list', casper,function(err, isExists) {
 											if(isExists) {
+												casper.click('a#topics_tab');
 												postEventMemberApprovalMethod.composePost(casper, casper.test, function(err) {
 													if(!err) {
 														casper.echo("User replied succcessfully","INFO");
@@ -1016,7 +1017,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1102,7 +1103,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1170,7 +1171,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1256,7 +1257,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1342,7 +1343,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1410,7 +1411,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1496,7 +1497,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1595,7 +1596,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {
@@ -1663,7 +1664,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithP
 	casper.thenOpen(config.url, function() {
 		//login with registerd user
 		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
-		forumLoginMethod.loginToApp(json["RegisteredUserLogin"].username, json["RegisteredUserLogin"].password, casper, function(err) {
+		forumLoginMethod.loginToApp(json["registeredUserLogin"].username, json["registeredUserLogin"].password, casper, function(err) {
 			if(!err) {
 				wait.waitForElement('li.pull-right.user-panel', casper,function(err, isExists) {
 					if(isExists) {

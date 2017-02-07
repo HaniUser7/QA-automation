@@ -222,7 +222,8 @@ postEventMemberApprovalMethod.composePost = function(driver, test, callback) {
 	driver.echo('*******************************************************','INFO');
 	driver.echo('*           The name of the topic is-'+topic+        '*','INFO');
 	driver.echo('*******************************************************','INFO');
-	driver.click('div.panel-body.table-responsive ul li span span:nth-child(2) a');
+	driver.click('a.topic-title');
+	//driver.click('div.panel-body.table-responsive ul li span span:nth-child(2) a');
 	wait.waitForElement('form[name="PostTopic"]', driver, function(err, isExists) {
 		if(isExists) {
 			currentUrl = driver.getCurrentUrl();

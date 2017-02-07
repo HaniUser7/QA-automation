@@ -29,7 +29,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory();
 		
 		// method to verify start new topic button with the sub-category cat1a
-		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
+		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
 		
 		// method to verify start new topic button with the sub-category cat1a(Disable)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategoryDisable();
@@ -38,7 +38,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForParentCategory();
 		
 		// method to verify Reply topic button with the sub-category cat1a
-		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategory();
+		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategory();
 		
 		// method to verify Reply topic button with the sub-category cat1a(Disable)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategoryDisable();
@@ -50,7 +50,7 @@ combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategory();
 		
 		// method to verify Post approval with the private sub-category cat1a(Disable)
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategoryDisable();
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategoryDisable();
 		
 	});
 };
