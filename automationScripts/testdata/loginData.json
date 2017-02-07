@@ -61,11 +61,7 @@
 	"expectedSuccessMsg" :""
     },
 
-   "validInfoRegisterUser" : {
-	"username" : "hani123",
-	"password" :"hani123",
-	"expectedSuccessMsg" :""
-   },
+  
 
    "newTopic" : {
 	"title" : "NewTopic",
@@ -86,14 +82,23 @@
 	"pmessage" : "Hiiiiiiiiiiii"
 	},
 	
-   "validRegis" : {
+   "validUser" : {
 	"username" : "hani1",
 	"password" :"hani1",
 	"expectedSuccessMsg" :""
      },
 
-
-
+ "privateMessages" : {
+	"to" : "hani",
+	"subject" : "test message",
+	"pmessage" : "Hiiiiiiiiiiii"
+	},
+	
+"validInfoRegisterUser" : {
+	"username" : "hani123",
+	"password" :"hani123",
+	"expectedSuccessMsg" :""
+   },
 
 
 

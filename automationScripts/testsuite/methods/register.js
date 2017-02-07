@@ -23,7 +23,7 @@ registerMethod.loginToForumBackEnd = function(driver, test, callback) {
 		} else {
 			driver.echo('Login Link Not Found', 'ERROR');
 		}
-		return callback(null)
+		return callback(null);
 	});
 };
 
@@ -101,7 +101,7 @@ registerMethod.registerToApp = function(data, driver, callback) {
 	*/
 	driver.test.assertExists('form[name="PostTopic"] button');
 	driver.click('form[name="PostTopic"] button');
-        driver.capture('3434.png');
+        
 	return callback(null);		
 };
 
@@ -153,14 +153,14 @@ registerMethod.redirectToLogout = function(driver, test, callback) {
 		} catch(e1) {
 			driver.echo('Successfully done registration on forum.....', 'INFO');
 			driver.wait(2000 , function(){
-                                driver.capture('23.png');
+                                
 			//Click On Logout Link
 			wait.waitForElement('ul.nav.pull-right span.caret', casper, function(err, isExist) {
 			    if(isExist) {
 					forumLoginMethod.logoutFromApp(driver, function(err) {
 						if (!err)
 							driver.echo('Successfully logout from application', 'INFO');
-                                                         driver.capture('24.png');
+                                                        
 					});
 				}else{
 				  casper.echo('logout link not found');

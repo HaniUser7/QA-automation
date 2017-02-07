@@ -666,7 +666,7 @@ deletePostMethod.topicCreate=function(casper , callback){
 				casper.echo('Processing to Login on forum.....','INFO');
 				wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 					if(isExists) {
-						//casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
+						casper.test.assertExists('form[name="posts"] a.topic-title','Topic found');
 						casper.click('span.topic-content a');
 						wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 							if(isExists) {
@@ -706,7 +706,7 @@ deletePostMethod.topicCreate=function(casper , callback){
 	});
 };
 
-//-----------------------------------------------Register a user-----------------------------------------------------------
+//-----------------------------------------------Register  a Admin  user-----------------------------------------------------------
  deletePostMethod.enableUserRegister= function(data , casper , callback){
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
