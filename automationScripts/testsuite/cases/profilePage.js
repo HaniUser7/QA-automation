@@ -17,8 +17,8 @@ var wait=require('../wait.js');
 //verify by creating Admin-user
 profilePageTests.CreateAdminUser=function() {
 
-	//1.test case for register user
-	casper.thenOpen(config.url, function() {
+		
+		//1.test case for register user
 		casper.echo('1.Admin user', 'INFO');
 		casper.echo('******************************', 'INFO');
 		wait.waitForTime(1000,casper,function(err){
@@ -38,7 +38,7 @@ profilePageTests.CreateAdminUser=function() {
 				});
 			});
 		});
-	}); 
+	
                    
 	//2.Test case for backend setting admin user 
 	profilePageMethod.enableUserRegister(registerJSON['validInfoAdmin'].uname , casper , function(err){
@@ -351,20 +351,19 @@ profilePageTests.profilePageEditTopic=function() {
 										casper.click('a[href="'+post+'"]');
 										wait.waitForElement('input[type="button"]' , casper , function(err) {
 											if(isExists) {
-												wait.waitForVisisble('message1_ifr', casper , function(err , isExists) {
-													if(isExists){
-														casper.withFrame('message1_ifr', function() {
-															casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
-															casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
-															casper.sendKeys('#tinymce', 'hdragme');
-														});
-														wait.waitForTime(2000 , casper ,  function(err){
+												wait.waitForTime(3000, casper , function(err){
+													casper.withFrame('message1_ifr', function() {
+														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
+														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
+														casper.sendKeys('#tinymce', 'hdragme');
+													});
+													wait.waitForTime(2000 , casper ,  function(err){
 															
-															casper.click('input[type="button"]');
+														casper.click('input[type="button"]');
 															
-															wait.waitForTime(5000 , casper , function(err ){
-																var successMessage = casper.fetchText('div#ajax_subscription_vars div  div:nth-child(4) span');
-																casper.echo('success message  '+successMessage ,'INFO');
+														wait.waitForTime(5000 , casper , function(err ){
+															var successMessage = casper.fetchText('div#ajax_subscription_vars div  div:nth-child(4) span');
+															casper.echo('success message  '+successMessage ,'INFO');
 																	wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
 																	if(isExists){
 																forumLoginMethod.logoutFromApp(casper, function(err){
@@ -376,21 +375,18 @@ profilePageTests.profilePageEditTopic=function() {
 																																																												
 															});
 														});	
-													}else{
-														casper.echo('loading .......failed' ,'INFO');
-													}
-
-												}); 												}
-										});
-									}
-								});	
-							}
-						});
-					}
-				});
-			}
+													});		
+												}
+											}); 											}
+									});
+								}
+							});	
+						}
+					});
+				}
+			});
 		});
-	});
+	
 };
 
 //---------------------------------------Topic started tab---------------------------------------------------------------------------
@@ -763,30 +759,29 @@ profilePageTests.profilePageDeleteLikePost=function(){
 profilePageTests.CreateRegisterUserPostCount=function() {
 
 	 //1.test case for register user
-	casper.then(function(){
-                casper.thenOpen(config.url, function() {
-			casper.echo('1.Register user', 'INFO');
-			casper.echo('******************************', 'INFO');
-			wait.waitForTime(2000,casper,function(err){
-				casper.test.assertExists('a[href="/register/register"]');
-				casper.click('a[href="/register/register"]');
-				casper.echo('Successfully open register form.....', 'INFO');
-				wait.waitForTime(3000,casper,function(err){
-					registerMethod.registerToApp(registerJSON['validInfoRegisterUser'], casper, function(err) {
-						if(!err) {
-							casper.echo('Processing to registration on forum.....', 'INFO');
-							registerMethod.redirectToLogout(casper, casper.test, function(err) {
-								if(!err) {
-                                                                	
-									casper.echo('User logout successfully', 'INFO');
-								}
-							});
-						}
-					});
+	
+        casper.thenOpen(config.url, function() {
+		casper.echo('1.Register user', 'INFO');
+		casper.echo('******************************', 'INFO');
+		wait.waitForTime(2000,casper,function(err){
+			casper.test.assertExists('a[href="/register/register"]');
+			casper.click('a[href="/register/register"]');
+			casper.echo('Successfully open register form.....', 'INFO');
+			wait.waitForTime(3000,casper,function(err){
+				registerMethod.registerToApp(registerJSON['validInfoRegisterUser'], casper, function(err) {
+					if(!err) {
+						casper.echo('Processing to registration on forum.....', 'INFO');
+						registerMethod.redirectToLogout(casper, casper.test, function(err) {
+							if(!err) {
+                                                        	casper.echo('User logout successfully', 'INFO');
+							}
+						});
+					}
 				});
 			});
-		}); 
-	});
+		});
+	}); 
+	
 };
 
 //verify post count for newly register user
@@ -1475,77 +1470,69 @@ wait.waitForTime(3000 ,casper , function(err){
 profilePageTests.profilePageDeleteIcon= function(){
 
 	//1.test case for register user
-	casper.then(function(){
-                casper.thenOpen(config.url, function() {
-				 casper.echo('1.Register user', 'INFO');
-				 casper.echo('******************************', 'INFO');
-				 wait.waitForTime(2000,casper,function(err){
-				 
-					casper.test.assertExists('a[href="/register/register"]');
-					casper.click('a[href="/register/register"]');
-					casper.echo('Successfully open register form.....', 'INFO');
-					wait.waitForTime(3000,casper,function(err){
-						registerMethod.registerToApp(registerJSON['validUser'], casper, function(err) {
+	casper.thenOpen(config.url, function() {
+		casper.echo('1.Register user', 'INFO');
+		casper.echo('******************************', 'INFO');
+		wait.waitForTime(2000,casper,function(err){
+			casper.test.assertExists('a[href="/register/register"]');
+			casper.click('a[href="/register/register"]');
+			casper.echo('Successfully open register form.....', 'INFO');
+			wait.waitForTime(3000,casper,function(err){
+				registerMethod.registerToApp(registerJSON['validUser'], casper, function(err) {
+					if(!err) {
+						casper.echo('Processing to registration on forum.....', 'INFO');
+						registerMethod.redirectToLogout(casper, casper.test, function(err) {
 							if(!err) {
-								casper.echo('Processing to registration on forum.....', 'INFO');
-								registerMethod.redirectToLogout(casper, casper.test, function(err) {
-									if(!err) {
-                                                                                
-										casper.echo('User logout successfully', 'INFO');
-									}
-								});
+                                                        	casper.echo('User logout successfully', 'INFO');
 							}
 						});
-					});
+					}
 				});
-			}); 
-		});	
-
-
-		//verify with delete icon delete register user
-		casper.thenOpen(config.url , function(){
-			casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-			casper.echo('                   TestCase 26                ' ,'INFO');	
-			casper.echo('**********************','INFO');
-			wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
-				if(isExists) {
-					forumLoginMethod.loginToApp(loginJSON['validUser'].username, loginJSON['validUser'].password, casper, function(err) {
-						if (err) {
-							casper.echo("Error occurred in callback user not logged-in", "ERROR");	
-						}else {
-							casper.echo('Processing to Login on forum.....','INFO');
-							wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
-								if(isExists) {
-									casper.click('ul.nav.pull-right span.caret');
-									casper.click('a#user-nav-panel-profile');
-									wait.waitForElement('a#PostsOFUser' , casper , function(err , isExists) {
-										if(isExists) {
-											casper.click('a#deleteAccountDialog i');
-											wait.waitForElement('div#userAccountName' , casper , function(err , isExists) {
-												if(isExists) {
-													casper.click('a#deleteAccount');
-													wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
-														if(isExists){
-															forumLoginMethod.logoutFromApp(casper, function(err){
+			});
+		});
+	}); 
+			
+	//verify with delete icon delete register user
+	casper.thenOpen(config.url , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('                   TestCase 26                ' ,'INFO');	
+		casper.echo('**********************','INFO');
+		wait.waitForElement('a#td_tab_login', casper, function(err, isExists) {
+			if(isExists) {
+				forumLoginMethod.loginToApp(loginJSON['validUser'].username, loginJSON['validUser'].password, casper, function(err) {
+					if (err) {
+						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
+					}else {
+						casper.echo('Processing to Login on forum.....','INFO');
+						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.click('ul.nav.pull-right span.caret');
+								casper.click('a#user-nav-panel-profile');
+								wait.waitForElement('a#PostsOFUser' , casper , function(err , isExists) {
+									if(isExists) {
+										casper.click('a#deleteAccountDialog i');
+										wait.waitForElement('div#userAccountName' , casper , function(err , isExists) {
+											if(isExists) {
+												casper.click('a#deleteAccount');
+												wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
+													if(isExists){
+														forumLoginMethod.logoutFromApp(casper, function(err){
 																if (!err)
 																	casper.echo('Successfully logout from application', 'INFO');
 															});
 														}
-													});
-												}
-											});
-										}
-									});
-								}
-							});
-						}
-					});
-				}
-			});
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+				});
+			}
 		});
-
-		
-
+	});
 };
 
 //verify with insert a photo and send it
@@ -1680,13 +1667,12 @@ profilePageTests.profilePageEnableSignature=function(){
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('span.pull-right.user-nav-panel li:nth-child(4) a');
 								wait.waitForElement('button[type="submit"]' , casper , function(){ 
 									if(isExists) {
-										
 										wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
 											if(isExists){
 												forumLoginMethod.logoutFromApp(casper, function(err){
@@ -1696,6 +1682,12 @@ profilePageTests.profilePageEnableSignature=function(){
 											}
 										});
 									}
+								});
+							}else{
+								casper.echo('loading .......failed' ,'INFO');
+								forumLoginMethod.logoutFromApp(casper, function(err){
+									if (!err)
+										casper.echo('Successfully logout from application', 'INFO');
 								});
 							}
 						});
@@ -1708,7 +1700,7 @@ profilePageTests.profilePageEnableSignature=function(){
 
 //verify with add a signature greater then maximum charecter(500) limits.
 profilePageTests.profilePageAddSignature=function(){
-	/*profilePageMethod.BackEndSettingsDefaultOptionEnable(casper , function(err){
+	profilePageMethod.BackEndSettingsDefaultOptionEnable(casper , function(err){
 		if(!err)
 			casper.echo('Default options enable successfully' ,'INFO');
 	});
@@ -1724,7 +1716,7 @@ profilePageTests.profilePageAddSignature=function(){
 						casper.echo('Default options birthday enable successfully' ,'INFO');
 				});
 			});
-	});*/
+	});
 
 	
 
@@ -1783,7 +1775,7 @@ profilePageTests.profilePageEditSignature=function(){
 		}
 	});
 
-	/*casper.thenOpen(config.url , function(){
+	casper.thenOpen(config.url , function(){
 		
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                   TestCase 31                 ' ,'INFO');	
@@ -1803,7 +1795,7 @@ profilePageTests.profilePageEditSignature=function(){
 									if(isExists) {
 										
 										wait.waitForTime(5000 , casper , function(){
-											casper.capture('g.png');
+											
 											casper.click('a#edit_signature small.text-muted.glyphicon.glyphicon-pencil'
 );
 											wait.waitForTime(2000 , casper , function(err){
@@ -1835,7 +1827,7 @@ profilePageTests.profilePageEditSignature=function(){
 			}
 		});
 	
-	});*/
+	});
 };
 
 
@@ -1918,6 +1910,25 @@ wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , func
 							}
 						});
 					}
+				});
+			}
+		});
+	});
+	//Default fields disable method-----------
+	casper.then(function(){
+		profilePageMethod.BackEndSettingsDefaultOptionDisable(casper , function(err){
+			if(!err)
+				casper.echo('Default options enable successfully' ,'INFO');
+		});
+
+
+		//Enable default option IM-id
+		profilePageMethod.BackEndSettingsDefaultOptionIMIDDisable(casper , function(err){
+			if(!err) {
+				casper.echo('Default options enable IM-id successfully' ,'INFO');	
+				profilePageMethod.BackEndSettingsDefaultOptionBirtdayEnable(casper , function(err){
+					if(!err)
+						casper.echo('Default options birthday enable successfully' ,'INFO');
 				});
 			}
 		});
@@ -2085,21 +2096,18 @@ profilePageTests.profilePageEditCustomTitle=function(){
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
 						
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('span.pull-right.user-nav-panel li:nth-child(4) a');
 								wait.waitForElement('button[type="submit"]' , casper , function(){ 
 									if(isExists) {
-										
 										casper.click('a#change_user_title small');
 										casper.sendKeys('form.form-inline.editableform div div div:nth-child(1) input','t');
 										wait.waitForTime(2000 , casper ,function(err) {
 											casper.click('button[type="submit"]');
 											wait.waitForTime(2000 , casper , function(err){
-
-												
-												casper.click('button[type="submit"]');
+											       casper.click('button[type="submit"]');
 											       wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
 													if(isExists){
 														forumLoginMethod.logoutFromApp(casper, function(err){
@@ -2112,6 +2120,12 @@ profilePageTests.profilePageEditCustomTitle=function(){
 										});
 									}
 								});
+							}else{
+								casper.echo('loading failed.............' ,'INFO');
+																																																												forumLoginMethod.logoutFromApp(casper, function(err){
+									if (!err)
+										casper.echo('Successfully logout from application', 'INFO');
+								});
 							}
 						});
 					}
@@ -2119,8 +2133,6 @@ profilePageTests.profilePageEditCustomTitle=function(){
 			}
 		});
 	});
-
-	
 };
 
 
@@ -2140,7 +2152,7 @@ profilePageTests.profilePageDeleteCustomTitle=function(){
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
 						
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('span.pull-right.user-nav-panel li:nth-child(4) a');

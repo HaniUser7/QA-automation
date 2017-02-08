@@ -90,7 +90,7 @@ profilePageMethod.createMessage = function(data, driver, callback) {
 			driver.sendKeys('#tinymce', data.pmessage);
 		});
 	}, function fail() {
-		driver.echo('Message iframe not fount', 'ERROR')
+		driver.echo('Message iframe not found', 'ERROR')
 	});
 	driver.then(function() {
 		driver.test.assertExists('a#send_pmsg_button');
@@ -411,9 +411,6 @@ profilePageMethod.fillDataSignature=function(data ,driver , callback) {
 		driver.sendKeys('input[id="birthDatepicker"]', data.birthday, {reset:true});
                 wait.waitForElement('#signature' , casper , function(err , isExists){
 			if(isExists){
-				casper.wait(2000 , function(){
-					casper.capture('o.png');
-				});
 				
 				driver.click('#signature');
 				wait.waitForTime(5000 , casper , function(err){
@@ -1095,11 +1092,122 @@ profilePageMethod.BackEndSettingsDefaultOptionBirtdayEnable=function(casper , ca
 };
 
 
+//-------------------------create method to disable default fields signature--------------------------------------------
+profilePageMethod.BackEndSettingsDefaultOptionDisable=function(casper , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable  default option signature ----------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				casper.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]').click();
+ 				});
+				//casper.click('');
+				wait.waitForElement('div#ddUsers div a:nth-child(9)', casper , function(err , isExists) {
+					if(isExists){
+						casper.click('div#ddUsers div a:nth-child(9)');
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.sendKeys('select[name="required_signature"] option[value="0"]', 'No');
+								casper.click('select[name="visiblity_signature"]');
+								casper.sendKeys('select[name="visiblity_signature"] option[value="1"]', 'Visible');
+								wait.waitForTime(1000 , casper , function(err){								
+									casper.click('button.button.btn-m.btn-blue');
+								});
+								wait.waitForTime(20000, casper , function(){
+										return callback(null);
+								});
+							}
+						});
+					}
+				});	
+			}
+		});
+		
+	});		
+};
 
+//-----------------------------------create method to disable default fields IM-id------------------------
+profilePageMethod.BackEndSettingsDefaultOptionIMIDDisable=function(casper , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable  im-ID Element from default option----------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				casper.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]').click();
+ 				});
+				
+				wait.waitForElement('div#ddUsers div a:nth-child(9)', casper , function(err , isExists) {
+					if(isExists){
+						casper.click('div#ddUsers div a:nth-child(9)');
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.sendKeys('select[name="required_imType"] option[value="0"]', 'No');
+								casper.click('select[name="visiblity_imType"]');
+								casper.sendKeys('select[name="visiblity_imType"] option[value="1"]', 'Visible');
+								wait.waitForTime(1000 , casper , function(err){								
+									casper.click('button.button.btn-m.btn-blue');
+								});
+								wait.waitForTime(20000, casper , function(){
+										return callback(null);
+								});
+							}
+						});
+					}
+				});	
+			}
+		});
+		
+	});		
+};
 
-
-
-
+//--------------------------------Disable birthday- picker Element from default option----------------------------
+profilePageMethod.BackEndSettingsDefaultOptionBirtdayDisable=function(casper , callback) {
+	casper.thenOpen(config.backEndUrl , function(){
+		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
+		casper.echo('------------------Backend Method to enable  birthday- picker Element from default option-----------' ,'INFO');
+		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
+			if (!err)
+				casper.echo('LoggedIn to forum backend....', 'INFO');
+		});
+		wait.waitForElement('div#my_account_forum_menu a[data-tooltip-elm="ddSettings"]', casper , function(err , isExists) {
+			if(isExists) {
+				casper.evaluate(function() {
+					document.querySelector('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]').click();
+ 				});
+				
+				wait.waitForElement('div#ddUsers div a:nth-child(9)', casper , function(err , isExists) {
+					if(isExists){
+						casper.click('div#ddUsers div a:nth-child(9)');
+						wait.waitForElement('button.button.btn-m.btn-blue' , casper , function(err , isExists) {
+							if(isExists) {
+								casper.sendKeys('select[name="required_dob"] option[value="0"]', 'No');
+								casper.click('select[name="visiblity_dob"]');
+								casper.sendKeys('select[name="visiblity_dob"] option[value="1"]', 'Visible');
+								wait.waitForTime(1000 , casper , function(err){								
+									casper.click('button.button.btn-m.btn-blue');
+								});
+								wait.waitForTime(20000, casper , function(){
+										return callback(null);
+								});
+							}
+						});
+					}
+				});	
+			}
+		});
+		
+	});		
+};
 
 
 
