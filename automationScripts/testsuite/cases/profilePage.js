@@ -216,16 +216,15 @@ profilePageTests.profilePageAllPostTab=function(){
 profilePageTests.profilePageCreateTopic=function(){
 	
 	profilePageMethod.topicCreate(casper , function(err) {
-		if(!err)
+		if(!err) {
 			casper.echo('Topic created method called' ,'INFO');
+			//post method 
+			profilePageMethod.profilePost(casper , function(err) {
+				if(!err)
+					casper.echo('post have been created' ,'INFO');
+    			});
+		}
 	});
-
-	//post method 
-	profilePageMethod.profilePost(casper , function(err) {
-		if(!err)
-			casper.echo('post have been created' ,'INFO');
-    	});
-    	
 
 	casper.thenOpen(config.url , function() {
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -869,7 +868,6 @@ profilePageTests.profilePagePostCountAddtopic=function() {
 			}
 		});
 	});
-
 };	
 
 //verify post count  with delete the post
@@ -916,22 +914,22 @@ profilePageTests.profilePagePostCountDeletePost=function(){
 																forumLoginMethod.logoutFromApp(casper, function(err){
 																	if (!err)
 																		casper.echo('Successfully logout from application', 'INFO');
-																	});
-																}
-															});	
-														}
-													});
+																});
+															}
+														});	
+													}
 												});
 											});
-										}
-									});
-								}
-							});
-						}
-					});
-				}
-			});
-		});	
+										});
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
+	});	
 };
 
 //------------------------------------------------Reputation--------------------------------------------------------------
@@ -1033,12 +1031,11 @@ profilePageTests.profilePageReputationCount=function(){
 	profilePageMethod.topicCreate(casper , function(err) {
 		if(!err) {
 			casper.echo('Topic created method called' ,'INFO');
-			wait.waitForTime(2000 , casper , function(err){
-				profilePageMethod.reputationEnable(casper , function(err){
-					if(!err)
-						casper.echo('Reputation enable method called successfully ','INFO');	
-				});
+			profilePageMethod.reputationEnable(casper , function(err){
+				if(!err)
+					casper.echo('Reputation enable method called successfully ','INFO');	
 			});
+			
 		}
 	});
 	
@@ -1079,29 +1076,21 @@ profilePageTests.profilePageReputationCount=function(){
 			}
 		});
 	});
-	
-	//
-	
-	
 };	
 
 //verify after like the post(one user like your multiple post one post)
 profilePageTests.profilePageReputationCountMultiplePostLike=function(){
 
 	profilePageMethod.profilePost(casper , function(err) {	
-		if(!err)
-			casper.echo('method called successfully' ,'INFO');		
+		if(!err){
+			casper.echo('method called successfully' ,'INFO');
+			profilePageMethod.profilePost(casper , function(err) {	
+				if(!err)
+					casper.echo(' 2nd post method called successfully' ,'INFO');		
+			});
+		}		
 	});
 	
-	casper.then(function(){
-		casper.echo('---------------------2nd post method called-------------------------' ,'INFO');
-		profilePageMethod.profilePost(casper , function(err) {	
-			if(!err)
-				casper.echo('method called successfully' ,'INFO');		
-
-		});
-	});
-
 	//Like 1st post-------------------------------------------------------
 	casper.thenOpen(config.url , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
@@ -1517,10 +1506,10 @@ profilePageTests.profilePageDeleteIcon= function(){
 												wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
 													if(isExists){
 														forumLoginMethod.logoutFromApp(casper, function(err){
-																if (!err)
+															if (!err)
 																	casper.echo('Successfully logout from application', 'INFO');
-															});
-														}
+														});
+													}
 												});
 											}
 										});
@@ -1708,14 +1697,13 @@ profilePageTests.profilePageAddSignature=function(){
 
 	//Enable default option IM-id
 	profilePageMethod.BackEndSettingsDefaultOptionIMIDEnable(casper , function(err){
-		if(!err)
+		if(!err) {
 			casper.echo('Default options enable IM-id successfully' ,'INFO');	
-			wait.waitForTime(2000 , casper , function(err){
-				profilePageMethod.BackEndSettingsDefaultOptionBirtdayEnable(casper , function(err){
-					if(!err)
-						casper.echo('Default options birthday enable successfully' ,'INFO');
-				});
+			profilePageMethod.BackEndSettingsDefaultOptionBirtdayEnable(casper , function(err){
+				if(!err)
+					casper.echo('Default options birthday enable successfully' ,'INFO');
 			});
+		}
 	});
 
 	
@@ -1776,7 +1764,6 @@ profilePageTests.profilePageEditSignature=function(){
 	});
 
 	casper.thenOpen(config.url , function(){
-		
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
 		casper.echo('                   TestCase 31                 ' ,'INFO');	
 		casper.echo('**********verify with edit signature*************','INFO');
@@ -1813,9 +1800,9 @@ profilePageTests.profilePageEditSignature=function(){
 																	if (!err)
 																		casper.echo('Successfully logout from application', 'INFO');
 																});
-															}
-														});
+														}
 													});
+												});
 		      							        	});
 										});
 									}
@@ -1826,7 +1813,6 @@ profilePageTests.profilePageEditSignature=function(){
 				});
 			}
 		});
-	
 	});
 };
 
@@ -2514,20 +2500,19 @@ var successMessage = str2.trim();
 																});
 															}
 														});
-													
-														}										
-													});
-												}
-											});
-										}
-									});
-								}
-							});
-						}
-					});
-				}
-			});
+													}										
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+				});
+			}
 		});
+	});
 };
 
 
