@@ -42,6 +42,11 @@
 		"description" : "To test child category"
 	},
 	
+	"otherSubCategory" : {
+		"title" : "cat1b",
+		"description" : "To test other child category"
+	},
+	
 	"startTopic" : {
 		"title" : "New Topic",
 		"content" : "hellloooooo!!!!!!!!!",

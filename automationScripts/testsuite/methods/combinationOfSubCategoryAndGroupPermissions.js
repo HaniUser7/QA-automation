@@ -499,15 +499,6 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(d
 				}, true);
 				casper.test.assertExists('button.button.btn-m.btn-blue');
 				casper.click('button.button.btn-m.btn-blue');
-				/*wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-					if(isExists) {
-						casper.echo("Sub Category created",'INFO');
-						return callback(null);
-					} else {
-						casper.echo('Sub Category not created', 'ERROR');
-						return callback(null);
-					}
-				});*/
 				casper.waitUntilVisible('div.heading.error_message', function success() {
 					casper.echo(casper.fetchText('div.heading.error_message'),'INFO');
 					casper.echo("Sub Category created",'INFO');
@@ -524,33 +515,52 @@ combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory = function(d
 };
 
 //*************************Method to get the id of Category and sub category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.getId = function(driver, callback) {
+combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory = function(data, driver, callback) {
+	var title = data.title;
 	wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
 		if(isExists) {
-			categoryId = casper.evaluate(function(){
-				var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
-				for(var i=1; i<=x1.length; i++) {
+			categoryId = casper.evaluate(function(title){
+				var totalCat = document.querySelectorAll('div#wrapper li a.forumName.atree');
+				for(var i=1; i<=totalCat.length; i++) {
 					var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
-					if (cat.innerText == 'cat1') {
-						var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
-						return (x2);
+					if (cat.innerText == title) {
+						var catId = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
+						return catId;
 					}
 				}
-			});
+			},title);
 			casper.echo('the id of the category ='+categoryId,'INFO');
-			subCategoryId = casper.evaluate(function(){
-				var x1 = document.querySelectorAll('div#wrapper li a.forumName.atree');
-				for(var i=1; i<=x1.length; i++) {
+			return callback(null, categoryId);
+		} else {
+			casper.echo('Calendar Permissions tab not found', 'ERROR');
+		}
+	});
+};
+
+//*************************Method to get the id of sub category from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory = function(data, driver, callback) {
+	var title = data.title;
+	wait.waitForElement('a#addForumButton', casper, function(err, isExists) {
+		if(isExists) {
+			subCategoryId = casper.evaluate(function(title){
+				var totalCat = document.querySelectorAll('div#wrapper li a.forumName.atree');
+				for(var i=1; i<=totalCat.length; i++) {
 					var cat = document.querySelector('div#wrapper li:nth-child('+i+') a.forumName.atree');
 					if (cat.innerText == 'cat1') {
-						var x2 = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
-						var x3 = document.querySelector('li[id="'+x2+'"] ul li').getAttribute('id');
-						return x3;
+						var catId = document.querySelector("div#wrapper li:nth-child("+i+')').getAttribute('id');
+						var totalSubCat = document.querySelectorAll('li[id="'+catId+'"] ul li');
+						for(var i=1; i<=totalSubCat.length; i++) {
+							var subCat = document.querySelector('li[id="'+catId+'"] ul li:nth-child('+i+') a');
+							if (subCat.innerText == title) {
+								var subCatId = document.querySelector('li[id="'+catId+'"] ul li:nth-child('+i+')').getAttribute('id');
+								return subCatId;
+							}
+						}
 					}
 				}
-			});
+			},title);
 			casper.echo('the id of the subcategory ='+subCategoryId,'INFO');
-			return callback(null, categoryId, subCategoryId);
+			return callback(null, subCategoryId);
 		} else {
 			casper.echo('Calendar Permissions tab not found', 'ERROR');
 		}
@@ -708,7 +718,7 @@ combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSub
 	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
 		if(!err) {
 			utils.enableorDisableCheckbox('upload_attachments_20237761', false, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
+				casper.echo('checkbox is unchecked', 'INFO');
 			});
 			casper.waitUntilVisible('div#loading_msg', function success() {
 				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
@@ -898,5 +908,47 @@ combinationOfSubCategoryAndGroupPermissionsMethod.isSubCategoryExists = function
 	} else {
 		return callback(null, false);
 	}
+};
+
+// method to start new topic with attachment
+combinationOfSubCategoryAndGroupPermissionsMethod.uploadAttachmentWithTopic = function(data, driver, callback) {
+	driver.click('a.pull-right.btn.btn-uppercase.btn-primary ');
+	wait.waitForElement('div.post-body.pull-left', driver, function(err, isExists) {
+		if(isExists) {								
+			driver.sendKeys('input[name="subject"]', data.title, {reset:true});						
+			driver.withFrame('message_ifr', function() {
+				driver.sendKeys('#tinymce', driver.page.event.key.Ctrl,driver.page.event.key.A, {keepFocus: true});	
+				driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
+				driver.sendKeys('#tinymce',data.content);
+			});
+			driver.then(function() {
+				driver.mouse.move('a#fancy_attach_ i');
+				//driver.click('a#fancy_attach_ i');
+				driver.wait(6000,function(){
+					driver.capture('1.png');
+					driver.mouse.move('input#autoUploadAttachment');
+					driver.click('input#autoUploadAttachment');
+				});
+				//driver.click('input#autoUploadAttachment');
+				//driver.capture('1.png');
+				wait.waitForElement('ul[class="post-attachments"]', driver, function(err, isExists) {
+					if(isExists) {
+				//wait.waitForTime(40000, driver, function(err) {
+					//if(!err) {
+						driver.capture('2.png');
+						driver.click('#post_submit');
+						wait.waitForElement('div#posts-list', driver, function(err, isExists) {
+							if(isExists) {
+								driver.echo('New topic Created','INFO');
+							}
+						});
+					}
+				});
+			});
+		}
+	});
+	driver.then(function() {
+		return callback(null);
+	});
 };
 
