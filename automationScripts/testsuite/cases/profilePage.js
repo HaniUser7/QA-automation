@@ -97,7 +97,7 @@ profilePageTests.profilePageMessageButton=function(){
 				casper.echo('Processing to Login on forum.....', 'INFO');
 				wait.waitForTime(1000 , casper , function(err) {
 					
-					wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+					wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 						if(isExists) {
 							casper.click('ul.nav.pull-right span.caret');
 							casper.click('a#user-nav-panel-profile');
@@ -1141,7 +1141,7 @@ profilePageTests.profilePageReputationCountMultiplePostLike=function(){
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err) {
+						wait.waitForVisible('form[name="posts"] a.topic-title' , casper , function(err) {
 							if(isExists) {
 								casper.click('form[name="posts"] a.topic-title');
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err) {
@@ -1720,7 +1720,7 @@ profilePageTests.profilePageAddSignature=function(){
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('span.pull-right.user-nav-panel li:nth-child(4) a');

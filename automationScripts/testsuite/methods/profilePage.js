@@ -134,9 +134,13 @@ profilePageMethod.messageButtonEnable= function(casper , callback){
 								casper.echo('Successfully checked','INFO');
 						});
 						casper.click('button.button.btn-m.btn-blue');
-						wait.waitForTime(30000 , casper , function(err){
+						casper.waitUntilVisible('div#ajax-msg-top', function success() {
+							casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 							return callback(null);
-						});
+						}, function fail() {
+							casper.echo('Saved not found', 'ERROR');
+							
+						},30000);
 					}
 				});
 			}
@@ -168,9 +172,13 @@ profilePageMethod.messageButtonDisable= function(casper , callback){
 								casper.echo('Successfully unchecked','INFO');
 						});
 						casper.click('button.button.btn-m.btn-blue');
-						casper.wait(30000 , function(){
+						casper.waitUntilVisible('div#ajax-msg-top', function success() {
+							casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 							return callback(null);
-						});
+						}, function fail() {
+							casper.echo('Saved not found', 'ERROR');
+							return callback(null);
+						},30000);
 					}
 				});
 			}
@@ -253,9 +261,13 @@ profilePageMethod.reputationDisable= function(casper , callback){
  							casper.echo('successfully unchecked', 'INFO');
  						});
 						casper.click('button.button.btn-m.btn-blue');
-						wait.waitForTime(20000 , casper , function(err) {
+						casper.waitUntilVisible('div#ajax-msg-top', function success() {
+							casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 							return callback(null);
-						});
+						}, function fail() {
+							casper.echo('Saved not found', 'ERROR');
+							return callback(null);
+						},30000);
 					}
 				});
 			}
@@ -283,10 +295,13 @@ profilePageMethod.reputationEnable= function(casper , callback){
  							casper.echo('successfully checked', 'INFO');
  						});
 						casper.click('button.button.btn-m.btn-blue');
-						wait.waitForTime(20000 , casper , function(err) {
-							
+						casper.waitUntilVisible('div#ajax-msg-top', function success() {
+							casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
 							return callback(null);
-						});
+						}, function fail() {
+							casper.echo('Saved not found', 'ERROR');
+							return callback(null);
+						},30000);
 					}
 				});
 			}
@@ -335,7 +350,7 @@ profilePageMethod.BackEndSettingsSignatureDisable=function(casper , callback) {
 										casper.echo('Successfully unchecked edit own post','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
-								wait.waitForTime(15000, casper , function(){
+								wait.waitForTime(20000 , casper , function(err){
 									return callback(null);
 								});
 							}
@@ -389,9 +404,8 @@ profilePageMethod.BackEndSettingsSignatureEnable=function(casper , callback) {
 										casper.echo('Signature enable method called successfully','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
-								wait.waitForTime(15000, casper , function(){
+								wait.waitForTime(20000 , casper , function(err){
 									return callback(null);
-									
 								});
 							}
 						});
@@ -491,7 +505,7 @@ profilePageMethod.BackEndSettingsDisableCustomTitle=function(casper , callback) 
 										casper.echo('Successfully unchecked custom Title','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
-								wait.waitForTime(15000, casper , function(){
+								wait.waitForTime(20000 , casper , function(err){
 									return callback(null);
 								});
 							}
@@ -544,7 +558,7 @@ profilePageMethod.BackEndSettingsEnableCustomTitle=function(casper , callback) {
 										casper.echo('Successfully checked custom Title','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
-								wait.waitForTime(15000, casper , function(){
+								wait.waitForTime(20000 , casper , function(err){
 									return callback(null);
 								});
 							}
@@ -854,9 +868,11 @@ profilePageMethod.BackEndSettingsChangeUsernameEnable=function(casper , callback
 										casper.echo('Successfully checked change username','INFO');
 								});
 								casper.click('button.button.btn-m.btn-blue');
-								wait.waitForTime(15000, casper , function(){
+								wait.waitForTime(20000 ,  casper ,function(err){
 									return callback(null);
+
 								});
+	
 							}
 						});
 					}	
@@ -897,10 +913,10 @@ profilePageMethod.addSignature=function(casper , callback) {
 													casper.sendKeys('#tinymce', 'hello12');
 												});
 												wait.waitForTime(1000 , casper , function(err) {
-													casper.capture('hell.png');
+													
                       											casper.click('button[type="submit"]');
 													wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists){
-casper.capture('hell2.png');
+
 														if(isExists){
 															forumLoginMethod.logoutFromApp(casper, function(err){
 																	if (!err)
@@ -940,7 +956,7 @@ profilePageMethod.profilePostNewlyRegister=function(casper , callback) {
 						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err , isExists){
 							if(isExists){
 								casper.click('form[name="posts"] a.topic-title');
-								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
+								wait.waitForVisible('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err , isExists){
 									if(isExists) {
 										casper.click('a.pull-right.btn.btn-uppercase.btn-primary');
 										wait.waitForTime(5000 , casper , function(err) {
@@ -949,7 +965,7 @@ profilePageMethod.profilePostNewlyRegister=function(casper , callback) {
 												casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
 												casper.sendKeys('#tinymce', 'dragme');
 											});
-											casper.wait(5000 , function(){
+											wait.waitForTime(5000 , casper , function(err){
 												casper.test.assertExists('input[name="submitbutton"]','button found');
                                                                                                 casper.click('input[name="submitbutton"]');
 												wait.waitForTime(2000 , casper , function(err){

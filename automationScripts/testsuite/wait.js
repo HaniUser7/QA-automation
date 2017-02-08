@@ -25,7 +25,7 @@ wait.waitForVisible = function(element, driver, callback){
 		},function fail(){
 			driver.echo('Selector ' + element + ' not appears', 'ERROR');
 			return callback(null, false);	
-	});
+	},30000);
 };
 
 
