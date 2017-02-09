@@ -21,15 +21,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods = function() 
 			if(!err) {
 				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
 					if(isExists) {
-						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+					casper.then(function() {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
 							if(!err) {
-								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err, categoryId) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.goToUnRegisteredUserPemission(casper, function(err) {
 									if(!err) {
-										category_Id = categoryId;
+										combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
+											if(!err) {
+
+											}
+										});
 									}
 								});
 							}
 						});
+					});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
 					}
@@ -69,7 +75,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategor
 																	//casper.reload(function(){
 																																combinationOfSubCategoryAndGroupPermissionsMethod.createSubCategory(json["otherSubCategory"], casper, function(err) {
 																			if(!err) {
-										
+
 																			}
 																		});
 																	//});
@@ -133,14 +139,22 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = functi
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
+							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission(casper, function(err) {
 										if(!err) {
-											casper.echo('enableViewCategory method called ','INFO');
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
+												if(!err) {
+
+												}
+											});
 										}
 									});
-								});
-							}
+								}
+							});
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -169,13 +183,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory = functi
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -249,13 +263,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory = fun
 									}else{
 										casper.echo('cat1a not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -263,7 +277,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory = fun
 			}
 		});
 	});
-	
+
 };
 
 // method to verify with the private sub-category cat1a
@@ -297,13 +311,6 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPrivateSubCategor
 												backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 												});
 											});
-										}
-									});
-								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
-										if(!err) {
-											casper.echo('enableViewCategory method called ','INFO');
 										}
 									});
 								});
@@ -351,17 +358,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPrivateSubCategor
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -427,13 +434,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory = 
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -482,7 +489,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory = 
 	});
 };
 
-// method to verify with other sub-categories 
+// method to verify with other sub-categories
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithOtherSubCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 5                                      ', 'INFO');
@@ -546,13 +553,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithOtherSubCategory 
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -596,14 +603,22 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics(casper, function(err) {
+							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission(casper, function(err) {
 										if(!err) {
-											casper.echo('enableStartNewTopic method called ','INFO');
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics(casper, function(err) {
+												if(!err) {
+
+												}
+											});
 										}
 									});
-								});
-							}
+								}
+							});
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -641,7 +656,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 															if(!err) {
 																casper.echo("Topic created succcessfully","INFO");
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -649,17 +664,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -700,13 +715,6 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 												backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
 												});
 											});
-										}
-									});
-								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics(casper, function(err) {
-										if(!err) {
-											casper.echo('disableStartNewTopic method called ','INFO');
 										}
 									});
 								});
@@ -756,7 +764,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 															}else{
 																casper.echo('not visible on category listing page','ERROR');
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -764,17 +772,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -845,21 +853,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 													if(!err) {
 														casper.echo("Topic created succcessfully","INFO");
 													}
-												});	
+												});
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -869,7 +877,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 	});
 };
 
-// method to verify with other sub-categories 
+// method to verify with other sub-categories
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForOtherSubCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 9                                      ', 'INFO');
@@ -934,7 +942,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 															if(!err) {
 																casper.echo("Topic created succcessfully","INFO");
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -946,13 +954,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonFor
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1005,6 +1013,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubC
 								});
 							}
 						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission(casper, function(err) {
+										if(!err) {
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopics(casper, function(err) {
+												if(!err) {
+
+												}
+											});
+										}
+									});
+								}
+							});
+						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
 					}
@@ -1046,17 +1069,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubC
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1161,17 +1184,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubC
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1246,17 +1269,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithPar
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1266,7 +1289,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithPar
 	});
 };
 
-// method to verify with other sub-categories 
+// method to verify with other sub-categories
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForOtherSubCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 13                                      ', 'INFO');
@@ -1340,13 +1363,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForOthe
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1390,14 +1413,22 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachments(casper, function(err) {
+							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission(casper, function(err) {
 										if(!err) {
-											casper.echo('enableUploadAttachment method called ','INFO');
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachments(casper, function(err) {
+												if(!err) {
+
+												}
+											});
 										}
 									});
-								});
-							}
+								}
+							});
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -1440,17 +1471,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1494,13 +1525,6 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachments(casper, function(err) {
-										if(!err) {
-											casper.echo('enableUploadAttachment method called ','INFO');
-										}
-									});
-								});
 							}
 						});
 					} else {
@@ -1540,17 +1564,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1624,17 +1648,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1644,7 +1668,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 	});
 };
 
-// method to verify with other sub-categories 
+// method to verify with other sub-categories
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachmentsWithOtherSubCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 17                                      ', 'INFO');
@@ -1708,13 +1732,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachments
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1758,14 +1782,22 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments(casper, function(err) {
+							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission(casper, function(err) {
 										if(!err) {
-											casper.echo('enableViewAttachment method called ','INFO');
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments(casper, function(err) {
+												if(!err) {
+
+												}
+											});
 										}
 									});
-								});
-							}
+								}
+							});
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -1794,21 +1826,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 										casper.click('li#forum_'+category_Id+' a');
 										wait.waitForElement('div#category_list', casper,function(err, isExists) {
 											if(isExists) {
-											
+
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1852,13 +1884,6 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments(casper, function(err) {
-										if(!err) {
-											casper.echo('enableViewAttachment method called ','INFO');
-										}
-									});
-								});
 							}
 						});
 					} else {
@@ -1888,21 +1913,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 										casper.click('li#forum_'+category_Id+' a');
 										wait.waitForElement('div#category_list', casper,function(err, isExists) {
 											if(isExists) {
-											
+
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1968,21 +1993,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 										casper.click('li#forum_'+category_Id+' a');
 										wait.waitForElement('div#category_list', casper,function(err, isExists) {
 											if(isExists) {
-											
+
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -1992,7 +2017,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 	});
 };
 
-// method to verify with other sub-categories 
+// method to verify with other sub-categories
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWithOtherSubCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 21                                      ', 'INFO');
@@ -2056,13 +2081,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithViewAttachmentsWi
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -2107,13 +2132,6 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 									});
 								});
 								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval(casper, function(err) {
-										if(!err) {
-											casper.echo('enablePostApproval method called ','INFO');
-										}
-									});
-								});
-								casper.thenOpen(config.backEndUrl, function() {
 									postEventMemberApprovalMethod.enableApproveNewPost(casper, casper.test,  function(err) {
 										if(!err) {
 											casper.echo('enablePostApproval method called ','INFO');
@@ -2121,6 +2139,21 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 									});
 								});
 							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission(casper, function(err) {
+										if(!err) {
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval(casper, function(err) {
+												if(!err) {
+
+												}
+											});
+										}
+									});
+								}
+							});
 						});
 					} else {
 						casper.echo('Backend Menu not found', 'ERROR');
@@ -2158,7 +2191,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 															if(!err) {
 																casper.echo("Topic created succcessfully and moved to approval queue","INFO");
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -2166,17 +2199,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -2220,13 +2253,6 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 										}
 									});
 								});
-								casper.thenOpen(config.backEndUrl, function() {
-									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments(casper, function(err) {
-										if(!err) {
-											casper.echo('enableViewAttachment method called ','INFO');
-										}
-									});
-								});
 							}
 						});
 					} else {
@@ -2265,7 +2291,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 															if(!err) {
 																casper.echo("Topic created succcessfully","INFO");
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -2273,17 +2299,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithS
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -2358,7 +2384,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithP
 															if(!err) {
 																casper.echo("Topic created succcessfully","INFO");
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -2366,17 +2392,17 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithP
 											}else{
 												casper.echo('cat1a not visible','ERROR');
 											}
-										}); 
+										});
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -2386,7 +2412,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithP
 	});
 };
 
-// method to verify with other sub-categories 
+// method to verify with other sub-categories
 combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithOtherSubCategory = function() {
 	casper.thenOpen(config.backEndUrl, function() {
 		casper.echo('                                   Test case 25                                      ', 'INFO');
@@ -2451,7 +2477,7 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithO
 															if(!err) {
 																casper.echo("Topic created succcessfully and moved to approval queue","INFO");
 															}
-														});	
+														});
 													}else{
 														casper.echo('Start New topic on subcategory page not Found','ERROR');
 													}
@@ -2463,13 +2489,13 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithO
 									}else{
 										casper.echo('cat1 not visible on category listing page','ERROR');
 									}
-								});        
+								});
 							}else{
 								casper.echo('Categories not Found','ERROR');
 							}
 						});
 					} else {
-						casper.echo('User not logged in','ERROR');	
+						casper.echo('User not logged in','ERROR');
 					}
 				});
 			}else {
@@ -2484,8 +2510,447 @@ combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithO
 					casper.echo('enablePostApproval method called ','INFO');
 				}
 			});
-		});				
+		});
 	});
 };
 
+// method to verify with category cat1 for unregistered user
+combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategoryUnregisteredUser = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                   Test case 26                                      ', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*             Method to to verify with category cat1 for unregistered user         *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err,categoryId) {
+									if(!err) {
+										category_Id = categoryId;
+									}
+								});
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory(json["subCategory"], casper, function(err,subCategoryId) {
+									if(!err) {
+										subCategory_Id = subCategoryId;
+									}
+								});
+								casper.then(function() {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(subCategory_Id, casper, function(err) {
+										if(!err) {
+											combinationOfSubCategoryAndGroupPermissionsMethod.selectUserGroup('Unregistered / Not Logged In', casper, function(err,groupId) {
+												if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory(groupId, casper, function(err) {
+														if(!err) {
+															casper.echo('enableViewCategoryForSubCategory method called ','INFO');
+														}
+													});
+												}
+											});
+										}
+									});
+								});
+							}
+						});
+						/*casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToUnRegisteredUserPemission(casper, function(err) {
+										if(!err) {
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
+												if(!err) {
 
+												}
+											});
+										}
+									});
+								}
+							});
+						});*/
+						casper.then(function() {
+							backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+							});
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+		casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+		wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('li#forum_'+category_Id+' a' ,'cat1 visible on category listing page','INFO');
+			}else{
+				casper.echo('cat1 not visible on category listing page','ERROR');
+			}
+		});
+	});
+};
+
+// method to verify with sub category cat1a for unregistered user
+combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategoryUnregisteredUser = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                   Test case 27                                      ', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*        Method to to verify with sub-category cat1a for unregistered user         *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err,categoryId) {
+									if(!err) {
+										category_Id = categoryId;
+									}
+								});
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory(json["subCategory"], casper, function(err,subCategoryId) {
+									if(!err) {
+										subCategory_Id = subCategoryId;
+									}
+								});
+							}
+						});
+						casper.then(function() {
+							backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+							});
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+		casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+		wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('li#forum_'+category_Id+' a' ,'cat1 visible on category listing page','INFO');
+				casper.click('li#forum_'+category_Id+' a');
+				wait.waitForElement('div#category_list', casper,function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('li#forum_'+subCategory_Id+' a' ,'cat1a visible','INFO');
+					}else{
+						casper.echo('cat1a not visible','ERROR');
+					}
+				});
+			}else{
+				casper.echo('cat1a not visible on category listing page','ERROR');
+			}
+		});
+	});
+};
+
+// method to verify with sub-category cat1a for unregistered user
+combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategoryUnregisteredUserDisabled = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                   Test case 28                                      ', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*             Method to to verify with category cat1 for unregistered user         *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err,categoryId) {
+									if(!err) {
+										category_Id = categoryId;
+									}
+								});
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory(json["subCategory"], casper, function(err,subCategoryId) {
+									if(!err) {
+										subCategory_Id = subCategoryId;
+									}
+								});
+								casper.then(function() {
+									combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory(subCategory_Id, casper, function(err) {
+										if(!err) {
+											casper.echo('enableViewCategoryForSubCategory method called ','INFO');
+										}
+									});
+								});
+							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToUnRegisteredUserPemission(casper, function(err) {
+										if(!err) {
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory(casper, function(err) {
+												if(!err) {
+
+												}
+											});
+										}
+									});
+								}
+							});
+						});
+						casper.then(function() {
+							backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+							});
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+		casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+		wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('li#forum_'+category_Id+' a' ,'cat1 visible on category listing page','INFO');
+				casper.click('li#forum_'+category_Id+' a');
+				wait.waitForElement('div#category_list', casper,function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('li#forum_'+subCategory_Id+' a' ,'cat1a visible','INFO');
+						casper.click('li#forum_'+subCategory_Id+' a');
+						wait.waitForElement('div.text-center.bmessage.alert-info.text-danger', casper,function(err, isExists) {
+							if(isExists) {
+								var actualText = casper.fetchText('div.text-center.bmessage.alert-info.text-danger');
+								var expectedText = "Sorry! You don't have permission to perform this action.";
+								var successMsg = actualText.substring(0, actualText.indexOf('<'));
+								casper.test.assert(successMsg.indexOf(expectedText) > -1);
+							}else{
+								casper.echo('not visible on category listing page','ERROR');
+							}
+						});
+					}else{
+						casper.echo('cat1a not visible','ERROR');
+					}
+				});
+			}else{
+				casper.echo('cat1 not visible on category listing page','ERROR');
+			}
+		});
+	});
+};
+
+// method to verify with category cat1 for unregistered user
+combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategoryUnregisteredUserDisabled = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                   Test case 29                                      ', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*             Method to to verify with category cat1 for unregistered user         *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err,categoryId) {
+									if(!err) {
+										category_Id = categoryId;
+									}
+								});
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory(json["subCategory"], casper, function(err,subCategoryId) {
+									if(!err) {
+										subCategory_Id = subCategoryId;
+									}
+								});
+							}
+						});
+						casper.then(function() {
+							backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+							});
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+		casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+		wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('li#forum_'+category_Id+' a' ,'cat1 visible on category listing page','INFO');
+			}else{
+				casper.echo('cat1 not visible on category listing page','ERROR');
+			}
+		});
+	});
+};
+
+// method to verify with other sub-categories
+combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithOtherSubCategoryUnregisteredUser = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                   Test case 30                                      ', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*          Method to to verify with other sub-categories Unregistered user         *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err,categoryId) {
+									if(!err) {
+										category_Id = categoryId;
+									}
+								});
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory(json["otherSubCategory"], casper, function(err,subCategoryId) {
+									if(!err) {
+										subCategory_Id = subCategoryId;
+									}
+								});
+								casper.then(function() {
+									backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+									});
+								});
+							}
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+		casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+		wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('li#forum_'+category_Id+' a' ,'cat1 visible on category listing page','INFO');
+				casper.click('li#forum_'+category_Id+' a');
+				wait.waitForElement('div#category_list', casper,function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('li#forum_'+subCategory_Id+' a' ,'cat1b visible','INFO');
+					}else{
+						casper.echo('cat1b not visible','ERROR');
+					}
+				});
+			}else{
+				casper.echo('cat1 not visible on category listing page','ERROR');
+			}
+		});
+	});
+};
+
+// method to verify with new topic button for unregistered user
+combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicUnregisteredUser = function() {
+	casper.thenOpen(config.backEndUrl, function() {
+		casper.echo('                                   Test case 31                                      ', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		casper.echo('*          Method to to verify with new topic button for unregistered user         *', 'INFO');
+		casper.echo('************************************************************************************', 'INFO');
+		registerMethod.loginToForumBackEnd(casper, function(err) {
+			if(!err) {
+				wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+					if(isExists) {
+						combinationOfSubCategoryAndGroupPermissionsMethod.goToCategoryPage(casper, function(err) {
+							if(!err) {
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfCategory(json["category"], casper, function(err,categoryId) {
+									if(!err) {
+										category_Id = categoryId;
+									}
+								});
+								combinationOfSubCategoryAndGroupPermissionsMethod.getIdOfSubCategory(json["subCategory"], casper, function(err,subCategoryId) {
+									if(!err) {
+										subCategory_Id = subCategoryId;
+									}
+								});
+								casper.then(function() {
+									combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory(subCategory_Id, casper, function(err) {
+										if(!err) {
+											casper.echo('enableStartNewTopicForSubCategory method called ','INFO');
+										}
+									});
+								});
+							}
+						});
+						casper.then(function() {
+							combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup(casper, function(err) {
+								if(!err) {
+									combinationOfSubCategoryAndGroupPermissionsMethod.goToUnRegisteredUserPemission(casper, function(err) {
+										if(!err) {
+											combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics(casper, function(err) {
+												if(!err) {
+													casper.echo('enableStartNewTopic method called ','INFO');
+												}
+											});
+										}
+									});
+								}
+							});
+						});
+						casper.then(function() {
+							backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
+							});
+						});
+					} else {
+						casper.echo('Backend Menu not found', 'ERROR');
+					}
+				});
+			}else {
+				casper.echo('Error : ', 'ERROR');
+			}
+		});
+	});
+	casper.thenOpen(config.url, function() {
+		casper.echo('Title of the page :' +casper.getTitle(), 'INFO');
+		casper.test.assertExists('ul.nav.nav-tabs li:nth-child(2) a','Category link found');
+		casper.click('ul.nav.nav-tabs li:nth-child(2) a');
+		wait.waitForElement('li[id^="forum_"]', casper,function(err, isExists) {
+			if(isExists) {
+				casper.test.assertExists('li#forum_'+category_Id+' a' ,'cat1 visible on category listing page','INFO');
+				casper.click('li#forum_'+category_Id+' a');
+				wait.waitForElement('div#category_list', casper,function(err, isExists) {
+					if(isExists) {
+						casper.test.assertExists('li#forum_'+subCategory_Id+' a' ,'cat1a visible','INFO');
+						casper.click('li#forum_'+subCategory_Id+' a');
+						wait.waitForTime(2000, casper,function(err) {
+							if(!err) {
+								casper.test.assertExists('a.pull-right.btn.btn-uppercase.btn-primary', 'Start New topic on subcategory page Found','INFO');
+								postEventMemberApprovalMethod.startTopic(json["startTopic"], casper, function(err) {
+									if(!err) {
+										casper.echo("Topic created succcessfully","INFO");
+									}
+								});
+							}else{
+								casper.echo('Start New topic on subcategory page not Found','ERROR');
+							}
+						});
+					}else{
+						casper.echo('cat1a not visible','ERROR');
+					}
+				});
+			}else{
+				casper.echo('cat1 not visible on category listing page','ERROR');
+			}
+		});
+	});
+};

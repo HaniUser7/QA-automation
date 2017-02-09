@@ -13,435 +13,165 @@ var combinationOfSubCategoryAndGroupPermissionsMethod = module.exports = {};
 
 //*************************************************PRIVATE METHODS***********************************************
 
-//*************************Method to enable View category for registered User from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
+// Method to go to Default user group page
+combinationOfSubCategoryAndGroupPermissionsMethod.goToUserGroup = function(driver, callback) {
+	driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+	driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
+	wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
+		if(isExists) {
+			casper.click('div#ddUsers a:nth-child(1)');
+			wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
 				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
+					wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
 						if(isExists) {
-							casper.click('div#ddUsers a:nth-child(1)');
-							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
-								if(isExists) {
-									//casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
-										if(isExists) {
-											var id = casper.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
-														return x2;
-													}
-												}
-											});
-											casper.click('a[id="'+id+'"]');
-											wait.waitForElement('input#view_forum', casper, function(err, isExists) {
-												if(isExists) {
-													utils.enableorDisableCheckbox('view_forum', true, casper, function() {
-														casper.echo('checkbox is checked', 'INFO');
-													});
-													casper.test.assertExists('button.button.btn-m.btn-blue');
-													casper.click('button.button.btn-m.btn-blue');
-													//casper.wait(40000, function() {
-													//});
-													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
-													});
-												}else {
-													casper.echo(' View category not found', 'ERROR');
-												}
-											});
-										} else {
-											casper.echo('Table not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
+							return callback(null);
 						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
+							casper.echo('Table not found', 'ERROR');
 						}
 					});
 				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
+					casper.echo('Calendar Permissions tab not found', 'ERROR');
 				}
 			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
+		} else {
+			casper.echo('Content  tooltip menu not found', 'ERROR');
 		}
 	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
+};
+
+// method to goto registered user permission
+combinationOfSubCategoryAndGroupPermissionsMethod.goToRegisteredUserPemission = function(driver, callback) {
+	var id = casper.evaluate(function(){
+		for(var i=1; i<=7; i++) {
+			var group = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+			if (group.innerText == 'Registered Users') {
+				document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+				var id = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
+				return id;
+			}
+		}
 	});
+	casper.click('a[id="'+id+'"]');
+	wait.waitForElement('input#view_forum', casper, function(err, isExists) {
+		if(isExists) {
+			return callback(null);
+		}
+	});
+};
+
+// method to goto unregistered user permission
+combinationOfSubCategoryAndGroupPermissionsMethod.goToUnRegisteredUserPemission = function(driver, callback) {
+	var id = casper.evaluate(function(){
+		for(var i=1; i<=7; i++) {
+			var group = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
+			if (group.innerText == 'Unregistered / Not Logged In') {
+				document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
+				var id = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
+				return id;
+			}
+		}
+	});
+	casper.click('a[id="'+id+'"]');
+	wait.waitForElement('input#view_forum', casper, function(err, isExists) {
+		if(isExists) {
+			return callback(null);
+		}
+	});
+};
+
+//*************************Method to enable View category for User Group from backend ************************
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategory = function(driver, callback) {
+	driver.test.assertExists('input#view_forum');
+	utils.enableorDisableCheckbox('view_forum', true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	driver.test.assertExists('button.button.btn-m.btn-blue');
+	driver.click('button.button.btn-m.btn-blue');
+	wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Permission changed",'INFO');
+			return callback(null);
+		}
+	});											
 };
 
 //*************************Method to enable Start Topics for registered User from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopics = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
-						if(isExists) {
-							casper.click('div#ddUsers a:nth-child(1)');
-							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
-								if(isExists) {
-									//casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
-										if(isExists) {
-											var id = casper.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
-														return x2;
-													}
-												}
-											});
-											casper.click('a[id="'+id+'"]');
-											wait.waitForElement('input#post_threads', casper, function(err, isExists) {
-												if(isExists) {
-													utils.enableorDisableCheckbox('post_threads', true, casper, function() {
-														casper.echo('checkbox is checked', 'INFO');
-													});
-													casper.test.assertExists('button.button.btn-m.btn-blue');
-													casper.click('button.button.btn-m.btn-blue');
-													//casper.wait(40000, function() {
-													//});
-													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
-													});
-												}else {
-													casper.echo('Start Topic not found', 'ERROR');
-												}
-											});
-										} else {
-											casper.echo('Table not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
-				}
-			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
-		}
+	driver.test.assertExists('input#post_threads');
+	utils.enableorDisableCheckbox('post_threads', true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
 	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
+	driver.test.assertExists('button.button.btn-m.btn-blue');
+	driver.click('button.button.btn-m.btn-blue');
+	wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Permission changed",'INFO');
+			return callback(null);
+		}
 	});
 };
 
 //*************************Method to enable Reply Topics for registered User from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopics = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
-						if(isExists) {
-							casper.click('div#ddUsers a:nth-child(1)');
-							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
-								if(isExists) {
-									//casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
-										if(isExists) {
-											var id = casper.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
-														return x2;
-													}
-												}
-											});
-											casper.click('a[id="'+id+'"]');
-											wait.waitForElement('input#other_post_replies', casper, function(err, isExists) {
-												if(isExists) {
-													utils.enableorDisableCheckbox('other_post_replies', true, casper, function() {
-														casper.echo('checkbox is checked', 'INFO');
-													});
-													casper.test.assertExists('button.button.btn-m.btn-blue');
-													casper.click('button.button.btn-m.btn-blue');
-													//casper.wait(40000, function() {
-													//});
-													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
-													});
-												}else {
-													casper.echo(' Viewable on Members List  not found', 'ERROR');
-												}
-											});
-										} else {
-											casper.echo('Table not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
-				}
-			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
-		}
+	driver.test.assertExists('input#other_post_replies');
+	utils.enableorDisableCheckbox('other_post_replies', true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
 	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
+	driver.test.assertExists('button.button.btn-m.btn-blue');
+	driver.click('button.button.btn-m.btn-blue');
+	wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Permission changed",'INFO');
+			return callback(null);
+		}
 	});
 };
 
 //*************************Method to enable Upload Attachments for registered User from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachments = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
-						if(isExists) {
-							casper.click('div#ddUsers a:nth-child(1)');
-							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
-								if(isExists) {
-									//casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
-										if(isExists) {
-											var id = casper.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
-														return x2;
-													}
-												}
-											});
-											casper.click('a[id="'+id+'"]');
-											wait.waitForElement('input#upload_attachments', casper, function(err, isExists) {
-												if(isExists) {
-													utils.enableorDisableCheckbox('upload_attachments', true, casper, function() {
-														casper.echo('checkbox is checked', 'INFO');
-													});
-													casper.test.assertExists('button.button.btn-m.btn-blue');
-													casper.click('button.button.btn-m.btn-blue');
-													//casper.wait(40000, function() {
-													//});
-													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
-													});
-												}else {
-													casper.echo(' Viewable on Members List  not found', 'ERROR');
-												}
-											});
-										} else {
-											casper.echo('Table not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
-				}
-			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
+	driver.test.assertExists('input#upload_attachments');
+	utils.enableorDisableCheckbox('upload_attachments', true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	driver.test.assertExists('button.button.btn-m.btn-blue');
+	driver.click('button.button.btn-m.btn-blue');
+	wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Permission changed",'INFO');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
-	});
+	});										
 };
 
 //*************************Method to enable View Attachments for registered User from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachments = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
-						if(isExists) {
-							casper.click('div#ddUsers a:nth-child(1)');
-							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
-								if(isExists) {
-									//casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
-										if(isExists) {
-											var id = casper.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
-														return x2;
-													}
-												}
-											});
-											casper.click('a[id="'+id+'"]');
-											wait.waitForElement('input#view_attachments', casper, function(err, isExists) {
-												if(isExists) {
-													utils.enableorDisableCheckbox('view_attachments', true, casper, function() {
-														casper.echo('checkbox is checked', 'INFO');
-													});
-													casper.test.assertExists('button.button.btn-m.btn-blue');
-													casper.click('button.button.btn-m.btn-blue');
-													//casper.wait(40000, function() {
-													//});
-													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
-													});
-												}else {
-													casper.echo('View Attachments not found', 'ERROR');
-												}
-											});
-										} else {
-											casper.echo('Table not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
-				}
-			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
+	driver.test.assertExists('input#view_attachments');
+	utils.enableorDisableCheckbox('view_attachments', true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	driver.test.assertExists('button.button.btn-m.btn-blue');
+	driver.click('button.button.btn-m.btn-blue');
+	wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Permission changed",'INFO');
+			return callback(null);
 		}
-	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
-	});
+	});										
 };
 
 //*************************Method to enable Require Post Approval for registered User from backend ************************
 combinationOfSubCategoryAndGroupPermissionsMethod.enableRequirePostApproval = function(driver, callback) {
-	registerMethod.loginToForumBackEnd(casper, function(err) {
-		if(!err) {
-			wait.waitForElement('div#my_account_forum_menu', casper, function(err, isExists) {
-				if(isExists) {
-					driver.test.assertExists('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					driver.click('div#my_account_forum_menu a[data-tooltip-elm="ddUsers"]');
-					wait.waitForElement('div#ddUsers', casper, function(err, isExists) {
-						if(isExists) {
-							casper.click('div#ddUsers a:nth-child(1)');
-							wait.waitForElement('div#tab_wrapper', casper, function(err, isExists) {
-								if(isExists) {
-									//casper.click('li.inactive_tab a');
-									wait.waitForElement('table.text.fullborder', driver, function(err, isExists) {
-										if(isExists) {
-											var id = casper.evaluate(function(){
-												for(var i=1; i<=7; i++) {
-													var x1 = document.querySelector('tr:nth-child('+i+') td:nth-child(1)');
-													if (x1.innerText == 'Registered Users') {
-														document.querySelector('tr:nth-child('+i+') td:nth-child(3) a').click();
-														var x2 = document.querySelector('tr:nth-child('+i+') td:nth-child(3) div.tooltipMenu a').getAttribute('id');
-														return x2;
-													}
-												}
-											});
-											casper.click('a[id="'+id+'"]');
-											wait.waitForElement('input#post_approval', casper, function(err, isExists) {
-												if(isExists) {
-													utils.enableorDisableCheckbox('post_approval', true, casper, function() {
-														casper.echo('checkbox is checked', 'INFO');
-													});
-													casper.test.assertExists('button.button.btn-m.btn-blue');
-													casper.click('button.button.btn-m.btn-blue');
-													//casper.wait(40000, function() {
-													//});
-													wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
-														if(isExists) {
-															casper.echo("Permission unchanged",'INFO');
-														}
-													});
-												}else {
-													casper.echo('Require Post Approval not found', 'ERROR');
-												}
-											});
-										} else {
-											casper.echo('Table not found', 'ERROR');
-										}
-									});
-								} else {
-									casper.echo('Calendar Permissions tab not found', 'ERROR');
-								}
-							});
-						} else {
-							casper.echo('Content  tooltip menu not found', 'ERROR');
-						}
-					});
-				} else {
-					casper.echo('Backend Menu not found', 'ERROR');
-				}
-			});
-		}else {
-			casper.echo('Error : ', 'ERROR');
-		}
+	driver.test.assertExists('input#post_approval');
+	utils.enableorDisableCheckbox('post_approval', true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
 	});
-	casper.then(function() {
-		backEndForumRegisterMethod.redirectToBackEndLogout(casper,casper.test, function() {
-		});
-		return callback(null);
+	driver.test.assertExists('button.button.btn-m.btn-blue');
+	driver.click('button.button.btn-m.btn-blue');
+	wait.waitForElement('font[color="red"]', casper, function(err, isExists) {
+		if(isExists) {
+			casper.echo("Permission changed",'INFO');
+			return callback(null);
+		}
 	});
 };
 
@@ -585,221 +315,182 @@ combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission = fu
 };
 
 //*************************Method to change permission of Sub Category for View Category from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			/*var checkboxId = casper.evaluate(function() {
-				var id = document.querySelector()
-			});*/
-			utils.enableorDisableCheckbox('view_forum_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewCategoryForSubCategory = function(group, driver, callback) {
+	var id = 'view_forum_'+group;
+	utils.enableorDisableCheckbox(id, true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for View Category(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('view_forum_20237761', false, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.disableViewCategoryForSubCategory = function(group, driver, callback) {
+	var id = 'view_forum_'+group;
+	utils.enableorDisableCheckbox(id, false, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Start topics from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('post_threads_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.enableStartTopicsForSubCategory = function(group, driver, callback) {
+	var id = 'post_threads_'+group;
+	utils.enableorDisableCheckbox(id, true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Start topics(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('post_threads_20237761', false, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.disableStartTopicsForSubCategory = function(group, driver, callback) {
+	var id = 'post_threads_'+group;
+	utils.enableorDisableCheckbox(id, false, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Reply Topics from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('other_post_replies_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.enableReplyTopicsForSubCategory = function(group, driver, callback) {
+	var id = 'other_post_replies_'+group;
+	utils.enableorDisableCheckbox(id, true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Reply Topics(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('other_post_replies_20237761', false, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.disableReplyTopicsForSubCategory = function(group, driver, callback) {
+	var id = 'other_post_replies_'+group;
+	utils.enableorDisableCheckbox(id, false, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Upload Attachments from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('upload_attachments_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.enableUploadAttachmentsForSubCategory = function(group, driver, callback) {
+	var id = 'upload_attachments_'+group;
+	utils.enableorDisableCheckbox(id, true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Upload Attachments(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('upload_attachments_20237761', false, casper, function() {
-				casper.echo('checkbox is unchecked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.disableUploadAttachmentsForSubCategory = function(group, driver, callback) {
+	var id = 'upload_attachments_'+group;
+	utils.enableorDisableCheckbox(id, false, casper, function() {
+		casper.echo('checkbox is unchecked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for View Attachments from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('view_attachments_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.enableViewAttachmentsForSubCategory = function(group, driver, callback) {
+	var id = 'view_attachments_'+group;
+	utils.enableorDisableCheckbox(id, true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for View Attachments(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('view_attachments_20237761', false, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.disableViewAttachmentsForSubCategory = function(group, driver, callback) {
+	var id = 'view_attachments_'+group;
+	utils.enableorDisableCheckbox(id, false, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Require Post Approval from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('post_approval_20237761', true, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.enablePostApprovalForSubCategory = function(group, driver, callback) {
+	var id = 'post_approval_'+group;
+	utils.enableorDisableCheckbox(id, true, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
 //*************************Method to change permission of Sub Category for Require Post Approval(disable) from backend ************************
-combinationOfSubCategoryAndGroupPermissionsMethod.disablePostApprovalForSubCategory = function(id, driver, callback) {
-	combinationOfSubCategoryAndGroupPermissionsMethod.goToSubCategoryPermission(id, casper, function(err) {
-		if(!err) {
-			utils.enableorDisableCheckbox('post_approval_20237761', false, casper, function() {
-				casper.echo('checkbox is checked', 'INFO');
-			});
-			casper.waitUntilVisible('div#loading_msg', function success() {
-				casper.echo(casper.fetchText('div#loading_msg'),'INFO');
-				return callback(null);
-			}, function fail() {
-				casper.echo('Loading... not found', 'ERROR');
-				return callback(null);
-			});
-		}
+combinationOfSubCategoryAndGroupPermissionsMethod.disablePostApprovalForSubCategory = function(group, driver, callback) {
+	var id = 'post_approval_'+group;
+	utils.enableorDisableCheckbox(id, false, casper, function() {
+		casper.echo('checkbox is checked', 'INFO');
+	});
+	casper.waitUntilVisible('div#loading_msg', function success() {
+		casper.echo(casper.fetchText('div#loading_msg'),'INFO');
+		return callback(null);
+	}, function fail() {
+		casper.echo('Loading... not found', 'ERROR');
+		return callback(null);
 	});
 };
 
@@ -921,34 +612,56 @@ combinationOfSubCategoryAndGroupPermissionsMethod.uploadAttachmentWithTopic = fu
 				driver.sendKeys('#tinymce', driver.page.event.key.Backspace, {keepFocus: true});
 				driver.sendKeys('#tinymce',data.content);
 			});
+			driver.mouse.move('a#fancy_attach_');
 			driver.then(function() {
-				driver.mouse.move('a#fancy_attach_ i');
-				//driver.click('a#fancy_attach_ i');
-				driver.wait(6000,function(){
+				//driver.mouse.move('a#fancy_attach_');
+				//driver.click('a#fancy_attach_');
+				driver.wait(2000,function(){
 					driver.capture('1.png');
 					driver.mouse.move('input#autoUploadAttachment');
 					driver.click('input#autoUploadAttachment');
-				});
-				//driver.click('input#autoUploadAttachment');
-				//driver.capture('1.png');
-				wait.waitForElement('ul[class="post-attachments"]', driver, function(err, isExists) {
-					if(isExists) {
-				//wait.waitForTime(40000, driver, function(err) {
-					//if(!err) {
-						driver.capture('2.png');
-						driver.click('#post_submit');
-						wait.waitForElement('div#posts-list', driver, function(err, isExists) {
-							if(isExists) {
-								driver.echo('New topic Created','INFO');
-							}
-						});
-					}
+					//wait.waitForElement('ul[class="post-attachments"]', driver, function(err, isExists) {
+						//if(isExists) {
+						driver.wait(7000,function(){
+							driver.capture('2.png');
+							driver.click('#post_submit');
+							wait.waitForElement('div#posts-list', driver, function(err, isExists) {
+								if(isExists) {
+									driver.echo('New topic Created','INFO');
+								}
+							});
+						//}
+					});
 				});
 			});
 		}
 	});
 	driver.then(function() {
 		return callback(null);
+	});
+};
+
+// method to select the user group on permission page
+combinationOfSubCategoryAndGroupPermissionsMethod.selectUserGroup = function(data, driver, callback) {
+var group = data;
+	var groupId = driver.evaluate(function(group) {
+		var totalGroup = document.querySelectorAll('select#list_usergroup option');
+	   	for(var i=1; i<=(totalGroup.length); i++) {
+			var groupText = document.querySelector('select#list_usergroup option:nth-child('+i+')');
+			if (groupText.innerText == group) {
+				var groupValue = document.querySelector('select#list_usergroup option:nth-child('+i+')').getAttribute('value');
+				return groupValue;
+			}
+		}
+	},group);
+	driver.echo('the option value of group'+groupId,'INFO');
+	driver.then(function() {
+		driver.test.assertExists('#list_usergroup');
+		driver.click('#list_usergroup');
+		driver.sendKeys('#list_usergroup',group);
+		driver.wait(2000, function() {
+			return callback(null,groupId);
+		});
 	});
 };
 

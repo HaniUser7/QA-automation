@@ -1,5 +1,5 @@
 
-//----- This js file covers all the valid and invalid Test scenarios for Thumps Up Down functionality from login window comes from home page---------//
+//----- This js file covers all the valid and invalid Test scenarios for Combination of subcategory and group permission functionality from login window comes from home page---------//
 
 'use strict';
 var config = require('../../../config/config.json');
@@ -9,72 +9,90 @@ var combinationOfSubCategoryAndGroupPermissions = module.exports = {};
 combinationOfSubCategoryAndGroupPermissions.featureTest = function(casper, test) {
 	casper.start(config.url, function() {
 		this.echo("Title of the page :"+this.getTitle(),'INFO');
-		
+
 		// method to test methods
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.toTestmethods();
-		
+
 		// method to create a category and its sub category and get their id
-		combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.createCategoryAndSubCategory();
+
 		// method to verify with category cat1
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategory();
+
 		// method to verify with sub-category cat1a
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategory();
+
 		// method to verify with the private sub-category cat1a
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPrivateSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPrivateSubCategory();
+
 		// method to verify with the parent category cat1
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory();
-		
-		// method to verify with other sub-categories 
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithOtherSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithParentCategory();
+
+		// method to verify with other sub-categories
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithOtherSubCategory();
+
 		// method to verify start new topic button with the sub-category cat1a
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategory();
+
 		// method to verify start new topic button with the sub-category cat1a(Disable)
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategoryDisable();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForSubCategoryDisable();
+
 		// method to verify start new topic button with the parent category cat1
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForParentCategory();
-		
-		// method to verify with other sub-categories 
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForOtherSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForParentCategory();
+
+		// method to verify with other sub-categories
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicButtonForOtherSubCategory();
+
 		// method to verify Reply topic button with the sub-category cat1a
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategory();
+
 		// method to verify Reply topic button with the sub-category cat1a(Disable)
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategoryDisable();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForSubCategoryDisable();
+
 		// method to verify reply topic button with the parent category cat1
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithParentCategory();
-		
-		// method to verify with other sub-categories 
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForOtherSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicWithParentCategory();
+
+		// method to verify with other sub-categories
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithReplyTopicForOtherSubCategory();
+
 		// method to verify  upload attachments with the private sub-category cat1a
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachmentsWithSubCategory();
-		
+
 		// method to verify upload attachments button with the private sub-category cat1a(Disable)
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachmentsWithSubCategoryDisable();
-		
+
 		// method to verify  upload attachments with the parent category cat1
 		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithUploadAttachmentsWithParentCategory();
-		
+
 		// method to verify Post approval with the private sub-category cat1a
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategory();
+
 		// method to verify Post approval with the private sub-category cat1a(Disable)
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategoryDisable();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithSubCategoryDisable();
+
 		// method to verify Post approval with the parent category cat1
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithParentCategory();
-		
-		// method to verify with other sub-categories 
-		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithOtherSubCategory();
-		
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithParentCategory();
+
+		// method to verify with other sub-categories
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithPostApprovalWithOtherSubCategory();
+
+		// method to verify with category cat1 for unregistered user
+		combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategoryUnregisteredUser();
+
+		// method to verify with sub category cat1a for unregistered user
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategoryUnregisteredUser();
+
+		// method to verify with sub category cat1a for unregistered user
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithSubCategoryUnregisteredUserDisabled();
+
+		// method to verify with category cat1 for unregistered user
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithCategoryUnregisteredUserDisabled();
+
+		// method to verify with other sub-categories
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithOtherSubCategoryUnregisteredUser();
+
+		// method to verify with new topic button for unregistered user
+		//combinationOfSubCategoryAndGroupPermissionsTestcases.verifyWithNewTopicUnregisteredUser();
+
 	});
 };
