@@ -263,15 +263,25 @@ profilePageMethod.reputationDisable= function(casper , callback){
 						casper.click('button.button.btn-m.btn-blue');
 						casper.waitUntilVisible('div#ajax-msg-top', function success() {
 							casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
-							return callback(null);
+							
 						}, function fail() {
 							casper.echo('Saved not found', 'ERROR');
-							return callback(null);
+							casper.waitUntilVisible('div#ajax-msg-top', function success() {
+								casper.echo(casper.fetchText('div#ajax-msg-top'),'INFO');
+								
+							}, function fail() { 
+								casper.echo('Saved not found', 'ERROR');
+								
+							});
+							
 						},30000);
 					}
 				});
 			}
 		});
+	});
+	casper.then(function(){
+		return callback(null);
 	});
 };
  		
@@ -1112,7 +1122,7 @@ profilePageMethod.BackEndSettingsDefaultOptionBirtdayEnable=function(casper , ca
 profilePageMethod.BackEndSettingsDefaultOptionDisable=function(casper , callback) {
 	casper.thenOpen(config.backEndUrl , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('------------------Backend Method to enable  default option signature ----------' ,'INFO');
+		casper.echo('------------------Backend Method to disable  default option signature ----------' ,'INFO');
 		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
 			if (!err)
 				casper.echo('LoggedIn to forum backend....', 'INFO');
@@ -1151,7 +1161,7 @@ profilePageMethod.BackEndSettingsDefaultOptionDisable=function(casper , callback
 profilePageMethod.BackEndSettingsDefaultOptionIMIDDisable=function(casper , callback) {
 	casper.thenOpen(config.backEndUrl , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('------------------Backend Method to enable  im-ID Element from default option----------' ,'INFO');
+		casper.echo('------------------Backend Method to disable  im-ID Element from default option----------' ,'INFO');
 		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
 			if (!err)
 				casper.echo('LoggedIn to forum backend....', 'INFO');
@@ -1190,7 +1200,7 @@ profilePageMethod.BackEndSettingsDefaultOptionIMIDDisable=function(casper , call
 profilePageMethod.BackEndSettingsDefaultOptionBirtdayDisable=function(casper , callback) {
 	casper.thenOpen(config.backEndUrl , function(){
 		casper.echo("Title of the page :"+this.getTitle(), 'INFO');
-		casper.echo('------------------Backend Method to enable  birthday- picker Element from default option-----------' ,'INFO');
+		casper.echo('------------------Backend Method to Disable  birthday- picker Element from default option-----------' ,'INFO');
 		loginPrivacyOptionMethod.loginToForumBackEnd(casper , function(err) {	
 			if (!err)
 				casper.echo('LoggedIn to forum backend....', 'INFO');

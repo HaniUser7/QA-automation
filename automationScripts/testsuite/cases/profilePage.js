@@ -350,7 +350,7 @@ profilePageTests.profilePageEditTopic=function() {
 										casper.click('a[href="'+post+'"]');
 										wait.waitForElement('input[type="button"]' , casper , function(err) {
 											if(isExists) {
-												wait.waitForTime(3000, casper , function(err){
+												wait.waitForTime(7000, casper , function(err){
 													casper.withFrame('message1_ifr', function() {
 														casper.sendKeys('#tinymce', casper.page.event.key.Ctrl,casper.page.event.key.A, {keepFocus: true});			
 														casper.sendKeys('#tinymce', casper.page.event.key.Backspace, {keepFocus: true});
@@ -402,7 +402,7 @@ profilePageTests.profilePageTopicTab=function() {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('a#user-nav-panel-profile');
@@ -419,6 +419,9 @@ profilePageTests.profilePageTopicTab=function() {
 										});
 									}
 								});
+							}else{
+								casper.echo('loading .........failed' ,'INFO');
+
 							}
 						});
 					}
@@ -472,7 +475,6 @@ profilePageTests.profilePageTopicTabCreateTopic=function() {
 			}
 		});
 	});	
-
 };
 
 //verify with edit topic title
@@ -636,7 +638,6 @@ profilePageTests.profilePageLikesTab=function(){
 			}
 		});
 	});
-	
 };	
 
 //Verify with dislike the same post you already liked
@@ -798,7 +799,7 @@ profilePageTests.profilePagePostCount=function() {
 						casper.echo("Error occurred in callback user not logged-in", "ERROR");	
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('a#user-nav-panel-profile');
@@ -1105,7 +1106,10 @@ profilePageTests.profilePageReputationCountMultiplePostLike=function(){
 						casper.echo('Processing to Login on forum.....','INFO');
 						wait.waitForElement('form[name="posts"] a.topic-title' , casper , function(err) {
 							if(isExists) {
-								casper.click('form[name="posts"] a.topic-title');
+								//casper.click('form[name="posts"] a.topic-title');
+								casper.evaluate(function() {
+									document.querySelector('div.tooltipMenu.text a[title="Add profile fields that your users can fill out"]').click();
+								});
 								wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , function(err) {
 									if(isExists) {
 										casper.click('i.glyphicon.glyphicon-like-alt');	
@@ -1184,7 +1188,7 @@ profilePageTests.profilePageReputationCountMultiplePostLike=function(){
 					}else {
 						casper.echo('Processing to Login on forum.....','INFO');
 						
-						wait.waitForElement('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
+						wait.waitForVisible('ul.nav.pull-right span.caret' , casper , function(err , isExists) {
 							if(isExists) {
 								casper.click('ul.nav.pull-right span.caret');
 								casper.click('a#user-nav-panel-profile');
@@ -1908,7 +1912,7 @@ wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , func
 		});
 
 
-		//Enable default option IM-id
+		//Disable default option IM-id
 		profilePageMethod.BackEndSettingsDefaultOptionIMIDDisable(casper , function(err){
 			if(!err) {
 				casper.echo('Default options enable IM-id successfully' ,'INFO');	
@@ -1919,7 +1923,6 @@ wait.waitForElement('a.pull-right.btn.btn-uppercase.btn-primary' , casper , func
 			}
 		});
 	});
-		
 };
 
 //Disable CustomTitile  for Registered user from group Permission
@@ -2037,7 +2040,6 @@ profilePageTests.addCustomTitle=function(){
 								casper.click('span.pull-right.user-nav-panel li:nth-child(4) a');
 								wait.waitForElement('button[type="submit"]' , casper , function(){ 
 									if(isExists) {
-										
 										casper.click('div#custom_user_title input');
 										casper.sendKeys('div#custom_user_title input','h');
 										
@@ -2165,20 +2167,20 @@ profilePageTests.profilePageDeleteCustomTitle=function(){
 															forumLoginMethod.logoutFromApp(casper, function(err){
 																	if (!err)
 																		casper.echo('Successfully logout from application', 'INFO');
-																});
-															}
-														});
+															});
+														}
 													});
 												});
-											}
-										});
-									}
-								});
-							}
-						});
-					}
-				});
+											});
+										}
+									});
+								}
+							});
+						}
+					});
+				}
 			});
+		});
 	
 };
 
@@ -2260,7 +2262,7 @@ profilePageTests.profilePageShieldIcon=function(){
 profilePageTests.profilePageToolTipShieldIcon=function(){
 	profilePageMethod.addShieldCustomField(casper , function(err) {
 		if(!err)
-			casper.echo('method called successfully' ,'INFO');
+			casper.echo('add shield method called successfully' ,'INFO');
 
 	});	
 	
